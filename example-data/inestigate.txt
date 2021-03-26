@@ -1,0 +1,6 @@
+        "value": "SMAIL_GPL",
+        "value": "SUN",
+      "value": "UCB",
+      "value": "UNKNOWN",
+      "value": "Unicode",
+            "value": "JLEX",

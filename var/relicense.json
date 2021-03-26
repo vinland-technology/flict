@@ -1,0 +1,49 @@
+{
+    "meta": {
+        "software":"FOSS License Compliance Tool",
+        "type": "later-definitions",
+        "version":"0.1"
+    },
+    "relicense_definitions": [
+        {
+            "spdx": "GPL-2.0-or-later",
+            "later": [
+                "GPL-3.0-only",
+                "GPL-2.0-only"
+            ]
+        },       
+        {
+            "spdx": "LGPL-2.1-or-later",
+            "later": [
+                "GPL-2.0-only",
+                "LGPL-2.1-only",
+                "LGPL-3.0-only"
+            ]
+        },
+        {
+            "spdx": "LGPL-2.1-only",
+            "later": [
+                "GPL-2.0-only",
+                "LGPL-3.0-only",
+                "LGPL-2.1-only"
+            ]
+        },
+        {
+            "spdx": "GPL-2.1-or-later",
+            "later": [
+                "GPL-2.1-only",
+                "GPL-3.0-only"
+            ]
+        },
+        {
+            "spdx": "MPL-2.0",
+            "comment": "Secondary License means either the GNU General Public License, Version 2.0, the GNU Lesser General Public License, Version 2.1, the GNU Affero General Public License, Version 3.0, or any later versions of those licenses. ",
+            "later": [
+                "GPL-2.0-or-later",
+                "GPL-3.0-or-later",
+                "LGPL-2.1-or-later",
+                "AGPL-3.0-or-later"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    "project" :
+    {
+        "name": "kashd",
+        "license2":"LGPLv2.1",
+        "license":"(MPL-1.1 or LGPLv2.1) and GPLv3+",
+        "dependencies":[]
+    }
+}

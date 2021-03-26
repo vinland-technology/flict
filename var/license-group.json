@@ -1,0 +1,21 @@
+{
+    "meta": {
+        "software":"FOSS License Compliance Tool",
+        "type": "group-definitions",
+        "version":"0.1"
+    },
+    "license_groups": {
+        "Copyleft":  [        ],
+        "Permissive":[
+            "MIT-X", "MIT-Style", "MIT-style"
+        ]
+        ,
+        "Proprietary": [
+            "Closed", "The-Qt-Company-Commercial"
+        ]
+        ,
+        "Public Domain": [
+            "PD", "public-domain", "public domain"
+        ]
+    }
+}

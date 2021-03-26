@@ -1,0 +1,301 @@
+{
+    "meta": {
+        "software":"FOSS License Compliance Tool",
+        "type": "later-definitions",
+        "version":"0.1",
+        "description": "This file contains translation between misspelled or oddly named licenses and either SPDX or Scancode key values (used if OSADL's matrix does not support the license)"
+    },
+    "translations": [
+        {
+            "value": "&",
+            "translation": "and"
+        },
+        {
+            "value": "AMD",
+            "translation": "",
+            "comment": "who uses this???"
+        },
+        {
+            "value": "apache-1.0",
+            "translation": "Apache-1.0"
+        },
+        {
+            "value": "apache-2.0",
+            "translation": "Apache-2.0"
+        },
+        {
+            "value": "Apache-2",
+            "translation": "Apache-2.0"
+        },
+        {
+            "value": "BSD",
+            "translation": "BSD-3-Clause"
+        },
+        {
+            "value": "CDS",
+            "translation": "",
+            "comment": "who uses this???"
+        },
+        {
+            "value": "CLOSED",
+            "translation": "Proprietary"
+        },
+        {
+            "value": "CLOSED",
+            "translation": "Proprietary"
+        },
+        {
+            "value": "CUP",
+            "translation": "",
+            "comment": "who uses this???"
+        },
+        {
+            "value": "FSF-Unlimited",
+            "translation": "FSFUL"
+        },
+        {
+            "value": "FreeType",
+            "translation": "FTL"
+        },
+        {
+            "value": "freetype",
+            "translation": "FTL"
+        },
+        {
+            "value": "GFDL-1.2",
+            "translation": "GFDL-1.2-only"
+        },
+        {
+            "value": "GFDL-1.3",
+            "translation": "GFDL-1.3-only"
+        },
+        {
+            "value": "GPL-1.0+",
+            "translation": "GPL-1.0-or-later"
+        },
+        {
+            "value": "GPL-1.0+",
+            "translation": "",
+            "comment": "is this correct?"
+        },
+        {
+            "value": "GPL-2+",
+            "translation": "GPL-2.0-or-later"
+        },
+        {
+            "value": "GPL-2.0",
+            "translation": "GPL-2.0-only"
+        },
+        {
+            "value": "GPL-2.0+",
+            "translation": "GPL-2.0-or-later"
+        },
+        {
+            "value": "GPL-2.0+",
+            "translation": "GPL-2.0-or-later",
+            "comment": "is this correct?"
+        },
+        {
+            "value": "GPL-2.0-with-GCC-exception",
+            "translation": "GPL-2.0-only",
+            "exception": "GCC-exception-2.0"
+        },
+        {
+            "value": "GPL-2.0-with-OpenSSL-exception",
+            "translation": "",
+            "key": "",
+            "comment": "do they mean? openvpn-openssl-exception"
+        },
+        {
+            "value": "GPL-2.0-with-OpenSSL-exception",
+            "translation": null,
+            "key": "gpl-2.0-openssl",
+            "comment": "scancode key, classified as Copyleft Limited"
+        },
+        {
+            "value": "GPL-2.0-with-classpath-exception",
+            "translation": "GPL-2.0-only",
+            "exception": "Classpath-exception-2.0"
+        },
+        {
+            "value": "GPL-3.0",
+            "translation": "GPL-3.0-only"
+        },
+        {
+            "value": "GPL-3.0-with-GCC-exception",
+            "translation": "GPL-3.0-only",
+            "exception": "GCC-exception-3.1"
+        },
+        {
+            "value": "GPLv2",
+            "translation": "GPL-2.0-only"
+        },
+        {
+            "value": "GPLv2",
+            "translation": "GPL-2.0-only"
+        },
+        {
+            "value": "GPLv2+",
+            "translation": "GPL-2.0-or-later"
+        },
+        {
+            "value": "GPLv2+",
+            "translation": "GPL-2.0-or-later"
+        },
+        {
+            "value": "GPLv2.0",
+            "translation": "GPL-2.0-only"
+        },
+        {
+            "value": "GPLv3",
+            "translation": "GPL-3.0-only"
+        },
+        {
+            "value": "GPLv3",
+            "translation": "GPL-3.0-only"
+        },
+        {
+            "value": "GPLv3+",
+            "translation": "GPL-3.0-or-later"
+        },
+        {
+            "value": "GPLv3+",
+            "translation": "GPL-3.0-or-later"
+        },
+        {
+            "value": "LGPL-2.0",
+            "translation": "LGPL-2.0-only"
+        },
+        {
+            "value": "LGPL-2.1",
+            "translation": "LGPL-2.1-only"
+        },
+        {
+            "value": "LGPL-2.1",
+            "translation": "LGPL-2.1-only"
+        },
+        {
+            "value": "LGPL-2.1+",
+            "translation": "LGPL-2.1-or-later"
+        },
+        {
+            "value": "LGPL-2.1+",
+            "translation": "LGPL-2.1-or-later"
+        },
+        {
+            "value": "LGPL-3.0",
+            "translation": "LGPL-3.0-only"
+        },
+        {
+            "value": "LGPL-3.0",
+            "translation": "LGPL-3.0-only"
+        },
+        {
+            "value": "LGPL2.1",
+            "translation": "LGPL-2.1-only"
+        },
+        {
+            "value": "LGPLv2",
+            "translation": "LGPL-2.1-only"
+        },
+        {
+            "value": "LGPLv2",
+            "translation": "LGPL-2.0-only",
+            "key": "lgpl-2.0",
+            "comment": "scancode key, classified as Copyleft Limited"
+        },
+        {
+            "value": "LGPLv2+",
+            "translation": "LGPL-2.1-or-later"
+        },
+        {
+            "value": "LGPLv2+",
+            "translation": "LGPL-2.0-or-later"
+        },
+        {
+            "value": "LGPLv2.0+",
+            "translation": "LGPL-2.0-or-later"
+        },
+        {
+            "value": "LGPLv2.0+",
+            "translation": "LGPL-2.1-or-later"
+        },
+        {
+            "value": "LGPLv2.1",
+            "translation": "LGPL-2.1-only"
+        },
+        {
+            "value": "LGPLv2.1",
+            "translation": "LGPL-2.1-only"
+        },
+        {
+            "value": "LGPLv2.1+",
+            "translation": "LGPL-2.1-or-later"
+        },
+        {
+            "value": "LGPLv2.1+",
+            "translation": "LGPL-2.1-or-later"
+        },
+        {
+            "value": "LGPLv3",
+            "translation": "LGPL-3.0-only"
+        },
+        {
+            "value": "LGPLv3",
+            "translation": "LGPL-3.0-only"
+        },
+        {
+            "value": "LGPLv3+",
+            "translation": "LGPL-3.0-or-later"
+        },
+        {
+            "value": "LGPLv3+",
+            "translation": "LGPL-3.0-or-later"
+        },
+        {
+            "value": "MPLv2",
+            "translation": "MPL-2.0"
+        },
+        {
+            "value": "PSF",
+            "translation": "PSF-2.0",
+            "comment": "Assuming 2.0 since that came out 2000"
+        },
+        {
+            "value": "PSFv2",
+            "translation": "PSF-2.0"
+        },
+        {
+            "value": "The-Qt-Company-GPL-Exception-1.0",
+            "translation": "Qt-GPL-exception-1.0"
+        },
+        {
+            "value": "lgpl-2.0-plus",
+            "translation": "LGPL-2.1-or-later"
+        },
+        {
+            "value": "lgpl-2.1",
+            "translation": "LGPL-2.1-only"
+        },
+        {
+            "value": "lgpl-2.1",
+            "translation": "LGPL-2.1-only"
+        },
+        {
+            "value": "mit",
+            "translation": "MIT"
+        },
+        {
+            "value": "mpl-1.1",
+            "translation": "MPL-1.1"
+        },
+        {
+            "value": "openssl",
+            "translation": "OpenSSL"
+        },
+        {
+            "value": "|",
+            "translation": "or"
+        }
+    ]
+}

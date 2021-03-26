@@ -1,0 +1,102 @@
+
+CALLER=$(basename ${0})
+
+if [ "${CALLER}" = "common-funs" ]
+then
+    echo "${BASH_SOURCE[0]} not intended for execution... bailing out (exit)" 1>&2
+    exit 1
+fi      
+
+CHARS=40
+FMT="* %-${CHARS}s"
+CHARS_TO_PRINT=$(( $CHARS - 2)) # "* " from above 
+
+error()
+{
+    echo "$*" 1>&2
+}
+
+inform()
+{
+    echo "$*" 1>&2
+}
+
+inform_n()
+{
+    printf "${FMT}" "${1:0:$CHARS_TO_PRINT}: " 1>&2
+}
+
+exit_on_error()
+{
+    RET_CODE="$1"
+    MSG="$2"
+    CMD="$3"
+    ORIG_MSG="$4"
+    if [ $RET_CODE -ne 0 ]
+    then
+        error ""
+        error "ERROR"
+        if [ "$MSG" != "" ]
+        then
+            error " + Message: $MSG"
+            if [ "$CMD" != "" ]
+            then
+                error " + Command: $CMD"
+            fi
+            if [ "$ORIG_MSG" != "" ]
+            then
+                error " + Original message: $ORIG_MSG"
+            fi
+        else
+            error " + Message: no message"
+        fi
+        end_test
+        exit 2
+    fi       
+}
+
+compare_exit()
+{
+    local VAL1="$1"
+    local VAL2="$2"
+    local MSG="$3"
+    local CMD="$4"
+    local ORIG_MSG="$5"
+
+    test "$VAL1" = "$VAL2"
+    exit_on_error "$?" "$MSG" "$CMD" "$ORIG_MSG" 
+}
+
+compare_exec()
+{
+    local CMD="$1"
+    local EXP="$2"
+    local EXP_RET="$3"
+    local MSG="$4"
+
+    if [ "$MSG" = "" ]
+    then
+        MSG=$CMD
+    fi
+    inform_n "${MSG}"
+    VAL=$(echo ${CMD} | bash )
+    RET=$?
+
+    compare_exit "$VAL" "$EXP" "Results \"$VAL\" and \"$EXP\" differs" "$CMD" "$MSG"
+
+    compare_exit "$RET" "$EXP_RET" "Return values \"$RET\" and \"$EXP_RET\" differs" "$CMD" "$MSG"
+    inform "OK"
+
+    SUCC_CNT=$(( $SUCC_CNT + 1 ))
+}
+
+begin_test()
+{
+    SUCC_CNT=0
+    inform "Starting tests: "
+}
+
+end_test()
+{
+    inform "$SUCC_CNT tests performed successfully"
+}

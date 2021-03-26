@@ -1,0 +1,16 @@
+{
+    "meta" : {
+        "software":"FOSS License Compatibility Checker",
+        "version":"0.1"
+    } ,
+    "policy": {
+        "allowlist": [
+        ],
+        "avoidlist": [
+            "Apache-2.0"
+        ],
+        "denylist": [
+            "MPL-1.1", "GPL-3.0-only", "GPL-3.0-or-later"
+        ]
+    }
+}

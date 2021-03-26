@@ -1,0 +1,1329 @@
+{
+  "license": " (MPL-1.1 or LGPL-2.1-or-later) and GPL-3.0-or-later",
+  "license_pile": [
+    "GPL-2.0-or-later",
+    "MIT",
+    "Libpng",
+    "LGPL-2.1-or-later",
+    "GPL-3.0-or-later",
+    "MPL-1.1",
+    "BSD-4-Clause",
+    "BSD-3-Clause"
+  ],
+  "compatibilities": [
+    {
+      "outbound": "GPL-2.0-or-later",
+      "combination": [
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1",
+            "GPL-3.0-or-later"
+          ]
+        },
+        {
+          "name": "libxshmfence",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdmcp",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxau",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxcb",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "expat",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libx11",
+          "license": [
+            "BSD-3-Clause",
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxext",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxxf86vm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxfixes",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdamage",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libdrm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "mesa",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "zlib",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxrender",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libpng",
+          "license": [
+            "Libpng"
+          ]
+        },
+        {
+          "name": "freetype",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "util-linux",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-4-Clause",
+            "BSD-3-Clause",
+            "GPL-3.0-only"
+          ]
+        },
+        {
+          "name": "fontconfig",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "pixman",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1"
+          ]
+        },
+        {
+          "name": "libpcre",
+          "license": [
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "glib-2.0",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "libffi",
+          "license": [
+            "MIT"
+          ]
+        }
+      ],
+      "reason": [
+        "GPL-2.0-or-later\" not compatible with \"GPL-3.0-only\".",
+        "GPL-2.0-or-later\" not compatible with \"BSD-4-Clause\".",
+        "GPL-2.0-or-later\" not compatible with \"LGPL-3.0-only\".",
+        "GPL-2.0-or-later\" not compatible with \"MPL-1.1\"."
+      ],
+      "compatibility_status": false
+    },
+    {
+      "outbound": "MIT",
+      "combination": [
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1",
+            "GPL-3.0-or-later"
+          ]
+        },
+        {
+          "name": "libxshmfence",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdmcp",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxau",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxcb",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "expat",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libx11",
+          "license": [
+            "BSD-3-Clause",
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxext",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxxf86vm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxfixes",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdamage",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libdrm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "mesa",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "zlib",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxrender",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libpng",
+          "license": [
+            "Libpng"
+          ]
+        },
+        {
+          "name": "freetype",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "util-linux",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-4-Clause",
+            "BSD-3-Clause",
+            "GPL-3.0-only"
+          ]
+        },
+        {
+          "name": "fontconfig",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "pixman",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1"
+          ]
+        },
+        {
+          "name": "libpcre",
+          "license": [
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "glib-2.0",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "libffi",
+          "license": [
+            "MIT"
+          ]
+        }
+      ],
+      "reason": [
+        "MIT\" not compatible with \"GPL-2.0-or-later\".",
+        "MIT\" not compatible with \"GPL-2.0-only\".",
+        "MIT\" not compatible with \"GPL-3.0-only\".",
+        "MIT\" not compatible with \"LGPL-2.1-or-later\".",
+        "MIT\" not compatible with \"MPL-1.1\".",
+        "MIT\" not compatible with \"GPL-3.0-or-later\".",
+        "MIT\" not compatible with \"LGPL-3.0-only\"."
+      ],
+      "compatibility_status": false
+    },
+    {
+      "outbound": "Libpng",
+      "combination": [
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1",
+            "GPL-3.0-or-later"
+          ]
+        },
+        {
+          "name": "libxshmfence",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdmcp",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxau",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxcb",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "expat",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libx11",
+          "license": [
+            "BSD-3-Clause",
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxext",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxxf86vm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxfixes",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdamage",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libdrm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "mesa",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "zlib",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxrender",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libpng",
+          "license": [
+            "Libpng"
+          ]
+        },
+        {
+          "name": "freetype",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "util-linux",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-4-Clause",
+            "BSD-3-Clause",
+            "GPL-3.0-only"
+          ]
+        },
+        {
+          "name": "fontconfig",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "pixman",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1"
+          ]
+        },
+        {
+          "name": "libpcre",
+          "license": [
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "glib-2.0",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "libffi",
+          "license": [
+            "MIT"
+          ]
+        }
+      ],
+      "reason": [
+        "Libpng\" not compatible with \"GPL-2.0-only\".",
+        "Libpng\" not compatible with \"GPL-2.0-or-later\".",
+        "Libpng\" not compatible with \"LGPL-3.0-only\".",
+        "Libpng\" not compatible with \"GPL-3.0-or-later\".",
+        "Libpng\" not compatible with \"LGPL-2.1-or-later\".",
+        "Libpng\" not compatible with \"MPL-1.1\".",
+        "Libpng\" not compatible with \"GPL-3.0-only\"."
+      ],
+      "compatibility_status": false
+    },
+    {
+      "outbound": "LGPL-2.1-or-later",
+      "combination": [
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1",
+            "GPL-3.0-or-later"
+          ]
+        },
+        {
+          "name": "libxshmfence",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdmcp",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxau",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxcb",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "expat",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libx11",
+          "license": [
+            "BSD-3-Clause",
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxext",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxxf86vm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxfixes",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdamage",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libdrm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "mesa",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "zlib",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxrender",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libpng",
+          "license": [
+            "Libpng"
+          ]
+        },
+        {
+          "name": "freetype",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "util-linux",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-4-Clause",
+            "BSD-3-Clause",
+            "GPL-3.0-only"
+          ]
+        },
+        {
+          "name": "fontconfig",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "pixman",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1"
+          ]
+        },
+        {
+          "name": "libpcre",
+          "license": [
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "glib-2.0",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "libffi",
+          "license": [
+            "MIT"
+          ]
+        }
+      ],
+      "reason": [
+        "LGPL-2.1-or-later\" not compatible with \"GPL-3.0-only\".",
+        "LGPL-2.1-or-later\" not compatible with \"GPL-3.0-or-later\".",
+        "LGPL-2.1-or-later\" not compatible with \"BSD-4-Clause\".",
+        "LGPL-2.1-or-later\" not compatible with \"LGPL-3.0-only\".",
+        "LGPL-2.1-or-later\" not compatible with \"MPL-1.1\".",
+        "LGPL-2.1-or-later\" not compatible with \"GPL-2.0-only\"."
+      ],
+      "compatibility_status": false
+    },
+    {
+      "outbound": "GPL-3.0-or-later",
+      "combination": [
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1",
+            "GPL-3.0-or-later"
+          ]
+        },
+        {
+          "name": "libxshmfence",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdmcp",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxau",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxcb",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "expat",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libx11",
+          "license": [
+            "BSD-3-Clause",
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxext",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxxf86vm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxfixes",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdamage",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libdrm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "mesa",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "zlib",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxrender",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libpng",
+          "license": [
+            "Libpng"
+          ]
+        },
+        {
+          "name": "freetype",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "util-linux",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-4-Clause",
+            "BSD-3-Clause",
+            "GPL-3.0-only"
+          ]
+        },
+        {
+          "name": "fontconfig",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "pixman",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1"
+          ]
+        },
+        {
+          "name": "libpcre",
+          "license": [
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "glib-2.0",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "libffi",
+          "license": [
+            "MIT"
+          ]
+        }
+      ],
+      "reason": [
+        "GPL-3.0-or-later\" not compatible with \"BSD-4-Clause\".",
+        "GPL-3.0-or-later\" not compatible with \"GPL-3.0-only\".",
+        "GPL-3.0-or-later\" not compatible with \"LGPL-3.0-only\".",
+        "GPL-3.0-or-later\" not compatible with \"MPL-1.1\".",
+        "GPL-3.0-or-later\" not compatible with \"GPL-2.0-only\"."
+      ],
+      "compatibility_status": false
+    },
+    {
+      "outbound": "MPL-1.1",
+      "combination": [
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1",
+            "GPL-3.0-or-later"
+          ]
+        },
+        {
+          "name": "libxshmfence",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdmcp",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxau",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxcb",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "expat",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libx11",
+          "license": [
+            "BSD-3-Clause",
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxext",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxxf86vm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxfixes",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdamage",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libdrm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "mesa",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "zlib",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxrender",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libpng",
+          "license": [
+            "Libpng"
+          ]
+        },
+        {
+          "name": "freetype",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "util-linux",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-4-Clause",
+            "BSD-3-Clause",
+            "GPL-3.0-only"
+          ]
+        },
+        {
+          "name": "fontconfig",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "pixman",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1"
+          ]
+        },
+        {
+          "name": "libpcre",
+          "license": [
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "glib-2.0",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "libffi",
+          "license": [
+            "MIT"
+          ]
+        }
+      ],
+      "reason": [
+        "MPL-1.1\" not compatible with \"GPL-2.0-only\".",
+        "MPL-1.1\" not compatible with \"GPL-3.0-only\".",
+        "MPL-1.1\" not compatible with \"GPL-3.0-or-later\".",
+        "MPL-1.1\" not compatible with \"LGPL-3.0-only\".",
+        "MPL-1.1\" not compatible with \"BSD-4-Clause\".",
+        "MPL-1.1\" not compatible with \"LGPL-2.1-or-later\".",
+        "MPL-1.1\" not compatible with \"GPL-2.0-or-later\"."
+      ],
+      "compatibility_status": false
+    },
+    {
+      "outbound": "BSD-4-Clause",
+      "combination": [
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1",
+            "GPL-3.0-or-later"
+          ]
+        },
+        {
+          "name": "libxshmfence",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdmcp",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxau",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxcb",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "expat",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libx11",
+          "license": [
+            "BSD-3-Clause",
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxext",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxxf86vm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxfixes",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdamage",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libdrm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "mesa",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "zlib",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxrender",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libpng",
+          "license": [
+            "Libpng"
+          ]
+        },
+        {
+          "name": "freetype",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "util-linux",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-4-Clause",
+            "BSD-3-Clause",
+            "GPL-3.0-only"
+          ]
+        },
+        {
+          "name": "fontconfig",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "pixman",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1"
+          ]
+        },
+        {
+          "name": "libpcre",
+          "license": [
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "glib-2.0",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "libffi",
+          "license": [
+            "MIT"
+          ]
+        }
+      ],
+      "reason": [
+        "BSD-4-Clause\" not compatible with \"GPL-2.0-only\".",
+        "BSD-4-Clause\" not compatible with \"MPL-1.1\".",
+        "BSD-4-Clause\" not compatible with \"LGPL-2.1-or-later\".",
+        "BSD-4-Clause\" not compatible with \"GPL-2.0-or-later\".",
+        "BSD-4-Clause\" not compatible with \"GPL-3.0-only\".",
+        "BSD-4-Clause\" not compatible with \"GPL-3.0-or-later\".",
+        "BSD-4-Clause\" not compatible with \"LGPL-3.0-only\"."
+      ],
+      "compatibility_status": false
+    },
+    {
+      "outbound": "BSD-3-Clause",
+      "combination": [
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1",
+            "GPL-3.0-or-later"
+          ]
+        },
+        {
+          "name": "libxshmfence",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdmcp",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxau",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxcb",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "expat",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libx11",
+          "license": [
+            "BSD-3-Clause",
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxext",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxxf86vm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxfixes",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxdamage",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libdrm",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "mesa",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "zlib",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libxrender",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "libpng",
+          "license": [
+            "Libpng"
+          ]
+        },
+        {
+          "name": "freetype",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "util-linux",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-4-Clause",
+            "BSD-3-Clause",
+            "GPL-3.0-only"
+          ]
+        },
+        {
+          "name": "fontconfig",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "pixman",
+          "license": [
+            "MIT"
+          ]
+        },
+        {
+          "name": "cairo",
+          "license": [
+            "MPL-1.1"
+          ]
+        },
+        {
+          "name": "libpcre",
+          "license": [
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "glib-2.0",
+          "license": [
+            "LGPL-3.0-only",
+            "BSD-3-Clause"
+          ]
+        },
+        {
+          "name": "libffi",
+          "license": [
+            "MIT"
+          ]
+        }
+      ],
+      "reason": [
+        "BSD-3-Clause\" not compatible with \"MPL-1.1\".",
+        "BSD-3-Clause\" not compatible with \"GPL-2.0-only\".",
+        "BSD-3-Clause\" not compatible with \"LGPL-2.1-or-later\".",
+        "BSD-3-Clause\" not compatible with \"GPL-2.0-or-later\".",
+        "BSD-3-Clause\" not compatible with \"GPL-3.0-only\".",
+        "BSD-3-Clause\" not compatible with \"LGPL-3.0-only\".",
+        "BSD-3-Clause\" not compatible with \"GPL-3.0-or-later\"."
+      ],
+      "compatibility_status": false
+    }
+  ]
+}

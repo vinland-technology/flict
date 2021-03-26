@@ -1,0 +1,9 @@
+{
+    "meta": {
+        "software":"License Policy Checker",
+        "version":"0.1"
+    },
+    "group_name": {
+        "name":"permissive"
+    }
+}
