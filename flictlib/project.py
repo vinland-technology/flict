@@ -174,7 +174,7 @@ class Project:
         licenses=set()
         dep_pile = self.dependencies_pile()
         for d in dep_pile:
-            print("\n\ndep_licenses_map:\n" + json.dumps(d))
+            #print("\n\ndep_licenses_map:\n" + json.dumps(d))
 
             dep_licenses = d['expanded_license']
             

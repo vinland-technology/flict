@@ -124,7 +124,7 @@ class Compatibility:
                 for combination in project.project_combination_list():
                     reason=set()
                     combination_set={}
-                    print("  CC: c:" + str((combination)))
+                    #print("  CC: c:" + str((combination)))
                     for p in combination:
                         #print("      CC: p: " + str(p))
                         for lic in p['license']:
@@ -143,7 +143,7 @@ class Compatibility:
                                 reason.add(license + "\" has dependent compatibility with \"" + lic + "\".")
                                 
                     status = len(list(reason))==0
-                    print("  CC: c:" + str((combination)) + " ==> "  +str(status) + "    : " + str(reason))
+                    #print("  CC: c:" + str((combination)) + " ==> "  +str(status) + "    : " + str(reason))
                     if status:
                         outbound_suggestions.add(license)
                         combination_set['combination']=combination
@@ -170,8 +170,8 @@ class Compatibility:
         self.compatility_report['license'] = license_expr
         self.compatility_report['license_pile'] = list(license_set)
 
-        print("check_project_pile: " + license_expr)
-        print("check_project_pile: " + str(license_set))
+        #print("check_project_pile: " + license_expr)
+        #print("check_project_pile: " + str(license_set))
         
         # Begin checking compatibility with licenses from all project (incl dps)
         self.compatility_report['compatibilities'] = self.check_compatibility(license_set, project)
