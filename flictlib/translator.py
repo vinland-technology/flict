@@ -154,8 +154,8 @@ def main():
         print("digraph graphname {")
         first = True
         for trans in translations:
-            t_value = trans["value"]
-            t_translated = trans["translation"]
+            t_value = trans["license_expression"]
+            t_translated = trans["spdx_id"]
             print("\"" + t_value + "\" -> \"" + t_translated + "\"")
             if first:
                 pipe=""
