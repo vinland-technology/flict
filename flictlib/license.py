@@ -117,7 +117,7 @@ class LicenseHandler:
         transl = self.translate(license_expression)
         if transl == None or transl == "":
             transl = license_expression
-        #print("translate_and_relicenseself: " + transl)
+        #print("translate_and_relicenseself: " + license_expression + " ==> " + transl)
         rel = self.expand_relicense(transl)
         if rel == None:
             rel = transl
@@ -141,8 +141,11 @@ class LicenseHandler:
         to open it and make use of it. Otherwise the input is simply
         returned as output.
         """
+        #print("translate \"" + license_expression + "\"")
         if self.translations_file != None and self.translations_file != "":
-            self.translations = read_translations(self.translations_file)
+            if self.translations == None:
+                self.translations = read_translations(self.translations_file)
+            #print("translate \"" + license_expression + "\" => " + "\"" + update_license(self.translations, license_expression) + "\"")
             return str(update_license(self.translations, license_expression)).strip()
         else:
             return str(license_expression).strip()
@@ -171,7 +174,6 @@ class LicenseHandler:
     def license_expression_list(self, license_expression, relicense=True):
 
         license = ManagedLicenseExpression(license_expression)
-        
         license.translated = self.translate(license_expression)
         #print("POPESCU #: " + self.translate(license_expression))
         #print("POPESCU #: " + license.translated)
