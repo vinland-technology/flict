@@ -122,6 +122,7 @@ def _read_translations(translations_file):
         for item in translations:
             if item['translation'] != None:
                 translations_map[item['value']]=item
+
         translations_data={}
         translations_data['original']=translations_object
         translations_data['translations_map']=translations_map
@@ -135,12 +136,16 @@ def read_translations(translations_file):
         translations_object = json.load(fp)
         translations=translations_object["translations"]
         for item in translations:
-            if item['translation'] != None:
-                transl = item['translation']
-                value = item['value']
+            print(" let's check...." + str(item), end="")
+            if 'license_expression' in item and 'spdx_id' in item:
+                print(" OK")
+                transl = item['spdx_id']
+                key = item['license_expression']
                 if not transl in symbols:
                     symbols[transl] = []
-                symbols[transl].append(value)
+                symbols[transl].append(key)
+            else:
+                print(" *********************** Failed parsing item:  " + str(item))
     return symbols
 
     
