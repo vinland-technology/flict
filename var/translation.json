@@ -7,295 +7,303 @@
     },
     "translations": [
         {
-            "value": "&",
-            "translation": "and"
+            "license_expression": "&",
+            "spdx_id": "and"
         },
         {
-            "value": "AMD",
-            "translation": "",
+            "license_expression": "AMD",
+            "spdx_id": "",
             "comment": "who uses this???"
         },
         {
-            "value": "apache-1.0",
-            "translation": "Apache-1.0"
+            "license_expression": "apache-1.0",
+            "spdx_id": "Apache-1.0"
         },
         {
-            "value": "apache-2.0",
-            "translation": "Apache-2.0"
+            "license_expression": "apache-2.0",
+            "spdx_id": "Apache-2.0"
         },
         {
-            "value": "Apache-2",
-            "translation": "Apache-2.0"
+            "license_expression": "Apache-2",
+            "spdx_id": "Apache-2.0"
         },
         {
-            "value": "BSD",
-            "translation": "BSD-3-Clause"
+            "license_expression": "BSD",
+            "spdx_id": "BSD-3-Clause"
         },
         {
-            "value": "CDS",
-            "translation": "",
+            "license_expression": "CDS",
+            "spdx_id": "",
             "comment": "who uses this???"
         },
         {
-            "value": "CLOSED",
-            "translation": "Proprietary"
+            "license_expression": "CLOSED",
+            "spdx_id": "Proprietary"
         },
         {
-            "value": "CLOSED",
-            "translation": "Proprietary"
+            "license_expression": "CLOSED",
+            "spdx_id": "Proprietary"
         },
         {
-            "value": "CUP",
-            "translation": "",
+            "license_expression": "CUP",
+            "spdx_id": "",
             "comment": "who uses this???"
         },
         {
-            "value": "FSF-Unlimited",
-            "translation": "FSFUL"
+            "license_expression": "FSF-Unlimited",
+            "spdx_id": "FSFUL"
         },
         {
-            "value": "FreeType",
-            "translation": "FTL"
+            "license_expression": "FreeType",
+            "spdx_id": "FTL"
         },
         {
-            "value": "freetype",
-            "translation": "FTL"
+            "license_expression": "freetype",
+            "spdx_id": "FTL"
         },
         {
-            "value": "GFDL-1.2",
-            "translation": "GFDL-1.2-only"
+            "license_expression": "GFDL-1.2",
+            "spdx_id": "GFDL-1.2-only"
         },
         {
-            "value": "GFDL-1.3",
-            "translation": "GFDL-1.3-only"
+            "license_expression": "GFDL-1.3",
+            "spdx_id": "GFDL-1.3-only"
         },
         {
-            "value": "GPL-1.0+",
-            "translation": "GPL-1.0-or-later"
+            "license_expression": "GPL-1.0+",
+            "spdx_id": "GPL-1.0-or-later"
         },
         {
-            "value": "GPL-1.0+",
-            "translation": "",
+            "license_expression": "GPL-1.0+",
+            "spdx_id": "",
             "comment": "is this correct?"
         },
         {
-            "value": "GPL-2+",
-            "translation": "GPL-2.0-or-later"
+            "license_expression": "GPL-2+",
+            "spdx_id": "GPL-2.0-or-later"
         },
         {
-            "value": "GPL-2.0",
-            "translation": "GPL-2.0-only"
+            "license_expression": "GPL-2.0",
+            "spdx_id": "GPL-2.0-only"
         },
         {
-            "value": "GPL-2.0+",
-            "translation": "GPL-2.0-or-later"
+            "license_expression": "GPL-2.0+",
+            "spdx_id": "GPL-2.0-or-later"
         },
         {
-            "value": "GPL-2.0+",
-            "translation": "GPL-2.0-or-later",
+            "license_expression": "GPL-2.0+",
+            "spdx_id": "GPL-2.0-or-later",
             "comment": "is this correct?"
         },
         {
-            "value": "GPL-2.0-with-GCC-exception",
-            "translation": "GPL-2.0-only",
+            "license_expression": "GPL-2.0-with-GCC-exception",
+            "spdx_id": "GPL-2.0-only",
             "exception": "GCC-exception-2.0"
         },
         {
-            "value": "GPL-2.0-with-OpenSSL-exception",
-            "translation": "",
+            "license_expression": "GPL-2.0-with-OpenSSL-exception",
+            "spdx_id": "",
             "key": "",
             "comment": "do they mean? openvpn-openssl-exception"
         },
         {
-            "value": "GPL-2.0-with-OpenSSL-exception",
-            "translation": null,
+            "license_expression": "GPL-2.0-with-OpenSSL-exception",
+            "spdx_id": null,
             "key": "gpl-2.0-openssl",
             "comment": "scancode key, classified as Copyleft Limited"
         },
         {
-            "value": "GPL-2.0-with-classpath-exception",
-            "translation": "GPL-2.0-only",
+            "license_expression": "GPL-2.0-with-classpath-exception",
+            "spdx_id": "GPL-2.0-only",
             "exception": "Classpath-exception-2.0"
         },
         {
-            "value": "GPL-3.0",
-            "translation": "GPL-3.0-only"
+            "license_expression": "GPL-3.0",
+            "spdx_id": "GPL-3.0-only"
         },
         {
-            "value": "GPL-3.0-with-GCC-exception",
-            "translation": "GPL-3.0-only",
+            "license_expression": "GPL-3.0-with-GCC-exception",
+            "spdx_id": "GPL-3.0-only",
             "exception": "GCC-exception-3.1"
         },
         {
-            "value": "GPLv2",
-            "translation": "GPL-2.0-only"
+            "license_expression": "GPLv2",
+            "spdx_id": "GPL-2.0-only"
         },
         {
-            "value": "GPLv2",
-            "translation": "GPL-2.0-only"
+            "license_expression": "GPLv2",
+            "spdx_id": "GPL-2.0-only"
         },
         {
-            "value": "GPLv2+",
-            "translation": "GPL-2.0-or-later"
+            "license_expression": "GPLv2+",
+            "spdx_id": "GPL-2.0-or-later"
         },
         {
-            "value": "GPLv2+",
-            "translation": "GPL-2.0-or-later"
+            "license_expression": "GPLv2+",
+            "spdx_id": "GPL-2.0-or-later"
         },
         {
-            "value": "GPLv2.0",
-            "translation": "GPL-2.0-only"
+            "license_expression": "GPLv2.0",
+            "spdx_id": "GPL-2.0-only"
         },
         {
-            "value": "GPLv3",
-            "translation": "GPL-3.0-only"
+            "license_expression": "GPLv3",
+            "spdx_id": "GPL-3.0-only"
         },
         {
-            "value": "GPLv3",
-            "translation": "GPL-3.0-only"
+            "license_expression": "GPLv3",
+            "spdx_id": "GPL-3.0-only"
         },
         {
-            "value": "GPLv3+",
-            "translation": "GPL-3.0-or-later"
+            "license_expression": "GPLv3+",
+            "spdx_id": "GPL-3.0-or-later"
         },
         {
-            "value": "GPLv3+",
-            "translation": "GPL-3.0-or-later"
+            "license_expression": "GPLv3+",
+            "spdx_id": "GPL-3.0-or-later"
         },
         {
-            "value": "LGPL-2.0",
-            "translation": "LGPL-2.0-only"
+            "license_expression": "LGPL-2.0",
+            "spdx_id": "LGPL-2.0-only"
         },
         {
-            "value": "LGPL-2.1",
-            "translation": "LGPL-2.1-only"
+            "license_expression": "LGPL-2.1",
+            "spdx_id": "LGPL-2.1-only"
         },
         {
-            "value": "LGPL-2.1",
-            "translation": "LGPL-2.1-only"
+            "license_expression": "LGPL-2.1",
+            "spdx_id": "LGPL-2.1-only"
         },
         {
-            "value": "LGPL-2.1+",
-            "translation": "LGPL-2.1-or-later"
+            "license_expression": "LGPL-2.0-or-later",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "LGPL-2.1+",
-            "translation": "LGPL-2.1-or-later"
+            "license_expression": "LGPL-2.1+",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "LGPL-3.0",
-            "translation": "LGPL-3.0-only"
+            "license_expression": "LGPL-2.1+",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "LGPL-3.0",
-            "translation": "LGPL-3.0-only"
+            "license_expression": "LGPL-3.0",
+            "spdx_id": "LGPL-3.0-only"
         },
         {
-            "value": "LGPL2.1",
-            "translation": "LGPL-2.1-only"
+            "license_expression": "LGPL-3.0",
+            "spdx_id": "LGPL-3.0-only"
         },
         {
-            "value": "LGPLv2",
-            "translation": "LGPL-2.1-only"
+            "license_expression": "LGPL2.1",
+            "spdx_id": "LGPL-2.1-only"
         },
         {
-            "value": "LGPLv2",
-            "translation": "LGPL-2.0-only",
+            "license_expression": "LGPLv2",
+            "spdx_id": "LGPL-2.1-only"
+        },
+        {
+            "license_expression": "LGPLv2",
+            "spdx_id": "LGPL-2.0-only",
             "key": "lgpl-2.0",
             "comment": "scancode key, classified as Copyleft Limited"
         },
         {
-            "value": "LGPLv2+",
-            "translation": "LGPL-2.1-or-later"
+            "license_expression": "LGPLv2+",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "LGPLv2+",
-            "translation": "LGPL-2.0-or-later"
+            "license_expression": "LGPLv2+",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "LGPLv2.0+",
-            "translation": "LGPL-2.0-or-later"
+            "license_expression": "LGPLv2.0+",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "LGPLv2.0+",
-            "translation": "LGPL-2.1-or-later"
+            "license_expression": "LGPLv2.0+",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "LGPLv2.1",
-            "translation": "LGPL-2.1-only"
+            "license_expression": "LGPLv2.1",
+            "spdx_id": "LGPL-2.1-only"
         },
         {
-            "value": "LGPLv2.1",
-            "translation": "LGPL-2.1-only"
+            "license_expression": "LGPLv2.1",
+            "spdx_id": "LGPL-2.1-only"
         },
         {
-            "value": "LGPLv2.1+",
-            "translation": "LGPL-2.1-or-later"
+            "license_expression": "LGPLv2.1+",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "LGPLv2.1+",
-            "translation": "LGPL-2.1-or-later"
+            "license_expression": "LGPLv2.1+",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "LGPLv3",
-            "translation": "LGPL-3.0-only"
+            "license_expression": "LGPLv3",
+            "spdx_id": "LGPL-3.0-only"
         },
         {
-            "value": "LGPLv3",
-            "translation": "LGPL-3.0-only"
+            "license_expression": "LGPLv3",
+            "spdx_id": "LGPL-3.0-only"
         },
         {
-            "value": "LGPLv3+",
-            "translation": "LGPL-3.0-or-later"
+            "license_expression": "LGPLv3+",
+            "spdx_id": "LGPL-3.0-or-later"
         },
         {
-            "value": "LGPLv3+",
-            "translation": "LGPL-3.0-or-later"
+            "license_expression": "LGPLv3+",
+            "spdx_id": "LGPL-3.0-or-later"
         },
         {
-            "value": "MPLv2",
-            "translation": "MPL-2.0"
+            "license_expression": "MPLv2",
+            "spdx_id": "MPL-2.0"
         },
         {
-            "value": "PSF",
-            "translation": "PSF-2.0",
+            "license_expression": "PSF-2.0",
+            "spdx_id": "Python-2.0"
+        },
+        {
+            "license_expression": "PSF",
+            "spdx_id": "Python-2.0",
             "comment": "Assuming 2.0 since that came out 2000"
         },
         {
-            "value": "PSFv2",
-            "translation": "PSF-2.0"
+            "license_expression": "PSFv2",
+            "spdx_id": "Python-2.0"
         },
         {
-            "value": "The-Qt-Company-GPL-Exception-1.0",
-            "translation": "Qt-GPL-exception-1.0"
+            "license_expression": "The-Qt-Company-GPL-Exception-1.0",
+            "spdx_id": "Qt-GPL-exception-1.0"
         },
         {
-            "value": "lgpl-2.0-plus",
-            "translation": "LGPL-2.1-or-later"
+            "license_expression": "lgpl-2.0-plus",
+            "spdx_id": "LGPL-2.1-or-later"
         },
         {
-            "value": "lgpl-2.1",
-            "translation": "LGPL-2.1-only"
+            "license_expression": "lgpl-2.1",
+            "spdx_id": "LGPL-2.1-only"
         },
         {
-            "value": "lgpl-2.1",
-            "translation": "LGPL-2.1-only"
+            "license_expression": "lgpl-2.1",
+            "spdx_id": "LGPL-2.1-only"
         },
         {
-            "value": "mit",
-            "translation": "MIT"
+            "license_expression": "mit",
+            "spdx_id": "MIT"
         },
         {
-            "value": "mpl-1.1",
-            "translation": "MPL-1.1"
+            "license_expression": "mpl-1.1",
+            "spdx_id": "MPL-1.1"
         },
         {
-            "value": "openssl",
-            "translation": "OpenSSL"
+            "license_expression": "openssl",
+            "spdx_id": "OpenSSL"
         },
         {
-            "value": "|",
-            "translation": "or"
+            "license_expression": "|",
+            "spdx_id": "or"
         }
     ]
 }
