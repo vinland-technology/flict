@@ -7,15 +7,6 @@
     },
     "translations": [
         {
-            "value": "&",
-            "translation": "and"
-        },
-        {
-            "value": "AMD",
-            "translation": "",
-            "comment": "who uses this???"
-        },
-        {
             "value": "apache-1.0",
             "translation": "Apache-1.0"
         },
@@ -28,13 +19,16 @@
             "translation": "Apache-2.0"
         },
         {
+            "value": "Apache 2",
+            "translation": "Apache-2.0"
+        },
+        {
             "value": "BSD",
             "translation": "BSD-3-Clause"
         },
         {
-            "value": "CDS",
-            "translation": "",
-            "comment": "who uses this???"
+            "value": "BSD Zero Clause License",
+            "translation": "0BSD"
         },
         {
             "value": "CLOSED",
@@ -43,11 +37,6 @@
         {
             "value": "CLOSED",
             "translation": "Proprietary"
-        },
-        {
-            "value": "CUP",
-            "translation": "",
-            "comment": "who uses this???"
         },
         {
             "value": "FSF-Unlimited",
@@ -74,11 +63,6 @@
             "translation": "GPL-1.0-or-later"
         },
         {
-            "value": "GPL-1.0+",
-            "translation": "",
-            "comment": "is this correct?"
-        },
-        {
             "value": "GPL-2+",
             "translation": "GPL-2.0-or-later"
         },
@@ -99,18 +83,6 @@
             "value": "GPL-2.0-with-GCC-exception",
             "translation": "GPL-2.0-only",
             "exception": "GCC-exception-2.0"
-        },
-        {
-            "value": "GPL-2.0-with-OpenSSL-exception",
-            "translation": "",
-            "key": "",
-            "comment": "do they mean? openvpn-openssl-exception"
-        },
-        {
-            "value": "GPL-2.0-with-OpenSSL-exception",
-            "translation": null,
-            "key": "gpl-2.0-openssl",
-            "comment": "scancode key, classified as Copyleft Limited"
         },
         {
             "value": "GPL-2.0-with-classpath-exception",
@@ -196,45 +168,17 @@
         },
         {
             "value": "LGPLv2",
-            "translation": "LGPL-2.1-only"
-        },
-        {
-            "value": "LGPLv2",
             "translation": "LGPL-2.0-only",
             "key": "lgpl-2.0",
             "comment": "scancode key, classified as Copyleft Limited"
         },
         {
             "value": "LGPLv2+",
-            "translation": "LGPL-2.1-or-later"
-        },
-        {
-            "value": "LGPLv2+",
             "translation": "LGPL-2.0-or-later"
         },
         {
             "value": "LGPLv2.0+",
             "translation": "LGPL-2.0-or-later"
-        },
-        {
-            "value": "LGPLv2.0+",
-            "translation": "LGPL-2.1-or-later"
-        },
-        {
-            "value": "LGPLv2.1",
-            "translation": "LGPL-2.1-only"
-        },
-        {
-            "value": "LGPLv2.1",
-            "translation": "LGPL-2.1-only"
-        },
-        {
-            "value": "LGPLv2.1+",
-            "translation": "LGPL-2.1-or-later"
-        },
-        {
-            "value": "LGPLv2.1+",
-            "translation": "LGPL-2.1-or-later"
         },
         {
             "value": "LGPLv3",
@@ -292,10 +236,6 @@
         {
             "value": "openssl",
             "translation": "OpenSSL"
-        },
-        {
-            "value": "|",
-            "translation": "or"
         }
     ]
 }

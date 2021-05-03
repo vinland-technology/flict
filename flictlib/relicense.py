@@ -88,7 +88,7 @@ def read_relicense_file(relicense_file):
 
 def relicense_license(rel_map, license_expression):
     new_license=""
-    for spdx in license_expression.split():
+    for spdx in license_expression.replace("(", " ( ").replace(")", " ) ").split():
         if spdx in rel_map['relicense_map']:
             first = True
             rel_license=None

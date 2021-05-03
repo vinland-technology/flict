@@ -477,11 +477,7 @@ def main():
         license = license_handler.license_expression_list(args.license_expression)
         if args.verbose:
             license._debug_license(license)
-            print("orig:       " + args.license_expression)
-            print("translated: " + license.expanded)
-            print("expanded:   " + license.expanded)
-            print("grouped:    " + license.grouped)
-            print("simplified: " + license.simplified)
+            print(license_to_string_long(license))
         else:
             print(license.simplified)
             

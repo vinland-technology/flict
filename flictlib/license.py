@@ -109,11 +109,20 @@ class LicenseHandler:
         self.relicense_file = relicense_file
         self.relicense_map = None
         self.group_file = group_file
-        self.licensing = Licensing()
-
-    
+        self.licensing = Licensing(self.read_symbols(self.translations_file))
+        #print("symbols: " + str(symbols))
+        
+    def read_symbols(self, translations_file):
+        translation_data = read_translations(translations_file)
+        symbols = []
+        for lic_key in translation_data:
+            #print("lic_key:  \"" + str(lic_key) + "\"")
+            lic_aliases = tuple(translation_data[lic_key])
+            symbols.append(LicenseSymbol(key=lic_key, aliases=lic_aliases))
+            
+        return symbols
+        
     def translate_and_relicense(self, license_expression):
-        #print("translate_and_relicenseself: " + license_expression)
         transl = self.translate(license_expression)
         if transl == None or transl == "":
             transl = license_expression
@@ -123,7 +132,6 @@ class LicenseHandler:
             rel = transl
         #print("translate_and_relicenseself: " + rel)
         return rel
-        
         
     def expand_relicense(self, license_expression):
         if self.relicense_file != None and self.relicense_file != "":
@@ -142,15 +150,15 @@ class LicenseHandler:
         returned as output.
         """
         if self.translations_file != None and self.translations_file != "":
-            self.translations = read_translations(self.translations_file)
-            return str(update_license(self.translations, license_expression)).strip()
+            if self.translations == None:
+                self.translations = read_translations(self.translations_file)
+            return str(self.simplify(license_expression))
         else:
-            return str(license_expression).strip()
+            return license_expression
 
     def simplify(self, license_expression):
-        #print("simplify: \"" + license_expression + "\"")
-        parsed = self.licensing._parse_and_simplify(license_expression)
-        #print("parsed:     " + str(parsed))
+        parsed = self.licensing.parse(license_expression)
+        #parsed = self.licensing._parse_and_simplify(license_expression)
         #print("simplified: " + str(parsed.simplify()))
         #return parsed.simplify()
         return parsed
@@ -173,13 +181,12 @@ class LicenseHandler:
         license = ManagedLicenseExpression(license_expression)
         
         license.translated = self.translate(license_expression)
-        #print("POPESCU #: " + self.translate(license_expression))
-        #print("POPESCU #: " + license.translated)
         
         if relicense:
             license.expanded = self.expand_relicense(license.translated)
         else:
             license.expanded = license.translated
+
             
         license.grouped = self.group(license.expanded)
 
@@ -190,15 +197,6 @@ class LicenseHandler:
         
         license.set_list = self.interim_license_expression_set_list(license.interim)
 
-        #print("TRANSLATED:.... " + str(license_expression) + " ----> " + str(license.set_list))
-        #print("POPESCU i: " + license_expression)
-        #print("POPESCU t: " + license.translated)
-        #print("POPESCU e: " + license.expanded)
-        #print("POPESCU g: " + license.grouped)
-        #print("POPESCU s: " + license.simplified)
-        ##print("POPESCU: " + str(license.interim))
-        #print("POPESCU l: " + str(license.set_list))
-        #print("")
         return license
 
 
@@ -412,6 +410,7 @@ def license_to_string_long(license):
     res = res + "original:   " + license.license_expression + "\n"
     res = res + "translated: " + license.translated + "\n"
     res = res + "expanded:   " + license.expanded + "\n"
+    res = res + "grouped:    " + license.grouped + "\n"
     res = res + "simplified: " + license.simplified + "\n"
     res = res + "set_list:   " + str(license.set_list) + "\n"
     return res

@@ -113,22 +113,35 @@ def update_packages(translations, dependencies):
         updates_deps = update_packages(translations, dep_deps)
     return updates_deps
 
-def read_translations(translations_file):
+def _read_translations(translations_file):
     with open(translations_file) as fp:
         translations_object = json.load(fp)
         translations=translations_object["translations"]
 
         translations_map={}
         for item in translations:
-            #print("item: " + str(item))
-            translations_map[item['value']]=item
-
+            if item['translation'] != None:
+                translations_map[item['value']]=item
         translations_data={}
         translations_data['original']=translations_object
         translations_data['translations_map']=translations_map
 
         return translations_data
-    
+
+
+def read_translations(translations_file):
+    symbols={}
+    with open(translations_file) as fp:
+        translations_object = json.load(fp)
+        translations=translations_object["translations"]
+        for item in translations:
+            if item['translation'] != None:
+                transl = item['translation']
+                value = item['value']
+                if not transl in symbols:
+                    symbols[transl] = []
+                symbols[transl].append(value)
+    return symbols
 
     
 def read_packages_file(jsonfile, translations):
