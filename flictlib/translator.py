@@ -31,7 +31,7 @@ PROGRAM_SEE_ALSO="yoga (yoda's generic aggregator)\n  yocr (yoga's compliance re
 
 DEFAULT_TRANSLATIONS_FILE="translation.json"
 
-VERBOSE=False
+VERBOSE=True
 
 def error(msg):
     sys.stderr.write(msg + "\n")
@@ -93,7 +93,7 @@ def update_license(translations, license_expr):
     for license in license_expr.replace("("," ( ").replace(")"," ) ").split():
         #print(" ---> test??: " + license)
         if license in translations['translations_map']:
-            new_single = translations['translations_map'][license]["translation"]
+            new_single = translations['translations_map'][license]["spdx_id"]
             #print("TRANSLATING " + license + " ---> " + new_single)
             new_license = new_license + " " + new_single
         else:
@@ -106,7 +106,7 @@ def update_packages(translations, dependencies):
     updates_deps=[]
     for dep in dependencies:
 #        print("license: \"" + dep["license"] + "\"")
-        license = dep["license"].strip(' ')
+        license = dep["license"].strip()
         updated_license=update_license(translations, license)
         dep["license"]=updated_license
         dep_deps = dep["dependencies"]
@@ -150,7 +150,7 @@ def read_packages_file(jsonfile, translations):
     # TODO: sync with flict (should be "package")
     package = packages["component"]
     deps = package["dependencies"]
-    license=package["license"].strip(' ')
+    license=package["license"].strip()
     package["license"]=update_license(translations, license)
     update_packages(translations, deps)
     return packages
@@ -167,8 +167,8 @@ def main():
         print("digraph graphname {")
         first = True
         for trans in translations:
-            t_value = trans["value"]
-            t_translated = trans["translation"]
+            t_value = trans["license_expression"]
+            t_translated = trans["spdx_id"]
             print("\"" + t_value + "\" -> \"" + t_translated + "\"")
             if first:
                 pipe=""

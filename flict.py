@@ -21,6 +21,7 @@ from flictlib.compat_matrix import CompatibilityMatrix
 import json
 import os
 import sys
+import subprocess
 
 SCRIPT_DIR=os.path.dirname(os.path.realpath(__file__))
 
@@ -34,7 +35,7 @@ DEFAULT_MATRIX_FILE       = VAR_DIR + "osadl-matrix.csv"
 
 PROGRAM_NAME="flict (FOSS License Compatibility Tool)"
 PROGRAM_DESCRIPTION="flict is a Free and Open Source Software tool to verify compatibility between licenses"
-PROGRAM_VERSION="0.1"
+COMPLIANCE_UTILS_VERSION="__COMPLIANCE_UTILS_VERSION__"
 PROGRAM_URL="https://github.com/vinland-technology/flict"
 BUG_URL="https://github.com/vinland-technology/flict/issues"
 PROGRAM_COPYRIGHT="(c) 2021 Henrik Sandklef<hesa@sandklef.com>"
@@ -47,6 +48,14 @@ DEFAULT_OUTPUT_FORMAT="JSON"
 DATE_FMT='%Y-%m-%d'
 
 VERBOSE=False
+if COMPLIANCE_UTILS_VERSION == "__COMPLIANCE_UTILS_VERSION__":
+    GIT_DIR=os.path.dirname(os.path.realpath(__file__))
+    command = "cd " + GIT_DIR + " && git rev-parse --short HEAD"
+    try:
+        res = subprocess.check_output(command, shell=True)
+        COMPLIANCE_UTILS_VERSION=str(res.decode("utf-8"))
+    except Exception as e:
+        COMPLIANCE_UTILS_VERSION="unknown"
 
 def error(msg):
     sys.stderr.write(msg + "\n")
@@ -204,6 +213,11 @@ def parse():
                         dest='license_expression_states',
                         help='')
 
+    parser.add_argument('-V', '--version',
+                        action='version',
+                        version=COMPLIANCE_UTILS_VERSION,
+                        default=False)
+
     args = parser.parse_args()
 
     if args.no_relicense:
@@ -286,25 +300,76 @@ def output_compat(compats, output_format, verbose=False):
 def output_compat_json(compats, verbose):
     print(json.dumps(compats))
 
-def _compat_to_text(comp_left, comp_right):
-        if comp_left == "true" and comp_right == "true" :
-            return " <---> "
-        elif comp_left == "true":
-            return " <--- "
-        elif comp_right == "true":
-            return " ---> "
-        else:
-            return " --//-- "
-        
+compat_interprets = {
+    'left' : {
+        'true':       { 'markdown': '--->' }, 
+        'false':      { 'markdown': '---|' },
+        'undefined':  { 'markdown': '---U' },
+        'depends':    { 'markdown': '---D' },
+        'question':   { 'markdown': '---Q' }
+    },
+    'right' : {
+        'true':       { 'markdown': '<----'},
+        'false':      { 'markdown': '|--' },
+        'undefined':  { 'markdown': 'U---' },
+        'depends':    { 'markdown': 'D---' },
+        'question':   { 'markdown': 'Q---' }
+    }
+}
+
+def _compat_to_fmt(comp_left, comp_right, fmt):
+    left = compat_interprets['left'][comp_left][fmt]
+    right = compat_interprets['right'][comp_right][fmt]
+    return str(right) + str(left) 
+
+
+def _compat_to_markdown(left, comp_left, right, comp_right):
+    return _compat_to_fmt(comp_left, comp_right, "markdown")
+
 def _compat_to_dot(left, comp_left, right, comp_right):
-        if comp_left == "true" and comp_right == "true" :
-            return "\"" + left + "\"  -> \"" + right  + "\" [dir=both] [color=\"darkgreen\"] "
-        elif comp_left == "true":
-            return "\"" + right + "\" -> \"" + left + "\"  [color=\"black\"] " 
-        elif comp_right == "true":
-            return "\"" + left + "\"  -> \"" + right + "\"  [color=\"black\"]" 
-        else:
+    verbose("_compat_to_dot")
+    
+    if comp_left == "true":
+        verbose("left true")
+        if comp_right == "true" :
+            return "\"" + left + "\"  -> \"" + right  + "\" [dir=both] [color=\"darkgreen\"]"
+        if comp_right == "false" :
+            verbose("1 dslkjsljdflskdjfljdf")
+            res = "\"" + left + "\" -> \"" + right + "\"  [color=\"black\"] "
+            verbose(left + "    " + right)
+            verbose("dot:      " + res)
+            verbose("markdown: " + _compat_to_markdown(None, comp_left, None, comp_right))
+            return res
+            
+        if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
+            res = "\"" + right + "\" -> \"" + left + "\"  [color=\"black\"]"
+            res += "\n\"" + left + "\" -> \"" + right + "\"  [color=\"gray\", style=\"dotted\"] \n "
+            return res
+    elif comp_left == "false":
+        verbose("left false")
+        
+        if comp_right == "true" :
+            verbose("left false right true")
+            return "\"" + right + "\"  -> \"" + left  + "\" [color=\"black\"]"
+        if comp_right == "false" :
             return "\"" + left + "\"\n    \"" + right + "\""
+        if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
+            return "\"" + right + "\" -> \"" + left + "\"  [color=\"gray\", style=\"dotted\"] \n "
+    elif comp_left == "question" or comp_left == "undefined" or comp_left == "depends":
+        verbose("left QUD")
+        # QUD---->
+        if comp_right == "true" :
+            res = "\"" + left + "\" -> \"" + right + "\"  [color=\"black\"]"
+            res += "\n\"" + right + "\" -> \"" + left + "\"  [color=\"gray\", style=\"dotted\"] \n "
+            return res
+        # QUD----|
+        if comp_right == "false" :
+            return "\"" + left + "\" -> \"" + right + "\"  [color=\"gray\", style=\"dotted\"] \n "
+        # QUD----Q|U|D
+        if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
+            res = "\"" + left + "\" -> \"" + right + "\"  [color=\"gray\", style=\"dotted\"]"
+            res += "\n\"" + right + "\" -> \"" + left + "\"  [color=\"gray\", style=\"dotted\"] \n "
+            return res
         
 def output_compat_markdown(compats, verbose):
     l_fmt = "%-20s"
@@ -325,8 +390,8 @@ def output_compat_markdown(compats, verbose):
             inner_license = lic['license']
             comp_left = lic['compatible_left']
             comp_right = lic['compatible_right']
-            compat_text = _compat_to_text(comp_left, comp_right)
-            result += main_license + compat_text + inner_license + "\n\n"
+            compat_text = _compat_to_markdown(main_license, comp_left, inner_license, comp_right)
+            result += main_license + " " + compat_text + " " + inner_license + "\n\n"
 
     print(result)
 
@@ -518,6 +583,7 @@ def main():
             report = Report(project, compatibility)
 
             print(json.dumps(report.report()))
+            exit(0)
 
             if report.report() == None:
                 exit(20)

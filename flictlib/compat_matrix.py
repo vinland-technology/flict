@@ -27,6 +27,7 @@ class CompatMatrixStatus(Enum):
     TRUE=1,
     FALSE=2
     DEPENDS=3
+    QUESTION=4
 
 def error(msg):
     sys.stderr.write(msg + "\n")
@@ -111,9 +112,12 @@ class CompatibilityMatrix:
             return CompatMatrixStatus.TRUE
         elif lc_value == "no":
             return CompatMatrixStatus.FALSE
-        elif lc_value == "Dep.":
+        elif lc_value == "dep.":
             return CompatMatrixStatus.DEPENDS
+        elif lc_value == "?":
+            return CompatMatrixStatus.QUESTION
         else:
+            error("compat sign: " + str(lc_value))
             return CompatMatrixStatus.UNDEFINED
         
 
