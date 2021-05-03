@@ -23,6 +23,16 @@ from enum import Enum
 COMBINATION_THRESHOLD=10000
 
 
+
+VERBOSE=False
+
+def verbose(msg):
+    global VERBOSE
+    if VERBOSE:
+        sys.stderr.write(msg)
+        sys.stderr.write("\n")
+        sys.stderr.flush()
+
 def error(msg):
     sys.stderr.write(msg + "\n")
 
@@ -31,6 +41,7 @@ class CompatibilityStatus(Enum):
     TRUE=1,
     FALSE=2
     DEPENDS=3
+    QUESTION=4
     
 class Compatibility:
 
@@ -85,18 +96,24 @@ class Compatibility:
             return "undefined"
         elif status == CompatibilityStatus.DEPENDS:
             return "depends"
+        elif status == CompatibilityStatus.QUESTION:
+            return "question"
     
     def _a_compatible_with_b(self, a, b):
         """
         wrapper to compat_matrix' method, translates to our enum
         """
         compat = self.compat_matrix.a_compatible_with_b(a, b)
+        verbose("ncompat: " + str(compat))
         if compat == CompatMatrixStatus.TRUE:
             return CompatibilityStatus.TRUE
         elif compat == CompatMatrixStatus.FALSE:
             return CompatibilityStatus.FALSE
         elif compat == CompatMatrixStatus.UNDEFINED:
             return CompatibilityStatus.UNDEFINED
+        elif compat == CompatMatrixStatus.QUESTION:
+            verbose(" " + a + " " + b + " ==> QUESTION")
+            return CompatibilityStatus.QUESTION
         elif compat == CompatMatrixStatus.DEPENDS:
             return CompatibilityStatus.DEPENDS
     
@@ -139,8 +156,8 @@ class Compatibility:
                                 reason.add(license + "\" not compatible with \"" + lic + "\".")       
                             elif a_b == CompatibilityStatus.UNDEFINED:
                                 reason.add(license + "\" has undefined compatibility with \"" + lic + "\".")       
-                            elif a_b == CompatibilityStatus.DEPENDS:
-                                reason.add(license + "\" has dependent compatibility with \"" + lic + "\".")
+                            elif a_b == CompatibilityStatus.QUESTION:
+                                reason.add(license + "\" has questioned compatibility with \"" + lic + "\".")
                                 
                     status = len(list(reason))==0
                     #print("  CC: c:" + str((combination)) + " ==> "  +str(status) + "    : " + str(reason))
@@ -238,9 +255,9 @@ class Compatibility:
                 comp_left  = self._a_compatible_with_b(lic_a, lic_b)
                 comp_right = self._a_compatible_with_b(lic_b, lic_a)
 
-                #print("Compatibility check")
-                #print("  compat: " + lic_a + " ? " + lic_b + " => " + str(comp_left))
-                #print("  compat: " + lic_b + " ? " + lic_a + " => " + str(comp_right))
+                verbose("Compatibility check")
+                verbose("  compat: " + lic_a + " ? " + lic_b + " => " + str(comp_left))
+                verbose("  compat: " + lic_b + " ? " + lic_a + " => " + str(comp_right))
                 
                 inner_compat={}
                 inner_compat['license']    = license_b
