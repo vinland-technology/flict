@@ -113,22 +113,40 @@ def update_packages(translations, dependencies):
         updates_deps = update_packages(translations, dep_deps)
     return updates_deps
 
-def read_translations(translations_file):
+def _read_translations(translations_file):
     with open(translations_file) as fp:
         translations_object = json.load(fp)
         translations=translations_object["translations"]
 
         translations_map={}
         for item in translations:
-            #print("item: " + str(item))
-            translations_map[item['license_expression']]=item
+            if item['translation'] != None:
+                translations_map[item['value']]=item
 
         translations_data={}
         translations_data['original']=translations_object
         translations_data['translations_map']=translations_map
 
         return translations_data
-    
+
+
+def read_translations(translations_file):
+    symbols={}
+    with open(translations_file) as fp:
+        translations_object = json.load(fp)
+        translations=translations_object["translations"]
+        for item in translations:
+            print(" let's check...." + str(item), end="")
+            if 'license_expression' in item and 'spdx_id' in item:
+                print(" OK")
+                transl = item['spdx_id']
+                key = item['license_expression']
+                if not transl in symbols:
+                    symbols[transl] = []
+                symbols[transl].append(key)
+            else:
+                print(" *********************** Failed parsing item:  " + str(item))
+    return symbols
 
     
 def read_packages_file(jsonfile, translations):
