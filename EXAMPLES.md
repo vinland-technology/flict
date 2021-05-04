@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2021 Henrik Sandklef <hesa@sandklef.com>
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+
 # Display and/or Simplify license expression
 
 To simplify the expression `MIT and BSD-3-Clause & MIT`, type:
