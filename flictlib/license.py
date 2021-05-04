@@ -103,23 +103,47 @@ class LicenseExpressionList:
 
 class LicenseHandler:
 
-    def __init__(self, translations_file, relicense_file, group_file):
-        self.translations_file = translations_file
-        self.translations = None
+    def __init__(self, translations_files, relicense_file, group_file):
+        self.translations_files = translations_files
         self.relicense_file = relicense_file
         self.relicense_map = None
         self.group_file = group_file
-        self.licensing = Licensing(self.read_symbols(self.translations_file))
+        symbols = self.read_symbols(self.translations_files)
+        self.licensing = Licensing(symbols)
         #print("symbols: " + str(symbols))
         
-    def read_symbols(self, translations_file):
-        translation_data = read_translations(translations_file)
+    def read_symbols(self, translations_files):
         symbols = []
-        for lic_key in translation_data:
-            #print("lic_key:  \"" + str(lic_key) + "\"")
-            lic_aliases = tuple(translation_data[lic_key])
-            symbols.append(LicenseSymbol(key=lic_key, aliases=lic_aliases))
+        symbols_map = {}
+        for translations_file in translations_files.split():
+            #print("reading translation file: " + str(translations_file))
+            translation_data = read_translations(translations_file)
+            for lic_key in translation_data:
+                #print("lic_key:  \"" + str(lic_key) + "\"")
+                #print("  lic_alias:  " + str(translation_data[lic_key] ))
+                if lic_key not in symbols_map:
+                    symbols_map[lic_key] = set()
+                for val in translation_data[lic_key]:
+                    symbols_map[lic_key].add(val)
+                
+                #lic_aliases = tuple(translation_data[lic_key])
+                #symbols.append(LicenseSymbol(key=key, aliases=lic_aliases))
+
+        for key, value in symbols_map.items():
+            #print("Adding to symbols: " + key)
+            #print(" - " + str(value))
+            symbols.append(LicenseSymbol(key=key, aliases=tuple(value)))
+
+        # debugging
+        #print("Symbols")
+        #for sym in symbols:
+            #print(" sym: " + (str(sym.key)))
+            #print("    aliases :  " + (str(sym.aliases)))
+            #l = Licensing([sym])
+            #print("    licensing: " + (str(l)))
             
+        
+        #print("symbols: " + str(symbols))
         return symbols
         
     def translate_and_relicense(self, license_expression):
@@ -145,17 +169,7 @@ class LicenseHandler:
         return license_expression.strip()
 
     def translate(self, license_expression):
-        """If file name passed when creating object, this method will try
-        to open it and make use of it. Otherwise the input is simply
-        returned as output.
-        """
-        #print("translate \"" + license_expression + "\"")
-        if self.translations_file != None and self.translations_file != "":
-            if self.translations == None:
-                self.translations = read_translations(self.translations_file)
-            return str(self.simplify(license_expression))
-        else:
-            return license_expression
+        return str(self.simplify(license_expression))
 
     def simplify(self, license_expression):
         parsed = self.licensing.parse(license_expression)

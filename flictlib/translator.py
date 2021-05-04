@@ -31,7 +31,7 @@ PROGRAM_SEE_ALSO="yoga (yoda's generic aggregator)\n  yocr (yoga's compliance re
 
 DEFAULT_TRANSLATIONS_FILE="translation.json"
 
-VERBOSE=True
+VERBOSE=False
 
 def error(msg):
     sys.stderr.write(msg + "\n")
@@ -136,14 +136,22 @@ def read_translations(translations_file):
         translations_object = json.load(fp)
         translations=translations_object["translations"]
         for item in translations:
-            print(" let's check...." + str(item), end="")
+            #print(" let's check...." + str(item), end="")
             if 'license_expression' in item and 'spdx_id' in item:
-                print(" OK")
-                transl = item['spdx_id']
-                key = item['license_expression']
-                if not transl in symbols:
-                    symbols[transl] = []
-                symbols[transl].append(key)
+                le = item['license_expression'].lower()
+                if "scancode" in le:
+                    verbose(" IGNORING since scancode")
+                    pass
+                elif "gpl" in le or "gnu" in le:
+                    verbose(" IGNORING since gpl...")
+                    pass
+                else:
+                    #print(" OK ")
+                    transl = item['spdx_id']
+                    key = item['license_expression']
+                    if not transl in symbols:
+                        symbols[transl] = []
+                    symbols[transl].append(key)
             else:
                 print(" *********************** Failed parsing item:  " + str(item))
     return symbols
