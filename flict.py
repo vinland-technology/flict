@@ -27,7 +27,7 @@ SCRIPT_DIR=os.path.dirname(os.path.realpath(__file__))
 
 # TODO: replace this with something that makes installation easy
 VAR_DIR = SCRIPT_DIR + "/var/"
-DEFAULT_TRANSLATIONS_FILE = VAR_DIR + "translation.json"
+DEFAULT_TRANSLATIONS_FILES = VAR_DIR + "translation-ldbcollector.json" + " " + VAR_DIR + "translation.json"
 DEFAULT_GROUP_FILE        = VAR_DIR + "license-group.json"
 DEFAULT_RELICENSE_FILE    = VAR_DIR + "relicense.json"
 DEFAULT_SCANCODE_FILE     = VAR_DIR + "scancode-licenses.json"
@@ -157,11 +157,12 @@ def parse():
                         help='Check all supported licenes when trying to find an outbound license',
                         default=False)
 
-    parser.add_argument('-tf', '--translations-file',
+    parser.add_argument('-tf', '--translations-files',
                         type=str,
-                        dest='translations_file',
-                        help='' + DEFAULT_TRANSLATIONS_FILE,
-                        default=DEFAULT_TRANSLATIONS_FILE)
+                        nargs='+',
+                        dest='translations_files',
+                        help='' + DEFAULT_TRANSLATIONS_FILES,
+                        default=DEFAULT_TRANSLATIONS_FILES)
 
     parser.add_argument('-gf', '--group-file',
                         type=str,
@@ -508,7 +509,7 @@ def main():
     args = parse()
     setup(args)
 
-    license_handler = LicenseHandler(args.translations_file, args.relicense_file, "")
+    license_handler = LicenseHandler(args.translations_files, args.relicense_file, "")
     compatibility = Compatibility(args.matrix_file, args.scancode_file, args.license_group_file, args.extended_licenses)        
 
     if args.licenses:

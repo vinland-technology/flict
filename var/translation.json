@@ -19,10 +19,6 @@
             "spdx_id": "Apache-2.0"
         },
         {
-            "license_expression": "BSD",
-            "spdx_id": "BSD-3-Clause"
-        },
-        {
             "license_expression": "mit",
             "spdx_id": "MIT"
         },
