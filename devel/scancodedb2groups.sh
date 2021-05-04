@@ -1,6 +1,14 @@
 #!/bin/bash
 # yes bash ;)
 
+###################################################################
+#
+# SPDX-FileCopyrightText: 2021 Henrik Sandklef
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+###################################################################
+
 SCANCODE_DB_URL="https://scancode-licensedb.aboutcode.org/"
 SCANCODE_DB_HTML=/tmp/${USER}-flict-scancodedb.html
 
