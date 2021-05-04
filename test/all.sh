@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Henrik Sandklef
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 source $(dirname ${BASH_SOURCE[0]}/)/cli/common-funs
 if [ $? -ne 0 ];
 then
