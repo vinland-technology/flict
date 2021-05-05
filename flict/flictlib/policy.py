@@ -10,16 +10,14 @@
 #
 ###################################################################
 
+import argparse
+import datetime
+import getpass
 import json
 import os
-import sys
 import re
+import sys
 from argparse import RawTextHelpFormatter
-import argparse
-import getpass
-import datetime
-
-
 
 VERBOSE=False
 
