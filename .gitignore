@@ -12,3 +12,9 @@ __pycache__
 *.html
 *.png
 
+dist
+build
+flict.egg-info
+
+test/all.log
+.pytest_cache
