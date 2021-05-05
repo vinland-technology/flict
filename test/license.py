@@ -14,14 +14,14 @@ import argparse
 TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Add to PYTHON_PATH
-sys.path.append(TEST_DIR)
+sys.path.insert(0, TEST_DIR)
 
-import flictlib.license
+import flict.flictlib.license
 from   flictlib.license import LicenseHandler
 from   flictlib.license import ManagedLicenseExpression
 from   flictlib.license import interim_license_expression_list_to_string
 from   flictlib.license import license_expression_set_list_to_string
-import flictlib.relicense 
+import flict.flictlib.relicense 
 
 
 license_handler = None

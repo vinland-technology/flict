@@ -7,16 +7,16 @@
 from argparse import RawTextHelpFormatter
 import argparse
 
-import flictlib.license
-from flictlib.license import LicenseHandler
-from flictlib.license import ManagedLicenseExpression
-from flictlib.license import license_to_string_long
-import flictlib.relicense 
-from flictlib.project import Project
-from flictlib.report import Report
-from flictlib.policy import Policy
-from flictlib.compatibility import Compatibility
-from flictlib.compat_matrix import CompatibilityMatrix
+import flict.flictlib.license
+from flict.flictlib.license import LicenseHandler
+from flict.flictlib.license import ManagedLicenseExpression
+from flict.flictlib.license import license_to_string_long
+import flict.flictlib.relicense 
+from flict.flictlib.project import Project
+from flict.flictlib.report import Report
+from flict.flictlib.policy import Policy
+from flict.flictlib.compatibility import Compatibility
+from flict.flictlib.compat_matrix import CompatibilityMatrix
 
 import json
 import os
@@ -232,7 +232,7 @@ def parse():
 def setup(args):
 
     if args.debug_license:
-        flictlib.license.enable_debug()
+        flict.flictlib.license.enable_debug()
 
     if not args.enable_scancode:
         args.scancode_file = None

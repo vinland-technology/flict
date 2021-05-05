@@ -14,13 +14,13 @@ import json
 TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Add to PYTHON_PATH
-sys.path.append(TEST_DIR)
+sys.path.insert(0, TEST_DIR)
 
-from flictlib.project import Project
-import flictlib.license
-from flictlib.license import LicenseHandler
-from flictlib.license import ManagedLicenseExpression
-from flictlib.license import license_to_string_long
+from flict.flictlib.project import Project
+import flict.flictlib.license
+from flict.flictlib.license import LicenseHandler
+from flict.flictlib.license import ManagedLicenseExpression
+from flict.flictlib.license import license_to_string_long
 
 
 TRANSLATION_FILE   = TEST_DIR + "/var/translation.json"

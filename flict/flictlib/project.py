@@ -14,12 +14,12 @@
 # File and class to keep information and behavious related to a project
 #
 
+import argparse
 import json
 import os
-import sys
 import re
+import sys
 from argparse import RawTextHelpFormatter
-import argparse
 
 DEFAULT_MATRIX_FILE="osadl-matrix.csv"
 

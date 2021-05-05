@@ -11,10 +11,11 @@
 ###################################################################
 
 import datetime
-import os
 import getpass
-import sys
 import json
+import os
+import sys
+
 
 def timestamp():
     return str(datetime.datetime.now())

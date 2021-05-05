@@ -11,20 +11,20 @@ import unittest
 TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Add to PYTHON_PATH
-sys.path.append(TEST_DIR)
+sys.path.insert(0, TEST_DIR)
 
 
 from argparse import RawTextHelpFormatter
 import argparse
 import json
-from flictlib.project import Project
-from flictlib.project import ExpandedProject
-import flictlib.license
-from flictlib.license import LicenseHandler
-from flictlib.license import ManagedLicenseExpression
-from flictlib.license import interim_license_expression_list_to_string
-from flictlib.license import license_expression_set_list_to_string
-import flictlib.relicense 
+from flict.flictlib.project import Project
+from flict.flictlib.project import ExpandedProject
+import flict.flictlib.license
+from flict.flictlib.license import LicenseHandler
+from flict.flictlib.license import ManagedLicenseExpression
+from flict.flictlib.license import interim_license_expression_list_to_string
+from flict.flictlib.license import license_expression_set_list_to_string
+import flict.flictlib.relicense 
 from license_expression import Licensing, LicenseSymbol
 
 project = None

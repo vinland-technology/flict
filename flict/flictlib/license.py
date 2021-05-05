@@ -11,17 +11,15 @@
 ###################################################################
 
 
-import sys
 import json
+import sys
 
-from license_expression import Licensing, LicenseSymbol
-
-from flictlib.translator import read_translations
-from flictlib.translator import update_license
-
-from flictlib.relicense import read_relicense_file
-from flictlib.relicense import relicense_license
-
+from flict.flictlib.relicense import read_relicense_file
+from flict.flictlib.relicense import relicense_license
+from flict.flictlib.translator import read_translations
+from flict.flictlib.translator import update_license
+from license_expression import LicenseSymbol
+from license_expression import Licensing
 
 #######################################################3
 

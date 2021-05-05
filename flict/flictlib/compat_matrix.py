@@ -10,15 +10,16 @@
 #
 ###################################################################
 
+import argparse
+import csv
 import json
 import os
-import sys
-import csv
 import re
+import sys
 from argparse import RawTextHelpFormatter
-import argparse
-import flictlib.compatibility
 from enum import Enum
+
+import flict.flictlib.compatibility
 
 VERBOSE=False
 
