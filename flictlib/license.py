@@ -171,6 +171,7 @@ class LicenseHandler:
         return license_expression.strip()
 
     def translate(self, license_expression):
+        license_expression = license_expression.replace("&", " and ").replace("|", " or ")
         return str(self.simplify(license_expression))
 
     def simplify(self, license_expression):
