@@ -147,6 +147,8 @@ class LicenseHandler:
         return symbols
         
     def translate_and_relicense(self, license_expression):
+        license_expression = license_expression.replace("&", " and ").replace("|", " or ")
+        
         transl = self.translate(license_expression)
         if transl == None or transl == "":
             transl = license_expression
