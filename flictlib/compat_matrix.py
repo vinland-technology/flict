@@ -107,7 +107,7 @@ class CompatibilityMatrix:
             return CompatMatrixStatus.UNDEFINED
 
         # TODO: not yes, does not imply no ... could be depends
-        lc_value = value_ab.replace("\"","").lower()
+        lc_value = value_ab.replace("\"","").lower().replace(" ", "").replace("\t", "")
         if lc_value == "yes":
             return CompatMatrixStatus.TRUE
         elif lc_value == "no":
@@ -117,7 +117,7 @@ class CompatibilityMatrix:
         elif lc_value == "?":
             return CompatMatrixStatus.QUESTION
         else:
-            error("compat sign: " + str(lc_value))
+            error("compat sign: \"" + str(lc_value) + "\"")
             return CompatMatrixStatus.UNDEFINED
         
 
