@@ -19,7 +19,7 @@ flict can assist you with:
 
 * suggest outbound licenses
 
-* check outbound licenses against a policy (suppied by the user)
+* check outbound licenses against a policy (supplied by the user)
 
 * automatically relicense 
 
