@@ -6,15 +6,8 @@
 #
 ###################################################################
 
-*~
-__pycache__
-*.pdf
-*.html
-*.png
+import os
 
-dist
-build
-flict.egg-info
+VAR_DIR = os.path.dirname(__file__)
 
-test/all.log
-.pytest_cache
+__all__ = []

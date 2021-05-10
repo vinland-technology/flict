@@ -5,16 +5,4 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 ###################################################################
-
-*~
-__pycache__
-*.pdf
-*.html
-*.png
-
-dist
-build
-flict.egg-info
-
-test/all.log
-.pytest_cache
+__all__ = []
