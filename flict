@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# SPDX-FileCopyrightText: 2021 Henrik Sandklef
-#
-# SPDX-License-Identifier: GPL-3.0-or-later
-
-FLICT_PY=${BASH_SOURCE[0]}.py
-python3 ${FLICT_PY} "$@"

@@ -6,15 +6,5 @@
 #
 ###################################################################
 
-*~
-__pycache__
-*.pdf
-*.html
-*.png
 
-dist
-build
-flict.egg-info
-
-test/all.log
-.pytest_cache
+__all__ = []

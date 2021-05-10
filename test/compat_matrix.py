@@ -14,13 +14,14 @@ import argparse
 TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Add to PYTHON_PATH
-sys.path.append(TEST_DIR)
+sys.path.insert(0, TEST_DIR)
 
-from flictlib.compat_matrix import CompatibilityMatrix
+from flict.flictlib.compat_matrix import CompatibilityMatrix
+from flict.var import VAR_DIR
 
 compat_matrix = None
 
-MATRIX_FILE="var/osadl-matrix.csv"
+MATRIX_FILE=os.path.join(VAR_DIR, "osadl-matrix.csv")
 
 def setup():
     global compat_matrix

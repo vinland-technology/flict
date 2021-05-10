@@ -10,14 +10,19 @@
 #
 ###################################################################
 
-from flictlib.report import Report
-from flictlib.compat_matrix import CompatibilityMatrix
-from flictlib.compat_matrix import CompatMatrixStatus
-from flictlib.scancode_licenses import ScancodeLicenses
-from flictlib.license_groups import LicenseGroups
-
 import sys
 from enum import Enum
+
+try:
+    from flict.flictlib.compat_matrix import CompatibilityMatrix
+    from flict.flictlib.compat_matrix import CompatMatrixStatus
+except ImportError:
+    # as compat_matrix imports this module as well, we bail out
+    # on circular depedencies
+    pass
+from flict.flictlib.license_groups import LicenseGroups
+from flict.flictlib.report import Report
+from flict.flictlib.scancode_licenses import ScancodeLicenses
 
 # Bail out if combinations is greater than...
 COMBINATION_THRESHOLD=10000
