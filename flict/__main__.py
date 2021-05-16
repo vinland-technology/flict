@@ -51,7 +51,7 @@ VERBOSE=False
 if COMPLIANCE_UTILS_VERSION == "__COMPLIANCE_UTILS_VERSION__":
     GIT_DIR=os.path.dirname(os.path.realpath(__file__))
     try:
-        res = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], 
+        res = subprocess.check_output(["git", "describe", "--dirty", "--always"], 
                                       cwd=GIT_DIR, stderr=subprocess.DEVNULL,
                                       universal_newlines=True)
         COMPLIANCE_UTILS_VERSION=res.strip()
