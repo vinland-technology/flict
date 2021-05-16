@@ -16,5 +16,7 @@ dist
 build
 flict.egg-info
 
-test/all.log
+tests/all.log
 .pytest_cache
+.mypy_cache
+.coverage
