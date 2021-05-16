@@ -50,11 +50,13 @@ DATE_FMT='%Y-%m-%d'
 VERBOSE=False
 if COMPLIANCE_UTILS_VERSION == "__COMPLIANCE_UTILS_VERSION__":
     GIT_DIR=os.path.dirname(os.path.realpath(__file__))
-    command = "cd " + GIT_DIR + " && git rev-parse --short HEAD"
     try:
-        res = subprocess.check_output(command, shell=True)
-        COMPLIANCE_UTILS_VERSION=str(res.decode("utf-8"))
+        res = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], 
+                                      cwd=GIT_DIR, stderr=subprocess.DEVNULL,
+                                      universal_newlines=True)
+        COMPLIANCE_UTILS_VERSION=res.strip()
     except Exception as e:
+        print(e)
         COMPLIANCE_UTILS_VERSION="unknown"
 
 def error(msg):
