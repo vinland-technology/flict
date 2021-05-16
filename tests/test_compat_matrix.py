@@ -16,32 +16,23 @@ TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Add to PYTHON_PATH
 sys.path.insert(0, TEST_DIR)
 
-from flict.flictlib.compat_matrix import CompatibilityMatrix
+from flict.flictlib.compat_matrix import CompatibilityMatrix, CompatMatrixStatus
 from flict.var import VAR_DIR
-
-compat_matrix = None
 
 MATRIX_FILE=os.path.join(VAR_DIR, "osadl-matrix.csv")
 
-def setup():
-    global compat_matrix
-    global MATRIX_FILE
-    if compat_matrix == None:
-        compat_matrix = CompatibilityMatrix(MATRIX_FILE)
-
 class TestOneWay(unittest.TestCase):
     def test_oneway(self):
-        setup()
-        global compat_matrix
+        _compat_matrix = CompatibilityMatrix(MATRIX_FILE)
         # Check MIT and BSD-3-Clause noth ways - one at a time
-        self.assertTrue(compat_matrix.a_compatible_with_b("MIT", "BSD-3-Clause")==True)
-        self.assertTrue(compat_matrix.a_compatible_with_b("BSD-3-Clause", "MIT")==True)
+        self.assertEquals(_compat_matrix.a_compatible_with_b("MIT", "BSD-3-Clause"), CompatMatrixStatus.TRUE)
+        self.assertEquals(_compat_matrix.a_compatible_with_b("BSD-3-Clause", "MIT"), CompatMatrixStatus.TRUE)
         # BSD is not a license, should give a None
         print("Below test will output (stderr) a message that compatibility could not be checked", file=sys.stderr)
-        self.assertTrue(compat_matrix.a_compatible_with_b("MIT", "BSD")==None)
+        self.assertRaises(Exception, _compat_matrix.a_compatible_with_b, "MIT", "BSD")
         # GPL-2.0 can use BSD-3-Clause - but not the other way around
-        self.assertTrue(compat_matrix.a_compatible_with_b("GPL-2.0-only", "BSD-3-Clause")==True)
-        self.assertTrue(compat_matrix.a_compatible_with_b("BSD-3-Clause", "GPL-2.0-only")==False)
+        self.assertEquals(_compat_matrix.a_compatible_with_b("GPL-2.0-only", "BSD-3-Clause"), CompatMatrixStatus.TRUE)
+        self.assertEquals(_compat_matrix.a_compatible_with_b("BSD-3-Clause", "GPL-2.0-only"), CompatMatrixStatus.FALSE)
         
 if __name__ == '__main__':
     unittest.main()

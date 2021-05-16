@@ -17,10 +17,10 @@ TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, TEST_DIR)
 
 import flict.flictlib.license
-from   flictlib.license import LicenseHandler
-from   flictlib.license import ManagedLicenseExpression
-from   flictlib.license import interim_license_expression_list_to_string
-from   flictlib.license import license_expression_set_list_to_string
+from   flict.flictlib.license import LicenseHandler
+from   flict.flictlib.license import ManagedLicenseExpression
+from   flict.flictlib.license import interim_license_expression_list_to_string
+from   flict.flictlib.license import license_expression_set_list_to_string
 import flict.flictlib.relicense 
 
 
