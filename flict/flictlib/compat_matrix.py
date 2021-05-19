@@ -13,6 +13,7 @@
 import argparse
 import csv
 import json
+from flict.flictlib import logger
 import os
 import re
 import sys
@@ -21,30 +22,12 @@ from enum import Enum
 
 import flict.flictlib.compatibility
 
-VERBOSE=False
-
 class CompatMatrixStatus(Enum):
     UNDEFINED=0
     TRUE=1,
     FALSE=2
     DEPENDS=3
     QUESTION=4
-
-def error(msg):
-    sys.stderr.write(msg + "\n")
-
-def verbose(msg):
-    global VERBOSE
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.write("\n")
-        sys.stderr.flush()
-
-def verbosen(msg):
-    global VERBOSE
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.flush()
 
 class CompatibilityMatrix:
     def __init__(self, matrix_file):
@@ -64,7 +47,7 @@ class CompatibilityMatrix:
             for row in csv_reader:
                 #print("ROW: " + str(row))
                 if line_count == 0:
-                    verbose(str(row) + " cols: " + str(len(row)))
+                    logger.main_logger.debug(str(row) + " cols: " + str(len(row)))
                     col_count = 0
                     for col in row:
                         indices_map[col]=col_count
@@ -75,15 +58,15 @@ class CompatibilityMatrix:
                     for col in row:
                         license_row_data.append(col)
                     if row[0] != license_row_data[0]:
-                        error("Could not read matrix file (" + matrix_file + ")")
+                        logger.main_logger.error("Could not read matrix file (" + self.matrix_file + ")")
                         return None
                     license_data.append(license_row_data)
                 line_count += 1
         self.matrix_map['license_indices']=indices_map
         self.matrix_map['license_data']=license_data
-        #verbose("indices:  " + str(self.matrix_map['license_indices']))
-        #verbose("MIT:      " + str(self.matrix_map['license_indices']['MIT']))
-        #verbose("data:     " + str(self.matrix_map['license_data']))
+        #logger.main_logger.debug("indices:  " + str(self.matrix_map['license_indices']))
+        #logger.main_logger.debug("MIT:      " + str(self.matrix_map['license_indices']['MIT']))
+        #logger.main_logger.debug("data:     " + str(self.matrix_map['license_data']))
 
     def supported_licenses(self):
         filtered = list(self.matrix_map['license_indices'])
@@ -104,7 +87,7 @@ class CompatibilityMatrix:
         #print("\n\n****Check: " + license_a + " against " + license_b+ "\n\n")
         value_ab = self._a_compatible_with_b(license_a, license_b)
         if value_ab == None:
-            error("Could not check compatibility between \"" + str(license_a) + "\" and \"" + str(license_b) + "\"")
+            logger.main_logger.error("Could not check compatibility between \"" + str(license_a) + "\" and \"" + str(license_b) + "\"")
             return CompatMatrixStatus.UNDEFINED
 
         # TODO: not yes, does not imply no ... could be depends
@@ -118,7 +101,7 @@ class CompatibilityMatrix:
         elif lc_value == "?":
             return CompatMatrixStatus.QUESTION
         else:
-            error("compat sign: \"" + str(lc_value) + "\"")
+            logger.main_logger.error("compat sign: \"" + str(lc_value) + "\"")
             return CompatMatrixStatus.UNDEFINED
         
 
@@ -127,11 +110,11 @@ class CompatibilityMatrix:
 
         if not license_a in indices:
             msg = license_a + " is not a supported license."
-            error(msg)
+            logger.main_logger.error(msg)
             raise Exception(msg)
         if not license_b in indices:
             msg = license_b + " is not a supported license."
-            error(msg)
+            logger.main_logger.error(msg)
             raise Exception(msg)
 
         index_a = indices[license_a]
@@ -148,7 +131,7 @@ class CompatibilityMatrix:
                 value = "Yes"
             return value
         except Exception as e:
-            print("Exception when check compatibility: "  + str(e))
+            logger.main_logger.exception(msg="Exception when check compatibility: ", exc_info=e)
             print(" " + license_a + " index: " + str(index_a))
             print(" " + license_b + " index: " + str(index_b))
             return None

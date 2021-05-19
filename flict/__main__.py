@@ -17,10 +17,10 @@ from flict.flictlib.report import Report
 from flict.flictlib.policy import Policy
 from flict.flictlib.compatibility import Compatibility
 from flict.flictlib.compat_matrix import CompatibilityMatrix
+from flict.flictlib import logger
 
 import json
 import os
-import sys
 import subprocess
 
 SCRIPT_DIR=os.path.dirname(os.path.realpath(__file__))
@@ -47,7 +47,6 @@ DEFAULT_OUTPUT_FORMAT="JSON"
 
 DATE_FMT='%Y-%m-%d'
 
-VERBOSE=False
 if COMPLIANCE_UTILS_VERSION == "__COMPLIANCE_UTILS_VERSION__":
     GIT_DIR=os.path.dirname(os.path.realpath(__file__))
     try:
@@ -59,15 +58,6 @@ if COMPLIANCE_UTILS_VERSION == "__COMPLIANCE_UTILS_VERSION__":
         print(e)
         COMPLIANCE_UTILS_VERSION="unknown"
 
-def error(msg):
-    sys.stderr.write(msg + "\n")
-
-def verbose(msg):
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.write("\n")
-        sys.stderr.flush()
-        
 
 def parse():
 
@@ -224,21 +214,11 @@ def parse():
 
     if args.no_relicense:
         args.relicense_file = ""
-    
-    global VERBOSE
-    VERBOSE=args.verbose
-
-
-    return args
-
-def setup(args):
-
-    if args.debug_license:
-        flict.flictlib.license.enable_debug()
 
     if not args.enable_scancode:
         args.scancode_file = None
 
+    return args
 
 def _check_compatibilities(matrix_file, licenses, verbose=True):
         l_fmt = "%-20s"
@@ -283,9 +263,9 @@ def output_license_list(license_list, output_format):
     if output_format.lower() == "json":
         print(json.dumps(license_list))
     elif output_format.lower() == "markdown":
-        print("MARKDOWN COMING SOON: " + str(license_list))
+        logger.main_logger.error("MARKDOWN COMING SOON: " + str(license_list))
     else:
-        print("Error, unsupported format: \"" + output_format + "\"")
+        logger.main_logger.error("Error, unsupported format: \"" + output_format + "\"")
         exit(1)
     
 def output_compat(compats, output_format, verbose=False):
@@ -296,7 +276,7 @@ def output_compat(compats, output_format, verbose=False):
     elif output_format.lower() == "dot":
         output_compat_dot(compats, verbose)
     else:
-        print("Error, unsupported format: \"" + output_format + "\"")
+        logger.main_logger.error("Error, unsupported format: \"" + output_format + "\"")
         exit(1)
         
 def output_compat_json(compats, verbose):
@@ -329,18 +309,18 @@ def _compat_to_markdown(left, comp_left, right, comp_right):
     return _compat_to_fmt(comp_left, comp_right, "markdown")
 
 def _compat_to_dot(left, comp_left, right, comp_right):
-    verbose("_compat_to_dot")
+    logger.main_logger.debug("_compat_to_dot")
     
     if comp_left == "true":
-        verbose("left true")
+        logger.main_logger.debug("left true")
         if comp_right == "true" :
             return "\"" + left + "\"  -> \"" + right  + "\" [dir=both] [color=\"darkgreen\"]"
         if comp_right == "false" :
-            verbose("1 dslkjsljdflskdjfljdf")
+            logger.main_logger.debug("1 dslkjsljdflskdjfljdf")
             res = "\"" + left + "\" -> \"" + right + "\"  [color=\"black\"] "
-            verbose(left + "    " + right)
-            verbose("dot:      " + res)
-            verbose("markdown: " + _compat_to_markdown(None, comp_left, None, comp_right))
+            logger.main_logger.debug(left + "    " + right)
+            logger.main_logger.debug("dot:      " + res)
+            logger.main_logger.debug("markdown: " + _compat_to_markdown(None, comp_left, None, comp_right))
             return res
             
         if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
@@ -348,17 +328,17 @@ def _compat_to_dot(left, comp_left, right, comp_right):
             res += "\n\"" + left + "\" -> \"" + right + "\"  [color=\"gray\", style=\"dotted\"] \n "
             return res
     elif comp_left == "false":
-        verbose("left false")
+        logger.main_logger.debug("left false")
         
         if comp_right == "true" :
-            verbose("left false right true")
+            logger.main_logger.debug("left false right true")
             return "\"" + right + "\"  -> \"" + left  + "\" [color=\"black\"]"
         if comp_right == "false" :
             return "\"" + left + "\"\n    \"" + right + "\""
         if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
             return "\"" + right + "\" -> \"" + left + "\"  [color=\"gray\", style=\"dotted\"] \n "
     elif comp_left == "question" or comp_left == "undefined" or comp_left == "depends":
-        verbose("left QUD")
+        logger.main_logger.debug("left QUD")
         # QUD---->
         if comp_right == "true" :
             res = "\"" + left + "\" -> \"" + right + "\"  [color=\"black\"]"
@@ -508,7 +488,7 @@ def output_license_combinations(project, output_format):
 
 def main():
     args = parse()
-    setup(args)
+    logger.setup(args)
 
     license_handler = LicenseHandler(args.translations_file, args.relicense_file, "")
     compatibility = Compatibility(args.matrix_file, args.scancode_file, args.license_group_file, args.extended_licenses)        
@@ -550,7 +530,7 @@ def main():
             
     elif args.compliance_report_file:
         if args.policy_file == None:
-            error("Missing policy file.... bailing out")
+            logger.main_logger.error("Missing policy file.... bailing out")
             exit(23)
         policy = Policy(args.policy_file)
         report = read_compliance_report(args.compliance_report_file)
@@ -569,7 +549,7 @@ def main():
     else:
         project = Project(args.project_file, license_handler)
         if project == None:
-            error("Could not read project file \"" + args.project_file + "\"")
+            logger.main_logger.error("Could not read project file \"" + args.project_file + "\"")
             exit(4)
             
         if args.list_project_licenses:

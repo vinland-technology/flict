@@ -18,27 +18,9 @@
 
 
 import json
+from flict.flictlib import logger
 import os
 import sys
-
-VERBOSE=False
-
-
-def error(msg):
-    sys.stderr.write(msg + "\n")
-
-def verbose(msg):
-    global VERBOSE
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.write("\n")
-        sys.stderr.flush()
-
-def verbosen(msg):
-    global VERBOSE
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.flush()
 
 class ScancodeLicenses:
     def __init__(self, scancode_file):

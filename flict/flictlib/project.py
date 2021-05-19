@@ -16,30 +16,13 @@
 
 import argparse
 import json
+from flict.flictlib import logger
 import os
 import re
 import sys
 from argparse import RawTextHelpFormatter
 
 DEFAULT_MATRIX_FILE="osadl-matrix.csv"
-
-VERBOSE=False
-
-def error(msg):
-    sys.stderr.write(msg + "\n")
-
-def verbose(msg):
-    global VERBOSE
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.write("\n")
-        sys.stderr.flush()
-
-def verbosen(msg):
-    global VERBOSE
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.flush()
 
 class Project:
     """Project class
@@ -125,7 +108,7 @@ class Project:
         returns the list of dependencies (as the name suggests)
         """
         dep_list=[]
-        #verbose(" * adding: " + dep['name'])
+        #logger.main_logger.debug(" * adding: " + dep['name'])
         me={}
         #print("dep: " +str(dep))
         me['name']=dep['name']
@@ -140,7 +123,7 @@ class Project:
         if 'dependencies' in dep:
             for d in dep['dependencies']:
                 dep_list = dep_list + self._dependency_list(d)
-                #verbose(" * dep list: " + str(dep_list))
+                #logger.main_logger.debug(" * dep list: " + str(dep_list))
         return dep_list
 
     def dependencies_pile_map(self):
@@ -273,10 +256,10 @@ class Project:
             proj['expanded_license']=exp_lic.to_json()
             #print("ADDING: " + str(proj['expanded_license'].set_list) + " type: " + str(type(exp_lic)))
 
-        verbose("piles: " +str(dep_pile))
+        logger.main_logger.debug("piles: " +str(dep_pile))
         
         #combinations = self.projects_combinations(self.license_handler, dep_pile, True)
-        #verbose("combinations: " +str(combinations))
+        #logger.main_logger.debug("combinations: " +str(combinations))
         #return combinations
 
     def expand_projects(self):

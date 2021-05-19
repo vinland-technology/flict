@@ -23,23 +23,10 @@ except ImportError:
 from flict.flictlib.license_groups import LicenseGroups
 from flict.flictlib.report import Report
 from flict.flictlib.scancode_licenses import ScancodeLicenses
+from flict.flictlib import logger
 
 # Bail out if combinations is greater than...
 COMBINATION_THRESHOLD=10000
-
-
-
-VERBOSE=False
-
-def verbose(msg):
-    global VERBOSE
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.write("\n")
-        sys.stderr.flush()
-
-def error(msg):
-    sys.stderr.write(msg + "\n")
 
 class CompatibilityStatus(Enum):
     UNDEFINED=0
@@ -109,7 +96,7 @@ class Compatibility:
         wrapper to compat_matrix' method, translates to our enum
         """
         compat = self.compat_matrix.a_compatible_with_b(a, b)
-        verbose("ncompat: " + str(compat))
+        logger.main_logger.debug("ncompat: " + str(compat))
         if compat == CompatMatrixStatus.TRUE:
             return CompatibilityStatus.TRUE
         elif compat == CompatMatrixStatus.FALSE:
@@ -117,7 +104,7 @@ class Compatibility:
         elif compat == CompatMatrixStatus.UNDEFINED:
             return CompatibilityStatus.UNDEFINED
         elif compat == CompatMatrixStatus.QUESTION:
-            verbose(" " + a + " " + b + " ==> QUESTION")
+            logger.main_logger.debug(" " + a + " " + b + " ==> QUESTION")
             return CompatibilityStatus.QUESTION
         elif compat == CompatMatrixStatus.DEPENDS:
             return CompatibilityStatus.DEPENDS
@@ -206,11 +193,11 @@ class Compatibility:
         if combinations < COMBINATION_THRESHOLD:
             return self.check_project_pile(project)
         else:
-            error("***ERROR*** maximum amount of combinations reached")
-            error("Will use coming method to check compatibility")
-            error(" * current number of combinations: " + str(combinations))
-            error(" * maximum number of combinations: " + str(COMBINATION_THRESHOLD))
-            error(" * coming method has \"complexity\": 2^ " + str(str(project.license_piled_license_check()).count(" OR")+1).strip())
+            logger.main_logger.error("***ERROR*** maximum amount of combinations reached")
+            logger.main_logger.error("Will use coming method to check compatibility")
+            logger.main_logger.error(" * current number of combinations: " + str(combinations))
+            logger.main_logger.error(" * maximum number of combinations: " + str(COMBINATION_THRESHOLD))
+            logger.main_logger.error(" * coming method has \"complexity\": 2^ " + str(str(project.license_piled_license_check()).count(" OR")+1).strip())
             self.valid = False
             # All licenses in compat object
             # TODO: do we need this?
@@ -260,9 +247,9 @@ class Compatibility:
                 comp_left  = self._a_compatible_with_b(lic_a, lic_b)
                 comp_right = self._a_compatible_with_b(lic_b, lic_a)
 
-                verbose("Compatibility check")
-                verbose("  compat: " + lic_a + " ? " + lic_b + " => " + str(comp_left))
-                verbose("  compat: " + lic_b + " ? " + lic_a + " => " + str(comp_right))
+                logger.main_logger.debug("Compatibility check")
+                logger.main_logger.debug("  compat: " + lic_a + " ? " + lic_b + " => " + str(comp_left))
+                logger.main_logger.debug("  compat: " + lic_b + " ? " + lic_a + " => " + str(comp_right))
                 
                 inner_compat={}
                 inner_compat['license']    = license_b

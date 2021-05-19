@@ -12,6 +12,8 @@
 
 import argparse
 import json
+from flict.flictlib import logger
+from flict.flictlib.translator import read_translations, read_packages_file
 import os
 import re
 import sys
@@ -30,17 +32,6 @@ PROGRAM_AUTHOR="Henrik Sandklef"
 PROGRAM_SEE_ALSO="yoga (yoda's generic aggregator)\n  yocr (yoga's compliance reporter)\n  flict (FOSS License Compatibility Tool)"
 
 DEFAULT_RELICENSE_FILE="relicensing.json"
-
-VERBOSE=False
-
-def error(msg):
-    sys.stderr.write(msg + "\n")
-
-def verbose(msg):
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.write("\n")
-        sys.stderr.flush()
 
 def parse():
 
