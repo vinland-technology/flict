@@ -21,11 +21,12 @@ import flict.flictlib.license
 from flict.flictlib.license import LicenseHandler
 from flict.flictlib.license import ManagedLicenseExpression
 from flict.flictlib.license import license_to_string_long
+from flict.var import VAR_DIR
 
 
-TRANSLATION_FILE   = TEST_DIR + "/var/translation.json"
-RELICENSE_FILE     = TEST_DIR + "/var/relicense.json"
-LICENSE_GROUP_FILE = TEST_DIR + "/var/license-group.json"
+TRANSLATION_FILE   = os.path.join(VAR_DIR, "translation.json")
+RELICENSE_FILE     = os.path.join(VAR_DIR, "relicense.json")
+LICENSE_GROUP_FILE = os.path.join(VAR_DIR, "license-group.json")
 
 PROJECT_FILE_SMALL = TEST_DIR + "/example-data/europe-small.json"
 PROJECT_FILE_BIG   = TEST_DIR + "/example-data/europe.json"
@@ -66,7 +67,8 @@ class Basic(unittest.TestCase):
 
         # Check flattened dep tree (pile) (implicitly tests dependencies_pile)
         exp_map = "[{'name': 'Europe - a flict example', 'license': 'GPL-3.0-only', 'version': '', 'dependencies': [], 'expanded_license': {'expanded': 'GPL-3.0-only', 'grouped': 'GPL-3.0-only', 'simplified': 'GPL-3.0-only', 'set_list': [['GPL-3.0-only']]}}, {'name': 'Sweden', 'license': 'GPL-2.0-or-later or Apache-2.0 or MPL-1.1', 'version': '', 'dependencies': [], 'expanded_license': {'expanded': '( GPL-3.0-only OR GPL-2.0-only )  or Apache-2.0 or MPL-1.1', 'grouped': '( GPL-3.0-only OR GPL-2.0-only )  or Apache-2.0 or MPL-1.1', 'simplified': 'Apache-2.0 OR GPL-2.0-only OR GPL-3.0-only OR MPL-1.1', 'set_list': [['Apache-2.0'], ['GPL-2.0-only'], ['GPL-3.0-only'], ['MPL-1.1']]}}]"
-        self.assertTrue(str(self.project.dependencies_pile_map())==exp_map)
+        self.assertEqual(self.project.dependencies_pile_map(), exp_map, 
+            msg="{} == {}".format(self.project.dependencies_pile_map(), exp_map))
 
         # Check number of license combinations
         exp_combinations = 4 

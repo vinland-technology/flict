@@ -24,7 +24,8 @@ from flict.flictlib.license import LicenseHandler
 from flict.flictlib.license import ManagedLicenseExpression
 from flict.flictlib.license import interim_license_expression_list_to_string
 from flict.flictlib.license import license_expression_set_list_to_string
-import flict.flictlib.relicense 
+import flict.flictlib.relicense
+from flict.var import VAR_DIR
 from license_expression import Licensing, LicenseSymbol
 
 project = None
@@ -40,7 +41,7 @@ def setup():
     global PROJECT_FILE
     global license_handler
     if license_handler == None:
-        license_handler = LicenseHandler("var/translation.json", "var/relicense.json", "")
+        license_handler = LicenseHandler(os.path.join(VAR_DIR, "translation.json"), os.path.join(VAR_DIR, "relicense.json"), "")
     if project == None:
         project = Project(PROJECT_FILE, license_handler)
 

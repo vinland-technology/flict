@@ -11,6 +11,10 @@ requirements = []
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
+requirements_dev = []
+with open('requirements-dev.txt') as f:
+    requirements_dev = f.read().splitlines()
+
 setuptools.setup(
     name="flict",
     version="1.0.0",
@@ -32,9 +36,7 @@ setuptools.setup(
     },
     install_requires=requirements,
     extras_require={
-        'dev': [
-            'twine'
-        ]
+        'dev': requirements_dev
     },
     classifiers=[
         "Development Status :: 4 - Beta",

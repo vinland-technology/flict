@@ -1,1 +1,1 @@
-license-expression>=1.2
+license-expression>=1.2, <3.0
