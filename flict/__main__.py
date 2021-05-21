@@ -55,8 +55,7 @@ if COMPLIANCE_UTILS_VERSION == "__COMPLIANCE_UTILS_VERSION__":
                                       cwd=GIT_DIR, stderr=subprocess.DEVNULL,
                                       universal_newlines=True)
         COMPLIANCE_UTILS_VERSION=res.strip()
-    except Exception as e:
-        print(e)
+    except Exception:
         COMPLIANCE_UTILS_VERSION="unknown"
 
 def error(msg):
