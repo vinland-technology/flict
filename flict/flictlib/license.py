@@ -20,33 +20,13 @@ from flict.flictlib.translator import read_translations
 from flict.flictlib.translator import update_license
 from license_expression import LicenseSymbol
 from license_expression import Licensing
+from flict.flictlib import logger
 
 #######################################################3
 
 #
 # debug and devel variable
 #
-LICENSE_DEBUG_VERBOSE=False
-LICENSE_DEBUG=False
-
-def enable_debug():
-    set_debug(True)
-    
-def disable_debug():
-    set_debug(False)
-
-def set_debug(enabled):
-    global LICENSE_DEBUG
-    LICENSE_DEBUG=enabled
-
-def license_debug(msg):
-    if LICENSE_DEBUG:
-        print(msg, file=sys.stderr)        
-        
-def license_verbose_debug(msg):
-    if LICENSE_DEBUG_VERBOSE:
-        license_expressions_debug(msg)
-
 
 class ManagedLicenseExpression:
     """This class contains all the different transforms of a license
@@ -75,11 +55,11 @@ class ManagedLicenseExpression:
         self.set_list = None
 
     def _debug_license(self, license_expression):
-        license_debug("license expression:                    " + str(self.license_expression))
-        license_debug("translated license expression:         " + str(self.translated))
-        license_debug("expanded license expression:           " + str(self.expanded))
-        license_debug("grouped license expression:            " + str(self.grouped))
-        license_debug("simplified license expression:         " + str(self.simplified))
+        logger.license_logger.info("license expression:                    " + str(self.license_expression))
+        logger.license_logger.info("translated license expression:         " + str(self.translated))
+        logger.license_logger.info("expanded license expression:           " + str(self.expanded))
+        logger.license_logger.info("grouped license expression:            " + str(self.grouped))
+        logger.license_logger.info("simplified license expression:         " + str(self.simplified))
         _debug_interim_license_expression_list(self.interim)
         _debug_license_expression_set_list(self.set_list)
 
@@ -298,12 +278,12 @@ class LicenseHandler:
         if lel.op == "AND":
             prod = 1
             for l in lel.list:
-                prod = prod * _combinations(l)
+                prod = prod * self._combinations(l)
             return prod
         elif lel.op == "OR":
             sum = 0
             for l in lel.list:
-                sum = sum + _combinations(l)
+                sum = sum + self._combinations(l)
             return sum
         else:
             print("ERROR: NO OP")
@@ -327,15 +307,15 @@ class LicenseHandler:
             # single license
             license_set= { interim_license_expression_list }
             expanded_list.append(list(license_set))
-            license_verbose_debug("LEAF, returning " +  str(expanded_list))
-            license_verbose_debug("cop: " + interim_license_expression_list )
+            logger.license_logger.debug("LEAF, returning " +  str(expanded_list))
+            logger.license_logger.debug("cop: " + interim_license_expression_list )
             #print("managed____ \""  + str(expanded_list) + "\"  <---- MIDDLE")
             return expanded_list
 
         current_op = interim_license_expression_list.op;
-        license_verbose_debug("cop: " + current_op )
+        logger.license_logger.debug("cop: " + current_op )
         for lep in interim_license_expression_list.list:
-            license_verbose_debug(" ------ lep ----- " + str(lep))
+            logger.license_logger.debug(" ------ lep ----- " + str(lep))
             if current_op == None:
                 print("ERROR: NO OP")
                 exit(11)
@@ -351,73 +331,71 @@ class LicenseHandler:
         return expanded_list
 
     def _manage_list_item_and(self, license_list, lep):
-        license_verbose_debug(" * Andy" )
+        logger.license_logger.debug(" * Andy" )
         if isinstance(lep, LicenseExpressionList):
             print(" -------------====== Andy ====-----------------" )
             exit(77)
             # TODO : implement below (for lep)
-            print("AND Count 0: " + str(_combinations(lep)))
+            logger.license_logger.debug("AND Count 0: " + str(self._combinations(lep)))
             for inner_lep in lep.list:
-                print("¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ AND Count A: " + str(_combinations(inner_lep)))
+                logger.license_logger.debug("¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ AND Count A: " + str(self._combinations(inner_lep)))
                 set_list = self.interim_license_expression_set_list(inner_lep)
             return None
         else:
             # single license
             if len(license_list) == 0:
-                license_verbose_debug("wooops: " + str(license_list))
-                license_verbose_debug("wooops: " + str(lep))
+                logger.license_logger.debug("wooops: " + str(license_list))
+                logger.license_logger.debug("wooops: " + str(lep))
                 license_list = lep
             else:
-                license_verbose_debug("daisy: " + str(license_list))
-                license_verbose_debug("daisy: " + str(lep))
-                license_verbose_debug(" -------------====== Andy ====----------------- SINGLE: " + str(license_list) )
+                logger.license_logger.debug("daisy: " + str(license_list))
+                logger.license_logger.debug("daisy: " + str(lep))
+                logger.license_logger.debug(" -------------====== Andy ====----------------- SINGLE: " + str(license_list) )
                 new_list=[]
                 for item in license_list:
-                    license_verbose_debug("  item: " + str(item) + " <--- "  + str(lep) )
+                    logger.license_logger.debug("  item: " + str(item) + " <--- "  + str(lep) )
                     for lep_item in lep:
-                        license_verbose_debug("    item: " + str(item) + " <--- "  + str(lep_item) )
+                        logger.license_logger.debug("    item: " + str(item) + " <--- "  + str(lep_item) )
                         new_item =list(set(item + lep_item))
-                        license_verbose_debug("    item: " + str(item)  )
+                        logger.license_logger.debug("    item: " + str(item)  )
                         new_list.append(new_item)
-                    license_verbose_debug("    list: " + str(new_list)  )
+                    logger.license_logger.debug("    list: " + str(new_list)  )
                 license_list = new_list
             return license_list
 
 
     def _manage_list_item_or(self, license_list, lep):
-        license_verbose_debug(" * Orleans: " + (str(lep)))
+        logger.license_logger.debug(" * Orleans: " + (str(lep)))
         if isinstance(lep, LicenseExpressionList):
             # TODO : implement below (for lep)
-            license_verbose_debug(" -------------====== ORLEANS ====----------------- : " + str(lep.license_list) )
+            logger.license_logger.debug(" -------------====== ORLEANS ====----------------- : " + str(lep.license_list) )
             exit(77)
             for inner_lep in lep.license_list:
-                print("        ====----------------- : " + str(inner_lep) )
-                print("OR Count A: " + str(_combinations(inner_lep)))
+                logger.license_logger.debug("        ====----------------- : " + str(inner_lep) )
+                logger.license_logger.debug("OR Count A: " + str(self._combinations(inner_lep)))
                 set_list = self.interim_license_expression_set_list(inner_lep)
-                print("OR Count B: " + str(len(set_list)))
+                logger.license_logger.debug("OR Count B: " + str(len(set_list)))
                 license_list.append(inner_lep)
         else:
             # single license
-            license_verbose_debug("HERE I AM .... \"" + str(lep) + "\"")
+            logger.license_logger.debug("HERE I AM .... \"" + str(lep) + "\"")
             if len(license_list) == 0:
                 new_list=lep
-                license_verbose_debug("topsss: " + str(license_list) + " size: " + str(len(license_list)))
-                license_verbose_debug("topsss: " + str(lep) + " size: " + str(len(lep)))
-                license_verbose_debug("topsss: " + str(new_list) + " size: " + str(len(new_list)))
+                logger.license_logger.debug("topsss: " + str(license_list) + " size: " + str(len(license_list)))
+                logger.license_logger.debug("topsss: " + str(lep) + " size: " + str(len(lep)))
+                logger.license_logger.debug("topsss: " + str(new_list) + " size: " + str(len(new_list)))
             else:
                 new_list = license_list
-                license_verbose_debug("dapsss: " + str(license_list))
-                license_verbose_debug("dappss: " + str(lep))
+                logger.license_logger.debug("dapsss: " + str(license_list))
+                logger.license_logger.debug("dappss: " + str(lep))
                 for lep_item in lep:
-                    license_verbose_debug("    item: " + str(license_list) + " <--- "  + str(lep_item) )
+                    logger.license_logger.debug("    item: " + str(license_list) + " <--- "  + str(lep_item) )
                     new_list.append(lep_item)
 
         return new_list
 
 def _debug_license_expression_set_list(ilel):
-    if not LICENSE_DEBUG:
-        return
-    print("interim license expression set list:  ", license_expression_set_list_to_string(ilel), file=sys.stderr)
+    logger.license_logger.debug("interim license expression set list:  {}".format(license_expression_set_list_to_string(ilel)))
 
 
 def license_to_string_long(license):
@@ -452,11 +430,8 @@ def license_expression_set_list_to_string(set_list):
     return string
 
 def _debug_interim_license_expression_list(lel):
-    if not LICENSE_DEBUG:
-        return
-    #_debug_interim_license_expression_list_indent(lel, "")
-    print("interim license expression list:       ", file=sys.stderr, end="")
-    print(interim_license_expression_list_to_string(lel), file=sys.stderr)
+    logger.license_logger.debug("interim license expression list:       {}".format(
+        interim_license_expression_list_to_string(lel)))
 
 def interim_license_expression_list_to_string(lel):
     if lel.op != None:

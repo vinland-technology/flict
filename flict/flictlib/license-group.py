@@ -19,26 +19,9 @@
 
 
 import json
+from flict.flictlib import logger
 import os
 import sys
-
-VERBOSE=False
-
-def error(msg):
-    sys.stderr.write(msg + "\n")
-
-def verbose(msg):
-    global VERBOSE
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.write("\n")
-        sys.stderr.flush()
-
-def verbosen(msg):
-    global VERBOSE
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.flush()
 
 class LicenseGroups:
     def __init__(self, group_file):
@@ -54,13 +37,13 @@ class LicenseGroups:
 
     def license_group(self, license):
         
-        for group in supported_groups:
+        for group in self.license_groups:
             #print("license: " + str(license))
             #print(" * group:   " + str(group))
             #print("spdx:    " + str(self.license_spdx_map[group]))
             #print("key:     " + str(self.license_key_map[group]))
             if license.lower() in group:
-                print(" - found")
+                logger.main_logger.debug(" - found")
                 for lic_obj in self.license_groups[group]:
                         return group
     
@@ -72,7 +55,7 @@ class LicenseGroups:
     
     def supported_licenses(self):
         supported_list = []
-        for group in supported_groups:
+        for group in self.license_groups:
             supported_list = supported_list + self.supported_licenses_per_group(group) 
         return supported_list
     

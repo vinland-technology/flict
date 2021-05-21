@@ -12,6 +12,7 @@
 
 import argparse
 import json
+from flict.flictlib import logger
 import os
 import re
 import sys
@@ -30,17 +31,6 @@ PROGRAM_AUTHOR="Henrik Sandklef"
 PROGRAM_SEE_ALSO="yoga (yoda's generic aggregator)\n  yocr (yoga's compliance reporter)\n  flict (FOSS License Compatibility Tool)"
 
 DEFAULT_TRANSLATIONS_FILE="translation.json"
-
-VERBOSE=False
-
-def error(msg):
-    sys.stderr.write(msg + "\n")
-
-def verbose(msg):
-    if VERBOSE:
-        sys.stderr.write(msg)
-        sys.stderr.write("\n")
-        sys.stderr.flush()
 
 def parse():
 
@@ -140,10 +130,10 @@ def read_translations(translations_file):
             if 'license_expression' in item and 'spdx_id' in item:
                 le = item['license_expression'].lower()
                 if "scancode" in le:
-                    verbose(" IGNORING since scancode")
+                    logger.main_logger.debug(" IGNORING since scancode")
                     pass
                 elif "gpl" in le or "gnu" in le:
-                    verbose(" IGNORING since gpl...")
+                    logger.main_logger.debug(" IGNORING since gpl...")
                     pass
                 else:
                     #print(" OK ")
