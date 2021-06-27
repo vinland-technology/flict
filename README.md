@@ -45,14 +45,13 @@ flict supports:
 
 * policy framework where you can specify which licenses you want to: allow, avoid or deny
 
-
 # Examples
 
 Check out our [EXAMPLES](EXAMPLES.md)
 
 # Want to join the project
 
-For now, please contact [Henrik Sandkef](https://github.com/hesa)
+
 
 # Extensible and tweakable
 
