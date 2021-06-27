@@ -49,9 +49,9 @@ flict supports:
 
 Check out our [EXAMPLES](EXAMPLES.md)
 
-# Want to join the project
+# Contribute to the project
 
-
+See [CONTRIBUTING](CONTRIBUTING.md)
 
 # Extensible and tweakable
 
