@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2021 Henrik Sandklef
+# SPDX-FileCopyrightText: 2021 Konrad Weihmann
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
