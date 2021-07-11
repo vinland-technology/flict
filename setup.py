@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import setuptools
+from flict.flictlib.flict_config import flict_version
 
 with open("README.md") as i:
     _long_description = i.read()
@@ -10,14 +11,14 @@ with open("README.md") as i:
 requirements = []
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
-
+    
 requirements_dev = []
 with open('requirements-dev.txt') as f:
     requirements_dev = f.read().splitlines()
-
+    
 setuptools.setup(
     name="flict",
-    version="1.0.0",
+    version=flict_version,
     author="Henrik Sanklef",
     author_email="hesa@sandklef.com",
     description="FOSS License Compatibility Tool",
