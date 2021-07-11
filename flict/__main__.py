@@ -17,6 +17,7 @@ from flict.flictlib.report import Report
 from flict.flictlib.policy import Policy
 from flict.flictlib.compatibility import Compatibility
 from flict.flictlib.compat_matrix import CompatibilityMatrix
+from flict.flictlib.flict_config import flict_version
 from flict.flictlib import logger
 
 import json
@@ -35,7 +36,6 @@ DEFAULT_MATRIX_FILE       = VAR_DIR + "osadl-matrix.csv"
 
 PROGRAM_NAME="flict (FOSS License Compatibility Tool)"
 PROGRAM_DESCRIPTION="flict is a Free and Open Source Software tool to verify compatibility between licenses"
-COMPLIANCE_UTILS_VERSION="__COMPLIANCE_UTILS_VERSION__"
 PROGRAM_URL="https://github.com/vinland-technology/flict"
 BUG_URL="https://github.com/vinland-technology/flict/issues"
 PROGRAM_COPYRIGHT="(c) 2021 Henrik Sandklef<hesa@sandklef.com>"
@@ -47,15 +47,6 @@ DEFAULT_OUTPUT_FORMAT="JSON"
 
 DATE_FMT='%Y-%m-%d'
 
-if COMPLIANCE_UTILS_VERSION == "__COMPLIANCE_UTILS_VERSION__":
-    GIT_DIR=os.path.dirname(os.path.realpath(__file__))
-    try:
-        res = subprocess.check_output(["git", "describe", "--dirty", "--always"], 
-                                      cwd=GIT_DIR, stderr=subprocess.DEVNULL,
-                                      universal_newlines=True)
-        COMPLIANCE_UTILS_VERSION=res.strip()
-    except Exception:
-        COMPLIANCE_UTILS_VERSION="unknown"
 
 
 def parse():
@@ -206,7 +197,7 @@ def parse():
 
     parser.add_argument('-V', '--version',
                         action='version',
-                        version=COMPLIANCE_UTILS_VERSION,
+                        version=flict_version,
                         default=False)
 
     args = parser.parse_args()
