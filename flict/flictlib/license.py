@@ -22,6 +22,9 @@ from license_expression import LicenseSymbol
 from license_expression import Licensing
 from flict.flictlib import logger
 
+OR_STRING  = " or "
+AND_STRING = " and "
+
 #######################################################3
 
 #
@@ -125,7 +128,7 @@ class LicenseHandler:
         return symbols
         
     def translate_and_relicense(self, license_expression):
-        license_expression = license_expression.replace("&", " and ").replace("|", " or ")
+        license_expression = license_expression.replace("&", AND_STRING).replace("|", OR_STRING)
         
         transl = self.translate(license_expression)
         if transl == None or transl == "":
@@ -149,7 +152,7 @@ class LicenseHandler:
         return license_expression.strip()
 
     def translate(self, license_expression):
-        license_expression = license_expression.replace("&", " and ").replace("|", " or ")
+        license_expression = license_expression.replace("&", AND_STRING).replace("|", OR_STRING)
         return str(self.simplify(license_expression))
 
     def simplify(self, license_expression):
@@ -157,7 +160,7 @@ class LicenseHandler:
         #parsed = self.licensing._parse_and_simplify(license_expression)
         #print("simplified: " + str(parsed.simplify()))
         #return parsed.simplify()
-        return parsed
+        return parsed.simplify()
 
     def license_expression_list_json(self, license_expression, relicense=True):
         license = self.license_expression_list(license_expression, relicense)
