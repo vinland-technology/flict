@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-FLICT="./flict.py"
+FLICT="flict"
 
 source $(dirname ${BASH_SOURCE[0]}/)/common-funs
 if [ $? -ne 0 ];
@@ -30,4 +30,3 @@ compare_exec     "$FLICT -le 'GPL-2.0-or-later'"     "GPL-2.0-only OR GPL-3.0-on
 compare_exec     "$FLICT -le 'GPL-2.0-or-later and MIT'"     "MIT AND (GPL-2.0-only OR GPL-3.0-only)" 0 "Relicense GPL-2.0-or-later and MIT"
 
 end_test
-
