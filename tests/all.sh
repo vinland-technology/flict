@@ -12,7 +12,7 @@ then
 fi
 
 
-PY_SCRIPTS="test_compat_matrix.py  test_license.py  test_project_license.py  test_project.py"
+PY_SCRIPTS="test_compat_matrix.py  test_license.py  test_project.py"
 SH_SCRIPTS="cli/license-expr.sh"
 LOG_FILE=$(dirname ${BASH_SOURCE[0]}/)/all.log
 
