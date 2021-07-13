@@ -12,8 +12,8 @@ then
 fi
 
 
-PY_SCRIPTS="test/compat_matrix.py  test/license.py  test/project-license.py  test/project.py"
-SH_SCRIPTS="test/cli/license-expr.sh"
+PY_SCRIPTS="test_compat_matrix.py  test_license.py  test_project_license.py  test_project.py"
+SH_SCRIPTS="cli/license-expr.sh"
 LOG_FILE=$(dirname ${BASH_SOURCE[0]}/)/all.log
 
 for ps in $PY_SCRIPTS
