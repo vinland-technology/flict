@@ -19,23 +19,21 @@
 
 
 import json
-from flict.flictlib import logger
-import os
-import sys
+
 
 class LicenseGroups:
     def __init__(self, group_file):
         self.group_file = group_file
-        self.supported_groups = [ "Permissive", "Public Domain", "Copyleft", "Proprietary" ]
+        self.supported_groups = ["Permissive",
+                                 "Public Domain", "Copyleft", "Proprietary"]
 
         self.group_object = None
         with open(group_file) as fp:
             self.group_object = json.load(fp)
             self.license_groups = self.group_object['license_groups']
 
-
     def license_group(self, license):
-        
+
         for group in self.supported_groups:
             #print("license: " + str(license))
             #print(" * group:      " + str(group))
@@ -43,12 +41,12 @@ class LicenseGroups:
             #print("key:     " + str(self.license_key_map[group]))
             if license in self.license_groups[group]:
                 #print(" - found")
-                for lic_obj in self.license_groups[group]:
-                        return group
-    
+                for _ in self.license_groups[group]:
+                    return group
+
     def supported_license_groups(self):
         return self.license_groups
-    
+
     def supported_licenses_per_group(self, group):
         #print("group: " + str(group))
         #print("group: " + str(self.license_groups))
@@ -63,13 +61,12 @@ class LicenseGroups:
             if license in group_list:
                 return group
         return None
-        
+
     def supported_licenses(self):
         supported_list = []
         for group in self.supported_groups:
-            supported_list = supported_list + self.supported_licenses_per_group(group) 
+            supported_list = supported_list + self.supported_licenses_per_group(group)
         return supported_list
-    
+
     def meta_data(self):
         return self.scancode_object['meta_data']
-    

@@ -10,19 +10,16 @@
 #
 ###################################################################
 
-import argparse
 import datetime
 import getpass
 import json
-from flict.flictlib import logger
 import os
-import re
-import sys
-from argparse import RawTextHelpFormatter
+
 
 def timestamp():
     return str(datetime.datetime.now())
-        
+
+
 class Policy:
     def __init__(self, policy_file):
         self.policy_report = {}
@@ -32,21 +29,19 @@ class Policy:
             self.policy_report['policy'] = json.load(fp)
 
     def report(self, report):
-        if self.policy_report['policy'] == None:
+        if self.policy_report['policy'] is None:
             return None
-        
+
         outbounds = report['licensing']['outbound_suggestions']
         allowed = self.policy_report['policy']['policy']['allowlist']
         avoid = self.policy_report['policy']['policy']['avoidlist']
         denied = self.policy_report['policy']['policy']['denylist']
 
-        
-        
         #nr_outbounds = len(outbounds)
-        
+
         allowed_outbound_suggestions = set()
-        avoid_outbound_suggestions =  set()
-        denied_outbound_suggestions =  set()
+        avoid_outbound_suggestions = set()
+        denied_outbound_suggestions = set()
 
         for out_lic in outbounds:
             if out_lic in allowed:
@@ -69,8 +64,7 @@ class Policy:
             policy_outbounds['policy_result'] = 1
         else:
             policy_outbounds['policy_result'] = 2
-            
-        
+
         self.policy_report['policy_outbounds'] = policy_outbounds
 
         project = report['project']
@@ -80,7 +74,7 @@ class Policy:
         #print(" project :     " + str(project))
         #print(" project def : " + str(project['project_definition']))
 
-        project_definition=project['project_definition']
+        project_definition = project['project_definition']
         project_info['name'] = project_definition['name']
         #project_info['top_project_license'] = project_definition['top_project_license']
         project_info['license'] = project_definition['license']
@@ -91,11 +85,10 @@ class Policy:
 
         self.policy_report['project'] = project_info
 
-        
         return self.policy_report
 
     def meta(self):
-        uname=os.uname()
+        uname = os.uname()
         return {
             'os': uname.sysname,
             'osRelease': uname.release,
@@ -103,6 +96,5 @@ class Policy:
             'machine': uname.machine,
             'host': uname.nodename,
             'user': getpass.getuser(),
-            'start': timestamp()
+            'start': timestamp(),
         }
-    
