@@ -20,13 +20,13 @@
 
 import json
 from flict.flictlib import logger
-import os
-import sys
+
 
 class LicenseGroups:
     def __init__(self, group_file):
         self.group_file = group_file
-        self.license_groups = [ "Permissive", "Public Domain", "Copyleft", "Proprietary" ]
+        self.license_groups = ["Permissive",
+                               "Public Domain", "Copyleft", "Proprietary"]
 
         self.group_object = None
         with open(group_file) as fp:
@@ -34,9 +34,8 @@ class LicenseGroups:
             self._groupify()
             self.license_groups = self.scancode_object['license_groups']
 
-
     def license_group(self, license):
-        
+
         for group in self.license_groups:
             #print("license: " + str(license))
             #print(" * group:   " + str(group))
@@ -44,21 +43,21 @@ class LicenseGroups:
             #print("key:     " + str(self.license_key_map[group]))
             if license.lower() in group:
                 logger.main_logger.debug(" - found")
-                for lic_obj in self.license_groups[group]:
-                        return group
-    
+                for _ in self.license_groups[group]:
+                    return group
+
     def supported_license_groups(self):
         return self.license_groups
-    
+
     def supported_licenses_per_group(self, group):
         return self.license_groups[group]['licenses']
-    
+
     def supported_licenses(self):
         supported_list = []
         for group in self.license_groups:
-            supported_list = supported_list + self.supported_licenses_per_group(group) 
+            supported_list = supported_list + \
+                self.supported_licenses_per_group(group)
         return supported_list
-    
+
     def meta_data(self):
         return self.scancode_object['meta_data']
-    

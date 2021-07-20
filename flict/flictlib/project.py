@@ -14,15 +14,11 @@
 # File and class to keep information and behavious related to a project
 #
 
-import argparse
 import json
 from flict.flictlib import logger
-import os
-import re
-import sys
-from argparse import RawTextHelpFormatter
 
-DEFAULT_MATRIX_FILE="osadl-matrix.csv"
+DEFAULT_MATRIX_FILE = "osadl-matrix.csv"
+
 
 class Project:
     """Project class
@@ -30,27 +26,27 @@ class Project:
     Member variables:
     * project - defintion of the project
     * dep_list - the project's dependencies
-    * expanded - whether it has been expanded (see below) or not 
+    * expanded - whether it has been expanded (see below) or not
     * license_handler - the license handler object for use below
     * tot_combinations - when the project has been expanded, this variable contains the number of combinations this project has (can be turned into)
 
     """
 
     def __init__(self, project_file, license_handler, license_expression=None):
-        if license_expression == None:
+        if license_expression is None:
             """
             Reads a project definition from a JSON file.
             expands the licenses (see below)
 
             """
-            self.expanded=False
+            self.expanded = False
             self.dep_list = None
             self.project_file = project_file
             self.read_project_file()
             self.license_handler = license_handler
             self._expand_licenses()
             self.tot_combinations = None
-            #self.expand_projects()
+            # self.expand_projects()
         else:
             """Creates a project definition, with no dependencies, from a license
             expression.
@@ -58,7 +54,7 @@ class Project:
             expands the licenses (see below)
 
             """
-            self.expanded=False
+            self.expanded = False
             self.dep_list = None
             self.project_file = None
             project = {}
@@ -70,10 +66,12 @@ class Project:
             self.license_handler = license_handler
             self._expand_licenses()
             self.tot_combinations = None
-            #self.expand_projects()
+            # self.expand_projects()
 
     def read_project_file(self):
-        """This function reads a project file (JSON) using either the new
+        """This function reads a project file (JSON)
+
+        using either the new
         format ("project") or the old one ("component"), stored in self.project
         If there is a meta section in the project def, this is added under self.meta
         """
@@ -88,8 +86,8 @@ class Project:
             if 'meta' in self.project_object:
                 self.meta = self.project_object['meta']
 
+    # Some nifty methods to hide the storage structure
 
-    # Some nifty methods to hide the storage structure 
     def name(self):
         return self.project['name']
 
@@ -107,17 +105,17 @@ class Project:
 
         returns the list of dependencies (as the name suggests)
         """
-        dep_list=[]
+        dep_list = []
         #logger.main_logger.debug(" * adding: " + dep['name'])
-        me={}
+        me = {}
         #print("dep: " +str(dep))
-        me['name']=dep['name']
-        me['license']=dep['license']
+        me['name'] = dep['name']
+        me['license'] = dep['license']
         if 'version' in dep:
-            me['version']=dep['version']
+            me['version'] = dep['version']
         else:
-            me['version']=""
-        me['dependencies']=[]
+            me['version'] = ""
+        me['dependencies'] = []
         dep_list.append(me)
         #print("me: " + json.dumps(me))
         if 'dependencies' in dep:
@@ -127,46 +125,47 @@ class Project:
         return dep_list
 
     def dependencies_pile_map(self):
-        """Returns the pile ("flattened tree") of a project's dependencies as
-        a map
+        """Returns the pile ("flattened tree")
 
+        of a project's dependencies as a map
         """
         dep_pile = self.dependencies_pile()
-        dep_pile_json=[]
+        dep_pile_json = []
         for d in dep_pile:
-            dep_json=d
-            dep_json['expanded_license']=d['expanded_license']
+            dep_json = d
+            dep_json['expanded_license'] = d['expanded_license']
             dep_pile_json.append(dep_json)
 
         return dep_pile_json
 
     def dependencies_pile(self):
-        """Returns the pile ("flattened tree") of a project's dependencies as
-        a list
+        """Returns the pile ("flattened tree")
+
+        of a project's dependencies as a list
 
         """
-        if self.dep_list == None:
+        if self.dep_list is None:
             self.dep_list = self._dependency_list(self.project)
         return self.dep_list
 
     def license_set(self):
-        """Returns a set of the licenses (implied by set is that this is a
-        uniqe collection of the project's licenses (including its
-        dependencies)
+        """Returns a set of the licenses
+
+        (implied by set is that this is a uniqe collection of the project's licenses (including its dependencies)
         """
-        licenses=set()
+        licenses = set()
         dep_pile = self.dependencies_pile()
         for d in dep_pile:
             #print("\n\ndep_licenses_map:\n" + json.dumps(d))
 
             dep_licenses = d['expanded_license']
-            
+
             for license_list in dep_licenses['set_list']:
                 #print("license_list: " + str(license_list))
                 for _license in license_list:
                     #print("license: " + str(_license))
-                    license = _license.replace("(","").replace(")","")
-                    if license == "AND" or  license == "and" or license == "OR" or  license == "or":
+                    license = _license.replace("(", "").replace(")", "")
+                    if license == "AND" or license == "and" or license == "OR" or license == "or":
                         pass
                     elif license == "":
                         pass
@@ -176,73 +175,77 @@ class Project:
         return licenses
 
     def license_piled_license_check(self):
-        """returns a list of the licenses of the project's dependencies OR
-        together. This expression is simplified (with regards to
-        boolean algebra).
+        """returns a list of the licenses
 
+        of the project's dependencies OR together.
+        This expression is simplified (with regards to boolean algebra).
         """
-        license_handler = self.license_handler 
-        #print("new_license_set...")
+        license_handler = self.license_handler
+        # print("new_license_set...")
         combined_license = ""
         for proj in self.dependencies_pile():
             simplified = proj['expanded_license']['simplified']
             if combined_license == "":
                 combined_license = " ( " + simplified + " ) "
             else:
-                combined_license = combined_license + " and ( " + simplified + " ) "
+                combined_license = combined_license + \
+                    " and ( " + simplified + " ) "
             #print("adding: " + proj['name'])
         #print("new_license_set(): " + str(combined_license))
         simplified = license_handler.simplify(combined_license)
         #print("new_license_set(): " + str(simplified))
         return simplified
-    
+
     def project_combinations(self, license_handler, dep):
-        """returns the number of combinations (number of licenses in list_set)
-        for the dependency given as argument (ignoring the
-        dependencies of this dependency).
+        """returns the number of combinations
+
+        (number of licenses in list_set) for the dependency given as argument
+        (ignoring the dependencies of this dependency).
 
         """
         #proj_license = dep['license']
         managed_expression = dep['expanded_license']
         set_list = managed_expression['set_list']
-        
+
         #print("managed_expression:  " + str(set_list))
         return len(set_list)
 
     # internal only
     def _project_combinations(self, dep):
-        """returns the number of combinations (number of licenses in list_set)
-        for the dependency given as argument (ignoring the
-        dependencies of this dependency).
+        """returns the number of combinations
 
+        (number of licenses in list_set) for the dependency given as argument
+        (ignoring the dependencies of this dependency).
         """
         return self.project_combinations(self.license_handler, dep)
 
     def projects_combinations(self):
-        """returns the number of combinations (number of licenses in list_set)
-        for this projects and its dependencies.
+        """returns the number of combinations
 
+        (number of licenses in list_set) for this projects and its dependencies.
         """
-        license_handler = self.license_handler
         dep_pile = self.dependencies_pile()
-        tot_combinations=1
+        tot_combinations = 1
         for proj in dep_pile:
-            tot_combinations = tot_combinations * self._project_combinations(proj)
+            tot_combinations = tot_combinations * \
+                self._project_combinations(proj)
         self.tot_combinations = tot_combinations
         return tot_combinations
 
     def _obsolete_license_combinations(self):
-        if self.tot_combinations == None:
-            self.tot_combinations = self.projects_combinations(self.license_handler, self.dependencies_pile(), True)
+        if self.tot_combinations is None:
+            self.tot_combinations = self.projects_combinations(
+                self.license_handler, self.dependencies_pile(), True)
         return self.tot_combinations
-    
+
     def __str__(self):
         return self.name()
 
     def _expand_licenses(self):
-        """For each of the project's dependencies, this function adds a list
-        of license expressions (from license_expression_list) to the
-        project.
+        """For each of the project's dependencies
+
+        this function adds a list of license expressions (from license_expression_list)
+        to the project.
 
         This function is reponsible for expanding the licenses of a
         project. See license_expression_list() in license_handler for more information
@@ -252,24 +255,27 @@ class Project:
         dep_pile = self.dependencies_pile()
         for proj in dep_pile:
             #print(" --- : " + str(proj))
-            exp_lic = self.license_handler.license_expression_list(proj['license'], True)
-            proj['expanded_license']=exp_lic.to_json()
+            exp_lic = self.license_handler.license_expression_list(
+                proj['license'], True)
+            proj['expanded_license'] = exp_lic.to_json()
             #print("ADDING: " + str(proj['expanded_license'].set_list) + " type: " + str(type(exp_lic)))
 
-        logger.main_logger.debug("piles: " +str(dep_pile))
-        
+        logger.main_logger.debug("piles: " + str(dep_pile))
+
         #combinations = self.projects_combinations(self.license_handler, dep_pile, True)
         #logger.main_logger.debug("combinations: " +str(combinations))
-        #return combinations
+        # return combinations
 
     def expand_projects(self):
         """
+        Expand projects
+
         From a project pile like this:
         [
           A:[ {a1}, {a2} ]
           B:[ {b1}, {b2} ]
         ]
-        which has (2*2=4) 4 combinations 
+        which has (2*2=4) 4 combinations
         this functions expands the above to:
         [
           A:
@@ -278,7 +284,7 @@ class Project:
             [ {a2} ],
             [ {a2} ]
         ],
-        [ 
+        [
           B
             [ {b1} ],
             [ {b2} ],
@@ -290,35 +296,34 @@ class Project:
         This will in turn be made in to:
 
         [
-           [ { "project": A, "license": a1 } 
-             { "project": B, "license": b1 } 
+           [ { "project": A, "license": a1 }
+             { "project": B, "license": b1 }
            ],
-           [ { "project": A, "license": a1 } 
-             { "project": B, "license": b2 } 
+           [ { "project": A, "license": a1 }
+             { "project": B, "license": b2 }
            ],
-           [ { "project": A, "license": a2 } 
-             { "project": B, "license": b1 } 
+           [ { "project": A, "license": a2 }
+             { "project": B, "license": b1 }
            ],
-           [ { "project": A, "license": a2 } 
-             { "project": B, "license": b2 } 
+           [ { "project": A, "license": a2 }
+             { "project": B, "license": b2 }
            ]
         ]
-
         """
         if self.expanded:
-           return 
-        
+            return
+
         dep_pile = self.dependencies_pile()
         combinations = self.projects_combinations()
-        expanded_projects=[]
+        expanded_projects = []
 
-        left=combinations
+        left = combinations
         for proj in dep_pile:
-            expanded_project=[]
+            expanded_project = []
             for i in range(combinations):
                 nr_licenses = len(proj['expanded_license']['set_list'])
                 divisor = left // nr_licenses
-                index = ( i // divisor) % nr_licenses
+                index = (i // divisor) % nr_licenses
 
                 license = proj['expanded_license']['set_list'][index]
                 name = proj['name']
@@ -327,80 +332,81 @@ class Project:
                 expanded_project.append(exp_project)
                 #print("adding: " + str(exp_project))
                 #print("   to:  " + str(expanded_project))
-            #print("")
+            # print("")
             expanded_projects.append(expanded_project)
             # update for next round
             left = left // nr_licenses
 
-        #print(self._expanded_projects_string(expanded_projects))
+        # print(self._expanded_projects_string(expanded_projects))
 
         #
-        # Second phase, create map 
+        # Second phase, create map
         #
-        self._project_combination_list=[]
+        self._project_combination_list = []
         for i in range(combinations):
-            project_combination=[]
+            project_combination = []
             for j in range(len(expanded_projects)):
-                project={}
-                project['name']=expanded_projects[j][i].name
-                project['license']=expanded_projects[j][i].license
-                #project['license']=list(expanded_projects[j][i].license)
-                project['version']=expanded_projects[j][i].version
+                project = {}
+                project['name'] = expanded_projects[j][i].name
+                project['license'] = expanded_projects[j][i].license
+                # project['license']=list(expanded_projects[j][i].license)
+                project['version'] = expanded_projects[j][i].version
                 project_combination.append(project)
             self._project_combination_list.append(project_combination)
-        #print(self.project_combination_list)
-        self.expanded=True
+        # print(self.project_combination_list)
+        self.expanded = True
 
     def project_combination_list(self):
-        if not self.expanded :
+        if not self.expanded:
             self.expand_projects()
         return self._project_combination_list
-        
+
     def _obsoleted_expanded_projects_string(self, expanded_projects):
-        if not self.expanded :
+        if not self.expanded:
             self.expand_projects()
-        dep_pile = self.dependencies_pile()
         proj_count = len(expanded_projects)
         #print("c: " + str(proj_count))
 
         h_fmt = "%-20s"
-        c_size = 10
 
-        headers="|"
+        headers = "|"
         for i in range(proj_count):
-            headers = headers + h_fmt % (str(expanded_projects[i][0].name[:10]))
+            headers = headers + \
+                h_fmt % (str(expanded_projects[i][0].name[:10]))
             headers = headers + " | "
         headers = headers + "\n|"
-        for i in range(len(headers)-5):
+        for _ in range(len(headers) - 5):
             headers = headers + "-"
         headers = headers + "|"
-        #print(headers)
+        # print(headers)
 
         combinations = len(expanded_projects[0])
-        licenses="|"        
+        licenses = "|"
         for i in range(combinations):
             for j in range(proj_count):
-                license = str(expanded_projects[j][i].license).replace("{","").replace("}","").replace("'","")
+                license = str(expanded_projects[j][i].license).replace(
+                    "{", "").replace("}", "").replace("'", "")
                 licenses = licenses + h_fmt % (license)[:10]
                 #print(h_fmt % (license))
-                licenses = licenses + " | "  
+                licenses = licenses + " | "
             licenses = licenses + "\n|"
-        #print(licenses)
+        # print(licenses)
         return headers + "\n" + licenses
-        
+
+
 class ExpandedProject:
-    """ interim clas"""
     def __init__(self, name, license, version):
         self.name = name
         self.license = license
         self.version = version
 
     def __str__(self):
-        return self.name + " (" + str(self.license) + ")" 
-    
+        return self.name + " (" + str(self.license) + ")"
+
+
 def main():
     global VERBOSE
-    #VERBOSE=True
+    # VERBOSE=True
     project = Project("europe-small.json")
 
     print("name:         " + str(project.name()))
@@ -415,7 +421,6 @@ def main():
     print("dependencies: " + str(project.dependencies()))
     print("license pile: " + str(project.license_pile()))
 
+
 if __name__ == '__main__':
     main()
-    
-    

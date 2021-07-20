@@ -14,14 +14,14 @@ import datetime
 import getpass
 import json
 import os
-import sys
 
 
 def timestamp():
     return str(datetime.datetime.now())
 
+
 class Report:
-    
+
     def __init__(self, project, compatibility):
         self.report_map = {}
         self.project = project
@@ -30,18 +30,19 @@ class Report:
     def report(self):
         self.report_map['meta'] = self.meta()
         self.report_map['project'] = self.project_data()
-        self.report_map['compatibility_report'] = self.compatibility.report(self.project)
-        if self.report_map['compatibility_report'] == None:
+        self.report_map['compatibility_report'] = self.compatibility.report(
+            self.project)
+        if self.report_map['compatibility_report'] is None:
             return None
         self.report_map['licensing'] = self.licensing_data()
         return self.report_map
-        
+
     def project_data(self):
         project_meta = {}
         project_meta['project_file'] = self.project.project_file
         project_meta['project_definition'] = self.project.project
-        project_meta['project_pile']  = self.project.dependencies_pile_map()
-        
+        project_meta['project_pile'] = self.project.dependencies_pile_map()
+
         return project_meta
 
     def licensing_data(self):
@@ -51,9 +52,9 @@ class Report:
         licensing['outbound_suggestions'] = outbounds
 
         return licensing
-        
+
     def meta(self):
-        uname=os.uname()
+        uname = os.uname()
         return {
             'os': uname.sysname,
             'osRelease': uname.release,
@@ -61,8 +62,8 @@ class Report:
             'machine': uname.machine,
             'host': uname.nodename,
             'user': getpass.getuser(),
-            'start': timestamp()
+            'start': timestamp(),
         }
-        
+
     def to_json(self):
         return json.dumps(self.report_map)
