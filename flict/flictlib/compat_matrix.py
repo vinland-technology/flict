@@ -10,60 +10,56 @@
 #
 ###################################################################
 
-import argparse
 import csv
-import json
 from flict.flictlib import logger
-import os
-import re
-import sys
-from argparse import RawTextHelpFormatter
 from enum import Enum
 
-import flict.flictlib.compatibility
 
 class CompatMatrixStatus(Enum):
-    UNDEFINED=0
-    TRUE=1,
-    FALSE=2
-    DEPENDS=3
-    QUESTION=4
+    UNDEFINED = 0
+    TRUE = 1
+    FALSE = 2
+    DEPENDS = 3
+    QUESTION = 4
+
 
 class CompatibilityMatrix:
     def __init__(self, matrix_file):
         self.matrix_file = matrix_file
         self.matrix_map = None
         self.read_matrix_csv()
-    
+
     def read_matrix_csv(self):
-        self.matrix_map={}
-        self.matrix_map['matrix_file']=self.matrix_file
-        indices_map={}
-        license_data=[]
-    
+        self.matrix_map = {}
+        self.matrix_map['matrix_file'] = self.matrix_file
+        indices_map = {}
+        license_data = []
+
         with open(self.matrix_file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
                 #print("ROW: " + str(row))
                 if line_count == 0:
-                    logger.main_logger.debug(str(row) + " cols: " + str(len(row)))
+                    logger.main_logger.debug(
+                        str(row) + " cols: " + str(len(row)))
                     col_count = 0
                     for col in row:
-                        indices_map[col]=col_count
+                        indices_map[col] = col_count
                         col_count += 1
                     license_data.append(row)
                 else:
-                    license_row_data=[]
+                    license_row_data = []
                     for col in row:
                         license_row_data.append(col)
                     if row[0] != license_row_data[0]:
-                        logger.main_logger.error("Could not read matrix file (" + self.matrix_file + ")")
+                        logger.main_logger.error(
+                            "Could not read matrix file (" + self.matrix_file + ")")
                         return None
                     license_data.append(license_row_data)
                 line_count += 1
-        self.matrix_map['license_indices']=indices_map
-        self.matrix_map['license_data']=license_data
+        self.matrix_map['license_indices'] = indices_map
+        self.matrix_map['license_data'] = license_data
         #logger.main_logger.debug("indices:  " + str(self.matrix_map['license_indices']))
         #logger.main_logger.debug("MIT:      " + str(self.matrix_map['license_indices']['MIT']))
         #logger.main_logger.debug("data:     " + str(self.matrix_map['license_data']))
@@ -72,26 +68,30 @@ class CompatibilityMatrix:
         filtered = list(self.matrix_map['license_indices'])
         filtered.pop(0)
         return filtered
-        
+
     def supported_license(self, license):
         if license in self.matrix_map['license_indices']:
             return license
         return None
-        
+
     def compatible_both_ways(self, license_a, license_b):
-        value_ab = self.a_compatible_with_b(license_a, license_b).replace("\"","").lower()
-        value_ba = self.a_compatible_with_b(license_b, license_a).replace("\"","").lower()
+        value_ab = self.a_compatible_with_b(
+            license_a, license_b).replace("\"", "").lower()
+        value_ba = self.a_compatible_with_b(
+            license_b, license_a).replace("\"", "").lower()
         return value_ab == "yes" and value_ba == "yes"
 
     def a_compatible_with_b(self, license_a, license_b):
         #print("\n\n****Check: " + license_a + " against " + license_b+ "\n\n")
         value_ab = self._a_compatible_with_b(license_a, license_b)
-        if value_ab == None:
-            logger.main_logger.error("Could not check compatibility between \"" + str(license_a) + "\" and \"" + str(license_b) + "\"")
+        if value_ab is None:
+            logger.main_logger.error("Could not check compatibility between \"" + str(
+                license_a) + "\" and \"" + str(license_b) + "\"")
             return CompatMatrixStatus.UNDEFINED
 
         # TODO: not yes, does not imply no ... could be depends
-        lc_value = value_ab.replace("\"","").lower().replace(" ", "").replace("\t", "")
+        lc_value = value_ab.replace("\"", "").lower().replace(
+            " ", "").replace("\t", "")
         if lc_value == "yes":
             return CompatMatrixStatus.TRUE
         elif lc_value == "no":
@@ -103,16 +103,15 @@ class CompatibilityMatrix:
         else:
             logger.main_logger.error("compat sign: \"" + str(lc_value) + "\"")
             return CompatMatrixStatus.UNDEFINED
-        
 
     def _a_compatible_with_b(self, license_a, license_b):
         indices = self.matrix_map['license_indices']
 
-        if not license_a in indices:
+        if license_a not in indices:
             msg = license_a + " is not a supported license."
             logger.main_logger.error(msg)
             raise Exception(msg)
-        if not license_b in indices:
+        if license_b not in indices:
             msg = license_b + " is not a supported license."
             logger.main_logger.error(msg)
             raise Exception(msg)
@@ -125,34 +124,34 @@ class CompatibilityMatrix:
             #print("\"" + str(self.matrix_map['license_data'][index_a][index_b]) + "\"", end="")
             #print(" | rev : " + str(self.matrix_map['license_data'][index_a][0]), end="")
             #print(" , " + str(self.matrix_map['license_data'][index_b][0]))
-        
+
             value = self.matrix_map['license_data'][index_a][index_b]
             if value == "":
                 value = "Yes"
             return value
         except Exception as e:
-            logger.main_logger.exception(msg="Exception when check compatibility: ", exc_info=e)
+            logger.main_logger.exception(
+                msg="Exception when check compatibility: ", exc_info=e)
             print(" " + license_a + " index: " + str(index_a))
             print(" " + license_b + " index: " + str(index_b))
             return None
 
-    
-    
+
 #
 # TODO: move to test file in test dir
 #
 def test_a_compatible_with_b(compat_matrix, a, b):
     value = compat_matrix.a_compatible_with_b(a, b)
-    #print(a + " compatible with " + b + ": " + str(value))
+    logger.debug(a + " compatible with " + b + ": " + str(value))
     value = compat_matrix.a_compatible_with_b(b, a)
-    #print(b + " compatible with " + a + ": " + str(value))
+    logger.debug(b + " compatible with " + a + ": " + str(value))
     value = compat_matrix.compatible(b, a)
-    #print(b + " compatible both " + a + ": " + str(value))
-    
+    logger.debug(b + " compatible both " + a + ": " + str(value))
+
 
 def main():
     global VERBOSE
-    #VERBOSE=True
+    # VERBOSE=True
     compat_matrix = CompatibilityMatrix("osadl-matrix.csv")
     compat_matrix.compatible("MIT", "BSD-3-Clause")
     compat_matrix.compatible("BSD-3-Clause", "MIT")
@@ -161,10 +160,10 @@ def main():
     compat_matrix.compatible("GPL-2.0-only", "LGPL-2.1-only")
     compat_matrix.compatible("LGPL-2.1-only", "GPL-2.0-only")
 
-    test_a_compatible_with_b(compat_matrix, "LGPL-2.1-or-later", "GPL-2.0-only")
+    test_a_compatible_with_b(
+        compat_matrix, "LGPL-2.1-or-later", "GPL-2.0-only")
     test_a_compatible_with_b(compat_matrix, "BSD-3-Clause", "MIT")
+
 
 if __name__ == '__main__':
     main()
-    
-    

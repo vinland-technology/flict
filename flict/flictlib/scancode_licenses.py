@@ -18,14 +18,12 @@
 
 
 import json
-from flict.flictlib import logger
-import os
-import sys
+
 
 class ScancodeLicenses:
     def __init__(self, scancode_file):
         self.scancode_file = scancode_file
-        self.supported_groups = [ "Permissive", "Public Domain", "Copyleft" ]
+        self.supported_groups = ["Permissive", "Public Domain", "Copyleft"]
 
         self.scancode_object = None
         with open(scancode_file) as fp:
@@ -41,16 +39,16 @@ class ScancodeLicenses:
             group = lic_obj['group']
             lic_key = lic_obj['key']
             lic_spdx = lic_obj['spdx']
-            if not group in self.license_key_map:
-                self.license_key_map[group]=[]
-            if not group in self.license_spdx_map:
-                self.license_spdx_map[group]=[]
+            if group not in self.license_key_map:
+                self.license_key_map[group] = []
+            if group not in self.license_spdx_map:
+                self.license_spdx_map[group] = []
             self.license_key_map[group].append(lic_key)
-            if lic_spdx != None and lic_spdx != "":
+            if lic_spdx is not None and lic_spdx != "":
                 self.license_spdx_map[group].append(lic_spdx)
 
     def license_group(self, license):
-        
+
         for group in self.supported_groups:
             #print("license: " + str(license))
             #print(" * group:   " + str(group))
@@ -59,18 +57,18 @@ class ScancodeLicenses:
             if license.lower() in self.license_key_map[group] or license in self.license_spdx_map[group]:
                 #print(" - found")
                 for lic_obj in self.license_objects:
-                    #print("check : " + lic_obj['spdx']) 
+                    #print("check : " + lic_obj['spdx'])
                     if lic_obj['spdx'] == license:
                         return lic_obj['group']
                     if lic_obj['key'] == license.lower():
                         return lic_obj['group']
-    
+
     def supported_license_groups(self):
         return self.license_key_map.keys()
-    
+
     def supported_licenses_per_group(self, group):
         return self.license_key_map[group]
-    
+
     def supported_license(self, license):
         for group in self.supported_groups:
             #print("group: " + str(group))
@@ -79,16 +77,16 @@ class ScancodeLicenses:
             if license in self.license_key_map[group]:
                 return group
         return None
-        
+
     def supported_licenses(self):
         supported_list = []
         for group in self.supported_groups:
-            supported_list = supported_list + self.supported_licenses_per_group(group) 
+            supported_list = supported_list + \
+                self.supported_licenses_per_group(group)
         return supported_list
-    
+
     def original_data_info(self):
         return self.scancode_object['original_data']
 
     def meta_data(self):
         return self.scancode_object['meta_data']
-    
