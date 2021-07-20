@@ -20,3 +20,5 @@ tests/all.log
 .pytest_cache
 .mypy_cache
 .coverage
+
+tmp/*
