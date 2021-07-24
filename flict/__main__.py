@@ -19,6 +19,11 @@ from flict.flictlib import logger
 
 import json
 import os
+import sys
+
+#REMOVE
+import logging
+
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -43,6 +48,11 @@ DEFAULT_OUTPUT_FORMAT = "JSON"
 
 DATE_FMT = '%Y-%m-%d'
 
+class FlictSetup:
+
+    def __init__(self, license_handler, compatibility):
+        self.license_handler = license_handler
+        self.compatibility = compatibility
 
 def parse():
 
@@ -62,6 +72,12 @@ def parse():
         epilog=epilog,
         formatter_class=RawTextHelpFormatter,
     )
+
+    #parser.add_argument('mode',
+    #                    type=str,
+    #                    help='list, exportpackage, find, create-config',
+    #                    default='list')
+
     parser.add_argument('-v', '--verbose',
                         action='store_true',
                         help='output verbose information to stderr',
@@ -73,36 +89,42 @@ def parse():
                         help='output verbose debug information of the intermediate steps when transforming a license expression',
                         default=False)
 
+    # COMMON
     parser.add_argument('-of', '--output-format',
                         type=str,
                         dest='output_format',
                         help='output format, defaults to ' + DEFAULT_OUTPUT_FORMAT,
                         default=DEFAULT_OUTPUT_FORMAT)
 
+    # COMMON
     parser.add_argument('-rf', '--relicense-file',
                         type=str,
                         dest='relicense_file',
                         help='' + DEFAULT_RELICENSE_FILE,
                         default=DEFAULT_RELICENSE_FILE)
 
+    # COMMON
     parser.add_argument('-sf', '--scancode-file',
                         type=str,
                         dest='scancode_file',
                         help='' + DEFAULT_SCANCODE_FILE,
                         default=DEFAULT_SCANCODE_FILE)
 
+    # COMMON
     parser.add_argument('-es', '--enable-scancode',
                         action='store_true',
                         dest='enable_scancode',
                         help="Enable Scancode's db - experimental so use with care",
                         default=False)
 
+    # COMMON
     parser.add_argument('-nr', '--no-relicense',
                         action='store_true',
                         dest='no_relicense',
                         help='do not use license relicensing, same as -rf ""',
                         default=False)
 
+    # COMMON
     parser.add_argument('-mf', '--matrix-file',
                         type=str,
                         dest='matrix_file',
@@ -114,6 +136,7 @@ def parse():
                         dest='compliance_report_file',
                         help='')
 
+    # COMMON
     parser.add_argument('-pf', '--project-file',
                         type=str,
                         dest='project_file',
@@ -129,18 +152,21 @@ def parse():
                         dest='outbound_licenses',
                         help='conclude outbound license suggestions from specified license expression. Example: -ol "GPLv2 and MIT BSD-3"')
 
+    # COMMON
     parser.add_argument('-el', '--extended-licenses',
                         action='store_true',
                         dest='extended_licenses',
                         help='Check all supported licenes when trying to find an outbound license',
                         default=False)
 
+    # COMMON
     parser.add_argument('-tf', '--translations-file',
                         type=str,
                         dest='translations_file',
                         help='' + DEFAULT_TRANSLATIONS_FILE,
                         default=DEFAULT_TRANSLATIONS_FILE)
 
+    # COMMON
     parser.add_argument('-gf', '--group-file',
                         type=str,
                         dest='license_group_file',
@@ -152,49 +178,105 @@ def parse():
                         dest='policy_file',
                         help='')
 
-    parser.add_argument('-lpl', '--list-project_licenses',
-                        action='store_true',
-                        dest='list_project_licenses',
-                        help='output the licenses in the specified project')
+    #DONE
+    #parser.add_argument('-lpl', '--list-project_licenses',
+    #                    action='store_true',
+    #                    dest='list_project_licenses',
+    #                    help='output the licenses in the specified project')
 
-    parser.add_argument('-lsl', '--list-supported-licenses',
-                        action='store_true',
-                        dest='list_supported_licenses',
-                        help='output the licenses supported by flict')
+    # DONE
+    #parser.add_argument('-lsl', '--list-supported-licenses',
+    #                    action='store_true',
+    #                    dest='list_supported_licenses',
+    #                    help='output the licenses supported by flict')
 
-    parser.add_argument('-lslg', '--list-supported-license-groups',
-                        action='store_true',
-                        dest='list_supported_license_groups',
-                        help='output the license groups supported by flict')
+    # DONE
+    #parser.add_argument('-lslg', '--list-supported-license-groups',
+    #                    action='store_true',
+    #                    dest='list_supported_license_groups',
+    #                    help='output the license groups supported by flict')
 
-    parser.add_argument('-n', '--new',
-                        action='store_true',
-                        dest='new',
-                        help='try new feature')
-
+    
     parser.add_argument('-lg', '--license-group',
                         dest='license_group',
                         help='outpur group (if any) for license')
 
-    parser.add_argument('-lcc', '--license-combination-count',
-                        action='store_true',
-                        dest='license_combination_count',
-                        help='output the number of license combinations in the specified project')
+    #DONE
+    #parser.add_argument('-lcc', '--license-combination-count',
+    #                    action='store_true',
+    #                    dest='license_combination_count',
+    #                    help='output the number of license combinations in the specified project')
 
-    parser.add_argument('-le', '--license-expression',
-                        type=str,
-                        dest='license_expression',
-                        help='')
+    # DONE
+    #parser.add_argument('-le', '--license-expression',
+    #                    type=str,
+    #                    dest='license_expression',
+    #                    help='')
 
-    parser.add_argument('-les', '--license-expression-states',
-                        type=str,
-                        dest='license_expression_states',
-                        help='')
+    # SKIP - ONLY DEVEL
+    #parser.add_argument('-les', '--license-expression-states',
+    #                    type=str,
+    #                    dest='license_expression_states',
+    #                    help='')
 
+    # KEEP
     parser.add_argument('-V', '--version',
                         action='version',
                         version=flict_version,
                         default=False)
+
+    subparsers = parser.add_subparsers(help='Sub commands')
+
+    # verify
+    parser_v = subparsers.add_parser('verify', help='verify license compatibility')
+    parser_v.set_defaults(which="verify", func=verify)
+#    parser_v.add_argument('--project-file', '-pf', type=argparse.FileType('r'), help='verify license compatibility for project in project file')
+    parser_v.add_argument('--project-file', '-pf', type=str,
+                          help='verify license compatibility for project in project file')
+    parser_v.add_argument('--license-expression', '-le', type=str, nargs='+',
+                          help='verify license compatibility for license expression')
+    parser_v.add_argument('--manifest-file', '-mf', type=str,
+                          help='verify license compatibility for project in manifest file')
+    parser_v.add_argument('--license-combination-count', '-lcc', action='store_true', dest='license_combination_count',
+                        help='output the number of license combinations in the specified project')
+    parser_v.add_argument('--list-project_licenses', '-lpl', action='store_true',
+                          dest='list_project_licenses',
+                          help='output the licenses in the specified project')
+    
+    # simplify
+    parser_si = subparsers.add_parser('simplify', help='expand and simplify license expression')
+    parser_si.set_defaults(which="simplify", func=simplify)
+    parser_si.add_argument('license_expression', type=str, nargs='+', 
+                          help='license expression to suggest outbound license for')
+
+    # list
+    parser_li = subparsers.add_parser('list', help='list supported licenses or groups')
+    parser_li.set_defaults(which="list", func=list_licenses)
+    parser_li.add_argument('--groups', '-g',
+                        action='store_true',
+                        dest='list_supported_license_groups',
+                        help='output the license groups supported by flict')
+
+    # display-compatibility
+    parser_d = subparsers.add_parser('display-compatibility', help='display license compatibility graphically')
+    parser_d.set_defaults(which="display-compatibility", func=display_compatibility)
+    parser_d.add_argument('--graph', '-g', type=str, help='create graph representation')
+    parser_d.add_argument('--table', '-t', type=str, help='create table representation')
+
+    # suggest-outbound
+    parser_s = subparsers.add_parser('suggest-outbound', help='suggest outbound license')
+    parser_s.set_defaults(which="suggest-outbound", func=suggest_outbound)
+    parser_s.add_argument('license_expression', type=str, nargs='+', 
+                          help='license expression to suggest outbound license for')
+
+    # policy-report
+    parser_p = subparsers.add_parser('policy-report', help='create report with license policy applied')
+    parser_p.set_defaults(which="policy-report", func=policy_report)
+    parser_p.add_argument('--policy-file', '-pf', type=argparse.FileType('r'),
+                          help='file with license policy')
+    parser_p.add_argument('--report-file', '-rf', type=argparse.FileType('r'),
+                          help='file with report as produced using \'verify\'')
+
 
     args = parser.parse_args()
 
@@ -483,7 +565,8 @@ def output_outbound_license(compatibility, license_handler, licenses, output_for
 
 
 def output_license_combinations(project, output_format):
-    combinations = project.license_combinations()
+    print("BETA: " + str(project))    
+    combinations = project.projects_combinations()
 
     if output_format.lower() == "json":
         comb = {}
@@ -495,15 +578,125 @@ def output_license_combinations(project, output_format):
         print("Error, unsupported format: \"" + output_format + "\"")
         exit(1)
 
+def present_and_set(args, key):
+    return key in args and vars(args)[key] is not None
+    
+        
+def simplify(args):
+    flict_setup = common_setup(args)
+    lic_str = ""
+    for lic in args.license_expression:
+        lic_str += " " + lic
+    
+    license = flict_setup.license_handler.license_expression_list(
+        lic_str)
+    if args.verbose:
+        license._debug_license(license)
+        print(license_to_string_long(license))
+    else:
+        print(license.simplified)
+    
 
-def main():
-    args = parse()
-    logger.setup(args)
+def list_licenses(args):
+    flict_setup = common_setup(args)
+    if args.list_supported_license_groups:
+        # TODO
+        print("FEATURE NOT IMPLEMENTED", file=sys.stderr)
+        output_supported_license_groups(flict_setup.compatibility, args.output_format)
+    else:
+        output_supported_licenses(flict_setup.compatibility, args.output_format)
 
+def verify(args):
+    flict_setup = common_setup(args)
+    
+    print("* verify: " + str(args))
+    if present_and_set(args, 'project_file'):
+        print(" * project file: " + str(args.project_file))
+        verify_project_file(args, flict_setup)
+    elif present_and_set(args, 'license_expression'):
+        print(" * license_expression: " + str(args.license_expression))
+        verify_license_expression(args, flict_setup)
+    else:
+        print(" no....")
+    print(" ----- end")
+    exit(0)
+
+def common_setup(args):
+    
+    logger.setup(args.debug_license, args.verbose)
+    
     license_handler = LicenseHandler(
         args.translations_file, args.relicense_file, "")
     compatibility = Compatibility(
         args.matrix_file, args.scancode_file, args.license_group_file, args.extended_licenses)
+
+    flict_setup = FlictSetup(license_handler, compatibility)
+    logger.main_logger.debug(" flict_setup: " + str(flict_setup))
+    return flict_setup
+    
+def verify_license_expression(args, flict_setup):
+    lic_str = ""
+    for lic in args.license_expression:
+        lic_str += " " + lic
+    
+    output_outbound_license(flict_setup.compatibility, flict_setup.license_handler,
+                                lic_str, args.output_format, args.extended_licenses)
+        
+def verify_project_file(args, flict_setup):
+
+    project = Project(args.project_file, flict_setup.license_handler)
+    if project is None:
+        logger.main_logger.error(
+             "Could not read project file \"" + args.project_file + "\"")
+        exit(4)
+
+    if args.list_project_licenses:
+        output_license_list(
+                list(project.license_set()), args.output_format)
+    elif args.license_combination_count:
+        output_license_combinations(project, args.output_format)
+
+
+    else:
+
+        report = Report(project, flict_setup.compatibility)
+
+        print(json.dumps(report.report()))
+        exit(0)
+
+            # if report.report() == None:
+            #     exit(20)
+            # else:
+            #     exit(0)
+
+
+        
+def display_compatibility(args):
+    print("display_compatibility: " + str(args))
+        
+def suggest_outbound(args):
+    print("suggest_outbound:    " + str(args))
+    print("verbose:             " + str(args.verbose))
+    print("license expression:: " + str(args.license_expression))
+
+def policy_report(args):
+    print("polict_report: " + str(args))
+        
+def main():
+    args = parse()
+
+    if 'which' in args:
+        vargs = vars(args)
+        print("yes:  " + str(vargs['which']))
+        print("func: " + str(args.func))
+        print("---------------")
+        args.func(args)
+    else:
+        print("no")
+        print(str(args))
+        
+    exit(0)
+    
 
     if args.licenses:
         _licenses = []
