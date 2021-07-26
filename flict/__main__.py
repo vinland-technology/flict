@@ -80,36 +80,36 @@ def parse():
     )
 
     commmon_defaults_group = parser.add_argument_group(title='Options to change default behaviour')
-    common_group = parser.add_argument_group(title='Common options')
+    deveveloper_group = parser.add_argument_group(title='Developer options')
     
-    # COMMON
+    # DEFAULTS
     commmon_defaults_group.add_argument('-gf', '--group-file',
                         type=str,
                         dest='license_group_file',
                         help='File with group definitions, defaults to' + DEFAULT_GROUP_BASE_FILE + ". EXPERIMENTAL",
                         default=DEFAULT_GROUP_FILE)
 
-    # COMMON
+    # DEFAULTS
     commmon_defaults_group.add_argument('-mf', '--matrix-file',
                         type=str,
                         dest='matrix_file',
                         help='File with license compatibility matrix, defaults to ' + DEFAULT_MATRIX_BASE_FILE,
                         default=DEFAULT_MATRIX_FILE)
 
-    # COMMON
+    # DEFAULTS
     commmon_defaults_group.add_argument('-rf', '--relicense-file',
                                         type=str,
                                         dest='relicense_file',
                                         help='File with relicensing information, defaults to ' + DEFAULT_RELICENSE_BASE_FILE,
                                         default=DEFAULT_RELICENSE_FILE)
-    # COMMON
+    # DEFAULTS
     commmon_defaults_group.add_argument('-sf', '--scancode-file',
                         type=str,
                         dest='scancode_file',
                         help='File with scancode licenseses information, defaults to ' + DEFAULT_SCANCODE_BASE_FILE,
                         default=DEFAULT_SCANCODE_FILE)
 
-    # COMMON
+    # DEFAULTS
     commmon_defaults_group.add_argument('-tf', '--translations-file',
                         type=str,
                         dest='translations_file',
@@ -121,23 +121,6 @@ def parse():
     #                    help='list, exportpackage, find, create-config',
     #                    default='list')
 
-    parser.add_argument('-v', '--verbose',
-                        action='store_true',
-                        help='output verbose information to stderr',
-                        default=False)
-
-    parser.add_argument('-dl', '--debug-license',
-                        action='store_true',
-                        dest='debug_license',
-                        help='output verbose debug information of the intermediate steps when transforming a license expression',
-                        default=False)
-
-    # COMMON
-    parser.add_argument('-of', '--output-format',
-                        type=str,
-                        dest='output_format',
-                        help='output format, defaults to ' + DEFAULT_OUTPUT_FORMAT,
-                        default=DEFAULT_OUTPUT_FORMAT)
 
 
     # COMMON
@@ -148,6 +131,13 @@ def parse():
                         default=False)
 
     # COMMON
+    parser.add_argument('-el', '--extended-licenses',
+                        action='store_true',
+                        dest='extended_licenses',
+                        help='Check all supported licenes when trying to find an outbound license',
+                        default=False)
+
+    # COMMON
     parser.add_argument('-nr', '--no-relicense',
                         action='store_true',
                         dest='no_relicense',
@@ -155,33 +145,41 @@ def parse():
                         default=False)
 
 
-    parser.add_argument('-crf', '--compliance-report-file',
-                        type=str,
-                        dest='File with compliance report',
-                        help='')
-
     # COMMON
-    parser.add_argument('-pf', '--project-file',
+    parser.add_argument('-of', '--output-format',
                         type=str,
-                        dest='project_file',
-                        help='')
+                        dest='output_format',
+                        help='output format, defaults to ' + DEFAULT_OUTPUT_FORMAT,
+                        default=DEFAULT_OUTPUT_FORMAT)
+
+    parser.add_argument('-v', '--verbose',
+                        action='store_true',
+                        help='output verbose information to stderr',
+                        default=False)
+
+
+    #parser.add_argument('-crf', '--compliance-report-file',
+    #                    type=str,
+    #                    dest='File with compliance report',
+    #                    help='')
+
+    # DONE
+    #parser.add_argument('-pf', '--project-file',
+    #                    type=str,
+    #                    dest='project_file',
+    #                    help='')
 
     parser.add_argument('-cc', '--check-compatibility',
                         type=str, nargs='+',
                         dest='licenses',
                         help='licenses to check for compatibility')
 
+    
     parser.add_argument('-ol', '--outbound-license',
                         type=str,
                         dest='outbound_licenses',
                         help='conclude outbound license suggestions from specified license expression. Example: -ol "GPLv2 and MIT BSD-3"')
 
-    # COMMON
-    parser.add_argument('-el', '--extended-licenses',
-                        action='store_true',
-                        dest='extended_licenses',
-                        help='Check all supported licenes when trying to find an outbound license',
-                        default=False)
 
     #DONE
     #parser.add_argument('-lpf', '--license-policy-file',
@@ -208,9 +206,10 @@ def parse():
     #                    help='output the license groups supported by flict')
 
     
-    parser.add_argument('-lg', '--license-group',
-                        dest='license_group',
-                        help='outpur group (if any) for license')
+    # DONE
+    #parser.add_argument('-lg', '--license-group',
+    #                    dest='license_group',
+    #                    help='output group (if any) for license')
 
     #DONE
     #parser.add_argument('-lcc', '--license-combination-count',
@@ -236,6 +235,12 @@ def parse():
                         version=flict_version,
                         default=False)
 
+    deveveloper_group.add_argument('-dl', '--debug-license',
+                                   action='store_true',
+                                   dest='debug_license',
+                                   help='output verbose debug information of the intermediate steps when transforming a license expression',
+                                   default=False)
+    
     subparsers = parser.add_subparsers(help='Sub commands')
 
     # verify
@@ -267,6 +272,10 @@ def parse():
                         action='store_true',
                         dest='list_supported_license_groups',
                         help='output the license groups supported by flict')
+    parser_li.add_argument('-lg', '--license-group',
+                           dest='license_group',
+                           type=str,
+                           help='output group (if any) for license')
 
     # display-compatibility
     parser_d = subparsers.add_parser('display-compatibility', help='display license compatibility graphically')
@@ -287,10 +296,9 @@ def parse():
                           type=argparse.FileType('r'),
                           dest='policy_file',                          
                           help='file with license policy')
-    parser_p.add_argument('--report-file', '-rf',
+    parser_p.add_argument('--compliance-report-file', '-crf',
                           type=argparse.FileType('r'),
                           help='file with report as produced using \'verify\'')
-
 
     args = parser.parse_args()
 
@@ -539,7 +547,7 @@ def output_license_group(compatibility, license_handler, args):
                 print(inner_lic + ": " + str(lic_group))
             else:
                 print(
-                    inner_lic + ": does not belong to a group, probably supported via OSADL's matrix")
+                    inner_lic + ": does not belong to a group. It may still be supported by OSADL's matrix")
 
 
 def output_supported_licenses(compatibility, output_format):
@@ -613,7 +621,11 @@ def simplify(args):
 
 def list_licenses(args):
     flict_setup = common_setup(args)
-    if args.list_supported_license_groups:
+    if args.license_group:
+        #print("slkjaslkajdslkj: " + str(args.license_group))
+        output_license_group(flict_setup.compatibility, flict_setup.license_handler, args)
+        
+    elif args.list_supported_license_groups:
         # TODO
         print("FEATURE NOT IMPLEMENTED", file=sys.stderr)
         output_supported_license_groups(flict_setup.compatibility, args.output_format)
@@ -632,7 +644,7 @@ def verify(args):
         verify_license_expression(args, flict_setup)
     else:
         print(" no....")
-    print(" ----- end")
+    #print(" ----- end")
     exit(0)
 
 def common_setup(args):
@@ -701,9 +713,9 @@ def main():
 
     if 'which' in args:
         vargs = vars(args)
-        print("yes:  " + str(vargs['which']))
-        print("func: " + str(args.func))
-        print("---------------")
+        #print("yes:  " + str(vargs['which']))
+        #print("func: " + str(args.func))
+        #print("---------------")
         args.func(args)
     else:
         print("no")
