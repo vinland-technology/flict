@@ -81,7 +81,7 @@ def parse():
         formatter_class=RawTextHelpFormatter,
     )
 
-    commmon_defaults_group = parser.add_argument_group(title='Options to change default behaviour')
+    commmon_defaults_group = parser.add_argument_group(title='Options to change default settings')
     deveveloper_group = parser.add_argument_group(title='Developer options')
     
     # DEFAULTS
