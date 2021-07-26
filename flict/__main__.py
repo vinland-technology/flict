@@ -29,11 +29,17 @@ SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 # TODO: replace this with something that makes installation easy
 VAR_DIR = SCRIPT_DIR + "/var/"
-DEFAULT_TRANSLATIONS_FILE = VAR_DIR + "translation.json"
-DEFAULT_GROUP_FILE = VAR_DIR + "license-group.json"
-DEFAULT_RELICENSE_FILE = VAR_DIR + "relicense.json"
-DEFAULT_SCANCODE_FILE = VAR_DIR + "scancode-licenses.json"
-DEFAULT_MATRIX_FILE = VAR_DIR + "osadl-matrix.csv"
+DEFAULT_TRANSLATIONS_BASE_FILE = "translation.json"
+DEFAULT_GROUP_BASE_FILE = "license-group.json"
+DEFAULT_RELICENSE_BASE_FILE = "relicense.json"
+DEFAULT_SCANCODE_BASE_FILE = "scancode-licenses.json"
+DEFAULT_MATRIX_BASE_FILE = "osadl-matrix.csv"
+
+DEFAULT_TRANSLATIONS_FILE = VAR_DIR + DEFAULT_TRANSLATIONS_BASE_FILE
+DEFAULT_GROUP_FILE = VAR_DIR + DEFAULT_GROUP_BASE_FILE
+DEFAULT_RELICENSE_FILE = VAR_DIR + DEFAULT_RELICENSE_BASE_FILE
+DEFAULT_SCANCODE_FILE = VAR_DIR + DEFAULT_SCANCODE_BASE_FILE
+DEFAULT_MATRIX_FILE = VAR_DIR + DEFAULT_MATRIX_BASE_FILE
 
 PROGRAM_NAME = "flict (FOSS License Compatibility Tool)"
 PROGRAM_DESCRIPTION = "flict is a Free and Open Source Software tool to verify compatibility between licenses"
@@ -73,6 +79,43 @@ def parse():
         formatter_class=RawTextHelpFormatter,
     )
 
+    commmon_defaults_group = parser.add_argument_group(title='Options to change default behaviour')
+    common_group = parser.add_argument_group(title='Common options')
+    
+    # COMMON
+    commmon_defaults_group.add_argument('-gf', '--group-file',
+                        type=str,
+                        dest='license_group_file',
+                        help='File with group definitions, defaults to' + DEFAULT_GROUP_BASE_FILE + ". EXPERIMENTAL",
+                        default=DEFAULT_GROUP_FILE)
+
+    # COMMON
+    commmon_defaults_group.add_argument('-mf', '--matrix-file',
+                        type=str,
+                        dest='matrix_file',
+                        help='File with license compatibility matrix, defaults to ' + DEFAULT_MATRIX_BASE_FILE,
+                        default=DEFAULT_MATRIX_FILE)
+
+    # COMMON
+    commmon_defaults_group.add_argument('-rf', '--relicense-file',
+                                        type=str,
+                                        dest='relicense_file',
+                                        help='File with relicensing information, defaults to ' + DEFAULT_RELICENSE_BASE_FILE,
+                                        default=DEFAULT_RELICENSE_FILE)
+    # COMMON
+    commmon_defaults_group.add_argument('-sf', '--scancode-file',
+                        type=str,
+                        dest='scancode_file',
+                        help='File with scancode licenseses information, defaults to ' + DEFAULT_SCANCODE_BASE_FILE,
+                        default=DEFAULT_SCANCODE_FILE)
+
+    # COMMON
+    commmon_defaults_group.add_argument('-tf', '--translations-file',
+                        type=str,
+                        dest='translations_file',
+                        help='File with license translations, defaults to' + DEFAULT_TRANSLATIONS_BASE_FILE,
+                        default=DEFAULT_TRANSLATIONS_FILE)
+
     #parser.add_argument('mode',
     #                    type=str,
     #                    help='list, exportpackage, find, create-config',
@@ -96,25 +139,12 @@ def parse():
                         help='output format, defaults to ' + DEFAULT_OUTPUT_FORMAT,
                         default=DEFAULT_OUTPUT_FORMAT)
 
-    # COMMON
-    parser.add_argument('-rf', '--relicense-file',
-                        type=str,
-                        dest='relicense_file',
-                        help='' + DEFAULT_RELICENSE_FILE,
-                        default=DEFAULT_RELICENSE_FILE)
-
-    # COMMON
-    parser.add_argument('-sf', '--scancode-file',
-                        type=str,
-                        dest='scancode_file',
-                        help='' + DEFAULT_SCANCODE_FILE,
-                        default=DEFAULT_SCANCODE_FILE)
 
     # COMMON
     parser.add_argument('-es', '--enable-scancode',
                         action='store_true',
                         dest='enable_scancode',
-                        help="Enable Scancode's db - experimental so use with care",
+                        help="Use Scancode's license database - experimental so use with care",
                         default=False)
 
     # COMMON
@@ -124,16 +154,10 @@ def parse():
                         help='do not use license relicensing, same as -rf ""',
                         default=False)
 
-    # COMMON
-    parser.add_argument('-mf', '--matrix-file',
-                        type=str,
-                        dest='matrix_file',
-                        help='' + DEFAULT_MATRIX_FILE,
-                        default=DEFAULT_MATRIX_FILE)
 
     parser.add_argument('-crf', '--compliance-report-file',
                         type=str,
-                        dest='compliance_report_file',
+                        dest='File with compliance report',
                         help='')
 
     # COMMON
@@ -159,24 +183,11 @@ def parse():
                         help='Check all supported licenes when trying to find an outbound license',
                         default=False)
 
-    # COMMON
-    parser.add_argument('-tf', '--translations-file',
-                        type=str,
-                        dest='translations_file',
-                        help='' + DEFAULT_TRANSLATIONS_FILE,
-                        default=DEFAULT_TRANSLATIONS_FILE)
-
-    # COMMON
-    parser.add_argument('-gf', '--group-file',
-                        type=str,
-                        dest='license_group_file',
-                        help='' + DEFAULT_GROUP_FILE,
-                        default=DEFAULT_GROUP_FILE)
-
-    parser.add_argument('-lpf', '--license-policy-file',
-                        type=str,
-                        dest='policy_file',
-                        help='')
+    #DONE
+    #parser.add_argument('-lpf', '--license-policy-file',
+    #                    type=str,
+    #                    dest='policy_file',
+    #                    help='')
 
     #DONE
     #parser.add_argument('-lpl', '--list-project_licenses',
@@ -272,9 +283,12 @@ def parse():
     # policy-report
     parser_p = subparsers.add_parser('policy-report', help='create report with license policy applied')
     parser_p.set_defaults(which="policy-report", func=policy_report)
-    parser_p.add_argument('--policy-file', '-pf', type=argparse.FileType('r'),
+    parser_p.add_argument('--license-policy-file', '-lpf',
+                          type=argparse.FileType('r'),
+                          dest='policy_file',                          
                           help='file with license policy')
-    parser_p.add_argument('--report-file', '-rf', type=argparse.FileType('r'),
+    parser_p.add_argument('--report-file', '-rf',
+                          type=argparse.FileType('r'),
                           help='file with report as produced using \'verify\'')
 
 
