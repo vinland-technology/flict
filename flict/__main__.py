@@ -66,6 +66,7 @@ def parse():
     description = description + "DESCRIPTION\n  " + PROGRAM_DESCRIPTION + "\n\n"
 
     epilog = ""
+    epilog = epilog + "CONFIGURATION\n  All config files can be found in\n  " + VAR_DIR + "\n\n"
     epilog = epilog + "AUTHOR\n  " + PROGRAM_AUTHOR + "\n\n"
     epilog = epilog + "PROJECT SITE\n  " + PROGRAM_URL + "\n\n"
     epilog = epilog + "REPORTING BUGS\n  File a ticket at " + BUG_URL + "\n\n"
@@ -701,9 +702,17 @@ def display_compatibility(args):
     print("display_compatibility: " + str(args))
         
 def suggest_outbound(args):
-    print("suggest_outbound:    " + str(args))
-    print("verbose:             " + str(args.verbose))
-    print("license expression:: " + str(args.license_expression))
+    flict_setup = common_setup(args)
+    
+    #print("suggest_outbound:    " + str(args))
+    #print("verbose:             " + str(args.verbose))
+    #print("license expression:: " + str(args.license_expression))
+    lic_str = ""
+    for lic in args.license_expression:
+        lic_str += " " + lic
+    
+    output_outbound_license(flict_setup.compatibility, flict_setup.license_handler,
+                                lic_str, args.output_format, args.extended_licenses)
 
 def policy_report(args):
     print("polict_report: " + str(args))
