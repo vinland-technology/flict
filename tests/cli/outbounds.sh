@@ -32,6 +32,6 @@ compare_exec     "$FLICT  'GPL-2.0-only and (Apache-2.0 or MIT)'" \
                  '["GPL-2.0-only"]' 0 'GPL-2.0-only and (Apache-2.0 or MIT)'
 
 compare_exec     "$FLICT  'GPL-2.0-only or (Apache-2.0 and MIT)'" \
-                 '["Apache-2.0", "GPL-2.0-only", "MIT"v]' 0 'GPL-2.0-only or (Apache-2.0 and MIT)'
+                 '["Apache-2.0", "GPL-2.0-only", "MIT"]' 0 'GPL-2.0-only or (Apache-2.0 and MIT)'
 
 end_test
