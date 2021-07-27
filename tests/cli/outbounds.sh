@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-FLICT="PYTHONPATH=. flict/__main__.py -ol "
+FLICT="PYTHONPATH=.. ../flict/__main__.py -ol "
 
 source $(dirname ${BASH_SOURCE[0]}/)/common-funs
 if [ $? -ne 0 ];
