@@ -389,7 +389,7 @@ def _check_compatibilities(matrix_file, licenses, verbose=True):
 
 
 # TODO: REMOVE
-def output_compat(compats):
+def _obsolete_output_compat(compats):
     print (" ===========================")
     if output_format.lower() == "json":
         output_compat_json(compats, verbose)
@@ -404,12 +404,12 @@ def output_compat(compats):
 
 
 # TODO: REMOVE
-def output_compat_json(compats, verbose):
+def _obsolete_output_compat_json(compats, verbose):
     print(json.dumps(compats))
 
 
 # TODO: REMOVE
-compat_interprets = {
+_obsolete_compat_interprets = {
     'left': {
         'true':       {'markdown': '--->'},
         'false':      {'markdown': '---|'},
@@ -491,7 +491,7 @@ def _compat_to_dot(left, comp_left, right, comp_right):
 
 
 # TODO: REMOVE
-def output_compat_markdown(compats, verbose):
+def _obsolete_output_compat_markdown(compats, verbose):
     # print(str(compats))
     result = "# License compatibilities\n\n"
 
@@ -517,7 +517,7 @@ def output_compat_markdown(compats, verbose):
 
 
 # TODO: REMOVE
-def _licenses_hash(a, b):
+def _obsolete__licenses_hash(a, b):
     separator = " "
     if a > b:
         return a + separator + b
@@ -526,7 +526,7 @@ def _licenses_hash(a, b):
 
 
 # TODO: REMOVE
-def output_compat_dot(compats, verbose):
+def _obsolete__obsolete_output_compat_dot(compats, verbose):
     checked_set = set()
     result = "digraph depends {\n    node [shape=plaintext]\n"
     for compat in compats['compatibilities']:
