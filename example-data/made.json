@@ -1,0 +1,11 @@
+{
+    "meta": {
+        "software":"License Policy Checker",
+        "version":"0.1"
+    },
+    "project": {
+        "name": "made - a flict example",
+        "license": "MIT and BSD or GPL-2.0-only or BSD or (X11 and BSD-3-Clause) and GPL-2.0-or-later",
+        "dependencies": []
+    }
+}
