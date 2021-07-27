@@ -4,7 +4,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-FLICT="PYTHONPATH=.. ../flict/__main__.py -ol "
+FLICT_DIR=$(dirname ${BASH_SOURCE[0]}/)/../../
+
+FLICT="PYTHONPATH=${FLICT_DIR} ${FLICT_DIR}/flict/__main__.py suggest-outbound "
 
 source $(dirname ${BASH_SOURCE[0]}/)/common-funs
 if [ $? -ne 0 ];

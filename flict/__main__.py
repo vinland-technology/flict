@@ -109,7 +109,7 @@ def parse():
     commmon_defaults_group.add_argument('-sf', '--scancode-file',
                         type=str,
                         dest='scancode_file',
-                        help='File with scancode licenseses information, defaults to ' + DEFAULT_SCANCODE_BASE_FILE,
+                        help='File with scancode licenseses information, defaults to ' + DEFAULT_SCANCODE_BASE_FILE + ". EXPERIMENTAL",
                         default=DEFAULT_SCANCODE_FILE)
 
     # DEFAULTS
@@ -568,13 +568,22 @@ def output_supported_licenses(compatibility, output_format):
             else:
                 print(" " + str(item))
 
-
-def output_outbound_license(compatibility, license_handler, licenses, output_format, extended_licenses):
+def _empty_project_report(compatibility, license_handler, licenses, output_format, extended_licenses):
     project = Project(None, license_handler, licenses)
     report_object = Report(project, compatibility)
-    c_report = report_object.report()
-    suggested_outbounds = flict.flictlib.report.suggested_outbounds(c_report)
+    report = report_object.report()
+    return report
 
+def _outbound_license(compatibility, license_handler, licenses, output_format, extended_licenses):
+    c_report = _empty_project_report(compatibility, license_handler, licenses, output_format, extended_licenses)
+    suggested_outbounds = flict.flictlib.report.suggested_outbounds(c_report)
+    #suggested_outbounds = flict.flictlib.report.suggested_outbounds(c_report)
+    #suggested_outbounds = report['compatibility_report']['compatibilities']['outbound_suggestions']
+    suggested_outbounds.sort()
+    return suggested_outbounds
+
+def output_outbound_license(compatibility, license_handler, licenses, output_format, extended_licenses):
+    suggested_outbounds = _outbound_license(compatibility, license_handler, licenses, output_format, extended_licenses)
     if output_format.lower() == "json":
         print(json.dumps(suggested_outbounds))
     elif output_format.lower() == "markdown":
@@ -638,7 +647,6 @@ def list_licenses(args):
 def verify(args):
     flict_setup = common_setup(args)
     
-    print("* verify: " + str(args))
     if present_and_set(args, 'project_file'):
         print(" * project file: " + str(args.project_file))
         verify_project_file(args, flict_setup)
@@ -667,7 +675,25 @@ def verify_license_expression(args, flict_setup):
     lic_str = ""
     for lic in args.license_expression:
         lic_str += " " + lic
-    
+
+    # TODO: fix
+    report = _empty_project_report(flict_setup.compatibility, flict_setup.license_handler,
+                                   lic_str, args.output_format, args.extended_licenses)
+
+    compats = report['compatibility_report']['compatibilities']['license_compatibilities']
+    print(json.dumps(report['compatibility_report']['compatibilities']))
+    exit(0)
+    all_compatible = True
+    for compat in compats:
+        compatible = True
+        print(" * " + compat['outbound'] + "    combinations: " + str(len(compat['combinations'])))
+        for comb in compat['combinations']:
+            compatible = compatible and comb['compatibility_status']
+            print(str(comb))
+            print("   * " + str(comb['combination'][0]['license']) + ": " + str(compatible))
+        print(" * " + compat['outbound'] + ": " + str(comb['compatibility_status']))
+    all_compatible = all_compatible and compatible 
+    print(" ===> " + str(all_compatible))
     output_outbound_license(flict_setup.compatibility, flict_setup.license_handler,
                                 lic_str, args.output_format, args.extended_licenses)
         
