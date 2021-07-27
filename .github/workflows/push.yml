@@ -24,3 +24,9 @@ jobs:
       run: python3 setup.py build
     - name: Install
       run: python3 setup.py install
+    - name: Install additional tooling
+      run: |
+        pip3 install reuse
+    - name: Reuse check
+      run: |
+        reuse lint 
