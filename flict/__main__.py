@@ -17,6 +17,8 @@ from flict.flictlib.compat_matrix import CompatibilityMatrix
 from flict.flictlib.flict_config import flict_version
 from flict.flictlib import logger
 
+import flict.flictlib.report 
+
 import json
 import os
 
@@ -465,8 +467,8 @@ def output_supported_licenses(compatibility, output_format):
 def output_outbound_license(compatibility, license_handler, licenses, output_format, extended_licenses):
     project = Project(None, license_handler, licenses)
     report_object = Report(project, compatibility)
-    report = report_object.report()
-    suggested_outbounds = report['compatibility_report']['compatibilities']['outbound_suggestions']
+    c_report = report_object.report()
+    suggested_outbounds = flict.flictlib.report.suggested_outbounds(c_report)
 
     if output_format.lower() == "json":
         print(json.dumps(suggested_outbounds))
