@@ -26,3 +26,22 @@ class TextFormatter(FormatInterface):
                 ret_str += " " + str(item) + "\n"
         return ret_str
 
+    def format_license_list(self, license_list):
+        return "text implmentation | format_license_list(): " + str(license_list)
+        
+    def format_report(self, report):
+        return "text implmentation | format_report(): " + str(report)
+
+    def format_license_combinations(self, project):
+        return str(project.projects_combinations())
+
+    def format_outbound_license(self, suggested_outbounds):
+        ret_str = None
+        
+        for ol in suggested_outbounds:
+            if ret_str == None:
+                ret_str = ol
+            else:
+                ret_str += ", " + ol
+        return ret_str
+    
