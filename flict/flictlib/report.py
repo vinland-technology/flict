@@ -67,3 +67,8 @@ class Report:
 
     def to_json(self):
         return json.dumps(self.report_map)
+
+
+def suggested_outbounds(report):
+    return report['compatibility_report']['compatibilities']['outbound_suggestions']
+    
