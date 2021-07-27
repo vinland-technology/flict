@@ -141,13 +141,6 @@ def parse():
                         default=False)
 
     # COMMON
-    parser.add_argument('-el', '--extended-licenses',
-                        action='store_true',
-                        dest='extended_licenses',
-                        help='Check all supported licenes when trying to find an outbound license',
-                        default=False)
-
-    # COMMON
     parser.add_argument('-nr', '--no-relicense',
                         action='store_true',
                         dest='no_relicense',
@@ -654,20 +647,11 @@ def list_licenses(args):
 def verify(args):
     flict_setup = common_setup(args)
     
-<<<<<<< HEAD
-    #print("* verify: " + str(args))
-=======
-    print("* verify: " + str(args))
->>>>>>> 24c6b19e59ee8629e6c8219a6c0e8c861b4bf3c8
     if present_and_set(args, 'project_file'):
         print(" * project file: " + str(args.project_file))
         verify_project_file(args, flict_setup)
     elif present_and_set(args, 'license_expression'):
-<<<<<<< HEAD
-        #print(" * license_expression: " + str(args.license_expression))
-=======
         print(" * license_expression: " + str(args.license_expression))
->>>>>>> 24c6b19e59ee8629e6c8219a6c0e8c861b4bf3c8
         verify_license_expression(args, flict_setup)
     else:
         print(" no....")
