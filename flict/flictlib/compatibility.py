@@ -122,19 +122,27 @@ class Compatibility:
         else:
             licenses_set = license_set
 
+        # For every license among all the licenses
+        # - check compat against all licenses
         for license in licenses_set:
-            #print("  CC: license: " + str(license))
+            #print("\n  CC: license: " + str(license))
             license_compatibility = {}
             license_compatibility['outbound'] = license
             license_compatibility['combinations'] = []
             license_combinations = []
+            license_compat_status = False
             if project is not None:
+                
+                # for each project combination, loop through the licenses
                 for combination in project.project_combination_list():
-                    reason = set()
                     combination_set = {}
                     #print("  CC: c:" + str((combination)))
+                    
+                    # loop through the project combinations
                     for p in combination:
-                        #print("      CC: p: " + str(p))
+                        reason = set()
+                        # and for each such, loop through license(s)
+                        #print("    CC: ---> " + str(p['license']))
                         for lic in p['license']:
                             _license = self._supported_license(license)
                             _lic = self._supported_license(lic)
@@ -153,26 +161,35 @@ class Compatibility:
                                 reason.add(
                                     license + "\" has questioned compatibility with \"" + lic + "\".")
 
-                    status = len(list(reason)) == 0
+                        # do we have compatibility? (check if reason=={})
+                        status = ( reason == set() )
+                        #print("             " + str(lic) + " : " + str(status))
+                        
+                    license_compat_status = license_compat_status or status
                     #print("  CC: c:" + str((combination)) + " ==> "  +str(status) + "    : " + str(reason))
-                    if status:
+                    #print("    CC: " + str(license_compat_status))
+
+                    if license_compat_status:
                         outbound_suggestions.add(license)
-                        combination_set['combination'] = combination
-                        combination_set['compatibility_fails'] = list(reason)
-                        combination_set['compatibility_status'] = status
-                        #print("CC: z   : " + str(len(reason)) + " ==> " + str(combination_set['compatibility_status']))
-                        license_combinations.append(combination_set)
-                        license_compatibility['combinations'] = license_combinations
+                    combination_set['combination'] = combination
+                    combination_set['compatibility_fails'] = list(reason)
+                    combination_set['compatibility_status'] = status
+                    #print("CC: z   : " + str(len(reason)) + " ==> " + str(combination_set['compatibility_status']))
+                    license_combinations.append(combination_set)
+                    license_compatibility['combinations'] = license_combinations
             else:
                 #print("single....: " + str(license))
                 pass
 
+            #print("  <--  " + str(license) + " : " + str(license_compat_status))
+            license_compatibility['compatibility_status'] = license_compat_status
             license_compatibilities.append(license_compatibility)
 
         license_compatibilities_set = {}
         license_compatibilities_set['license_compatibilities'] = license_compatibilities
-        license_compatibilities_set['outbound_suggestions'] = list(
-            outbound_suggestions)
+        outs = list(outbound_suggestions)
+        outs.sort()
+        license_compatibilities_set['outbound_suggestions'] = outs
         return license_compatibilities_set
 
     def check_project_pile(self, project):
