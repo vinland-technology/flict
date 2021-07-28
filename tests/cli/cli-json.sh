@@ -17,6 +17,10 @@ fi
 
 begin_test
 
+#
+# tests return value alone
+# - uses jq to check JSON content
+# 
 simple_test()
 {
     local OPTIONS="$1"
