@@ -650,7 +650,6 @@ def simplify(args):
 def list_licenses(args):
     flict_setup = FlictSetup.get_setup(args)
     if args.license_group:
-        #print("slkjaslkajdslkj: " + str(args.license_group))
         output_license_group(flict_setup.compatibility, flict_setup.license_handler, args)
         
     elif args.list_supported_license_groups:
@@ -662,15 +661,13 @@ def verify(args):
     flict_setup = FlictSetup.get_setup(args)
     
     if present_and_set(args, 'project_file'):
-        #print(" * project file: " + str(args.project_file))
         verify_project_file(args, flict_setup)
     elif present_and_set(args, 'license_expression'):
         print(" * license_expression: " + str(args.license_expression))
         verify_license_expression(args, flict_setup)
     else:
+        # TODO: raise exception?
         print(" no....")
-    #print(" ----- end")
-    exit(0)
 
     
 def verify_license_expression(args, flict_setup):
