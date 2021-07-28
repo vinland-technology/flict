@@ -34,4 +34,7 @@ class FormatInterface:
     def format_compats(self, compats):
         return "default implmentation | format_compats(): " + str(compats)
         
+    def format_supported_license_groups(self, license_groups):
+        return "default implmentation | format_supported_license_groups(): " + str(license_groups)
+        
     
