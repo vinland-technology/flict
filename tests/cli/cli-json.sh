@@ -50,9 +50,9 @@ simple_test "list -g" 0
 simple_test "list -lg MIT" 0
 
 # verify
-simple_test "verify -pf example-data/europe-small.json" 0 
-simple_test "verify -pf example-data/europe-small.json -lcc" 0 
-simple_test "verify -pf example-data/europe-small.json -lpl" 0 
+simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json" 0
+simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lcc" 0 
+simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lpl" 0 
 
 # suggest-outbound
 simple_test "suggest-outbound MIT" 0 
@@ -61,6 +61,10 @@ simple_test "suggest-outbound MIT and GPL-2.0-only" 0
 # simplify
 simple_test "simplify MIT" 0 
 simple_test "simplify MIT and BSD" 0 
+
+# display-compatibility
+simple_test "display-compatibility MIT" 0 
+simple_test "display-compatibility MIT BSD" 0 
 
 
 end_test
