@@ -115,32 +115,3 @@ def _compat_to_dot(left, comp_left, right, comp_right):
             res += "\n\"" + right + "\" -> \"" + left + \
                 "\"  [color=\"gray\", style=\"dotted\"] \n "
             return res
-
-compat_interprets = {
-    'left': {
-        'true':       {'markdown': '--->'},
-        'false':      {'markdown': '---|'},
-        'undefined':  {'markdown': '---U'},
-        'depends':    {'markdown': '---D'},
-        'question':   {'markdown': '---Q'},
-    },
-    'right': {
-        'true':       {'markdown': '<----'},
-        'false':      {'markdown': '|--'},
-        'undefined':  {'markdown': 'U---'},
-        'depends':    {'markdown': 'D---'},
-        'question':   {'markdown': 'Q---'},
-    },
-}
-
-
-def _compat_to_fmt(comp_left, comp_right, fmt):
-    left = compat_interprets['left'][comp_left][fmt]
-    right = compat_interprets['right'][comp_right][fmt]
-    return str(right) + str(left)
-
-
-def _compat_to_markdown(left, comp_left, right, comp_right):
-    return _compat_to_fmt(comp_left, comp_right, "markdown")
-
-    
