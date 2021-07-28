@@ -19,6 +19,9 @@ from flict.flictlib import logger
 
 import flict.flictlib.report 
 
+from flict.flictlib.format.factory import FormatFactory
+from flict.flictlib.format.format import FormatInterface
+
 import json
 import os
 import sys
@@ -58,10 +61,31 @@ DATE_FMT = '%Y-%m-%d'
 
 class FlictSetup:
 
-    def __init__(self, license_handler, compatibility):
+    _instance = None
+    
+    def __init__(self, license_handler, compatibility, output_format, output):
         self.license_handler = license_handler
         self.compatibility = compatibility
+        self.formatter = FormatFactory.formatter(output_format)
+        self.output = output
 
+    @staticmethod
+    def get_setup(args):
+        if FlictSetup._instance is None:
+            logger.setup(args.debug_license, args.verbose)
+           
+            license_handler = LicenseHandler(
+               args.translations_file, args.relicense_file, "")
+            compatibility = Compatibility(
+               args.matrix_file, args.scancode_file, args.license_group_file, args.extended_licenses)
+           
+            FlictSetup._instance = FlictSetup(license_handler, compatibility, args.output_format, args.output)
+            
+            logger.main_logger.debug(" flict_setup: " + str(FlictSetup._instance))
+        return FlictSetup._instance
+    
+
+        
 def parse():
 
     description = "NAME\n  " + PROGRAM_NAME + "\n\n"
@@ -147,13 +171,19 @@ def parse():
                         help='do not use license relicensing, same as -rf ""',
                         default=False)
 
-
+    # COMMON
+    parser.add_argument('-o', '--output',
+                        type=argparse.FileType('w'),
+                        dest='output',
+                        help='output, defaults to stdout',
+                        default=sys.stdout)
     # COMMON
     parser.add_argument('-of', '--output-format',
                         type=str,
                         dest='output_format',
                         help='output format, defaults to ' + DEFAULT_OUTPUT_FORMAT,
                         default=DEFAULT_OUTPUT_FORMAT)
+
 
     parser.add_argument('-v', '--verbose',
                         action='store_true',
@@ -285,6 +315,8 @@ def parse():
     parser_d.set_defaults(which="display-compatibility", func=display_compatibility)
     parser_d.add_argument('--graph', '-g', type=str, help='create graph representation')
     parser_d.add_argument('--table', '-t', type=str, help='create table representation')
+    parser_d.add_argument('licenses', type=str, nargs='+', 
+                          help='license expression to display compatibility for')
 
     # suggest-outbound
     parser_s = subparsers.add_parser('suggest-outbound', help='suggest outbound license')
@@ -314,7 +346,8 @@ def parse():
     return args
 
 
-def _check_compatibilities(matrix_file, licenses, verbose=True):
+# TODO_REMOVE
+def obsoleted__check_compatibilities(matrix_file, licenses, verbose=True):
     l_fmt = "%-20s"
     compat_matrix = CompatibilityMatrix(matrix_file)
     compats = []
@@ -354,18 +387,11 @@ def _check_compatibilities(matrix_file, licenses, verbose=True):
     return compats
 
 
-def output_license_list(license_list, output_format):
-    if output_format.lower() == "json":
-        print(json.dumps(license_list))
-    elif output_format.lower() == "markdown":
-        logger.main_logger.error("MARKDOWN COMING SOON: " + str(license_list))
-    else:
-        logger.main_logger.error(
-            "Error, unsupported format: \"" + output_format + "\"")
-        exit(1)
 
 
-def output_compat(compats, output_format, verbose=False):
+# TODO: REMOVE
+def _obsolete_output_compat(compats):
+    print (" ===========================")
     if output_format.lower() == "json":
         output_compat_json(compats, verbose)
     elif output_format.lower() == "markdown":
@@ -378,11 +404,13 @@ def output_compat(compats, output_format, verbose=False):
         exit(1)
 
 
-def output_compat_json(compats, verbose):
+# TODO: REMOVE
+def _obsolete_output_compat_json(compats, verbose):
     print(json.dumps(compats))
 
 
-compat_interprets = {
+# TODO: REMOVE
+_obsolete_compat_interprets = {
     'left': {
         'true':       {'markdown': '--->'},
         'false':      {'markdown': '---|'},
@@ -400,16 +428,18 @@ compat_interprets = {
 }
 
 
+# TODO_ REMOVE
 def _compat_to_fmt(comp_left, comp_right, fmt):
     left = compat_interprets['left'][comp_left][fmt]
     right = compat_interprets['right'][comp_right][fmt]
     return str(right) + str(left)
 
 
+# TODO_ REMOVE
 def _compat_to_markdown(left, comp_left, right, comp_right):
     return _compat_to_fmt(comp_left, comp_right, "markdown")
 
-
+# TODO_ REMOVE
 def _compat_to_dot(left, comp_left, right, comp_right):
     logger.main_logger.debug("_compat_to_dot")
 
@@ -461,7 +491,8 @@ def _compat_to_dot(left, comp_left, right, comp_right):
             return res
 
 
-def output_compat_markdown(compats, verbose):
+# TODO: REMOVE
+def _obsolete_output_compat_markdown(compats, verbose):
     # print(str(compats))
     result = "# License compatibilities\n\n"
 
@@ -486,7 +517,8 @@ def output_compat_markdown(compats, verbose):
     print(result)
 
 
-def _licenses_hash(a, b):
+# TODO: REMOVE
+def _obsolete__licenses_hash(a, b):
     separator = " "
     if a > b:
         return a + separator + b
@@ -494,7 +526,8 @@ def _licenses_hash(a, b):
         return b + separator + a
 
 
-def output_compat_dot(compats, verbose):
+# TODO: REMOVE
+def _obsolete__obsolete_output_compat_dot(compats, verbose):
     checked_set = set()
     result = "digraph depends {\n    node [shape=plaintext]\n"
     for compat in compats['compatibilities']:
@@ -523,21 +556,14 @@ def read_compliance_report(report_file):
     with open(report_file) as fp:
         return json.load(fp)
 
-
-def output_supported_license_groups(compatibility, output_format):
-    supported_license_groups = compatibility.supported_license_groups()
+def output_supported_license_groups(flict_setup):
+    supported_license_groups = flict_setup.compatibility.supported_license_groups()
     supported_license_groups.sort()
-    for lg in supported_license_groups:
-        print(" " + str(lg), end="")
-        if lg == "Permissive" or lg == "Public Domain":
-            pass
-        else:
-            print(" (under consideration)", end="")
-        print("")
 
+    formatted = flict_setup.formatter.format_supported_license_groups(supported_license_groups)
+    flict_print(flict_setup, formatted)
 
-def output_license_group_printer():
-    pass
+    return
 
 
 def output_license_group(compatibility, license_handler, args):
@@ -553,20 +579,12 @@ def output_license_group(compatibility, license_handler, args):
                     inner_lic + ": does not belong to a group. It may still be supported by OSADL's matrix")
 
 
-def output_supported_licenses(compatibility, output_format):
-    supported_licenses = compatibility.supported_licenses()
-    supported_licenses.sort()
-    if output_format.lower() == "json":
-        print(json.dumps(supported_licenses))
-    elif output_format.lower() == "markdown":
-        print("MARKDOWN COMING SOON: " + str(supported_licenses))
-    else:
-        for item in supported_licenses:
-            lic_group = compatibility.license_group(item)
-            if lic_group is not None:
-                print(" " + str(item) + ": (" + lic_group + ")")
-            else:
-                print(" " + str(item))
+def flict_print(flict_setup,str):
+    print(str, file=flict_setup.output)
+                
+def output_supported_licenses(flict_setup):
+    formatted = flict_setup.formatter.format_support_licenses(flict_setup.compatibility)
+    flict_print(flict_setup, formatted)
 
 def _empty_project_report(compatibility, license_handler, licenses, output_format, extended_licenses):
     project = Project(None, license_handler, licenses)
@@ -582,24 +600,18 @@ def _outbound_license(compatibility, license_handler, licenses, output_format, e
     suggested_outbounds.sort()
     return suggested_outbounds
 
-def output_outbound_license(compatibility, license_handler, licenses, output_format, extended_licenses):
-    suggested_outbounds = _outbound_license(compatibility, license_handler, licenses, output_format, extended_licenses)
-    if output_format.lower() == "json":
-        print(json.dumps(suggested_outbounds))
-    elif output_format.lower() == "markdown":
-        print("MARKDOWN COMING SOON: " + str(suggested_outbounds))
-    else:
-        print("For \"" + str(licenses) + "\"", end=" ")
-        if suggested_outbounds is not None and len(suggested_outbounds) > 0:
-            print("you can chose any of the following outbound suggestions:")
-            for lic in suggested_outbounds:
-                print(" * " + str(lic))
-        else:
-            print("we found no possible outbound license")
+def output_outbound_license(flict_setup, licenses, output_format, extended_licenses):
+    suggested_outbounds = _outbound_license(flict_setup.compatibility,
+                                            flict_setup.license_handler,
+                                            licenses,
+                                            output_format,
+                                            extended_licenses)
+    formatted = flict_setup.formatter.format_outbound_license(suggested_outbounds)
+    flict_print(flict_setup, formatted)
 
 
-def output_license_combinations(project, output_format):
-    print("BETA: " + str(project))    
+# TODO: remove
+def _OBSOLETE_output_license_combinations(flict_setup, project):
     combinations = project.projects_combinations()
 
     if output_format.lower() == "json":
@@ -617,7 +629,7 @@ def present_and_set(args, key):
     
         
 def simplify(args):
-    flict_setup = common_setup(args)
+    flict_setup = FlictSetup.get_setup(args)
     lic_str = ""
     for lic in args.license_expression:
         lic_str += " " + lic
@@ -632,44 +644,26 @@ def simplify(args):
     
 
 def list_licenses(args):
-    flict_setup = common_setup(args)
+    flict_setup = FlictSetup.get_setup(args)
     if args.license_group:
-        #print("slkjaslkajdslkj: " + str(args.license_group))
         output_license_group(flict_setup.compatibility, flict_setup.license_handler, args)
-        
     elif args.list_supported_license_groups:
-        # TODO
-        print("FEATURE NOT IMPLEMENTED", file=sys.stderr)
-        output_supported_license_groups(flict_setup.compatibility, args.output_format)
+        output_supported_license_groups(flict_setup)
     else:
-        output_supported_licenses(flict_setup.compatibility, args.output_format)
+        output_supported_licenses(flict_setup)
 
 def verify(args):
-    flict_setup = common_setup(args)
+    flict_setup = FlictSetup.get_setup(args)
     
     if present_and_set(args, 'project_file'):
-        print(" * project file: " + str(args.project_file))
         verify_project_file(args, flict_setup)
     elif present_and_set(args, 'license_expression'):
         print(" * license_expression: " + str(args.license_expression))
         verify_license_expression(args, flict_setup)
     else:
+        # TODO: raise exception?
         print(" no....")
-    #print(" ----- end")
-    exit(0)
 
-def common_setup(args):
-    
-    logger.setup(args.debug_license, args.verbose)
-    
-    license_handler = LicenseHandler(
-        args.translations_file, args.relicense_file, "")
-    compatibility = Compatibility(
-        args.matrix_file, args.scancode_file, args.license_group_file, args.extended_licenses)
-
-    flict_setup = FlictSetup(license_handler, compatibility)
-    logger.main_logger.debug(" flict_setup: " + str(flict_setup))
-    return flict_setup
     
 def verify_license_expression(args, flict_setup):
     lic_str = ""
@@ -694,8 +688,7 @@ def verify_license_expression(args, flict_setup):
         print(" * " + compat['outbound'] + ": " + str(comb['compatibility_status']))
     all_compatible = all_compatible and compatible 
     print(" ===> " + str(all_compatible))
-    output_outbound_license(flict_setup.compatibility, flict_setup.license_handler,
-                                lic_str, args.output_format, args.extended_licenses)
+    output_outbound_license(flict_setup, lic_str, args.output_format, args.extended_licenses)
         
 def verify_project_file(args, flict_setup):
 
@@ -705,32 +698,40 @@ def verify_project_file(args, flict_setup):
              "Could not read project file \"" + args.project_file + "\"")
         exit(4)
 
+    formatted = ""
     if args.list_project_licenses:
-        output_license_list(
-                list(project.license_set()), args.output_format)
+        formatted = flict_setup.formatter.format_license_list(license_list)
+    
     elif args.license_combination_count:
-        output_license_combinations(project, args.output_format)
-
-
+        formatted = flict_setup.formatter.format_license_combinations(project)
     else:
-
         report = Report(project, flict_setup.compatibility)
-
-        print(json.dumps(report.report()))
-        exit(0)
-
-            # if report.report() == None:
-            #     exit(20)
-            # else:
-            #     exit(0)
-
+        formatted = flict_setup.formatter.format_report(report)
+        
+    flict_print(flict_setup, formatted)
 
         
 def display_compatibility(args):
-    print("display_compatibility: " + str(args))
-        
+    flict_setup = FlictSetup.get_setup(args)
+
+    _licenses = []
+    for lic in args.licenses:
+        new_lic = flict_setup.license_handler.translate_and_relicense(lic).replace("(", "").replace(
+                ")", "").replace(" ", "").replace("OR", " ").replace("AND", " ").strip().split(" ")
+        _licenses += new_lic
+            #print(lic + " ==> " + str(new_lic) + " =====> " + str(licenses))
+        #print("Check compat for: " + str(licenses))
+
+        # Diry trick to remove all duplicates
+    licenses = list(set(_licenses))
+
+    compats = flict_setup.compatibility.check_compatibilities(licenses, args.extended_licenses)
+
+    formatted = flict_setup.formatter.format_compats(compats)
+    flict_print(flict_setup, formatted)
+    
 def suggest_outbound(args):
-    flict_setup = common_setup(args)
+    flict_setup = FlictSetup.get_setup(args)
     
     #print("suggest_outbound:    " + str(args))
     #print("verbose:             " + str(args.verbose))
@@ -739,8 +740,7 @@ def suggest_outbound(args):
     for lic in args.license_expression:
         lic_str += " " + lic
     
-    output_outbound_license(flict_setup.compatibility, flict_setup.license_handler,
-                                lic_str, args.output_format, args.extended_licenses)
+    output_outbound_license(flict_setup, lic_str, args.output_format, args.extended_licenses)
 
 def policy_report(args):
     print("polict_report: " + str(args))
@@ -748,6 +748,7 @@ def policy_report(args):
 def main():
     args = parse()
 
+    
     if 'which' in args:
         vargs = vars(args)
         #print("yes:  " + str(vargs['which']))
@@ -782,7 +783,7 @@ def main():
                                 args.outbound_licenses, args.output_format, args.extended_licenses)
 
     elif args.list_supported_licenses:
-        output_supported_licenses(compatibility, args.output_format)
+        output_supported_licenses(flict_setup)
 
     elif args.list_supported_license_groups:
         output_supported_license_groups(compatibility, args.output_format)

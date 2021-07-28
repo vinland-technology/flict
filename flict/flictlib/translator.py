@@ -144,6 +144,7 @@ def read_translations(translations_file):
                     symbols[transl].append(key)
             else:
                 print(" *********************** Failed parsing item:  " + str(item))
+                exit(12)
     return symbols
 
 
@@ -158,31 +159,3 @@ def read_packages_file(jsonfile, translations):
         update_packages(translations, deps)
         return packages
 
-
-def main():
-
-    args = parse()
-    translations = read_translations(args.translations_file)
-
-    if (args.package_file is not None):
-        packages = read_packages_file(args.package_file, translations)
-        print(json.dumps(packages))
-    elif (args.graph):
-        print("digraph graphname {")
-        first = True
-        for trans in translations:
-            t_value = trans["license_expression"]
-            t_translated = trans["spdx_id"]
-            print("\"" + t_value + "\" -> \"" + t_translated + "\"")
-            if first:
-                pipe = ""
-            else:
-                pipe = "|"
-                if (t_translated != ""):
-                    print(pipe + " sed -e 's," + t_value + "\\([ |&\\\"]\\)," + t_translated + "\\1,g' ", end="")
-                first = False
-        print("}")
-
-
-if __name__ == "__main__":
-    main()

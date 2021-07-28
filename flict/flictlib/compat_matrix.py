@@ -130,6 +130,7 @@ class CompatibilityMatrix:
                 value = "Yes"
             return value
         except Exception as e:
+            # TODO: no print, rather raise exception?
             logger.main_logger.exception(
                 msg="Exception when check compatibility: ", exc_info=e)
             print(" " + license_a + " index: " + str(index_a))

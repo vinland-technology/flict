@@ -95,31 +95,3 @@ def relicense_license(rel_map, license_expression):
     return new_license
 
 
-def main():
-
-    args = parse()
-    translations = read_translations(args.translations_file)
-
-    if (args.package_file is not None):
-        packages = read_packages_file(args.package_file, translations)
-        print(json.dumps(packages))
-    elif (args.graph):
-        print("digraph graphname {")
-        first = True
-        for trans in translations:
-            t_value = trans["value"]
-            t_spdx = trans["spdx"]
-            print("\"" + t_value + "\" -> \"" + t_spdx + "\"")
-            if first:
-                pipe = ""
-            else:
-                pipe = "|"
-                if (t_spdx != ""):
-                    print(pipe + " sed -e 's," + t_value +
-                          "\\([ |&\\\"]\\)," + t_spdx + "\\1,g' ", end="")
-                first = False
-        print("}")
-
-
-if __name__ == "__main__":
-    main()
