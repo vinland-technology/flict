@@ -60,6 +60,6 @@ class JsonFormatter(FormatInterface):
                              'status': False,
                              'msg': inner_lic + ": does not belong to a group. It may still be supported by OSADL's matrix" } 
                     lg.append(item)
-        return lg
+        return json.dumps(lg)
 
 
