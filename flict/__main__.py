@@ -696,7 +696,7 @@ def verify_project_file(args, flict_setup):
 
     formatted = ""
     if args.list_project_licenses:
-        formatted = flict_setup.formatter.format_license_list(license_list)
+        formatted = flict_setup.formatter.format_license_list(list(project.license_set()))
     
     elif args.license_combination_count:
         formatted = flict_setup.formatter.format_license_combinations(project)
