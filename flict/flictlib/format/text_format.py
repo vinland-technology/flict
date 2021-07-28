@@ -45,3 +45,13 @@ class TextFormatter(FormatInterface):
                 ret_str += ", " + ol
         return ret_str
     
+    def format_supported_license_groups(self, license_groups):
+        ret_str = ""
+        for lg in license_groups:
+            ret_str += " " + str(lg)
+            if lg == "Permissive" or lg == "Public Domain":
+                pass
+            else:
+                ret_str += " (under consideration)"
+            ret_str += "\n"
+        return ret_str
