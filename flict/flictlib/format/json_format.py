@@ -35,9 +35,6 @@ class JsonFormatter(FormatInterface):
     def format_outbound_license(self, suggested_outbounds):
         return json.dumps(suggested_outbounds)
         
-    def format_license_combinations(self, combinations):
-        return json.dumps(combinations)
-
     def format_compats(self, compats):
         return json.dumps(compats)
     
