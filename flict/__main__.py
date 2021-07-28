@@ -346,47 +346,6 @@ def parse():
     return args
 
 
-# TODO_REMOVE
-def obsoleted__check_compatibilities(matrix_file, licenses, verbose=True):
-    l_fmt = "%-20s"
-    compat_matrix = CompatibilityMatrix(matrix_file)
-    compats = []
-    for license_a in licenses:
-
-        result = True
-        lic_str = str(l_fmt) % license_a
-        print(lic_str)
-        compatible = True
-        inner_licenses = []
-        for license_b in licenses:
-            lic_str = str(" * " + l_fmt + ": ") % (license_b)
-            comp = compat_matrix.a_compatible_with_b(license_a, license_b)
-            result = result & comp
-            if verbose:
-                print(lic_str + " " + str(comp))
-            inner_compat = {}
-            inner_compat['license'] = license_b
-            inner_compat['compatible'] = result
-            compatible = compatible & result
-            inner_licenses.append(inner_compat)
-
-        if result:
-            lic_str = str(l_fmt + "   :  ") % ("Outbound " + license_a)
-            print(lic_str, end="")
-            print(str(result))
-            print("")
-        compat = {}
-        compat['license'] = license_a
-        compat['licenses'] = inner_licenses
-        if compatible:
-            compat['outbound'] = license_a
-        else:
-            compat['outbound'] = None
-        compats.append(compat)
-    print("compats:\n" + json.dumps(compats))
-    return compats
-
-
 
 
 # TODO: REMOVE
@@ -626,9 +585,12 @@ def present_and_set(args, key):
         
 def simplify(args):
     flict_setup = FlictSetup.get_setup(args)
-    lic_str = ""
+    lic_str = None
     for lic in args.license_expression:
-        lic_str += " " + lic
+        if lic_str is None:
+            lic_str = lic
+        else:
+            lic_str += " " + lic
     
     license = flict_setup.license_handler.license_expression_list(lic_str)
     formatted = flict_setup.formatter.format_simplified(lic_str, license.simplified)
