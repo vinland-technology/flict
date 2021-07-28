@@ -404,5 +404,3 @@ class ExpandedProject:
         return self.name + " (" + str(self.license) + ")"
 
 
-if __name__ == '__main__':
-    main()
