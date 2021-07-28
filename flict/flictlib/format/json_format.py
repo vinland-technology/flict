@@ -59,4 +59,7 @@ class JsonFormatter(FormatInterface):
                     lg.append(item)
         return json.dumps(lg)
 
+    def format_simplified(self, license_expression, simplified):
+        return json.dumps( { 'original':  license_expression,
+                             'simplified': simplified } )
 
