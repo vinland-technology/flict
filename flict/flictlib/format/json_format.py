@@ -41,3 +41,5 @@ class JsonFormatter(FormatInterface):
     def format_compats(self, compats):
         return json.dumps(compats)
     
+    def format_supported_license_groups(self, license_groups):
+        return json.dumps(license_groups)
