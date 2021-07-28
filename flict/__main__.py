@@ -630,13 +630,10 @@ def simplify(args):
     for lic in args.license_expression:
         lic_str += " " + lic
     
-    license = flict_setup.license_handler.license_expression_list(
-        lic_str)
-    if args.verbose:
-        license._debug_license(license)
-        print(license_to_string_long(license))
-    else:
-        print(license.simplified)
+    license = flict_setup.license_handler.license_expression_list(lic_str)
+    formatted = flict_setup.formatter.format_simplified(lic_str, license.simplified)
+
+    flict_print(flict_setup, formatted)
     
 
 def list_licenses(args):
