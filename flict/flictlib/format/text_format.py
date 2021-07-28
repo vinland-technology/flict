@@ -55,3 +55,17 @@ class TextFormatter(FormatInterface):
                 ret_str += " (under consideration)"
             ret_str += "\n"
         return ret_str
+
+    def format_license_group(self, compatibility, license_handler, license_group, extended_licenses):
+        license_list = license_handler.license_expression_list(license_group,
+                                                               extended_licenses)
+        ret_str = ""
+        for lic in license_list.set_list:
+            for inner_lic in lic:
+                lic_group = compatibility.license_group(inner_lic)
+                if lic_group is not None:
+                    ret_str += inner_lic + ": " + str(lic_group)
+                else:
+                    ret_str += inner_lic + ": does not belong to a group. It may still be supported by OSADL's matrix"
+        return ret_str
+    
