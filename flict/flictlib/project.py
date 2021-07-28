@@ -404,23 +404,5 @@ class ExpandedProject:
         return self.name + " (" + str(self.license) + ")"
 
 
-def main():
-    global VERBOSE
-    # VERBOSE=True
-    project = Project("europe-small.json")
-
-    print("name:         " + str(project.name()))
-    print("license:      " + str(project.license()))
-    print("dependencies: " + str(project.dependencies()))
-    print("license pile: " + str(project.license_pile()))
-
-    project = Project("europe.json")
-
-    print("name:         " + str(project.name()))
-    print("license:      " + str(project.license()))
-    print("dependencies: " + str(project.dependencies()))
-    print("license pile: " + str(project.license_pile()))
-
-
 if __name__ == '__main__':
     main()
