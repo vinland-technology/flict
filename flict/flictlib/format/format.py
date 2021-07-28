@@ -37,4 +37,10 @@ class FormatInterface:
     def format_supported_license_groups(self, license_groups):
         return "default implmentation | format_supported_license_groups(): " + str(license_groups)
         
+    def format_license_group(self, compatibility, license_handler, license_group, extended_licenses):
+        return "default implmentation | format_license_group(): " + str(license_group)
+        
+    def format_simplified(self, license_expression, simplified):
+        return "default implmentation | format_simplified(): " + str(simplified)
+        
     

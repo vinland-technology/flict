@@ -307,7 +307,7 @@ def parse():
                         help='output the license groups supported by flict')
     parser_li.add_argument('-lg', '--license-group',
                            dest='license_group',
-                           type=str,
+                           type=str, 
                            help='output group (if any) for license')
 
     # display-compatibility
@@ -346,210 +346,9 @@ def parse():
     return args
 
 
-# TODO_REMOVE
-def obsoleted__check_compatibilities(matrix_file, licenses, verbose=True):
-    l_fmt = "%-20s"
-    compat_matrix = CompatibilityMatrix(matrix_file)
-    compats = []
-    for license_a in licenses:
-
-        result = True
-        lic_str = str(l_fmt) % license_a
-        print(lic_str)
-        compatible = True
-        inner_licenses = []
-        for license_b in licenses:
-            lic_str = str(" * " + l_fmt + ": ") % (license_b)
-            comp = compat_matrix.a_compatible_with_b(license_a, license_b)
-            result = result & comp
-            if verbose:
-                print(lic_str + " " + str(comp))
-            inner_compat = {}
-            inner_compat['license'] = license_b
-            inner_compat['compatible'] = result
-            compatible = compatible & result
-            inner_licenses.append(inner_compat)
-
-        if result:
-            lic_str = str(l_fmt + "   :  ") % ("Outbound " + license_a)
-            print(lic_str, end="")
-            print(str(result))
-            print("")
-        compat = {}
-        compat['license'] = license_a
-        compat['licenses'] = inner_licenses
-        if compatible:
-            compat['outbound'] = license_a
-        else:
-            compat['outbound'] = None
-        compats.append(compat)
-    print("compats:\n" + json.dumps(compats))
-    return compats
 
 
 
-
-# TODO: REMOVE
-def _obsolete_output_compat(compats):
-    print (" ===========================")
-    if output_format.lower() == "json":
-        output_compat_json(compats, verbose)
-    elif output_format.lower() == "markdown":
-        output_compat_markdown(compats, verbose)
-    elif output_format.lower() == "dot":
-        output_compat_dot(compats, verbose)
-    else:
-        logger.main_logger.error(
-            "Error, unsupported format: \"" + output_format + "\"")
-        exit(1)
-
-
-# TODO: REMOVE
-def _obsolete_output_compat_json(compats, verbose):
-    print(json.dumps(compats))
-
-
-# TODO: REMOVE
-_obsolete_compat_interprets = {
-    'left': {
-        'true':       {'markdown': '--->'},
-        'false':      {'markdown': '---|'},
-        'undefined':  {'markdown': '---U'},
-        'depends':    {'markdown': '---D'},
-        'question':   {'markdown': '---Q'},
-    },
-    'right': {
-        'true':       {'markdown': '<----'},
-        'false':      {'markdown': '|--'},
-        'undefined':  {'markdown': 'U---'},
-        'depends':    {'markdown': 'D---'},
-        'question':   {'markdown': 'Q---'},
-    },
-}
-
-
-# TODO_ REMOVE
-def _compat_to_fmt(comp_left, comp_right, fmt):
-    left = compat_interprets['left'][comp_left][fmt]
-    right = compat_interprets['right'][comp_right][fmt]
-    return str(right) + str(left)
-
-
-# TODO_ REMOVE
-def _compat_to_markdown(left, comp_left, right, comp_right):
-    return _compat_to_fmt(comp_left, comp_right, "markdown")
-
-# TODO_ REMOVE
-def _compat_to_dot(left, comp_left, right, comp_right):
-    logger.main_logger.debug("_compat_to_dot")
-
-    if comp_left == "true":
-        logger.main_logger.debug("left true")
-        if comp_right == "true":
-            return "\"" + left + "\"  -> \"" + right + "\" [dir=both] [color=\"darkgreen\"]"
-        if comp_right == "false":
-            logger.main_logger.debug("1 dslkjsljdflskdjfljdf")
-            res = "\"" + left + "\" -> \"" + right + "\"  [color=\"black\"] "
-            logger.main_logger.debug(left + "    " + right)
-            logger.main_logger.debug("dot:      " + res)
-            logger.main_logger.debug(
-                "markdown: " + _compat_to_markdown(None, comp_left, None, comp_right))
-            return res
-
-        if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
-            res = "\"" + right + "\" -> \"" + left + "\"  [color=\"black\"]"
-            res += "\n\"" + left + "\" -> \"" + right + \
-                "\"  [color=\"gray\", style=\"dotted\"] \n "
-            return res
-    elif comp_left == "false":
-        logger.main_logger.debug("left false")
-
-        if comp_right == "true":
-            logger.main_logger.debug("left false right true")
-            return "\"" + right + "\"  -> \"" + left + "\" [color=\"black\"]"
-        if comp_right == "false":
-            return "\"" + left + "\"\n    \"" + right + "\""
-        if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
-            return "\"" + right + "\" -> \"" + left + "\"  [color=\"gray\", style=\"dotted\"] \n "
-    elif comp_left == "question" or comp_left == "undefined" or comp_left == "depends":
-        logger.main_logger.debug("left QUD")
-        # QUD---->
-        if comp_right == "true":
-            res = "\"" + left + "\" -> \"" + right + "\"  [color=\"black\"]"
-            res += "\n\"" + right + "\" -> \"" + left + \
-                "\"  [color=\"gray\", style=\"dotted\"] \n "
-            return res
-        # QUD----|
-        if comp_right == "false":
-            return "\"" + left + "\" -> \"" + right + "\"  [color=\"gray\", style=\"dotted\"] \n "
-        # QUD----Q|U|D
-        if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
-            res = "\"" + left + "\" -> \"" + right + \
-                "\"  [color=\"gray\", style=\"dotted\"]"
-            res += "\n\"" + right + "\" -> \"" + left + \
-                "\"  [color=\"gray\", style=\"dotted\"] \n "
-            return res
-
-
-# TODO: REMOVE
-def _obsolete_output_compat_markdown(compats, verbose):
-    # print(str(compats))
-    result = "# License compatibilities\n\n"
-
-    result += "# Licenses\n\n"
-    for compat in compats['compatibilities']:
-        result += " * " + compat['license'] + "\n"
-
-    result += "\n\n# Compatibilities\n\n"
-    for compat in compats['compatibilities']:
-        main_license = compat['license']
-        for lic in compat['licenses']:
-            # print(str(compat))
-            # print(json.dumps(compat))
-            # print(json.dumps(lic))
-            inner_license = lic['license']
-            comp_left = lic['compatible_left']
-            comp_right = lic['compatible_right']
-            compat_text = _compat_to_markdown(
-                main_license, comp_left, inner_license, comp_right)
-            result += main_license + " " + compat_text + " " + inner_license + "\n\n"
-
-    print(result)
-
-
-# TODO: REMOVE
-def _obsolete__licenses_hash(a, b):
-    separator = " "
-    if a > b:
-        return a + separator + b
-    else:
-        return b + separator + a
-
-
-# TODO: REMOVE
-def _obsolete__obsolete_output_compat_dot(compats, verbose):
-    checked_set = set()
-    result = "digraph depends {\n    node [shape=plaintext]\n"
-    for compat in compats['compatibilities']:
-        #print("checked: " + str(checked_set))
-        main_license = compat['license']
-        for lic in compat['licenses']:
-            inner_license = lic['license']
-            text_hash = _licenses_hash(main_license, inner_license)
-            # If already handled, continue
-            if text_hash in checked_set:
-                #print(text_hash + " already handled")
-                continue
-            checked_set.add(text_hash)
-            comp_left = lic['compatible_left']
-            comp_right = lic['compatible_right']
-            # print(json.dumps(compat))
-            # print(json.dumps(lic))
-            compat_dot = _compat_to_dot(
-                main_license, comp_left, inner_license, comp_right)
-            result += "    " + compat_dot + "\n"
-    result += "\n}\n"
-    print(result)
 
 
 def read_compliance_report(report_file):
@@ -567,16 +366,12 @@ def output_supported_license_groups(flict_setup):
 
 
 def output_license_group(compatibility, license_handler, args):
-
-    for lic in license_handler.license_expression_list(args.license_group, args.extended_licenses).set_list:
-        for inner_lic in lic:
-            #print(" * " + str(inner_lic))
-            lic_group = compatibility.license_group(inner_lic)
-            if lic_group is not None:
-                print(inner_lic + ": " + str(lic_group))
-            else:
-                print(
-                    inner_lic + ": does not belong to a group. It may still be supported by OSADL's matrix")
+    flict_setup = FlictSetup.get_setup(args)
+    formatted = flict_setup.formatter.format_license_group(flict_setup.compatibility,
+                                                           flict_setup.license_handler,
+                                                           args.license_group,
+                                                           args.extended_licenses)
+    flict_print(flict_setup, formatted)
 
 
 def flict_print(flict_setup,str):
@@ -610,37 +405,23 @@ def output_outbound_license(flict_setup, licenses, output_format, extended_licen
     flict_print(flict_setup, formatted)
 
 
-# TODO: remove
-def _OBSOLETE_output_license_combinations(flict_setup, project):
-    combinations = project.projects_combinations()
-
-    if output_format.lower() == "json":
-        comb = {}
-        comb['license_combinations'] = combinations
-        print(json.dumps(comb))
-    elif output_format.lower() == "markdown":
-        print("MARKDOWN COMING SOON: " + str(combinations))
-    else:
-        print("Error, unsupported format: \"" + output_format + "\"")
-        exit(1)
-
 def present_and_set(args, key):
     return key in args and vars(args)[key] is not None
     
         
 def simplify(args):
     flict_setup = FlictSetup.get_setup(args)
-    lic_str = ""
+    lic_str = None
     for lic in args.license_expression:
-        lic_str += " " + lic
+        if lic_str is None:
+            lic_str = lic
+        else:
+            lic_str += " " + lic
     
-    license = flict_setup.license_handler.license_expression_list(
-        lic_str)
-    if args.verbose:
-        license._debug_license(license)
-        print(license_to_string_long(license))
-    else:
-        print(license.simplified)
+    license = flict_setup.license_handler.license_expression_list(lic_str)
+    formatted = flict_setup.formatter.format_simplified(lic_str, license.simplified)
+
+    flict_print(flict_setup, formatted)
     
 
 def list_licenses(args):
@@ -700,7 +481,7 @@ def verify_project_file(args, flict_setup):
 
     formatted = ""
     if args.list_project_licenses:
-        formatted = flict_setup.formatter.format_license_list(license_list)
+        formatted = flict_setup.formatter.format_license_list(list(project.license_set()))
     
     elif args.license_combination_count:
         formatted = flict_setup.formatter.format_license_combinations(project)
