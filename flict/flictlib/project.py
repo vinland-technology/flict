@@ -232,12 +232,6 @@ class Project:
         self.tot_combinations = tot_combinations
         return tot_combinations
 
-    def _obsolete_license_combinations(self):
-        if self.tot_combinations is None:
-            self.tot_combinations = self.projects_combinations(
-                self.license_handler, self.dependencies_pile(), True)
-        return self.tot_combinations
-
     def __str__(self):
         return self.name()
 
@@ -360,38 +354,6 @@ class Project:
         if not self.expanded:
             self.expand_projects()
         return self._project_combination_list
-
-    def _obsoleted_expanded_projects_string(self, expanded_projects):
-        if not self.expanded:
-            self.expand_projects()
-        proj_count = len(expanded_projects)
-        #print("c: " + str(proj_count))
-
-        h_fmt = "%-20s"
-
-        headers = "|"
-        for i in range(proj_count):
-            headers = headers + \
-                h_fmt % (str(expanded_projects[i][0].name[:10]))
-            headers = headers + " | "
-        headers = headers + "\n|"
-        for _ in range(len(headers) - 5):
-            headers = headers + "-"
-        headers = headers + "|"
-        # print(headers)
-
-        combinations = len(expanded_projects[0])
-        licenses = "|"
-        for i in range(combinations):
-            for j in range(proj_count):
-                license = str(expanded_projects[j][i].license).replace(
-                    "{", "").replace("}", "").replace("'", "")
-                licenses = licenses + h_fmt % (license)[:10]
-                #print(h_fmt % (license))
-                licenses = licenses + " | "
-            licenses = licenses + "\n|"
-        # print(licenses)
-        return headers + "\n" + licenses
 
 
 class ExpandedProject:
