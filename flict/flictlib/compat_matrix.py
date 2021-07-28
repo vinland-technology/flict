@@ -138,33 +138,3 @@ class CompatibilityMatrix:
             return None
 
 
-#
-# TODO: move to test file in test dir
-#
-def test_a_compatible_with_b(compat_matrix, a, b):
-    value = compat_matrix.a_compatible_with_b(a, b)
-    logger.debug(a + " compatible with " + b + ": " + str(value))
-    value = compat_matrix.a_compatible_with_b(b, a)
-    logger.debug(b + " compatible with " + a + ": " + str(value))
-    value = compat_matrix.compatible(b, a)
-    logger.debug(b + " compatible both " + a + ": " + str(value))
-
-
-def main():
-    global VERBOSE
-    # VERBOSE=True
-    compat_matrix = CompatibilityMatrix("osadl-matrix.csv")
-    compat_matrix.compatible("MIT", "BSD-3-Clause")
-    compat_matrix.compatible("BSD-3-Clause", "MIT")
-    compat_matrix.compatible("GPL-2.0-only", "BSD-3-Clause")
-    compat_matrix.compatible("BSD-3-Clause", "GPL-2.0-only")
-    compat_matrix.compatible("GPL-2.0-only", "LGPL-2.1-only")
-    compat_matrix.compatible("LGPL-2.1-only", "GPL-2.0-only")
-
-    test_a_compatible_with_b(
-        compat_matrix, "LGPL-2.1-or-later", "GPL-2.0-only")
-    test_a_compatible_with_b(compat_matrix, "BSD-3-Clause", "MIT")
-
-
-if __name__ == '__main__':
-    main()
