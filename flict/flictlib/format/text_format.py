@@ -69,3 +69,6 @@ class TextFormatter(FormatInterface):
                     ret_str += inner_lic + ": does not belong to a group. It may still be supported by OSADL's matrix"
         return ret_str
     
+    def format_simplified(self, license_expression, simplified):
+        return simplified
+
