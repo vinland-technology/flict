@@ -566,10 +566,6 @@ def output_supported_license_groups(flict_setup):
     return
 
 
-def output_license_group_printer():
-    pass
-
-
 def output_license_group(compatibility, license_handler, args):
 
     for lic in license_handler.license_expression_list(args.license_group, args.extended_licenses).set_list:
@@ -651,7 +647,6 @@ def list_licenses(args):
     flict_setup = FlictSetup.get_setup(args)
     if args.license_group:
         output_license_group(flict_setup.compatibility, flict_setup.license_handler, args)
-        
     elif args.list_supported_license_groups:
         output_supported_license_groups(flict_setup)
     else:
