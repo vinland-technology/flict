@@ -307,7 +307,7 @@ def parse():
                         help='output the license groups supported by flict')
     parser_li.add_argument('-lg', '--license-group',
                            dest='license_group',
-                           type=str,
+                           type=str, 
                            help='output group (if any) for license')
 
     # display-compatibility
@@ -567,16 +567,12 @@ def output_supported_license_groups(flict_setup):
 
 
 def output_license_group(compatibility, license_handler, args):
-
-    for lic in license_handler.license_expression_list(args.license_group, args.extended_licenses).set_list:
-        for inner_lic in lic:
-            #print(" * " + str(inner_lic))
-            lic_group = compatibility.license_group(inner_lic)
-            if lic_group is not None:
-                print(inner_lic + ": " + str(lic_group))
-            else:
-                print(
-                    inner_lic + ": does not belong to a group. It may still be supported by OSADL's matrix")
+    flict_setup = FlictSetup.get_setup(args)
+    formatted = flict_setup.formatter.format_license_group(flict_setup.compatibility,
+                                                           flict_setup.license_handler,
+                                                           args.license_group,
+                                                           args.extended_licenses)
+    flict_print(flict_setup, formatted)
 
 
 def flict_print(flict_setup,str):
