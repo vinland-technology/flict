@@ -5,3 +5,4 @@
 
 test:
 	cd tests && ./all.sh
+	reuse lint
