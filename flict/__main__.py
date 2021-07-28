@@ -346,7 +346,8 @@ def parse():
     return args
 
 
-def _check_compatibilities(matrix_file, licenses, verbose=True):
+# TODO_REMOVE
+def obsoleted__check_compatibilities(matrix_file, licenses, verbose=True):
     l_fmt = "%-20s"
     compat_matrix = CompatibilityMatrix(matrix_file)
     compats = []
@@ -555,17 +556,14 @@ def read_compliance_report(report_file):
     with open(report_file) as fp:
         return json.load(fp)
 
-
-def output_supported_license_groups(compatibility, output_format):
-    supported_license_groups = compatibility.supported_license_groups()
+def output_supported_license_groups(flict_setup):
+    supported_license_groups = flict_setup.compatibility.supported_license_groups()
     supported_license_groups.sort()
-    for lg in supported_license_groups:
-        print(" " + str(lg), end="")
-        if lg == "Permissive" or lg == "Public Domain":
-            pass
-        else:
-            print(" (under consideration)", end="")
-        print("")
+
+    formatted = flict_setup.formatter.format_supported_license_groups(supported_license_groups)
+    flict_print(flict_setup, formatted)
+
+    return
 
 
 def output_license_group_printer():
@@ -656,9 +654,7 @@ def list_licenses(args):
         output_license_group(flict_setup.compatibility, flict_setup.license_handler, args)
         
     elif args.list_supported_license_groups:
-        # TODO
-        print("FEATURE NOT IMPLEMENTED", file=sys.stderr)
-        output_supported_license_groups(flict_setup.compatibility, args.output_format)
+        output_supported_license_groups(flict_setup)
     else:
         output_supported_licenses(flict_setup)
 
