@@ -72,3 +72,21 @@ class TextFormatter(FormatInterface):
     def format_simplified(self, license_expression, simplified):
         return simplified
 
+    def format_verified_license(self, license_expression, suggested_outbounds):
+        ret_str = "The licenses in the expression \"" + license_expression + "\" are"
+        if len(suggested_outbounds) == 0:
+            ret_str += " not"
+        ret_str += " compatible.\n"
+        if len(suggested_outbounds) == 0:
+            ret_str += "No outbound license could be suggested due to license incompatibility."
+        else:
+            ret_str += "Suggested outbound licenses: "
+            lic = None
+            for s in suggested_outbounds:
+                if lic == None:
+                    lic = s
+                else:
+                    lic += ", " + s
+            ret_str += lic + "\n"
+            ret_str += "NOTE: the suggested outbounds need to be manually reviewed."
+        return ret_str
