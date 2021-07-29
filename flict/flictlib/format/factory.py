@@ -13,6 +13,7 @@
 from flict.flictlib.format.json_format import JsonFormatter
 from flict.flictlib.format.text_format import TextFormatter
 from flict.flictlib.format.dot_format  import DotFormatter
+from flict.flictlib.format.markdown_format  import MarkdownFormatter
 
 class FormatFactory:
 
@@ -27,6 +28,8 @@ class FormatFactory:
                FormatFactory._instance = TextFormatter()
            elif format.lower() == "dot":
                FormatFactory._instance = DotFormatter()
+           elif format.lower() == "markdown":
+               FormatFactory._instance = MarkdownFormatter()
            elif format.lower() == "markdown":
                print("MARKDOWN COMING SOON: ")
            else:
