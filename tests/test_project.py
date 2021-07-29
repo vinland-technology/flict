@@ -87,7 +87,7 @@ class Basic(unittest.TestCase):
         self.assertEqual(len(sweden['dependencies']), 0)
         self.assertEqual(sweden['expanded_license']['expanded'], "Apache-2.0 OR  ( GPL-3.0-only OR GPL-2.0-only )  OR MPL-1.1")
         self.assertEqual(sweden['expanded_license']['grouped'], "Apache-2.0 OR  ( GPL-3.0-only OR GPL-2.0-only )  OR MPL-1.1")
-        self.assertEqual(sweden['expanded_license']['simplified'], "Apache-2.0 OR GPL-2.0-only OR GPL-3.0-only OR MPL-1.1")
+        self.assertEqual(sweden['expanded_license']['simplified'], "Apache-2.0 OR GPL-2.0-or-later OR MPL-1.1")
         sweden['expanded_license']['set_list'].sort()
         self.assertEqual(sweden['expanded_license']['set_list'], [['Apache-2.0'], ['GPL-2.0-only'], ['GPL-3.0-only'], ['MPL-1.1']])
         
