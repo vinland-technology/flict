@@ -184,7 +184,7 @@ class LicenseHandler:
         if relicense:
             license.expanded = self.expand_relicense(license.simplified)
         else:
-            license.expanded = license.translated
+            license.expanded = license.simplified
 
         license.grouped = self.group(license.expanded)
 
