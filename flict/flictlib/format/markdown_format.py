@@ -4,36 +4,39 @@
 #
 # flict - FOSS License Compatibility Tool
 #
-# SPDX-FileCopyrightText: 2020 Henrik Sandklef
+# SPDX-FileCopyrightText: 2021 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 ###################################################################
 
 from flict.flictlib.format.format import FormatInterface
+from flict.flictlib.format.common import compat_interprets
 from flict.flictlib import logger
 
 class MarkdownFormatter(FormatInterface):
 
+    def format_support_licenses(self, compatibility):
+        return None
+    
+    def format_license_list(self, license_list):
+        return None
 
-compat_interprets = {
-    'left': {
-        'true':       {'markdown': '--->'},
-        'false':      {'markdown': '---|'},
-        'undefined':  {'markdown': '---U'},
-        'depends':    {'markdown': '---D'},
-        'question':   {'markdown': '---Q'},
-    },
-    'right': {
-        'true':       {'markdown': '<----'},
-        'false':      {'markdown': '|--'},
-        'undefined':  {'markdown': 'U---'},
-        'depends':    {'markdown': 'D---'},
-        'question':   {'markdown': 'Q---'},
-    },
-}
+    def format_report(self, report):
+        return None
+ 
+    def format_license_combinations(self, project):
+        return None
+       
+    def format_outbound_license(self, suggested_outbounds):
+        return None
+        
+    def format_license_combinations(self, combinations):
+        return None
 
-
+    def format_compats(self, compats):
+        return output_compat_markdown(compats)
+    
 def _compat_to_fmt(comp_left, comp_right, fmt):
     left = compat_interprets['left'][comp_left][fmt]
     right = compat_interprets['right'][comp_right][fmt]
@@ -43,8 +46,7 @@ def _compat_to_fmt(comp_left, comp_right, fmt):
 def _compat_to_markdown(left, comp_left, right, comp_right):
     return _compat_to_fmt(comp_left, comp_right, "markdown")
 
-# TODO: REMOVE
-def _obsolete_output_compat_markdown(compats, verbose):
+def output_compat_markdown(compats):
     # print(str(compats))
     result = "# License compatibilities\n\n"
 
@@ -66,5 +68,5 @@ def _obsolete_output_compat_markdown(compats, verbose):
                 main_license, comp_left, inner_license, comp_right)
             result += main_license + " " + compat_text + " " + inner_license + "\n\n"
 
-    print(result)
+    return result
     
