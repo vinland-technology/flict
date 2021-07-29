@@ -133,17 +133,24 @@ class Compatibility:
             license_compat_status = False
             if project is not None:
                 
-                # for each project combination, loop through the licenses
+                # loop through project license combinations
+                # - this is looping over all the top projects combinations (with its deps)
+                # - for every or in the license expression we get noe more combination (of the top project)
                 for combination in project.project_combination_list():
                     combination_set = {}
                     #print("  CC: c:" + str((combination)))
-                    
-                    # loop through the project combinations
+
+                    status = False
+                    # loop through the top project and its deps in this project combination
                     for p in combination:
+                        #print("    CC: ---> " + str(p['license']))
+
                         reason = set()
                         # and for each such, loop through license(s)
-                        #print("    CC: ---> " + str(p['license']))
                         for lic in p['license']:
+                            # and check if the license is
+                            # a) supported
+                            # b) compatible with the top level licenses we're looping over (top loop)
                             _license = self._supported_license(license)
                             _lic = self._supported_license(lic)
 
@@ -163,14 +170,16 @@ class Compatibility:
 
                         # do we have compatibility? (check if reason=={})
                         status = ( reason == set() )
-                        #print("             " + str(lic) + " : " + str(status))
                         
-                    license_compat_status = license_compat_status or status
-                    #print("  CC: c:" + str((combination)) + " ==> "  +str(status) + "    : " + str(reason))
-                    #print("    CC: " + str(license_compat_status))
+                        #print("             " + str(license) + " ==> " + str(p['license']) + " : " + str(status))
+                        
+                        license_compat_status = license_compat_status or status
+                        #print("  CC: c:" + str((combination)) + " ==> "  +str(status) + "    : " + str(reason))
+                        #print("    CC: " + str(license_compat_status))
 
-                    if license_compat_status:
-                        outbound_suggestions.add(license)
+                        if status:
+                            outbound_suggestions.add(license)
+                            
                     combination_set['combination'] = combination
                     combination_set['compatibility_fails'] = list(reason)
                     combination_set['compatibility_status'] = status

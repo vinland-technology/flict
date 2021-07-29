@@ -16,6 +16,10 @@ PY_SCRIPTS="test_compat_matrix.py  test_license.py  test_project.py "
 SH_SCRIPTS="cli/license-expr.sh cli/outbounds.sh cli/cli-json.sh "
 LOG_FILE=$(dirname ${BASH_SOURCE[0]}/)/all.log
 
+
+echo
+inform "Python test scripts"
+echo "---------------------------------"
 for ps in $PY_SCRIPTS
 do
     inform_n "$ps"
@@ -24,11 +28,15 @@ do
     echo "OK"
 done
 
+
+echo
+inform "CLI test scripts"
+echo "---------------------------------"
 for bs in $SH_SCRIPTS
 do
-    echo
     echo $bs
     ./$bs
+    echo
 done
 
 

@@ -39,8 +39,9 @@ compare_exec     "$FLICT_CMD GPL-2.0-only"         \
                  '{"original": "GPL-2.0-only", "simplified": "GPL-2.0-only"}' 0 "No relicense GPL-2.0-only"
 
 compare_exec     "$FLICT_CMD GPL-2.0-or-later"     \
-                 '{"original": "GPL-2.0-or-later", "simplified": "GPL-2.0-only OR GPL-3.0-only"}' 0 "Relicense GPL-2.0-or-later"
+                 '{"original": "GPL-2.0-or-later", "simplified": "GPL-2.0-or-later"}' 0 "Relicense GPL-2.0-or-later"
+
 compare_exec     "$FLICT_CMD GPL-2.0-or-later and MIT"     \
-                 '{"original": "GPL-2.0-or-later and MIT", "simplified": "MIT AND (GPL-2.0-only OR GPL-3.0-only)"}' 0 "Relicense GPL-2.0-or-later and MIT"
+                 '{"original": "GPL-2.0-or-later and MIT", "simplified": "GPL-2.0-or-later AND MIT"}' 0 "Relicense GPL-2.0-or-later and MIT"
 
 end_test

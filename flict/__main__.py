@@ -393,6 +393,7 @@ def _outbound_license(compatibility, license_handler, licenses, output_format, e
     #suggested_outbounds = flict.flictlib.report.suggested_outbounds(c_report)
     #suggested_outbounds = report['compatibility_report']['compatibilities']['outbound_suggestions']
     suggested_outbounds.sort()
+    #print(json.dumps(c_report))
     return suggested_outbounds
 
 def output_outbound_license(flict_setup, licenses, output_format, extended_licenses):
@@ -439,7 +440,6 @@ def verify(args):
     if present_and_set(args, 'project_file'):
         verify_project_file(args, flict_setup)
     elif present_and_set(args, 'license_expression'):
-        print(" * license_expression: " + str(args.license_expression))
         verify_license_expression(args, flict_setup)
     else:
         # TODO: raise exception?
@@ -451,25 +451,15 @@ def verify_license_expression(args, flict_setup):
     for lic in args.license_expression:
         lic_str += " " + lic
 
-    # TODO: fix
     report = _empty_project_report(flict_setup.compatibility, flict_setup.license_handler,
                                    lic_str, args.output_format, args.extended_licenses)
 
-    compats = report['compatibility_report']['compatibilities']['license_compatibilities']
-    print(json.dumps(report['compatibility_report']['compatibilities']))
-    exit(0)
-    all_compatible = True
-    for compat in compats:
-        compatible = True
-        print(" * " + compat['outbound'] + "    combinations: " + str(len(compat['combinations'])))
-        for comb in compat['combinations']:
-            compatible = compatible and comb['compatibility_status']
-            print(str(comb))
-            print("   * " + str(comb['combination'][0]['license']) + ": " + str(compatible))
-        print(" * " + compat['outbound'] + ": " + str(comb['compatibility_status']))
-    all_compatible = all_compatible and compatible 
-    print(" ===> " + str(all_compatible))
-    output_outbound_license(flict_setup, lic_str, args.output_format, args.extended_licenses)
+    suggested = report['compatibility_report']['compatibilities']['outbound_suggestions']
+
+    formatted = flict_setup.formatter.format_verified_license(lic_str, suggested)
+
+    flict_print(flict_setup, formatted)
+    
         
 def verify_project_file(args, flict_setup):
 
@@ -510,7 +500,7 @@ def display_compatibility(args):
 
     formatted = flict_setup.formatter.format_compats(compats)
     flict_print(flict_setup, formatted)
-    
+
 def suggest_outbound(args):
     flict_setup = FlictSetup.get_setup(args)
     
@@ -531,15 +521,11 @@ def main():
 
     
     if 'which' in args:
-        vargs = vars(args)
-        #print("yes:  " + str(vargs['which']))
-        #print("func: " + str(args.func))
-        #print("---------------")
         args.func(args)
     else:
         print("no")
         print(str(args))
-        
+        exit(3)
     exit(0)
     
 
