@@ -178,6 +178,30 @@ class LicenseHandler:
         license = ManagedLicenseExpression(license_expression)
         license.translated = self.translate(license_expression)
 
+        # We need str to skip verbose output
+        license.simplified = str(self.simplify(license.translated))
+        
+        if relicense:
+            license.expanded = self.expand_relicense(license.simplified)
+        else:
+            license.expanded = license.translated
+
+        license.grouped = self.group(license.expanded)
+
+        license.interim = self.interim_license_expression_list(
+            license.grouped, self.licensing)
+
+        license.set_list = self.interim_license_expression_set_list(
+            license.interim)
+
+        return license
+
+    # 
+    def _license_expression_list(self, license_expression, relicense=True):
+
+        license = ManagedLicenseExpression(license_expression)
+        license.translated = self.translate(license_expression)
+
         if relicense:
             license.expanded = self.expand_relicense(license.translated)
         else:
