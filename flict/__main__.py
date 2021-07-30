@@ -430,18 +430,21 @@ def verify_project_file(args, flict_setup):
 def display_compatibility(args):
     flict_setup = FlictSetup.get_setup(args)
 
-    _licenses = []
-    for lic in args.licenses:
-        new_lic = flict_setup.license_handler.translate_and_relicense(lic).replace("(", "").replace(
-                ")", "").replace(" ", "").replace("OR", " ").replace("AND", " ").strip().split(" ")
-        _licenses += new_lic
-            #print(lic + " ==> " + str(new_lic) + " =====> " + str(licenses))
-        #print("Check compat for: " + str(licenses))
+    try:
+        _licenses = []
+        for lic in args.licenses:
+            new_lic = flict_setup.license_handler.translate_and_relicense(lic).replace("(", "").replace(
+                    ")", "").replace(" ", "").replace("OR", " ").replace("AND", " ").strip().split(" ")
+            _licenses += new_lic
+                #print(lic + " ==> " + str(new_lic) + " =====> " + str(licenses))
+            #print("Check compat for: " + str(licenses))
 
-        # Diry trick to remove all duplicates
-    licenses = list(set(_licenses))
+            # Diry trick to remove all duplicates
+        licenses = list(set(_licenses))
 
-    compats = flict_setup.compatibility.check_compatibilities(licenses, args.extended_licenses)
+        compats = flict_setup.compatibility.check_compatibilities(licenses, args.extended_licenses)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION, "Invalid license expression: " + str(args.licenses))
 
     formatted = flict_setup.formatter.format_compats(compats)
     flict_print(flict_setup, formatted)
