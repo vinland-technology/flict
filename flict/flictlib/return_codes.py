@@ -14,42 +14,30 @@ from enum import IntEnum
 
 class ReturnCodes(IntEnum):
     # common
-    ##" range 0 - 10
 
     RET_SUCCESS = 0 
-
     #1
     #2
+    #3
+    #4
     RET_MISSING_ARGS = 5
-
-    # verify
-    ## range 11 - 20
-
-    # simplify
-    ## range 21 -30
-
-    # list
-    ## range 31 -40
-
-    # display-compatibility
-    ## range 41 - 50
-
-    # outbound-candidate
-    ## range 51 - 60
-
-    # policy-report
-    ## range 61 - 70
-
+    #6
+    #7
+    #8
+    #9
+    
+    RET_INVALID_PROJECT = 10
+    RET_INVALID_EXPRESSSION = 11
 
 class FLictException(Exception):
     
     def __init__(self, error_code, error_message):
-        self.error_code = error_code
-        self.error_message = error_message
+        self._error_code = error_code
+        self._error_message = error_message
 
     def error_code(self):
-        return self.error_code
+        return self._error_code
 
     def error_message(self):
-        return self.error_message
+        return self._error_message
 
