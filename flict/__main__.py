@@ -22,9 +22,13 @@ import flict.flictlib.report
 from flict.flictlib.format.factory import FormatFactory
 from flict.flictlib.format.format import FormatInterface
 
+from   flict.flictlib.return_codes import FLictException 
+from   flict.flictlib.return_codes import ReturnCodes
+
 import json
 import os
 import sys
+
 
 #REMOVE
 import logging
@@ -84,8 +88,6 @@ class FlictSetup:
             logger.main_logger.debug(" flict_setup: " + str(FlictSetup._instance))
         return FlictSetup._instance
     
-
-        
 def parse():
 
     description = "NAME\n  " + PROGRAM_NAME + "\n\n"
@@ -374,8 +376,16 @@ def output_license_group(compatibility, license_handler, args):
     flict_print(flict_setup, formatted)
 
 
-def flict_print(flict_setup,str):
-    print(str, file=flict_setup.output)
+def flict_print(flict_setup, msg):
+    print(msg, file=flict_setup.output)
+                
+def flict_error(msg):
+    print("ERROR: " + msg, file=sys.stderr)
+                
+def flict_exit(ret_code, msg):
+    if msg is not None:
+        print("ERROR: " + msg, file=sys.stderr)
+    exit(ret_code)
                 
 def output_supported_licenses(flict_setup):
     formatted = flict_setup.formatter.format_support_licenses(flict_setup.compatibility)
@@ -442,8 +452,7 @@ def verify(args):
     elif present_and_set(args, 'license_expression'):
         verify_license_expression(args, flict_setup)
     else:
-        # TODO: raise exception?
-        print(" no....")
+        print(str(ReturnCodes.RET_MISSING_ARGS) + "Missing argument to the verify command")
 
     
 def verify_license_expression(args, flict_setup):
@@ -523,12 +532,10 @@ def main():
     if 'which' in args:
         args.func(args)
     else:
-        print("no")
-        print(str(args))
-        exit(3)
-    exit(0)
-    
+        flict_exit(ReturnCodes.RET_MISSING_ARGS, "Missing command.")
 
+    flict_exit(ReturnCodes.RET_SUCESS, None)
+        
     if args.licenses:
         _licenses = []
         for lic in args.licenses:
