@@ -32,31 +32,31 @@ class Policy:
         if self.policy_report['policy'] is None:
             return None
 
-        outbounds = report['licensing']['outbound_suggestions']
+        outbounds = report['licensing']['outbound_candidates']
         allowed = self.policy_report['policy']['policy']['allowlist']
         avoid = self.policy_report['policy']['policy']['avoidlist']
         denied = self.policy_report['policy']['policy']['denylist']
 
         #nr_outbounds = len(outbounds)
 
-        allowed_outbound_suggestions = set()
-        avoid_outbound_suggestions = set()
-        denied_outbound_suggestions = set()
+        allowed_outbound_candidates = set()
+        avoid_outbound_candidates = set()
+        denied_outbound_candidates = set()
 
         for out_lic in outbounds:
             if out_lic in allowed:
-                allowed_outbound_suggestions.add(out_lic)
+                allowed_outbound_candidates.add(out_lic)
             elif out_lic in avoid:
-                avoid_outbound_suggestions.add(out_lic)
+                avoid_outbound_candidates.add(out_lic)
             elif out_lic in denied:
-                denied_outbound_suggestions.add(out_lic)
+                denied_outbound_candidates.add(out_lic)
             else:
-                allowed_outbound_suggestions.add(out_lic)
+                allowed_outbound_candidates.add(out_lic)
 
         policy_outbounds = {}
-        policy_outbounds['allowed'] = list(allowed_outbound_suggestions)
-        policy_outbounds['avoid'] = list(avoid_outbound_suggestions)
-        policy_outbounds['denied'] = list(denied_outbound_suggestions)
+        policy_outbounds['allowed'] = list(allowed_outbound_candidates)
+        policy_outbounds['avoid'] = list(avoid_outbound_candidates)
+        policy_outbounds['denied'] = list(denied_outbound_candidates)
 
         if len(policy_outbounds['allowed']) > 0:
             policy_outbounds['policy_result'] = 0

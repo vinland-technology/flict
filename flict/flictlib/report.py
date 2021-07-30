@@ -48,8 +48,8 @@ class Report:
     def licensing_data(self):
         licensing = {}
 
-        outbounds = self.report_map['compatibility_report']['compatibilities']['outbound_suggestions']
-        licensing['outbound_suggestions'] = outbounds
+        outbounds = self.report_map['compatibility_report']['compatibilities']['outbound_candidates']
+        licensing['outbound_candidates'] = outbounds
 
         return licensing
 
@@ -69,6 +69,6 @@ class Report:
         return json.dumps(self.report_map)
 
 
-def suggested_outbounds(report):
-    return report['compatibility_report']['compatibilities']['outbound_suggestions']
+def outbound_candidates(report):
+    return report['compatibility_report']['compatibilities']['outbound_candidates']
     

@@ -43,7 +43,7 @@ class FormatInterface:
     def format_simplified(self, license_expression, simplified):
         return "default implmentation | format_simplified(): " + str(simplified)
         
-    def format_verified_license(self, license_expression, suggested_outbounds):
+    def format_verified_license(self, license_expression, outbound_candidate):
         return "default implmentation | format__verified_license(): " + str(license_expression)
         
     

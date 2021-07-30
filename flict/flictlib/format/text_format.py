@@ -35,10 +35,10 @@ class TextFormatter(FormatInterface):
     def format_license_combinations(self, project):
         return str(project.projects_combinations())
 
-    def format_outbound_license(self, suggested_outbounds):
+    def format_outbound_license(self, outbound_candidate):
         ret_str = None
         
-        for ol in suggested_outbounds:
+        for ol in outbound_candidate:
             if ret_str == None:
                 ret_str = ol
             else:
@@ -72,21 +72,21 @@ class TextFormatter(FormatInterface):
     def format_simplified(self, license_expression, simplified):
         return simplified
 
-    def format_verified_license(self, license_expression, suggested_outbounds):
-        ret_str = "The licenses in the expression \"" + license_expression + "\" are"
-        if len(suggested_outbounds) == 0:
+    def format_verified_license(self, license_expression, outbound_candidate):
+        ret_str = "The licenses in the expression \"" + license_expression.strip() + "\" are"
+        if len(outbound_candidate) == 0:
             ret_str += " not"
         ret_str += " compatible.\n"
-        if len(suggested_outbounds) == 0:
-            ret_str += "No outbound license could be suggested due to license incompatibility."
+        if len(outbound_candidate) == 0:
+            ret_str += "No outbound license candidate could be identified due to license incompatibility."
         else:
-            ret_str += "Suggested outbound licenses: "
+            ret_str += "Outbound license candidates: "
             lic = None
-            for s in suggested_outbounds:
+            for s in outbound_candidate:
                 if lic == None:
                     lic = s
                 else:
                     lic += ", " + s
             ret_str += lic + "\n"
-            ret_str += "NOTE: the suggested outbounds need to be manually reviewed."
+            ret_str += "NOTE: the suggested outbound candidate licenses need to be manually reviewed."
         return ret_str

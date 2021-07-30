@@ -296,7 +296,7 @@ def parse():
     parser_si = subparsers.add_parser('simplify', help='expand and simplify license expression')
     parser_si.set_defaults(which="simplify", func=simplify)
     parser_si.add_argument('license_expression', type=str, nargs='+', 
-                          help='license expression to suggest outbound license for')
+                          help='license expression to simplify')
 
     # list
     parser_li = subparsers.add_parser('list', help='list supported licenses or groups')
@@ -318,11 +318,11 @@ def parse():
     parser_d.add_argument('licenses', type=str, nargs='+', 
                           help='license expression to display compatibility for')
 
-    # suggest-outbound
-    parser_s = subparsers.add_parser('suggest-outbound', help='suggest outbound license')
-    parser_s.set_defaults(which="suggest-outbound", func=suggest_outbound)
+    # outbound-candidates
+    parser_s = subparsers.add_parser('outbound-candidate', help='suggest outbound license candidates')
+    parser_s.set_defaults(which="outbound-candidate", func=suggest_outbound_candidate)
     parser_s.add_argument('license_expression', type=str, nargs='+', 
-                          help='license expression to suggest outbound license for')
+                          help='license expression to suggest candidate outbound license for')
 
     # policy-report
     parser_p = subparsers.add_parser('policy-report', help='create report with license policy applied')
@@ -389,20 +389,20 @@ def _empty_project_report(compatibility, license_handler, licenses, output_forma
 
 def _outbound_license(compatibility, license_handler, licenses, output_format, extended_licenses):
     c_report = _empty_project_report(compatibility, license_handler, licenses, output_format, extended_licenses)
-    suggested_outbounds = flict.flictlib.report.suggested_outbounds(c_report)
-    #suggested_outbounds = flict.flictlib.report.suggested_outbounds(c_report)
-    #suggested_outbounds = report['compatibility_report']['compatibilities']['outbound_suggestions']
-    suggested_outbounds.sort()
+    outbound_candidates = flict.flictlib.report.outbound_candidates(c_report)
+    #outbound_candidates = flict.flictlib.report.outbound_candidates(c_report)
+    #outbound_candidates = report['compatibility_report']['compatibilities']['outbound_candidates']
+    outbound_candidates.sort()
     #print(json.dumps(c_report))
-    return suggested_outbounds
+    return outbound_candidates
 
 def output_outbound_license(flict_setup, licenses, output_format, extended_licenses):
-    suggested_outbounds = _outbound_license(flict_setup.compatibility,
+    outbound_candidates = _outbound_license(flict_setup.compatibility,
                                             flict_setup.license_handler,
                                             licenses,
                                             output_format,
                                             extended_licenses)
-    formatted = flict_setup.formatter.format_outbound_license(suggested_outbounds)
+    formatted = flict_setup.formatter.format_outbound_license(outbound_candidates)
     flict_print(flict_setup, formatted)
 
 
@@ -454,9 +454,9 @@ def verify_license_expression(args, flict_setup):
     report = _empty_project_report(flict_setup.compatibility, flict_setup.license_handler,
                                    lic_str, args.output_format, args.extended_licenses)
 
-    suggested = report['compatibility_report']['compatibilities']['outbound_suggestions']
+    candidates = report['compatibility_report']['compatibilities']['outbound_candidates']
 
-    formatted = flict_setup.formatter.format_verified_license(lic_str, suggested)
+    formatted = flict_setup.formatter.format_verified_license(lic_str, candidates)
 
     flict_print(flict_setup, formatted)
     
@@ -501,7 +501,7 @@ def display_compatibility(args):
     formatted = flict_setup.formatter.format_compats(compats)
     flict_print(flict_setup, formatted)
 
-def suggest_outbound(args):
+def suggest_outbound_candidate(args):
     flict_setup = FlictSetup.get_setup(args)
     
     #print("suggest_outbound:    " + str(args))

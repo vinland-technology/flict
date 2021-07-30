@@ -27,7 +27,7 @@ class DotFormatter(FormatInterface):
     def format_license_combinations(self, project):
         return None
        
-    def format_outbound_license(self, suggested_outbounds):
+    def format_outbound_license(self, outbound_candidate):
         return None
         
     def format_license_combinations(self, combinations):

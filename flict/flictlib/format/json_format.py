@@ -32,8 +32,8 @@ class JsonFormatter(FormatInterface):
         comb['license_combinations'] = combinations
         return json.dumps(comb)
        
-    def format_outbound_license(self, suggested_outbounds):
-        return json.dumps(suggested_outbounds)
+    def format_outbound_license(self, outbound_candidate):
+        return json.dumps(outbound_candidate)
         
     def format_compats(self, compats):
         return json.dumps(compats)
@@ -63,9 +63,9 @@ class JsonFormatter(FormatInterface):
         return json.dumps( { 'original':  license_expression,
                              'simplified': simplified } )
 
-    def format_verified_license(self, license_expression, suggested_outbounds):
-        compat = len(suggested_outbounds) is not 0
+    def format_verified_license(self, license_expression, outbound_candidate):
+        compat = len(outbound_candidate) is not 0
         return json.dumps( { "license_expression": license_expression,
                             "compatible": compat,
-                            "suggested_outbounds": suggested_outbounds }
+                            "outbound_candidate": outbound_candidate }
         )
