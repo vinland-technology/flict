@@ -316,7 +316,7 @@ def flict_print(flict_setup, msg):
                 
 def flict_exit(ret_code, msg):
     if msg is not None:
-        logger.main_logger.error("ERROR: " + msg, file=sys.stderr)
+        logger.main_logger.error(msg)
     exit(ret_code)
                 
 def output_supported_licenses(flict_setup):
@@ -384,7 +384,7 @@ def verify(args):
     elif present_and_set(args, 'license_expression'):
         verify_license_expression(args, flict_setup)
     else:
-        print(str(ReturnCodes.RET_MISSING_ARGS) + "Missing argument to the verify command")
+        raise FLictException(ReturnCodes.RET_MISSING_ARGS, "Missing argument to the verify command")
 
     
 def verify_license_expression(args, flict_setup):
@@ -392,23 +392,25 @@ def verify_license_expression(args, flict_setup):
     for lic in args.license_expression:
         lic_str += " " + lic
 
-    report = _empty_project_report(flict_setup.compatibility, flict_setup.license_handler,
-                                   lic_str, args.output_format, args.extended_licenses)
+    try:
+        report = _empty_project_report(flict_setup.compatibility, flict_setup.license_handler,
+                                       lic_str, args.output_format, args.extended_licenses)
 
-    candidates = report['compatibility_report']['compatibilities']['outbound_candidates']
+        candidates = report['compatibility_report']['compatibilities']['outbound_candidates']
 
-    formatted = flict_setup.formatter.format_verified_license(lic_str, candidates)
+        formatted = flict_setup.formatter.format_verified_license(lic_str, candidates)
 
-    flict_print(flict_setup, formatted)
+        flict_print(flict_setup, formatted)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION, "Could not parse exception \"" + str(args.license_expression) + "\"")
+
     
-        
 def verify_project_file(args, flict_setup):
 
-    project = Project(args.project_file, flict_setup.license_handler)
-    if project is None:
-        logger.main_logger.error(
-             "Could not read project file \"" + args.project_file + "\"")
-        raise Flictexception(ReturnCodes.RET_INVALID_PROJECT, "")
+    try:
+        project = Project(args.project_file, flict_setup.license_handler)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_PROJECT, "Missing or invalid project file.")
 
     formatted = ""
     if args.list_project_licenses:
@@ -462,11 +464,15 @@ def main():
 
     
     if 'which' in args:
-        args.func(args)
+        try:
+            args.func(args)
+        except FLictException as e:
+            flict_exit(e.error_code(), e.error_message())
+            
     else:
         flict_exit(ReturnCodes.RET_MISSING_ARGS, "Missing command.")
 
-    flict_exit(ReturnCodes.RET_SUCESS, None)
+    #flict_exit(ReturnCodes.RET_SUCESS, None)
 
 
 if __name__ == '__main__':
