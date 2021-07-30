@@ -31,9 +31,9 @@ flict can assist you with:
 
 flict supports:
 
-* 71 licenses (```flict -lsl```) 
+* 71 licenses (```flict -of text list```) 
 
-* 925 licenses in experimental mode using scancode classification (```flict -lsl -es```) 
+* 925 licenses in experimental mode using scancode classification (```flict -es -of text list```) 
 
 * 'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-only or GPL-3.0-only)
 
