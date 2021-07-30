@@ -5,12 +5,19 @@ SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 
-# Display and/or Simplify license expression
+# Display Simplify license expression
 
-To simplify the expression `MIT and BSD-3-Clause & MIT`, type:
+To simplify the expression `MIT and BSD-3-Clause and MIT`, type:
 
 ```
-$ flict -le "MIT and BSD-3-Clause & MIT"
+$ flict simplify MIT and BSD-3-Clause and MIT
+{"original": "MIT and BSD-3-Clause and MIT", "simplified": "BSD-3-Clause AND MIT"}
+```
+
+and if you want the result in `text` format:
+
+```
+$ flict -of text simplify MIT and BSD-3-Clause and MIT
 BSD-3-Clause AND MIT
 ```
 
@@ -19,8 +26,8 @@ BSD-3-Clause AND MIT
 To check how the licenses `BSD-3-Clause MIT GPL-2.0-only` are compatible with each other you can type:
 
 ```
-$ flict -v -cc BSD-3-Clause MIT GPL-2.0-only
-{"compatibilities": [{"license": "MIT", "licenses": [{"license": "GPL-2.0-only", "compatible_right": "true", "compatible_left": "false"}, {"license": "BSD-3-Clause", "compatible_right": "true", "compatible_left": "true"}]}, {"license": "GPL-2.0-only", "licenses": [{"license": "MIT", "compatible_right": "false", "compatible_left": "true"}, {"license": "BSD-3-Clause", "compatible_right": "false", "compatible_left": "true"}]}, {"license": "BSD-3-Clause", "licenses": [{"license": "MIT", "compatible_right": "true", "compatible_left": "true"}, {"license": "GPL-2.0-only", "compatible_right": "true", "compatible_left": "false"}]}]}
+$ flict display-compatibility BSD-3-Clause MIT GPL-2.0-only
+{"compatibilities": [{"license": "MIT", "licenses": [{"license": "BSD-3-Clause", "compatible_right": "true", "compatible_left": "true"}, {"license": "GPL-2.0-only", "compatible_right": "true", "compatible_left": "false"}]}, {"license": "BSD-3-Clause", "licenses": [{"license": "MIT", "compatible_right": "true", "compatible_left": "true"}, {"license": "GPL-2.0-only", "compatible_right": "true", "compatible_left": "false"}]}, {"license": "GPL-2.0-only", "licenses": [{"license": "MIT", "compatible_right": "false", "compatible_left": "true"}, {"license": "BSD-3-Clause", "compatible_right": "false", "compatible_left": "true"}]}]}
 ```
 
 ## Create graph over compatibility
@@ -28,7 +35,7 @@ $ flict -v -cc BSD-3-Clause MIT GPL-2.0-only
 Instead of a text based representation (as above) you can instead create a graphical representation using `dot` format. 
 
 ```
-$ flict -v -cc BSD-3-Clause MIT GPL-2.0-only -of dot > compat.dot
+$ flict -of dot display-compatibility BSD-3-Clause MIT GPL-2.0-only > compat.dot
 $ dot -Tpdf compat.dot -O
 ```
 
@@ -40,18 +47,18 @@ You can use the `-of` option (e.g. `-of JSON`)  to specify wanted output format:
 
 * markdown - from which you can generate HTML, PDF, latex, odt, docx and many more
 
-* dot - for use with graphviz (`dot`) so you can create graphical representation of the compatibility
+* text - we're trying to be human friendly here
 
+* dot - for use with graphviz (`dot`) so you can create graphical representation of the compatibility
 
 # Calculate outbound license
 
 To get a list of suggested outbound licenses for the expression `MIT and BSD & GPL-2.0-or-later`, type:
 
 ```
-$ flict -ol "MIT and BSD & GPL-2.0-or-later"
+$ flict outbound-candidate MIT and BSD and GPL-2.0-or-later
 ["GPL-2.0-only", "GPL-3.0-only"]
 ```
-
 ***Note:** the `GPL-2.0-or-later` has been relicensed to `GPL-2.0-only OR GPL-3.0-only`*
 
 ## Suggesting licenses (as outbound) from all known licenses
@@ -61,8 +68,8 @@ of licenses in the project (with its dependencies) you can instruct
 flict to check every its known licenses as outbound:
 
 ```
-$ flict -el -ol  "BSD-3-Clause and MIT"
-["AFL-2.0", "EFL-2.0", "OSL-3.0", "FTL", "IBM-pibs", "AGPL-3.0-only", "Zlib", "CDDL-1.0", "Artistic-1.0-Perl", "CC0-1.0", "libtiff", "GPL-3.0-or-later", "zlib-acknowledgement", "SunPro", "MPL-1.1", "Apache-1.0", "MS-RL", "Python-2.0", "BSL-1.0", "GPL-3.0-only", "MIT", "LGPL-3.0-or-later", "MPL-2.0-no-copyleft-exception", "ICU", "Apache-1.1", "bzip2-1.0.6", "BSD-3-Clause", "EUPL-1.1", "MIT-CMU", "MPL-2.0", "LGPL-2.1-or-later", "BSD-2-Clause-Patent", "HPND", "Libpng", "RPL-1.5", "MirOS", "Apache-2.0", "EPL-2.0", "X11", "IPL-1.0", "Unicode-DFS-2015", "CPL-1.0", "ISC", "curl", "LGPL-3.0-only", "EPL-1.0", "OpenSSL", "XFree86-1.1", "BSD-4-Clause", "BSD-4-Clause-UC", "BSD-2-Clause", "GPL-2.0-or-later", "MS-PL", "bzip2-1.0.5", "WTFPL", "AGPL-3.0-or-later", "Permissive", "LGPL-2.1-only", "NBPL-1.0", "GPL-2.0-only", "IJG", "NTP", "Unicode-DFS-2016", "UPL-1.0", "GPL-2.0-only WITH Classpath-exception-2.0", "Public Domain", "AFL-2.1", "Qhull"]
+$ flict -el outbound-candidate MIT and BSD 
+["AFL-2.0", "AFL-2.1", "AGPL-3.0-only", "AGPL-3.0-or-later", "Apache-1.0", "Apache-1.1", "Apache-2.0", "Artistic-1.0-Perl", "BSD-2-Clause", "BSD-2-Clause-Patent", "BSD-3-Clause", "BSD-4-Clause", "BSD-4-Clause-UC", "BSL-1.0", "CC0-1.0", "CDDL-1.0", "CPL-1.0", "EFL-2.0", "EPL-1.0", "EPL-2.0", "EUPL-1.1", "FTL", "GPL-2.0-only", "GPL-2.0-only WITH Classpath-exception-2.0", "GPL-2.0-or-later", "GPL-3.0-only", "GPL-3.0-or-later", "HPND", "IBM-pibs", "ICU", "IJG", "IPL-1.0", "ISC", "LGPL-2.1-only", "LGPL-2.1-or-later", "LGPL-3.0-only", "LGPL-3.0-or-later", "Libpng", "MIT", "MIT-CMU", "MPL-1.1", "MPL-2.0", "MPL-2.0-no-copyleft-exception", "MS-PL", "MS-RL", "MirOS", "NBPL-1.0", "NTP", "OSL-3.0", "OpenSSL", "Permissive", "Proprietary", "Proprietary-linked", "Public Domain", "Python-2.0", "Qhull", "RPL-1.5", "SunPro", "UPL-1.0", "Unicode-DFS-2015", "Unicode-DFS-2016", "WTFPL", "X11", "XFree86-1.1", "Zlib", "bzip2-1.0.5", "bzip2-1.0.6", "curl", "libtiff", "zlib-acknowledgement"]
 ```
 
 # Create compatibility report of the Europe project
@@ -72,7 +79,7 @@ $ flict -el -ol  "BSD-3-Clause and MIT"
 To get a compatibility report for the project as specified in [example-data/europe.json](example-data/europe.json) and store the result in `europe-report.json`, type:
 
 ```
-$ flict -pf example-data/europe.json > europe-report.json
+$ flict -o europe-report.json verify -pf example-data/europe.json 
 ```
 
 This creates a report in JSON
@@ -82,10 +89,14 @@ This creates a report in JSON
 To get the suggested outbound licenses from the report (using `jq`), type:
 
 ```
-$ jq '.licensing.outbound_suggestions' europe-report.json 
+$ jq '.licensing.outbound_candidates' europe-report.json
 [
+  "Apache-2.0",
+  "BSD-3-Clause",
   "GPL-2.0-only",
-  "GPL-3.0-only"
+  "GPL-3.0-only",
+  "MIT",
+  "MPL-1.1"
 ]
 ```
 
@@ -93,8 +104,16 @@ $ jq '.licensing.outbound_suggestions' europe-report.json
 
 Coming soon
 
+# List supported licenses
+
+```
+$ flict list
+["Artistic-1.0-Perl", "MPL-2.0", "EPL-2.0", "UPL-1.0", "Unicode-DFS-2015", "MIT", "MirOS", "FTL", "bzip2-1.0.6", "WTFPL", "Apache-1.1", "GPL-3.0-or-later", "AGPL-3.0-only", "CPL-1.0", "Compatibility", "IPL-1.0", "curl", "GPL-2.0-only", "libtiff", "XFree86-1.1", "OpenSSL", "EUPL-1.1", "SunPro", "EFL-2.0", "OSL-3.0", "BSD-4-Clause-UC", "Qhull", "bzip2-1.0.5", "LGPL-3.0-only", "LGPL-2.1-only", "IJG", "AFL-2.0", "Public Domain", "BSD-2-Clause", "AGPL-3.0-or-later", "BSD-3-Clause", "GPL-2.0-only WITH Classpath-exception-2.0", "MS-PL", "GPL-3.0-only", "Libpng", "Python-2.0", "CDDL-1.0", "EPL-1.0", "LGPL-2.1-or-later", "BSD-4-Clause", "Zlib", "Apache-1.0", "BSL-1.0", "MS-RL", "X11", "Proprietary-linked", "ISC", "zlib-acknowledgement", "NTP", "CC0-1.0", "BSD-2-Clause-Patent", "HPND", "IBM-pibs", "Proprietary", "MIT-CMU", "RPL-1.5", "Unicode-DFS-2016", "MPL-1.1", "NBPL-1.0", "Permissive", "ICU", "MPL-2.0-no-copyleft-exception", "GPL-2.0-or-later", "Apache-2.0", "AFL-2.1", "LGPL-3.0-or-later"]
+```
 
 # Create a policy report of the Europe project
+
+***This feature is currently unavailable***
 
 ## JSON
 
