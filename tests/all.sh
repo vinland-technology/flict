@@ -12,8 +12,8 @@ then
 fi
 
 
-PY_SCRIPTS="test_compat_matrix.py  test_license.py  test_project.py "
-SH_SCRIPTS="cli/license-expr.sh cli/outbounds.sh cli/cli-json.sh "
+PY_SCRIPTS="$(find . -name '*.py' | grep -v __init)"
+SH_SCRIPTS="$(find cli/ -name '*.sh')"
 LOG_FILE=$(dirname ${BASH_SOURCE[0]}/)/all.log
 
 
