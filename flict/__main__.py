@@ -314,12 +314,9 @@ def output_license_group(compatibility, license_handler, args):
 def flict_print(flict_setup, msg):
     print(msg, file=flict_setup.output)
                 
-def flict_error(msg):
-    print("ERROR: " + msg, file=sys.stderr)
-                
 def flict_exit(ret_code, msg):
     if msg is not None:
-        print("ERROR: " + msg, file=sys.stderr)
+        logger.main_logger.error("ERROR: " + msg, file=sys.stderr)
     exit(ret_code)
                 
 def output_supported_licenses(flict_setup):
@@ -411,7 +408,7 @@ def verify_project_file(args, flict_setup):
     if project is None:
         logger.main_logger.error(
              "Could not read project file \"" + args.project_file + "\"")
-        exit(4)
+        raise Flictexception(ReturnCodes.RET_INVALID_PROJECT, "")
 
     formatted = ""
     if args.list_project_licenses:
