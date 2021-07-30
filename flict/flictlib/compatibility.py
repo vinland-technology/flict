@@ -111,7 +111,7 @@ class Compatibility:
     def check_compatibility(self, license_set, project):
         #print("CC: set: " + str(license_set))
         license_compatibilities = []
-        outbound_suggestions = set()
+        outbound_candidates = set()
         if self.check_all_licenses:
             supported = self.supported_licenses()
             if 'Compatibility' in supported:
@@ -178,7 +178,7 @@ class Compatibility:
                         #print("    CC: " + str(license_compat_status))
 
                         if status:
-                            outbound_suggestions.add(license)
+                            outbound_candidates.add(license)
                             
                     combination_set['combination'] = combination
                     combination_set['compatibility_fails'] = list(reason)
@@ -196,9 +196,9 @@ class Compatibility:
 
         license_compatibilities_set = {}
         license_compatibilities_set['license_compatibilities'] = license_compatibilities
-        outs = list(outbound_suggestions)
+        outs = list(outbound_candidates)
         outs.sort()
-        license_compatibilities_set['outbound_suggestions'] = outs
+        license_compatibilities_set['outbound_candidates'] = outs
         return license_compatibilities_set
 
     def check_project_pile(self, project):
