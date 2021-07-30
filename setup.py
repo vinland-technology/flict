@@ -26,7 +26,7 @@ setuptools.setup(
     long_description_content_type = "text/markdown",
     license_files = ('LICENSE',),
     url = "https://github.com/vinland-technology/flict",
-    packages = ['flict', 'flict.flictlib'],
+    packages = ['flict', 'flict.flictlib', 'flict.flictlib.format'],
     entry_points = {
         "console_scripts": [
             "flict = flict.__main__:main",
