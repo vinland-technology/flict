@@ -459,7 +459,10 @@ def suggest_outbound_candidate(args):
     for lic in args.license_expression:
         lic_str += " " + lic
     
-    output_outbound_license(flict_setup, lic_str, args.output_format, args.extended_licenses)
+    try:
+        output_outbound_license(flict_setup, lic_str, args.output_format, args.extended_licenses)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION, "Invalid license expression: " + str(args.licenses))
 
 def policy_report(args):
     print("polict_report: " + str(args))
