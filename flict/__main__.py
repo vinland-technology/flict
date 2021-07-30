@@ -439,7 +439,6 @@ def verify(args):
     if present_and_set(args, 'project_file'):
         verify_project_file(args, flict_setup)
     elif present_and_set(args, 'license_expression'):
-        print(" * license_expression: " + str(args.license_expression))
         verify_license_expression(args, flict_setup)
     else:
         # TODO: raise exception?
