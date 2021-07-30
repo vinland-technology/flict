@@ -145,12 +145,6 @@ def parse():
                         help='File with license translations, defaults to' + DEFAULT_TRANSLATIONS_BASE_FILE,
                         default=DEFAULT_TRANSLATIONS_FILE)
 
-    #parser.add_argument('mode',
-    #                    type=str,
-    #                    help='list, exportpackage, find, create-config',
-    #                    default='list')
-
-
 
     # COMMON
     parser.add_argument('-es', '--enable-scancode',
@@ -192,18 +186,6 @@ def parse():
                         help='output verbose information to stderr',
                         default=False)
 
-
-    #parser.add_argument('-crf', '--compliance-report-file',
-    #                    type=str,
-    #                    dest='File with compliance report',
-    #                    help='')
-
-    # DONE
-    #parser.add_argument('-pf', '--project-file',
-    #                    type=str,
-    #                    dest='project_file',
-    #                    help='')
-
     parser.add_argument('-cc', '--check-compatibility',
                         type=str, nargs='+',
                         dest='licenses',
@@ -216,53 +198,6 @@ def parse():
                         help='conclude outbound license suggestions from specified license expression. Example: -ol "GPLv2 and MIT BSD-3"')
 
 
-    #DONE
-    #parser.add_argument('-lpf', '--license-policy-file',
-    #                    type=str,
-    #                    dest='policy_file',
-    #                    help='')
-
-    #DONE
-    #parser.add_argument('-lpl', '--list-project_licenses',
-    #                    action='store_true',
-    #                    dest='list_project_licenses',
-    #                    help='output the licenses in the specified project')
-
-    # DONE
-    #parser.add_argument('-lsl', '--list-supported-licenses',
-    #                    action='store_true',
-    #                    dest='list_supported_licenses',
-    #                    help='output the licenses supported by flict')
-
-    # DONE
-    #parser.add_argument('-lslg', '--list-supported-license-groups',
-    #                    action='store_true',
-    #                    dest='list_supported_license_groups',
-    #                    help='output the license groups supported by flict')
-
-    
-    # DONE
-    #parser.add_argument('-lg', '--license-group',
-    #                    dest='license_group',
-    #                    help='output group (if any) for license')
-
-    #DONE
-    #parser.add_argument('-lcc', '--license-combination-count',
-    #                    action='store_true',
-    #                    dest='license_combination_count',
-    #                    help='output the number of license combinations in the specified project')
-
-    # DONE
-    #parser.add_argument('-le', '--license-expression',
-    #                    type=str,
-    #                    dest='license_expression',
-    #                    help='')
-
-    # SKIP - ONLY DEVEL
-    #parser.add_argument('-les', '--license-expression-states',
-    #                    type=str,
-    #                    dest='license_expression_states',
-    #                    help='')
 
     # KEEP
     parser.add_argument('-V', '--version',
