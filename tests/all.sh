@@ -16,6 +16,7 @@ PY_SCRIPTS="$(find . -name '*.py' | grep -v __init)"
 SH_SCRIPTS="$(find cli/ -name '*.sh')"
 LOG_FILE=$(dirname ${BASH_SOURCE[0]}/)/all.log
 
+rm $LOG_FILE
 
 echo
 inform "Python test scripts"
@@ -37,7 +38,11 @@ do
     echo $bs
     ./$bs
     echo
-done
+done 2>&1 | tee $LOG_FILE
+
+ERRORS=$(grep ERROR $LOG_FILE | wc -l)
+
+exit $ERRORS
 
 
 
