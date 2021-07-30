@@ -54,6 +54,10 @@ simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lpl" 0
 simple_test "simplify MIT" 0 
 simple_test "simplify MIT and BSD ,,," 11
 
+# display-compatibility
+simple_test "display-compatibility MIT" 0 
+simple_test "display-compatibility MIT ..." 11
+
 exit 0
 # list
 simple_test "list" 0 
@@ -63,10 +67,6 @@ simple_test "list -lg MIT" 0
 # outbound-candidate
 simple_test "outbound-candidate MIT" 0 
 simple_test "outbound-candidate MIT and GPL-2.0-only" 0 
-
-# display-compatibility
-simple_test "display-compatibility MIT" 0 
-simple_test "display-compatibility MIT BSD" 0 
 
 
 end_test
