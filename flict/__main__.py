@@ -59,7 +59,10 @@ PROGRAM_LICENSE = "GPL-3.0-or-later"
 PROGRAM_AUTHOR = "Henrik Sandklef"
 PROGRAM_SEE_ALSO = ""
 
-DEFAULT_OUTPUT_FORMAT = "JSON"
+OUTPUT_FORMAT_JSON = "JSON"
+OUTPUT_FORMAT_TEXT = "text"
+OUTPUT_FORMAT_MARKDOWN = "markdown"
+DEFAULT_OUTPUT_FORMAT = OUTPUT_FORMAT_JSON
 
 DATE_FMT = '%Y-%m-%d'
 
@@ -177,7 +180,7 @@ def parse():
     parser.add_argument('-of', '--output-format',
                         type=str,
                         dest='output_format',
-                        help='output format, defaults to ' + DEFAULT_OUTPUT_FORMAT,
+                        help="output format. Avilable formats: " + OUTPUT_FORMAT_JSON + ", " + OUTPUT_FORMAT_TEXT + ", " + OUTPUT_FORMAT_MARKDOWN + ". Ddefaults to " + DEFAULT_OUTPUT_FORMAT,
                         default=DEFAULT_OUTPUT_FORMAT)
 
 
