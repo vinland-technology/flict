@@ -15,19 +15,17 @@ compatibility verification in your compliance work flow.
 
 flict can assist you with:
 
-* check licenses compatibilty for a package and its dependencies
+* verify licenses compatibilty for a package and its dependencies
 
-* suggest outbound licenses
+* suggest outbound license candidates
 
 * check outbound licenses against a policy (supplied by the user)
 
 * automatically relicense 
 
-* check a package with dependecies for license compatibility
+* simplify license expressions 
 
-* calculate outbound license from a set (of licenses)
-
-* translate from non SPDX license expression to SPDX 
+* verify a package with dependecies for license compatibility
 
 flict supports:
 
