@@ -22,9 +22,13 @@ import flict.flictlib.report
 from flict.flictlib.format.factory import FormatFactory
 from flict.flictlib.format.format import FormatInterface
 
+from   flict.flictlib.return_codes import FLictException 
+from   flict.flictlib.return_codes import ReturnCodes
+
 import json
 import os
 import sys
+
 
 #REMOVE
 import logging
@@ -84,8 +88,6 @@ class FlictSetup:
             logger.main_logger.debug(" flict_setup: " + str(FlictSetup._instance))
         return FlictSetup._instance
     
-
-        
 def parse():
 
     description = "NAME\n  " + PROGRAM_NAME + "\n\n"
@@ -143,12 +145,6 @@ def parse():
                         help='File with license translations, defaults to' + DEFAULT_TRANSLATIONS_BASE_FILE,
                         default=DEFAULT_TRANSLATIONS_FILE)
 
-    #parser.add_argument('mode',
-    #                    type=str,
-    #                    help='list, exportpackage, find, create-config',
-    #                    default='list')
-
-
 
     # COMMON
     parser.add_argument('-es', '--enable-scancode',
@@ -190,18 +186,6 @@ def parse():
                         help='output verbose information to stderr',
                         default=False)
 
-
-    #parser.add_argument('-crf', '--compliance-report-file',
-    #                    type=str,
-    #                    dest='File with compliance report',
-    #                    help='')
-
-    # DONE
-    #parser.add_argument('-pf', '--project-file',
-    #                    type=str,
-    #                    dest='project_file',
-    #                    help='')
-
     parser.add_argument('-cc', '--check-compatibility',
                         type=str, nargs='+',
                         dest='licenses',
@@ -214,53 +198,6 @@ def parse():
                         help='conclude outbound license suggestions from specified license expression. Example: -ol "GPLv2 and MIT BSD-3"')
 
 
-    #DONE
-    #parser.add_argument('-lpf', '--license-policy-file',
-    #                    type=str,
-    #                    dest='policy_file',
-    #                    help='')
-
-    #DONE
-    #parser.add_argument('-lpl', '--list-project_licenses',
-    #                    action='store_true',
-    #                    dest='list_project_licenses',
-    #                    help='output the licenses in the specified project')
-
-    # DONE
-    #parser.add_argument('-lsl', '--list-supported-licenses',
-    #                    action='store_true',
-    #                    dest='list_supported_licenses',
-    #                    help='output the licenses supported by flict')
-
-    # DONE
-    #parser.add_argument('-lslg', '--list-supported-license-groups',
-    #                    action='store_true',
-    #                    dest='list_supported_license_groups',
-    #                    help='output the license groups supported by flict')
-
-    
-    # DONE
-    #parser.add_argument('-lg', '--license-group',
-    #                    dest='license_group',
-    #                    help='output group (if any) for license')
-
-    #DONE
-    #parser.add_argument('-lcc', '--license-combination-count',
-    #                    action='store_true',
-    #                    dest='license_combination_count',
-    #                    help='output the number of license combinations in the specified project')
-
-    # DONE
-    #parser.add_argument('-le', '--license-expression',
-    #                    type=str,
-    #                    dest='license_expression',
-    #                    help='')
-
-    # SKIP - ONLY DEVEL
-    #parser.add_argument('-les', '--license-expression-states',
-    #                    type=str,
-    #                    dest='license_expression_states',
-    #                    help='')
 
     # KEEP
     parser.add_argument('-V', '--version',
@@ -374,8 +311,13 @@ def output_license_group(compatibility, license_handler, args):
     flict_print(flict_setup, formatted)
 
 
-def flict_print(flict_setup,str):
-    print(str, file=flict_setup.output)
+def flict_print(flict_setup, msg):
+    print(msg, file=flict_setup.output)
+                
+def flict_exit(ret_code, msg):
+    if msg is not None:
+        logger.main_logger.error(msg)
+    exit(ret_code)
                 
 def output_supported_licenses(flict_setup):
     formatted = flict_setup.formatter.format_support_licenses(flict_setup.compatibility)
@@ -418,10 +360,12 @@ def simplify(args):
             lic_str = lic
         else:
             lic_str += " " + lic
-    
-    license = flict_setup.license_handler.license_expression_list(lic_str)
-    formatted = flict_setup.formatter.format_simplified(lic_str, license.simplified)
+    try:
+        license = flict_setup.license_handler.license_expression_list(lic_str)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION, "Invalid expression to simplify: " + str(args.license_expression))
 
+    formatted = flict_setup.formatter.format_simplified(lic_str, license.simplified)
     flict_print(flict_setup, formatted)
     
 
@@ -442,8 +386,7 @@ def verify(args):
     elif present_and_set(args, 'license_expression'):
         verify_license_expression(args, flict_setup)
     else:
-        # TODO: raise exception?
-        print(" no....")
+        raise FLictException(ReturnCodes.RET_MISSING_ARGS, "Missing argument to the verify command")
 
     
 def verify_license_expression(args, flict_setup):
@@ -451,23 +394,25 @@ def verify_license_expression(args, flict_setup):
     for lic in args.license_expression:
         lic_str += " " + lic
 
-    report = _empty_project_report(flict_setup.compatibility, flict_setup.license_handler,
-                                   lic_str, args.output_format, args.extended_licenses)
+    try:
+        report = _empty_project_report(flict_setup.compatibility, flict_setup.license_handler,
+                                       lic_str, args.output_format, args.extended_licenses)
 
-    candidates = report['compatibility_report']['compatibilities']['outbound_candidates']
+        candidates = report['compatibility_report']['compatibilities']['outbound_candidates']
 
-    formatted = flict_setup.formatter.format_verified_license(lic_str, candidates)
+        formatted = flict_setup.formatter.format_verified_license(lic_str, candidates)
 
-    flict_print(flict_setup, formatted)
+        flict_print(flict_setup, formatted)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION, "Could not parse exception \"" + str(args.license_expression) + "\"")
+
     
-        
 def verify_project_file(args, flict_setup):
 
-    project = Project(args.project_file, flict_setup.license_handler)
-    if project is None:
-        logger.main_logger.error(
-             "Could not read project file \"" + args.project_file + "\"")
-        exit(4)
+    try:
+        project = Project(args.project_file, flict_setup.license_handler)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_PROJECT, "Missing or invalid project file.")
 
     formatted = ""
     if args.list_project_licenses:
@@ -485,18 +430,21 @@ def verify_project_file(args, flict_setup):
 def display_compatibility(args):
     flict_setup = FlictSetup.get_setup(args)
 
-    _licenses = []
-    for lic in args.licenses:
-        new_lic = flict_setup.license_handler.translate_and_relicense(lic).replace("(", "").replace(
-                ")", "").replace(" ", "").replace("OR", " ").replace("AND", " ").strip().split(" ")
-        _licenses += new_lic
-            #print(lic + " ==> " + str(new_lic) + " =====> " + str(licenses))
-        #print("Check compat for: " + str(licenses))
+    try:
+        _licenses = []
+        for lic in args.licenses:
+            new_lic = flict_setup.license_handler.translate_and_relicense(lic).replace("(", "").replace(
+                    ")", "").replace(" ", "").replace("OR", " ").replace("AND", " ").strip().split(" ")
+            _licenses += new_lic
+                #print(lic + " ==> " + str(new_lic) + " =====> " + str(licenses))
+            #print("Check compat for: " + str(licenses))
 
-        # Diry trick to remove all duplicates
-    licenses = list(set(_licenses))
+            # Diry trick to remove all duplicates
+        licenses = list(set(_licenses))
 
-    compats = flict_setup.compatibility.check_compatibilities(licenses, args.extended_licenses)
+        compats = flict_setup.compatibility.check_compatibilities(licenses, args.extended_licenses)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION, "Invalid license expression: " + str(args.licenses))
 
     formatted = flict_setup.formatter.format_compats(compats)
     flict_print(flict_setup, formatted)
@@ -511,7 +459,10 @@ def suggest_outbound_candidate(args):
     for lic in args.license_expression:
         lic_str += " " + lic
     
-    output_outbound_license(flict_setup, lic_str, args.output_format, args.extended_licenses)
+    try:
+        output_outbound_license(flict_setup, lic_str, args.output_format, args.extended_licenses)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION, "Invalid license expression: " + str(args.licenses))
 
 def policy_report(args):
     print("polict_report: " + str(args))
@@ -521,97 +472,15 @@ def main():
 
     
     if 'which' in args:
-        args.func(args)
+        try:
+            args.func(args)
+        except FLictException as e:
+            flict_exit(e.error_code(), e.error_message())
+            
     else:
-        print("no")
-        print(str(args))
-        exit(3)
-    exit(0)
-    
+        flict_exit(ReturnCodes.RET_MISSING_ARGS, "Missing command.")
 
-    if args.licenses:
-        _licenses = []
-        for lic in args.licenses:
-            new_lic = license_handler.translate_and_relicense(lic).replace("(", "").replace(
-                ")", "").replace(" ", "").replace("OR", " ").replace("AND", " ").strip().split(" ")
-            _licenses += new_lic
-            #print(lic + " ==> " + str(new_lic) + " =====> " + str(licenses))
-        #print("Check compat for: " + str(licenses))
-
-        # Diry trick to remove all duplicates
-        licenses = list(set(_licenses))
-
-        compats = compatibility.check_compatibilities(
-            licenses, args.extended_licenses)
-        output_compat(compats, args.output_format, args.verbose)
-
-    elif args.outbound_licenses:
-        output_outbound_license(compatibility, license_handler,
-                                args.outbound_licenses, args.output_format, args.extended_licenses)
-
-    elif args.list_supported_licenses:
-        output_supported_licenses(flict_setup)
-
-    elif args.list_supported_license_groups:
-        output_supported_license_groups(compatibility, args.output_format)
-
-    elif args.license_expression_states:
-        managed_license = license_handler.license_expression_list(
-            args.license_expression_states)
-        print(license_to_string_long(managed_license))
-
-    elif args.license_expression:
-        license = license_handler.license_expression_list(
-            args.license_expression)
-        if args.verbose:
-            license._debug_license(license)
-            print(license_to_string_long(license))
-        else:
-            print(license.simplified)
-
-    elif args.compliance_report_file:
-        if args.policy_file is None:
-            logger.main_logger.error("Missing policy file.... bailing out")
-            exit(23)
-        policy = Policy(args.policy_file)
-        report = read_compliance_report(args.compliance_report_file)
-        policy_report = policy.report(report)
-        ret = policy_report['policy_outbounds']['policy_result']
-        print(json.dumps(policy_report))
-        exit(ret)
-
-    elif args.license_group:
-        output_license_group(compatibility, license_handler, args)
-
-    elif args.new:
-        project = Project(args.project_file, license_handler)
-
-    else:
-        project = Project(args.project_file, license_handler)
-        if project is None:
-            logger.main_logger.error(
-                "Could not read project file \"" + args.project_file + "\"")
-            exit(4)
-
-        if args.list_project_licenses:
-            output_license_list(
-                list(project.license_set()), args.output_format)
-        elif args.license_combination_count:
-            output_license_combinations(project, args.output_format)
-
-        # print(str(project.project_combination_list()))
-
-        else:
-
-            report = Report(project, compatibility)
-
-            print(json.dumps(report.report()))
-            exit(0)
-
-            # if report.report() == None:
-            #     exit(20)
-            # else:
-            #     exit(0)
+    #flict_exit(ReturnCodes.RET_SUCESS, None)
 
 
 if __name__ == '__main__':
