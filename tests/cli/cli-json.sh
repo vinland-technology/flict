@@ -54,9 +54,9 @@ simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json" 0
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lcc" 0 
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lpl" 0 
 
-# suggest-outbound
-simple_test "suggest-outbound MIT" 0 
-simple_test "suggest-outbound MIT and GPL-2.0-only" 0 
+# outbound-candidate
+simple_test "outbound-candidate MIT" 0 
+simple_test "outbound-candidate MIT and GPL-2.0-only" 0 
 
 # simplify
 simple_test "simplify MIT" 0 

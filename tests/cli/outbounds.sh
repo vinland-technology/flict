@@ -6,7 +6,7 @@
 
 FLICT_DIR=$(dirname ${BASH_SOURCE[0]}/)/../../
 
-FLICT="PYTHONPATH=${FLICT_DIR} ${FLICT_DIR}/flict/__main__.py suggest-outbound "
+FLICT="PYTHONPATH=${FLICT_DIR} ${FLICT_DIR}/flict/__main__.py outbound-candidate "
 
 source $(dirname ${BASH_SOURCE[0]}/)/common-funs
 if [ $? -ne 0 ];
