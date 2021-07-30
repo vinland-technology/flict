@@ -360,10 +360,12 @@ def simplify(args):
             lic_str = lic
         else:
             lic_str += " " + lic
-    
-    license = flict_setup.license_handler.license_expression_list(lic_str)
-    formatted = flict_setup.formatter.format_simplified(lic_str, license.simplified)
+    try:
+        license = flict_setup.license_handler.license_expression_list(lic_str)
+    except:
+        raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION, "Invalid expression to simplify: " + str(args.license_expression))
 
+    formatted = flict_setup.formatter.format_simplified(lic_str, license.simplified)
     flict_print(flict_setup, formatted)
     
 
