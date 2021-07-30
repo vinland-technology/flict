@@ -44,6 +44,8 @@ simple_test()
 #    echo "RET:$RET"
 }    
 
+# verify,simplify,list,display-compatibility,outbound-candidate,policy-report
+
 # verify
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json" 0
 simple_test "verify -pf ${FLICT_DIR}/example-data" 10
@@ -58,15 +60,11 @@ simple_test "simplify MIT and BSD ,,," 11
 simple_test "display-compatibility MIT" 0 
 simple_test "display-compatibility MIT ..." 11
 
-exit 0
 # list
-simple_test "list" 0 
-simple_test "list -g" 0
-simple_test "list -lg MIT" 0
+## not possible to do wrong??
 
 # outbound-candidate
 simple_test "outbound-candidate MIT" 0 
-simple_test "outbound-candidate MIT and GPL-2.0-only" 0 
-
+simple_test "outbound-candidate MIT ,,," 11
 
 end_test
