@@ -124,10 +124,10 @@ rm    /tmp/flict-$VERSION.tar.gz
 gzip    /tmp/flict-$VERSION.tar
 if [ $? -ne 0 ]; then echo "Failed gzipping tar file "; exit 2; fi
 
-ls -al /tmp/flict-$VERSION.tar /tmp/flict-$VERSION.zip > /dev/null 2>&1
+ls -al /tmp/flict-$VERSION.tar.gz /tmp/flict-$VERSION.zip 
 if [ $? -ne 0 ]; then echo "relese files not present "; exit 2; fi
 
 echo "ALl fine"
-ls -al /tmp/flict-$VERSION.tar /tmp/flict-$VERSION.zip 
+
 
 
