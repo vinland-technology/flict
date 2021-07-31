@@ -1,0 +1,89 @@
+#!/bin/bash
+
+VERSION=$1
+
+
+verify()
+{
+    if [ -z ${VERSION} ]
+    then
+        echo "Missing version argument"
+        exit 1
+    fi
+
+
+    FLICT_CFG=flict/flictlib/flict_config.py
+
+    if [ ! -f ${FLICT_CFG} ]
+    then
+        echo "Can't find ${FLICT_CFG} ... when running this script make sure in the top directory"
+        exit 1
+    fi
+
+    CFG_VERSION=$(grep flict_version ${FLICT_CFG}  | cut -d = -f 2| sed 's,[" ]*,,g')
+
+    GIT_BRANCH=$(git branch | grep "^\*" |awk ' { print $2}')
+
+    GIT_TAG_PRESENT=$(git tag -l | grep -w $VERSION | wc -l)
+
+    # Check versions
+    if [ -z "${CFG_VERSION}" ]
+    then
+        echo "No version found in $FLICT_CFG"
+        exit 1
+    fi
+
+    if [ "${CFG_VERSION}" != "${VERSION}" ]
+    then
+        echo "Versions differ"
+        echo " * $FLICT_CFG: $CFG_VERSION"
+        echo " * argument:   $VERSION"
+        exit 1
+    fi
+
+    # Check gt
+    if [ $GIT_TAG_PRESENT -ne 1 ]
+    then
+        echo "Git tag ($VERSION) not present. Create it"
+        exit 1
+    fi
+
+    if [ "$GIT_BRANCH" != "main" ]
+    then
+        echo "Git branch is not main."
+        exit 1
+    fi
+}
+
+
+
+
+verify
+
+rm -fr /tmp/flict_$VERSION
+mkdir  /tmp/flict_$VERSION
+if [ $? -ne 0 ]; then echo "Failed creating tmp dir"; exit 2; fi
+
+cd     /tmp/flict_$VERSION
+if [ $? -ne 0 ]; then echo "Failed entering tmp dir"; exit 2; fi
+
+git clone git@github.com:vinland-technology/flict.git
+if [ $? -ne 0 ]; then echo "Failed cloning"; exit 2; fi
+
+cd flict
+if [ $? -ne 0 ]; then echo "Failed entering flict dir"; exit 2; fi
+
+git checkout tag/$VERSION
+if [ $? -ne 0 ]; then echo "Failed checking our $VERSION"; exit 2; fi
+
+zip -r  /tmp/flict-$VERSION.zip .
+if [ $? -ne 0 ]; then echo "Failed creating zip file "; exit 2; fi
+
+tar cvf /tmp/flict-$VERSION.tar
+if [ $? -ne 0 ]; then echo "Failed creating tar file "; exit 2; fi
+
+gzip    /tmp/flict-$VERSION.tar
+if [ $? -ne 0 ]; then echo "Failed gzipping tar file "; exit 2; fi
+
+
+
