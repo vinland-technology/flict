@@ -13,15 +13,15 @@ Source Software tool to verify license compatibility for a package and
 its dependencies. You can use the tool to automate license
 compatibility verification in your compliance work flow.
 
-flict can assist you with:
+flict can:
 
-* verify licenses compatibilty for license expression
-
-* verify licenses compatibilty for a package and its dependencies
+* verify licenses compatibilty for license expression and a packages and its dependencies
 
 * suggest candidate outbound licenses
 
 * simplify license expressions 
+
+* display, in misc format, compatibilies between licenses 
 
 * check outbound licenses against a policy (policy as supplied by the user)
 
@@ -76,6 +76,10 @@ Flict can also (*experimentally*) use Scancode's [database](https://scancode-lic
 
 Look at our [INSTALLATION](INSTALLATION.md) page.
 
+## Docker image
+
+Flict is included in the docker image: [Compliance Tools](https://hub.docker.com/repository/docker/sandklef/compliance-tools)
+
 # Exit code and reports
 
 flict outputs a report as well as an exit code.
@@ -93,8 +97,8 @@ flict outputs a report as well as an exit code.
 ## Report
 
 A report of the component's compatibility with suggested outbound
-licenses is created. By default a short text report is created. With
-the tools also comes a couple of Report format that can be used.
+licenses is created. By default a short text report is created, but
+flict can provide a report in a couple of formats.
 
 ## Report formats
 
@@ -108,7 +112,7 @@ Using this format you can create txt, html, pdf and what format pandoc can creat
 
 ## Policy report
 
-To the above report you can apply your own [_Policy_](#policy). Applying this will create a policy report with your policy applied to the suggested outbound license from the usual report and with some complementary information.
+To the above report you can apply your own policy (see [SETTINGS](SETTINGS.md)). Applying this will create a policy report with your policy applied to the suggested outbound license from the usual report and with some complementary information.
 
 # License of flict
 
