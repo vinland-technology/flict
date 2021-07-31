@@ -41,7 +41,7 @@ verify()
         exit 1
     fi
 
-    # Check gt
+    # Check git
     if [ $GIT_TAG_PRESENT -ne 1 ]
     then
         echo "Git tag ($VERSION) not present. Create it"
@@ -53,6 +53,14 @@ verify()
         echo "Git branch is not main."
         exit 1
     fi
+
+    GIT_DIFFS=$(git diff | wc -l)
+    if [ $GIT_DIFFS -ne 0 ]
+    then
+        echo "Diffs present. Make sure to commit all changes before releasing"
+        exit 1
+    fi
+    
 }
 
 
