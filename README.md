@@ -15,17 +15,15 @@ compatibility verification in your compliance work flow.
 
 flict can assist you with:
 
+* verify licenses compatibilty for license expression
+
 * verify licenses compatibilty for a package and its dependencies
 
-* suggest outbound license candidates
-
-* check outbound licenses against a policy (supplied by the user)
-
-* automatically relicense 
+* suggest candidate outbound licenses
 
 * simplify license expressions 
 
-* verify a package with dependecies for license compatibility
+* check outbound licenses against a policy (policy as supplied by the user)
 
 flict supports:
 
@@ -35,9 +33,9 @@ flict supports:
 
 * 'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-only or GPL-3.0-only)
 
-* explcit relicensing 
+* explicit relicensing (LGPL -> GPL)
 
-* common non standard ways to write SPDX license (e.g GPLv2 -> GPL-2.0-only)
+* common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only)
 
 * grouping of common licenses in to well known license classification 
 
@@ -61,15 +59,7 @@ users going. Having licenses and compatibilities (and even more stuff)
 defined outside the tool makes it easy to extend the tool with new
 licenses etc without modifying the code.
 
-You can tweak the tool by providing:
-
-* [_Relicense_](#relicense) - change the interpretation of a license with "or-later" (e g `GPL-2.0-or-later`) or relicensing by some other means
-
-* [_Policy_](#policy) - specify which licenses you would like to avoid and which should be denied
-
-* [_Translate_](#translate) - translations for "non standard" spelled licenes (e.g. 'BSD3 -> BSD-3-Clause')
-
-* [_Group_](#group) - undocumented and experimental feature
+Read more in [SETTINGS](SETTINGS.md)
 
 # Supported licenses
 
@@ -86,129 +76,19 @@ Flict can also (*experimentally*) use Scancode's [database](https://scancode-lic
 
 Look at our [INSTALLATION](INSTALLATION.md) page.
 
-# Configuration and runtime files 
-
-<a name="policy"></a>
-## Policy (no built in, optional)
-
-With a policy file you can tell this tool which licenses you disallow
-and which you prefer not to avoid. Here's an example policy file:
-
-```
-{
-    "meta" : {
-        "software":"FOSS License Compatibility Tool",
-        "version":"0.1"
-    } ,
-    "policy": {
-        "allowlist": [],
-        "avoidlist": [
-            "BSD-3-Clause"
-        ],
-        "deniedlist": [
-            "MIT",
-            "Zlib"
-        ]
-    }
-}
-```
-
-When applying a policy to a report you'll get notified whether the
-suggested outbound licenses are in compliance with your policy.
-
-<a name="relicense"></a>
-## Relicense defininitions (built in or custom)
-
-Some licenses can be specifed saying "or-later", e.g.
-GPL-2.0-or-later. You can provide a list of definitions for this tool
-to decide how these licenses should be interpreted.
-
-By default flict uses the following relicense file: [var/relicense.json](var/relicense.json)
-
-Let's start with an example:
-
-
-```
-{
-    "meta": {
-        "software":"FOSS License Compatibility Tool",
-        "type": "later-definitions",
-        "version":"0.1"
-    },
-    "relicense-definitions": [
-        {
-            "spdx": "GPL-2.0-or-later",
-            "later": [
-                "GPL-2.0-only"
-                "GPL-3.0-only"
-            ]
-        }
-    ]
-}
-```
-
-As with previous example you can for now skip the meta section. A later definition is specified using:
-
-```spdx``` - the license (SPDX short name) this later definition is valid for
-
-```later``` - a list of licenses (SPDX short name) that the above license can be turned into
-
-In the above example we state that GPL-2.0-or-later should be
-translated to "GPL-2.0-only or GPL-2.0-only". If you want to use your
-own later definition file or disable later definitions by providing an
-empty file you can use the option ```--relicense-file```.
-
-<a name="translate"></a>
-## License translation defininitions (built in or custom)
-
-Sometimes licenses are not expressed in an SPDX compliant way. This
-files is intended to translate from "non SPDX" to SPDX. You can
-provide a list of definitions for this tool to decide how these
-"incorrectly spelled" licenses should be interpreted.
-
-By default flict uses the following translation file: [var/translation.json](var/translation.json)
-
-Let's start with an example:
-
-
-```
-{
-    "meta": {
-        "software":"FOSS License Compatibility Tool",
-        "type": "later-definitions",
-        "version":"0.1"
-    },
-    "translations": [
-        {
-            "value": "&",
-            "translation": "and"
-        },
-        {
-            "value": "Apache-2",
-            "translation": "Apache-2.0"
-        }
-    ]
-}
-```
-
-As with previous example you can for now skip the meta section. A translation definition is specified using:
-
-```value``` - the expression we want to translate
-
-```translation``` - tre translated value
-
-In the above example we state that `&` should be
-translated to `and` and `Apache-2` to `Apache-2.0`. If you want to use your
-own later definition file or disable later definitions by providing an
-empty file you can use the option ```--translations-file```.
-
 # Exit code and reports
 
 flict outputs a report as well as an exit code.
 
 ## Exit code
 
-To be documented
+**0** - success
+
+**5** - missing arguments
+
+**10** - invalid project file
+
+**10** - invalid license expression
 
 ## Report
 
@@ -232,5 +112,5 @@ To the above report you can apply your own [_Policy_](#policy). Applying this wi
 
 # License of flict
 
-flict is currently released under GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
+flict is released under GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
 
