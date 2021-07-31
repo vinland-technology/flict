@@ -87,7 +87,7 @@ if [ $? -ne 0 ]; then echo "Failed checking our $VERSION"; exit 2; fi
 zip -r  /tmp/flict-$VERSION.zip .
 if [ $? -ne 0 ]; then echo "Failed creating zip file "; exit 2; fi
 
-tar cvf /tmp/flict-$VERSION.tar
+tar cvf /tmp/flict-$VERSION.tar .
 if [ $? -ne 0 ]; then echo "Failed creating tar file "; exit 2; fi
 
 gzip    /tmp/flict-$VERSION.tar
