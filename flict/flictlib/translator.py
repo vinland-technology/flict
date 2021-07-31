@@ -143,8 +143,7 @@ def read_translations(translations_file):
                         symbols[transl] = []
                     symbols[transl].append(key)
             else:
-                print(" *********************** Failed parsing item:  " + str(item))
-                exit(12)
+                raise Exception("Failed parsing item:  " + str(item))
     return symbols
 
 
