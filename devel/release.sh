@@ -81,7 +81,7 @@ if [ $? -ne 0 ]; then echo "Failed cloning"; exit 2; fi
 cd flict
 if [ $? -ne 0 ]; then echo "Failed entering flict dir"; exit 2; fi
 
-git checkout tag/$VERSION
+git checkout $VERSION
 if [ $? -ne 0 ]; then echo "Failed checking our $VERSION"; exit 2; fi
 
 zip -r  /tmp/flict-$VERSION.zip .
