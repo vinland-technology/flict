@@ -2,14 +2,29 @@
 
 VERSION=$1
 
+if [ -z ${VERSION} ]
+then
+    echo "Missing version argument"
+    exit 1
+fi
+
+if [ "$2" = "--set" ]
+then
+    echo "Setting and pushing tag"
+    git tag -f $VERSION
+    if [ $? -ne 0 ]; then echo "Failed setting tag $VERSION"; exit 2; fi
+
+    git push
+    if [ $? -ne 0 ]; then echo "Failed pushing"; exit 2; fi
+    
+    git push --tags --force
+    if [ $? -ne 0 ]; then echo "Failed pushing tags"; exit 2; fi
+
+    exit 0
+fi
 
 verify()
 {
-    if [ -z ${VERSION} ]
-    then
-        echo "Missing version argument"
-        exit 1
-    fi
 
 
     FLICT_CFG=flict/flictlib/flict_config.py
@@ -83,6 +98,9 @@ if [ $? -ne 0 ]; then echo "Failed entering flict dir"; exit 2; fi
 
 git checkout $VERSION
 if [ $? -ne 0 ]; then echo "Failed checking our $VERSION"; exit 2; fi
+
+make
+if [ $? -ne 0 ]; then echo "Failed testing"; exit 2; fi
 
 rm -fr .git
 if [ $? -ne 0 ]; then echo "Failed removing git dir"; exit 2; fi
