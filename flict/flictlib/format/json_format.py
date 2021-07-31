@@ -64,7 +64,7 @@ class JsonFormatter(FormatInterface):
                              'simplified': simplified } )
 
     def format_verified_license(self, license_expression, outbound_candidate):
-        compat = len(outbound_candidate) is not 0
+        compat = len(outbound_candidate) != 0
         return json.dumps( { "license_expression": license_expression,
                             "compatible": compat,
                             "outbound_candidate": outbound_candidate }
