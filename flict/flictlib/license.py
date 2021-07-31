@@ -265,10 +265,7 @@ class LicenseHandler:
                 else:
                     #print("OPERATOR " + tok + " (" + str(current_op) + ")")
                     if current_licenses is None:
-                        print("ERROR......")
-                        print("ERROR......")
-                        print("ERROR......")
-                        exit(24)
+                        raise Exception("Internal failure. Failed creating interim license expression. current_licenses is None")
                     if current_op is None:
                         # first operator
                         current_op = tok
@@ -280,8 +277,7 @@ class LicenseHandler:
                         current_licenses.append(current_license)
                     else:
                         # different operator
-                        print("-------------------------------------------- Store me: " + current_op + " " + str(current_licenses))
-                        exit(12)
+                        raise Exception("Internal failure. Failed creating interim license expression.")
             else:
                 #print("tok: \"" + tok + "\"")
                 if paren_expr is not None:
@@ -313,8 +309,7 @@ class LicenseHandler:
                 sum = sum + self._combinations(item)
             return sum
         else:
-            print("ERROR: NO OP")
-            exit(11)
+            raise Exception("Internal failure. Failed identifying operator: " + str(lel))
 
     def interim_license_expression_set_list(self, interim_license_expression_list):
         """
@@ -348,8 +343,7 @@ class LicenseHandler:
         for lep in interim_license_expression_list.list:
             logger.license_logger.debug(" ------ lep ----- " + str(lep))
             if current_op is None:
-                print("ERROR: NO OP")
-                exit(11)
+                raise Exception("Internal failure. No operator found")
 
             elif current_op == "OR":
                 lep_list = self.interim_license_expression_set_list(lep)
@@ -366,16 +360,7 @@ class LicenseHandler:
     def _manage_list_item_and(self, license_list, lep):
         logger.license_logger.debug(" * Andy")
         if isinstance(lep, LicenseExpressionList):
-            print(" -------------====== Andy ====-----------------")
-            exit(77)
-            # TODO : implement below (for lep)
-            # logger.license_logger.debug(
-            #     "AND Count 0: " + str(self._combinations(lep)))
-            # for inner_lep in lep.list:
-            #     logger.license_logger.debug(
-            #         "¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ AND Count A: " + str(self._combinations(inner_lep)))
-            #     set_list = self.interim_license_expression_set_list(inner_lep)
-            # return None
+            raise Exception("Internal failure. Wrong type " + str(type(lep)) + " for: " + str(lep))
         else:
             # single license
             if len(license_list) == 0:
@@ -404,19 +389,7 @@ class LicenseHandler:
     def _manage_list_item_or(self, license_list, lep):
         logger.license_logger.debug(" * Orleans: " + (str(lep)))
         if isinstance(lep, LicenseExpressionList):
-            # TODO : implement below (for lep)
-            logger.license_logger.debug(
-                " -------------====== ORLEANS ====----------------- : " + str(lep.license_list))
-            exit(77)
-            # for inner_lep in lep.license_list:
-            #     logger.license_logger.debug(
-            #         "        ====----------------- : " + str(inner_lep))
-            #     logger.license_logger.debug(
-            #         "OR Count A: " + str(self._combinations(inner_lep)))
-            #     set_list = self.interim_license_expression_set_list(inner_lep)
-            #     logger.license_logger.debug(
-            #         "OR Count B: " + str(len(set_list)))
-            #     license_list.append(inner_lep)
+            raise Exception("Internal failure. Wrong type " + str(type(lep)) + " for: " + str(lep))
         else:
             # single license
             logger.license_logger.debug("HERE I AM .... \"" + str(lep) + "\"")
