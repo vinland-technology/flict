@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2021 Henrik Sandklef <hesa@sandklef.com>
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
 
 You can tweak flict by providing:
 
