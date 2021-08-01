@@ -32,8 +32,6 @@ fi
 
 verify()
 {
-
-
     FLICT_CFG=flict/flictlib/flict_config.py
 
     if [ ! -f ${FLICT_CFG} ]
@@ -90,24 +88,40 @@ verify()
 
 verify
 
+inform()
+{
+    echo " * $*"
+}
+
+inform Clean up
 rm -fr /tmp/flict_$VERSION
+
+inform Create temp dir
 mkdir  /tmp/flict_$VERSION
 if [ $? -ne 0 ]; then echo "Failed creating tmp dir"; exit 2; fi
 
+inform Enter temp dir
 cd     /tmp/flict_$VERSION
 if [ $? -ne 0 ]; then echo "Failed entering tmp dir"; exit 2; fi
 
+inform Clone repo
 git clone git@github.com:vinland-technology/flict.git
 if [ $? -ne 0 ]; then echo "Failed cloning"; exit 2; fi
 
+inform Enter flict dir
 cd flict
 if [ $? -ne 0 ]; then echo "Failed entering flict dir"; exit 2; fi
 
+inform Checkout $VERSION
 git checkout $VERSION
 if [ $? -ne 0 ]; then echo "Failed checking our $VERSION"; exit 2; fi
 
+inform Build
 make
 if [ $? -ne 0 ]; then echo "Failed testing"; exit 2; fi
+
+inform "All seem to be fine :)"
+exit 0
 
 rm -fr .git
 if [ $? -ne 0 ]; then echo "Failed removing git dir"; exit 2; fi
