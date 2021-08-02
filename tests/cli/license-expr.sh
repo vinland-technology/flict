@@ -4,7 +4,15 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-FLICT="PYTHONPATH=.. ../flict/__main__.py simplify "
+
+FLICT_DIR=$(dirname ${BASH_SOURCE[0]}/)/../../
+if [ "$1" != "" ]
+then
+    FLICT="$1"
+else
+    FLICT="PYTHONPATH=${FLICT_DIR} ${FLICT_DIR}/flict/__main__.py"
+fi
+FLICT="$FLICT simplify "
 
 source $(dirname ${BASH_SOURCE[0]}/)/common-funs
 if [ $? -ne 0 ];

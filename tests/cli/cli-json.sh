@@ -6,7 +6,13 @@
 
 FLICT_DIR=$(dirname ${BASH_SOURCE[0]}/)/../../
 
-FLICT="PYTHONPATH=${FLICT_DIR} ${FLICT_DIR}/flict/__main__.py -of json  "
+if [ "$1" != "" ]
+then
+    FLICT="$1"
+else
+    FLICT="PYTHONPATH=${FLICT_DIR} ${FLICT_DIR}/flict/__main__.py"
+fi
+FLICT="$FLICT -of json  "
 
 source $(dirname ${BASH_SOURCE[0]}/)/common-funs
 if [ $? -ne 0 ];
