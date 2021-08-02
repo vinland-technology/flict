@@ -17,9 +17,6 @@ test:
 
 loc:
 	@echo "Line counts"
-	@echo -n "Python: "
-	@find . -name "*.py" | xargs wc -l | tail -1 | sed 's,total,lines,g'
-	@echo -n "Bash:   "
-	@find . -name "*.sh" | xargs wc -l | tail -1 | sed 's,total,lines,g'
-	@echo -n "Markdown:   "
-	@find . -name "*.markdown" | xargs wc -l | tail -1 | sed 's,total,lines,g'
+	@printf "Python:   %4s\n" `find . -name "*.py" | xargs wc -l | tail -1 | sed 's,total,,g'`
+	@printf "Bash:     %4s\n" `find . -name "*.sh" | xargs wc -l | tail -1 | sed 's,total,,g'`
+	@printf "Total:    %4s\n" `find . -name "*.py" -o -name "*.sh" | xargs wc -l | tail -1 | sed 's,total,,g'`
