@@ -11,6 +11,13 @@ then
     exit 1;
 fi
 
+if [ "$1" != "" ]
+then
+    FLICT="$1"
+else
+    FLICT=""
+fi
+
 
 PY_SCRIPTS="$(find . -name '*.py' | grep -v __init)"
 SH_SCRIPTS="$(find cli/ -name '*.sh')"
@@ -35,8 +42,8 @@ inform "CLI test scripts"
 echo "---------------------------------"
 for bs in $SH_SCRIPTS
 do
-    echo $bs
-    ./$bs
+    echo "$bs $FLICT"
+    ./$bs $FLICT
     echo
 done 2>&1 | tee $LOG_FILE
 
