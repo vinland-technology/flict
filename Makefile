@@ -3,8 +3,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 
-FMT="* %-$40s"
-CHARS_TO_PRINT=38
+#
+# target for testing locally (under devel)
+#
 test:
 	cd tests && ./all.sh
 	@echo
@@ -14,6 +15,27 @@ test:
 	@echo -n "Checking spdx tags with reuse:            "
 	@reuse lint > /dev/null && echo OK
 
+#
+# target for testing installed flict
+#
+pip-test:
+	@echo
+	@echo
+	@echo "installation tests"
+	@echo "---------------------------------"
+	@echo "uninstalling flict"
+	@-pip3 uninstall -y flict
+	@echo
+	@echo "installing flict"
+	@pip3 install .
+	@echo
+	@echo "run tests"
+	@cd tests && ./all.sh flict
+
+#
+# test locally and installed
+#
+all: test pip-test
 
 loc:
 	@echo "Line counts"
