@@ -3,6 +3,8 @@ SPDX-FileCopyrightText: 2020 Henrik Sandklef <hesa@sandklef.com>
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
+[1]: https://api.reuse.software/badge/github.com/vinland-technology/flict
+[2]: https://api.reuse.software/info/github.com/vinland-technology/flict
 
 # flict / FOSS License Compatibility Tool
 
