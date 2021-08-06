@@ -71,4 +71,3 @@ class Report:
 
 def outbound_candidates(report):
     return report['compatibility_report']['compatibilities']['outbound_candidates']
-    

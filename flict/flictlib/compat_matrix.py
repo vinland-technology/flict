@@ -136,5 +136,3 @@ class CompatibilityMatrix:
             print(" " + license_a + " index: " + str(index_a))
             print(" " + license_b + " index: " + str(index_b))
             return None
-
-

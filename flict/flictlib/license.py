@@ -180,7 +180,7 @@ class LicenseHandler:
 
         # We need str to skip verbose output
         license.simplified = str(self.simplify(license.translated))
-        
+
         if relicense:
             license.expanded = self.expand_relicense(license.simplified)
         else:
@@ -196,7 +196,7 @@ class LicenseHandler:
 
         return license
 
-    # 
+    #
     def _license_expression_list(self, license_expression, relicense=True):
 
         license = ManagedLicenseExpression(license_expression)
@@ -265,7 +265,8 @@ class LicenseHandler:
                 else:
                     #print("OPERATOR " + tok + " (" + str(current_op) + ")")
                     if current_licenses is None:
-                        raise Exception("Internal failure. Failed creating interim license expression. current_licenses is None")
+                        raise Exception(
+                            "Internal failure. Failed creating interim license expression. current_licenses is None")
                     if current_op is None:
                         # first operator
                         current_op = tok
@@ -277,7 +278,8 @@ class LicenseHandler:
                         current_licenses.append(current_license)
                     else:
                         # different operator
-                        raise Exception("Internal failure. Failed creating interim license expression.")
+                        raise Exception(
+                            "Internal failure. Failed creating interim license expression.")
             else:
                 #print("tok: \"" + tok + "\"")
                 if paren_expr is not None:
@@ -309,7 +311,8 @@ class LicenseHandler:
                 sum = sum + self._combinations(item)
             return sum
         else:
-            raise Exception("Internal failure. Failed identifying operator: " + str(lel))
+            raise Exception(
+                "Internal failure. Failed identifying operator: " + str(lel))
 
     def interim_license_expression_set_list(self, interim_license_expression_list):
         """
@@ -360,7 +363,8 @@ class LicenseHandler:
     def _manage_list_item_and(self, license_list, lep):
         logger.license_logger.debug(" * Andy")
         if isinstance(lep, LicenseExpressionList):
-            raise Exception("Internal failure. Wrong type " + str(type(lep)) + " for: " + str(lep))
+            raise Exception("Internal failure. Wrong type " +
+                            str(type(lep)) + " for: " + str(lep))
         else:
             # single license
             if len(license_list) == 0:
@@ -389,7 +393,8 @@ class LicenseHandler:
     def _manage_list_item_or(self, license_list, lep):
         logger.license_logger.debug(" * Orleans: " + (str(lep)))
         if isinstance(lep, LicenseExpressionList):
-            raise Exception("Internal failure. Wrong type " + str(type(lep)) + " for: " + str(lep))
+            raise Exception("Internal failure. Wrong type " +
+                            str(type(lep)) + " for: " + str(lep))
         else:
             # single license
             logger.license_logger.debug("HERE I AM .... \"" + str(lep) + "\"")

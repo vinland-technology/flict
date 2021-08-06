@@ -12,7 +12,6 @@
 
 import argparse
 import json
-from flict.flictlib.translator import read_translations, read_packages_file
 from argparse import RawTextHelpFormatter
 
 #
@@ -93,5 +92,3 @@ def relicense_license(rel_map, license_expression):
         else:
             new_license = new_license + " " + spdx
     return new_license
-
-

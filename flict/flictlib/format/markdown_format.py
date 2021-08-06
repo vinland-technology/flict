@@ -12,31 +12,32 @@
 
 from flict.flictlib.format.format import FormatInterface
 from flict.flictlib.format.common import compat_interprets
-from flict.flictlib import logger
+
 
 class MarkdownFormatter(FormatInterface):
 
     def format_support_licenses(self, compatibility):
         return None
-    
+
     def format_license_list(self, license_list):
         return None
 
     def format_report(self, report):
         return None
- 
-    def format_license_combinations(self, project):
+
+    def format_license_porject(self, project):
         return None
-       
+
     def format_outbound_license(self, suggested_outbounds):
         return None
-        
+
     def format_license_combinations(self, combinations):
         return None
 
     def format_compats(self, compats):
         return output_compat_markdown(compats)
-    
+
+
 def _compat_to_fmt(comp_left, comp_right, fmt):
     left = compat_interprets['left'][comp_left][fmt]
     right = compat_interprets['right'][comp_right][fmt]
@@ -45,6 +46,7 @@ def _compat_to_fmt(comp_left, comp_right, fmt):
 
 def _compat_to_markdown(left, comp_left, right, comp_right):
     return _compat_to_fmt(comp_left, comp_right, "markdown")
+
 
 def output_compat_markdown(compats):
     # print(str(compats))
@@ -69,4 +71,3 @@ def output_compat_markdown(compats):
             result += main_license + " " + compat_text + " " + inner_license + "\n\n"
 
     return result
-    

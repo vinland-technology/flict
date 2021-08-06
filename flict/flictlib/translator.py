@@ -157,4 +157,3 @@ def read_packages_file(jsonfile, translations):
         package["license"] = update_license(translations, license)
         update_packages(translations, deps)
         return packages
-
