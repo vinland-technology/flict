@@ -20,13 +20,19 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install -r requirements-dev.txt
     - name: Build
       run: python3 setup.py build
     - name: Install
       run: python3 setup.py install
+    - name: Test
+      run: |
+        cd tests
+        ./all.sh
+      shell: bash
     - name: Install additional tooling
       run: |
         pip3 install reuse
     - name: Reuse check
       run: |
-        reuse lint 
+        reuse lint
