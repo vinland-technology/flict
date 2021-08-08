@@ -65,7 +65,8 @@ class LicenseGroups:
     def supported_licenses(self):
         supported_list = []
         for group in self.supported_groups:
-            supported_list = supported_list + self.supported_licenses_per_group(group)
+            supported_list = supported_list + \
+                self.supported_licenses_per_group(group)
         return supported_list
 
     def meta_data(self):

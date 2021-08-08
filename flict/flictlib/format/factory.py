@@ -12,30 +12,29 @@
 
 from flict.flictlib.format.json_format import JsonFormatter
 from flict.flictlib.format.text_format import TextFormatter
-from flict.flictlib.format.dot_format  import DotFormatter
-from flict.flictlib.format.markdown_format  import MarkdownFormatter
+from flict.flictlib.format.dot_format import DotFormatter
+from flict.flictlib.format.markdown_format import MarkdownFormatter
+
 
 class FormatFactory:
 
-   _instance = None
+    _instance = None
 
-   @staticmethod
-   def formatter(format):
-       if FormatFactory._instance is None:
-           if format.lower() == "json":
-               FormatFactory._instance = JsonFormatter()
-           elif format.lower() == "text":
-               FormatFactory._instance = TextFormatter()
-           elif format.lower() == "dot":
-               FormatFactory._instance = DotFormatter()
-           elif format.lower() == "markdown":
-               FormatFactory._instance = MarkdownFormatter()
-           elif format.lower() == "markdown":
-               print("MARKDOWN COMING SOON: ")
-           else:
-               pass
-       else:
-           pass
-       return FormatFactory._instance
-
-        
+    @staticmethod
+    def formatter(format):
+        if FormatFactory._instance is None:
+            if format.lower() == "json":
+                FormatFactory._instance = JsonFormatter()
+            elif format.lower() == "text":
+                FormatFactory._instance = TextFormatter()
+            elif format.lower() == "dot":
+                FormatFactory._instance = DotFormatter()
+            elif format.lower() == "markdown":
+                FormatFactory._instance = MarkdownFormatter()
+            elif format.lower() == "markdown":
+                print("MARKDOWN COMING SOON: ")
+            else:
+                pass
+        else:
+            pass
+        return FormatFactory._instance

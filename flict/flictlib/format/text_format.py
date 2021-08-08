@@ -12,11 +12,12 @@
 
 from flict.flictlib.format.format import FormatInterface
 
+
 class TextFormatter(FormatInterface):
 
     def format_support_licenses(self, compatibility):
         supported_licenses = compatibility.supported_licenses()
-        
+
         ret_str = ""
         for item in supported_licenses:
             lic_group = compatibility.license_group(item)
@@ -28,7 +29,7 @@ class TextFormatter(FormatInterface):
 
     def format_license_list(self, license_list):
         return "text implmentation | format_license_list(): " + str(license_list)
-        
+
     def format_report(self, report):
         return "text implmentation | format_report(): " + str(report)
 
@@ -37,14 +38,14 @@ class TextFormatter(FormatInterface):
 
     def format_outbound_license(self, outbound_candidate):
         ret_str = None
-        
+
         for ol in outbound_candidate:
-            if ret_str == None:
+            if ret_str is None:
                 ret_str = ol
             else:
                 ret_str += ", " + ol
         return ret_str
-    
+
     def format_supported_license_groups(self, license_groups):
         ret_str = ""
         for lg in license_groups:
@@ -66,14 +67,16 @@ class TextFormatter(FormatInterface):
                 if lic_group is not None:
                     ret_str += inner_lic + ": " + str(lic_group)
                 else:
-                    ret_str += inner_lic + ": does not belong to a group. It may still be supported by OSADL's matrix"
+                    ret_str += inner_lic + \
+                        ": does not belong to a group. It may still be supported by OSADL's matrix"
         return ret_str
-    
+
     def format_simplified(self, license_expression, simplified):
         return simplified
 
     def format_verified_license(self, license_expression, outbound_candidate):
-        ret_str = "The licenses in the expression \"" + license_expression.strip() + "\" are"
+        ret_str = "The licenses in the expression \"" + license_expression.strip() + \
+            "\" are"
         if len(outbound_candidate) == 0:
             ret_str += " not"
         ret_str += " compatible.\n"
@@ -83,7 +86,7 @@ class TextFormatter(FormatInterface):
             ret_str += "Outbound license candidates: "
             lic = None
             for s in outbound_candidate:
-                if lic == None:
+                if lic is None:
                     lic = s
                 else:
                     lic += ", " + s

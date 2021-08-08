@@ -132,7 +132,7 @@ class Compatibility:
             license_combinations = []
             license_compat_status = False
             if project is not None:
-                
+
                 # loop through project license combinations
                 # - this is looping over all the top projects combinations (with its deps)
                 # - for every or in the license expression we get noe more combination (of the top project)
@@ -169,17 +169,17 @@ class Compatibility:
                                     license + "\" has questioned compatibility with \"" + lic + "\".")
 
                         # do we have compatibility? (check if reason=={})
-                        status = ( reason == set() )
-                        
+                        status = (reason == set())
+
                         #print("             " + str(license) + " ==> " + str(p['license']) + " : " + str(status))
-                        
+
                         license_compat_status = license_compat_status or status
                         #print("  CC: c:" + str((combination)) + " ==> "  +str(status) + "    : " + str(reason))
                         #print("    CC: " + str(license_compat_status))
 
                         if status:
                             outbound_candidates.add(license)
-                            
+
                     combination_set['combination'] = combination
                     combination_set['compatibility_fails'] = list(reason)
                     combination_set['compatibility_status'] = status

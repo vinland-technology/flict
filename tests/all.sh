@@ -12,22 +12,16 @@ then
 fi
 
 
-PY_SCRIPTS="$(find . -name '*.py' | grep -v __init)"
 SH_SCRIPTS="$(find cli/ -name '*.sh')"
 LOG_FILE=$(dirname ${BASH_SOURCE[0]}/)/all.log
 
-rm $LOG_FILE
+rm -f $LOG_FILE
+
 
 echo
 inform "Python test scripts"
 echo "---------------------------------"
-for ps in $PY_SCRIPTS
-do
-    inform_n "$ps"
-    ./$ps >> $LOG_FILE 2>&1
-    exit_on_error $? "Failed running $ps"
-    echo "OK"
-done
+sh -c "cd .. && pytest" || exit 1
 
 
 echo

@@ -10,26 +10,28 @@
 #
 ###################################################################
 
-from flict.flictlib.format.format import FormatInterface
 from flict.flictlib import logger
+from flict.flictlib.format.format import FormatInterface
+from flict.flictlib.format.markdown_format import _compat_to_markdown
+
 
 class DotFormatter(FormatInterface):
 
     def format_support_licenses(self, compatibility):
         return None
-    
+
     def format_license_list(self, license_list):
         return None
 
     def format_report(self, report):
         return None
- 
-    def format_license_combinations(self, project):
+
+    def format_license_project(self, project):
         return None
-       
+
     def format_outbound_license(self, outbound_candidate):
         return None
-        
+
     def format_license_combinations(self, combinations):
         return None
 
@@ -56,8 +58,9 @@ class DotFormatter(FormatInterface):
                 result += "    " + compat_dot + "\n"
         result += "\n}\n"
         return result
-    
+
 # help functions
+
 
 def _licenses_hash(a, b):
     separator = " "
@@ -65,6 +68,7 @@ def _licenses_hash(a, b):
         return a + separator + b
     else:
         return b + separator + a
+
 
 def _compat_to_dot(left, comp_left, right, comp_right):
     logger.main_logger.debug("_compat_to_dot")
