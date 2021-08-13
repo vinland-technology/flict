@@ -61,10 +61,11 @@ simple_test "outbound-candidate MIT and GPL-2.0-only" 0
 # simplify
 simple_test "simplify MIT" 0 
 simple_test "simplify MIT and BSD" 0 
+simple_test "simplify MIT and GPL-2.0-only WITH Classpath-exception-2.0 and MIT" 0 
 
 # display-compatibility
 simple_test "display-compatibility MIT" 0 
-simple_test "display-compatibility MIT BSD" 0 
+simple_test "display-compatibility MIT BSD GPL-2.0-only WITH Classpath-exception-2.0 " 0 
 
 
 end_test
