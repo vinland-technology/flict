@@ -16,12 +16,12 @@ CHARS_TO_PRINT=$(( $CHARS - 2)) # "* " from above
 
 error()
 {
-    echo "$*" 1>&2
+    echo -e "$*" 1>&2
 }
 
 inform()
 {
-    echo "$*" 1>&2
+    echo -e "$*" 1>&2
 }
 
 inform_n()
@@ -85,7 +85,7 @@ compare_exec()
     VAL=$(echo ${CMD} | bash )
     RET=$?
 
-    compare_exit "$VAL" "$EXP" "Results \"$VAL\" and \"$EXP\" differs" "$CMD" "$MSG"
+    compare_exit "$VAL" "$EXP" "Results differs: \n  \"$VAL\"\n  \"$EXP\" differs" "$CMD" "$MSG"
 
     compare_exit "$RET" "$EXP_RET" "Return values \"$RET\" and \"$EXP_RET\" differs" "$CMD" "$MSG"
     inform "OK"
