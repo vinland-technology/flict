@@ -8,6 +8,8 @@ from argparse import RawTextHelpFormatter
 import argparse
 
 from flict.flictlib.license import LicenseHandler
+from flict.flictlib.license import encode_license_expression
+from flict.flictlib.license import decode_license_expression
 from flict.flictlib.project import Project
 from flict.flictlib.report import Report
 from flict.flictlib.compatibility import Compatibility
@@ -426,7 +428,7 @@ def verify_license_expression(args, flict_setup):
         flict_print(flict_setup, formatted)
     except:
         raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             "Could not parse exception \"" + str(args.license_expression) + "\"")
+                             "Could not parse expression \"" + str(args.license_expression) + "\"")
 
 
 def verify_project_file(args, flict_setup):
@@ -455,12 +457,24 @@ def display_compatibility(args):
     flict_setup = FlictSetup.get_setup(args)
 
     try:
-        _licenses = []
+        # build up license string from all expressions
+        lic_str = ""
         for lic in args.licenses:
-            new_lic = flict_setup.license_handler.translate_and_relicense(lic).replace("(", "").replace(
+            lic_str += " " + lic
+
+        # encode (flict) all the license expression
+        lic_str = encode_license_expression(lic_str)
+
+        # build up license string from the expression string
+        _licenses = []
+        for lic in lic_str.split():
+            #print("   lic: " + str(lic))
+            lic_list = flict_setup.license_handler.translate_and_relicense(lic).replace("(", "").replace(
                 ")", "").replace(" ", "").replace("OR", " ").replace("AND", " ").strip().split(" ")
-            _licenses += new_lic
-            #print(lic + " ==> " + str(new_lic) + " =====> " + str(licenses))
+
+            for lic in lic_list:
+                _licenses.append(decode_license_expression(lic))
+            #print(lic + " ==> " + str(lic_list) + " =====> " + str(_licenses))
             #print("Check compat for: " + str(licenses))
 
             # Diry trick to remove all duplicates
@@ -470,7 +484,7 @@ def display_compatibility(args):
             licenses, args.extended_licenses)
     except:
         raise FLictException(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             "Invalid license expression: " + str(args.licenses))
+                             "Could not parse license expression: " + str(args.licenses))
 
     formatted = flict_setup.formatter.format_compats(compats)
     flict_print(flict_setup, formatted)
