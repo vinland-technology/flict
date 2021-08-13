@@ -7,19 +7,18 @@
 from argparse import RawTextHelpFormatter
 import argparse
 
+from flict.flictlib import logger
+from flict.flictlib.compatibility import Compatibility
+from flict.flictlib.flict_config import flict_version
+from flict.flictlib.format.factory import FormatFactory
 from flict.flictlib.license import LicenseHandler
 from flict.flictlib.project import Project
 from flict.flictlib.report import Report
-from flict.flictlib.compatibility import Compatibility
-from flict.flictlib.flict_config import flict_version
-from flict.flictlib import logger
-
-import flict.flictlib.report
-
-from flict.flictlib.format.factory import FormatFactory
-
 from flict.flictlib.return_codes import FLictException
 from flict.flictlib.return_codes import ReturnCodes
+
+import flict.flictlib.report
+from flict.flictlib import flict_config
 
 import json
 import os
@@ -27,20 +26,6 @@ import sys
 
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-
-# TODO: replace this with something that makes installation easy
-VAR_DIR = SCRIPT_DIR + "/var/"
-DEFAULT_TRANSLATIONS_BASE_FILE = "translation.json"
-DEFAULT_GROUP_BASE_FILE = "license-group.json"
-DEFAULT_RELICENSE_BASE_FILE = "relicense.json"
-DEFAULT_SCANCODE_BASE_FILE = "scancode-licenses.json"
-DEFAULT_MATRIX_BASE_FILE = "osadl-matrix.csv"
-
-DEFAULT_TRANSLATIONS_FILE = VAR_DIR + DEFAULT_TRANSLATIONS_BASE_FILE
-DEFAULT_GROUP_FILE = VAR_DIR + DEFAULT_GROUP_BASE_FILE
-DEFAULT_RELICENSE_FILE = VAR_DIR + DEFAULT_RELICENSE_BASE_FILE
-DEFAULT_SCANCODE_FILE = VAR_DIR + DEFAULT_SCANCODE_BASE_FILE
-DEFAULT_MATRIX_FILE = VAR_DIR + DEFAULT_MATRIX_BASE_FILE
 
 PROGRAM_NAME = "flict (FOSS License Compatibility Tool)"
 PROGRAM_DESCRIPTION = "flict is a Free and Open Source Software tool to verify compatibility between licenses"
@@ -94,7 +79,7 @@ def parse():
     description = description + "DESCRIPTION\n  " + PROGRAM_DESCRIPTION + "\n\n"
 
     epilog = ""
-    epilog = epilog + "CONFIGURATION\n  All config files can be found in\n  " + VAR_DIR + "\n\n"
+    epilog = epilog + "CONFIGURATION\n  All config files can be found in\n  " + flict_config.VAR_DIR + "\n\n"
     epilog = epilog + "AUTHOR\n  " + PROGRAM_AUTHOR + "\n\n"
     epilog = epilog + "PROJECT SITE\n  " + PROGRAM_URL + "\n\n"
     epilog = epilog + "REPORTING BUGS\n  File a ticket at " + BUG_URL + "\n\n"
@@ -117,36 +102,36 @@ def parse():
                                         type=str,
                                         dest='license_group_file',
                                         help='File with group definitions, defaults to' +
-                                        DEFAULT_GROUP_BASE_FILE + ". EXPERIMENTAL",
-                                        default=DEFAULT_GROUP_FILE)
+                                        flict_config.DEFAULT_GROUP_BASE_FILE + ". EXPERIMENTAL",
+                                        default=flict_config.DEFAULT_GROUP_FILE)
 
     # DEFAULTS
     commmon_defaults_group.add_argument('-mf', '--matrix-file',
                                         type=str,
                                         dest='matrix_file',
-                                        help='File with license compatibility matrix, defaults to ' + DEFAULT_MATRIX_BASE_FILE,
-                                        default=DEFAULT_MATRIX_FILE)
+                                        help='File with license compatibility matrix, defaults to ' + flict_config.DEFAULT_MATRIX_BASE_FILE,
+                                        default=flict_config.DEFAULT_MATRIX_FILE)
 
     # DEFAULTS
     commmon_defaults_group.add_argument('-rf', '--relicense-file',
                                         type=str,
                                         dest='relicense_file',
-                                        help='File with relicensing information, defaults to ' + DEFAULT_RELICENSE_BASE_FILE,
-                                        default=DEFAULT_RELICENSE_FILE)
+                                        help='File with relicensing information, defaults to ' + flict_config.DEFAULT_RELICENSE_BASE_FILE,
+                                        default=flict_config.DEFAULT_RELICENSE_FILE)
     # DEFAULTS
     commmon_defaults_group.add_argument('-sf', '--scancode-file',
                                         type=str,
                                         dest='scancode_file',
                                         help='File with scancode licenseses information, defaults to ' +
-                                        DEFAULT_SCANCODE_BASE_FILE + ". EXPERIMENTAL",
-                                        default=DEFAULT_SCANCODE_FILE)
+                                        flict_config.DEFAULT_SCANCODE_BASE_FILE + ". EXPERIMENTAL",
+                                        default=flict_config.DEFAULT_SCANCODE_FILE)
 
     # DEFAULTS
     commmon_defaults_group.add_argument('-tf', '--translations-file',
                                         type=str,
                                         dest='translations_file',
-                                        help='File with license translations, defaults to' + DEFAULT_TRANSLATIONS_BASE_FILE,
-                                        default=DEFAULT_TRANSLATIONS_FILE)
+                                        help='File with license translations, defaults to' + flict_config.DEFAULT_TRANSLATIONS_BASE_FILE,
+                                        default=flict_config.DEFAULT_TRANSLATIONS_FILE)
 
     # COMMON
     parser.add_argument('-es', '--enable-scancode',
