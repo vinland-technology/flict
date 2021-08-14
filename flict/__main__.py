@@ -49,6 +49,7 @@ BUG_URL = "https://github.com/vinland-technology/flict/issues"
 PROGRAM_COPYRIGHT = "(c) 2021 Henrik Sandklef<hesa@sandklef.com>"
 PROGRAM_LICENSE = "GPL-3.0-or-later"
 PROGRAM_AUTHOR = "Henrik Sandklef"
+PROGRAM_ATTRIBUTION="flict is using the license compatibility matrix from osadl.org,\n  which can be found at https://www.osadl.org/fileadmin/checklists/matrix.html"
 PROGRAM_SEE_ALSO = ""
 
 OUTPUT_FORMAT_JSON = "JSON"
@@ -100,6 +101,7 @@ def parse():
     epilog = epilog + "REPORTING BUGS\n  File a ticket at " + BUG_URL + "\n\n"
     epilog = epilog + "COPYRIGHT\n  Copyright " + \
         PROGRAM_COPYRIGHT + ".\n  License " + PROGRAM_LICENSE + "\n\n"
+    epilog = epilog + "ATTRIBUTION\n  " + PROGRAM_ATTRIBUTION + "\n\n"
     epilog = epilog + "SEE ALSO\n  " + PROGRAM_SEE_ALSO + "\n\n"
 
     parser = argparse.ArgumentParser(
