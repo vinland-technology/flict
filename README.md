@@ -72,8 +72,8 @@ Read more in [SETTINGS](SETTINGS.md)
 
 ## License matrix
 
-To check compatibility between two licenses flict is using [OSADL's
-matrix](https://www.osadl.org/fileadmin/checklists/matrix.html).
+To check compatibility between two licenses flict is using [OSADL](https://www.osadl.org/)'s
+[matrix](https://www.osadl.org/fileadmin/checklists/matrix.html).
 
 ## Scancode's db
 
