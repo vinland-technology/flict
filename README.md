@@ -85,7 +85,7 @@ Look at our [INSTALLATION](INSTALLATION.md) page.
 
 ## Docker image
 
-Flict is included in the docker image: [Compliance Tools](https://hub.docker.com/repository/docker/sandklef/compliance-tools)
+Flict is included in the docker image [Compliance Tools](https://hub.docker.com/repository/docker/sandklef/compliance-tools) which is easily managed by [Compliance Tool Collection](https://github.com/vinland-technology/compliance-tool-collection)
 
 # Exit code and reports
 
