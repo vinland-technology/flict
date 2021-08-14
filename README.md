@@ -52,10 +52,6 @@ flict supports:
 
 Check out our [EXAMPLES](EXAMPLES.md)
 
-# Contribute to the project
-
-See [CONTRIBUTING](CONTRIBUTING.md)
-
 # Extensible and tweakable
 
 flict does not come with any knowledge about certain policies,
@@ -120,6 +116,14 @@ Using this format you can create txt, html, pdf and what format pandoc can creat
 ## Policy report
 
 To the above report you can apply your own policy (see [SETTINGS](SETTINGS.md)). Applying this will create a policy report with your policy applied to the suggested outbound license from the usual report and with some complementary information.
+
+# Reporting bugs
+
+File a ticket at [github.com/vinland-technology/flict/issues](https://github.com/vinland-technology/flict/issues).
+
+# Contribute to the project
+
+See [CONTRIBUTING](CONTRIBUTING.md)
 
 # License of flict
 
