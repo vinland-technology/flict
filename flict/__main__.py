@@ -97,7 +97,7 @@ def parse():
     epilog = epilog + "CONFIGURATION\n  All config files can be found in\n  " + VAR_DIR + "\n\n"
     epilog = epilog + "AUTHOR\n  " + PROGRAM_AUTHOR + "\n\n"
     epilog = epilog + "PROJECT SITE\n  " + PROGRAM_URL + "\n\n"
-    epilog = epilog + "REPORTING BUGS\n  File a ticket at " + BUG_URL + "\n\n"
+    epilog = epilog + "REPORTING BUGS\n  Create an issue at " + BUG_URL + "\n\n"
     epilog = epilog + "COPYRIGHT\n  Copyright " + \
         PROGRAM_COPYRIGHT + ".\n  License " + PROGRAM_LICENSE + "\n\n"
     epilog = epilog + "SEE ALSO\n  " + PROGRAM_SEE_ALSO + "\n\n"
