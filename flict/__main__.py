@@ -49,7 +49,7 @@ BUG_URL = "https://github.com/vinland-technology/flict/issues"
 PROGRAM_COPYRIGHT = "(c) 2021 Henrik Sandklef<hesa@sandklef.com>"
 PROGRAM_LICENSE = "GPL-3.0-or-later"
 PROGRAM_AUTHOR = "Henrik Sandklef"
-PROGRAM_ATTRIBUTION="flict is using the license compatibility matrix from osadl.org,\n  which can be found at https://www.osadl.org/fileadmin/checklists/matrix.html"
+PROGRAM_ATTRIBUTION = "flict is using the license compatibility matrix from osadl.org,\n  which can be found at https://www.osadl.org/fileadmin/checklists/matrix.html"
 PROGRAM_SEE_ALSO = ""
 
 OUTPUT_FORMAT_JSON = "JSON"
