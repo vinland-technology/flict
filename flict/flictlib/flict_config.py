@@ -15,7 +15,7 @@ flict_version = "0.1"
 SCRIPT_DIR = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../"))
 
 # TODO: replace this with something that makes installation easy
-VAR_DIR = os.path.join(SCRIPT_DIR, "var/")
+VAR_DIR = os.path.join(SCRIPT_DIR, "var")
 
 DEFAULT_TRANSLATIONS_BASE_FILE = "translation.json"
 DEFAULT_GROUP_BASE_FILE = "license-group.json"
