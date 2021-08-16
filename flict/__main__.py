@@ -14,7 +14,6 @@ from flict.flictlib.license import decode_license_expression
 from flict.flictlib.compatibility import Compatibility
 from flict.flictlib.flict_config import flict_version
 from flict.flictlib.format.factory import FormatFactory
-from flict.flictlib.license import LicenseHandler
 from flict.flictlib.project import Project
 from flict.flictlib.report import Report
 from flict.flictlib.return_codes import FLictException
