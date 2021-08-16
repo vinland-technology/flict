@@ -72,6 +72,23 @@ class ManagedLicenseExpression:
         mle['set_list'] = self.set_list
         return mle
 
+    def __str__(self):
+        ret_str = ""
+        ret_str += "license expression:                    " + str(self.license_expression)
+        ret_str += "\n"
+        ret_str += "translated license expression:         " + str(self.translated)
+        ret_str += "\n"
+        ret_str += "expanded license expression:           " + str(self.expanded)
+        ret_str += "\n"
+        ret_str += "grouped license expression:            " + str(self.grouped)
+        ret_str += "\n"
+        ret_str += "simplified license expression:         " + str(self.simplified)
+        ret_str += "\n"
+        ret_str += "interim license expression:            " + interim_license_expression_list_to_string(self.interim)
+        ret_str += "\n"
+        ret_str += "license expression list:               " + license_expression_set_list_to_string(self.set_list)
+        return ret_str
+
 
 class LicenseExpressionList:
     def __init__(self, op, list):
@@ -220,7 +237,7 @@ class LicenseHandler:
 
         return license
 
-    def interim_license_expression_list(self, license_expression, licensing):
+    def interim_license_expression_list(self, _license_expression, licensing):
         """
         Transforms and boolean symbolic expression
 
@@ -230,10 +247,9 @@ class LicenseHandler:
             AND [G, OR [A, B]]
         The latter is an interim format.
         """
-        # print("")
-        #print("parse(" + str(license_expression) + ")")
+        license_expression = encode_license_expression(_license_expression)
         tokenizer = licensing.get_advanced_tokenizer()
-        tokenized = tokenizer.tokenize(str(license_expression))
+        tokenized = tokenizer.tokenize(license_expression)
         current_license = None
         current_licenses = []
         current_op = None
@@ -283,15 +299,14 @@ class LicenseHandler:
             else:
                 #print("tok: \"" + tok + "\"")
                 if paren_expr is not None:
-                    #print("TEMP " + tok)
                     paren_expr = paren_expr + " " + tok
                 else:
-                    #print("license: " + tok)
                     current_license = tok
 
         current_licenses.append(current_license)
         if current_op is None:
             current_op = "AND"
+
         list = LicenseExpressionList(current_op, current_licenses)
         #print("DONE: " + str(license_expression) + " => " + str(list))
         return list
@@ -332,7 +347,7 @@ class LicenseHandler:
         #print("Count: " + str(_combinations(interim_license_expression_list)))
         if not isinstance(interim_license_expression_list, LicenseExpressionList):
             # single license
-            license_set = {interim_license_expression_list}
+            license_set = {decode_license_expression(interim_license_expression_list)}
             expanded_list.append(list(license_set))
             logger.license_logger.debug(
                 "LEAF, returning " + str(expanded_list))
@@ -435,8 +450,11 @@ def license_to_string_long(license):
 
 
 def license_expression_set_list_to_string(set_list):
+    if set_list is None:
+        return "[]"
     string = "[ "
     first_set = True
+    set_list.sort()
     for license_set in set_list:
         if first_set:
             first_set = False
@@ -480,3 +498,11 @@ def interim_license_expression_list_to_string(lel):
 
     string = string + "]"
     return string
+
+
+def encode_license_expression(license_expression):
+    return license_expression.replace(" WITH ", "_WITH_")
+
+
+def decode_license_expression(license_expression):
+    return license_expression.replace("_WITH_", " WITH ")

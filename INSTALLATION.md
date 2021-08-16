@@ -61,6 +61,10 @@ cd flict
 python3 setup.py install --user
 ```
 
+# Docker image
+
+Flict is included in the docker image [Compliance Tools](https://hub.docker.com/repository/docker/sandklef/compliance-tools) which is easily managed by [Compliance Tool Collection](https://github.com/vinland-technology/compliance-tool-collection)
+
 # Using flict
 
 Check out our [EXAMPLES](EXAMPLES.md)
