@@ -85,7 +85,7 @@ compare_exec()
     VAL=$(echo ${CMD} | bash )
     RET=$?
 
-    compare_exit "$VAL" "$EXP" "Results differs: \n  \"$VAL\"\n  \"$EXP\" differs" "$CMD" "$MSG"
+    compare_exit "$VAL" "$EXP" "Results differs: \n  actual:   \"$VAL\"\n  expected: \"$EXP\"" "$CMD" "$MSG"
 
     compare_exit "$RET" "$EXP_RET" "Return values \"$RET\" and \"$EXP_RET\" differs" "$CMD" "$MSG"
     inform "OK"
