@@ -15,6 +15,7 @@
 #
 
 import json
+import sys
 from flict.flictlib import logger
 
 DEFAULT_MATRIX_FILE = "osadl-matrix.csv"
@@ -68,6 +69,17 @@ class Project:
             self.tot_combinations = None
             # self.expand_projects()
 
+    # get JSON data from self.project_file
+    def _get_json_data(self):
+        if self.project_file == "-":
+            data = ""
+            for line in sys.stdin:
+                data += line
+            return json.loads(data)
+        else:
+            with open(self.project_file) as fp:
+                return json.load(fp)
+            
     def read_project_file(self):
         """This function reads a project file (JSON)
 
@@ -75,16 +87,16 @@ class Project:
         format ("project") or the old one ("component"), stored in self.project
         If there is a meta section in the project def, this is added under self.meta
         """
-        with open(self.project_file) as fp:
-            self.project_object = json.load(fp)
-            if 'project' in self.project_object:
-                self.project = self.project_object['project']
-            elif 'component' in self.project_object:
-                self.project = self.project_object['component']
-            else:
-                return None
-            if 'meta' in self.project_object:
-                self.meta = self.project_object['meta']
+        self.project_object = self._get_json_data()
+
+        if 'project' in self.project_object:
+            self.project = self.project_object['project']
+        elif 'component' in self.project_object:
+            self.project = self.project_object['component']
+        else:
+            return None
+        if 'meta' in self.project_object:
+            self.meta = self.project_object['meta']
 
     # Some nifty methods to hide the storage structure
 
