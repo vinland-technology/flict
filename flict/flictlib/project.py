@@ -79,7 +79,7 @@ class Project:
         else:
             with open(self.project_file) as fp:
                 return json.load(fp)
-            
+
     def read_project_file(self):
         """This function reads a project file (JSON)
 
