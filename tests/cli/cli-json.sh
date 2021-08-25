@@ -44,6 +44,32 @@ simple_test()
 #    echo $VAL
 }    
 
+
+stdin_test()
+{
+    local FILE=$1
+    local OPTIONS="$2"
+    local EXP_RET="$3"
+    local MSG="$4"
+
+    if [ "$MSG" = "" ]
+    then
+        MSG=$OPTIONS
+    fi
+    
+    inform_n "${MSG}"
+    VAL=$(cat ${FLICT_DIR}/example-data/europe-small.json | ${FLICT} verify -pf - | jq . > /dev/null)
+    RET=$?
+    
+    compare_exit "$RET" "$EXP_RET" "Return values \"$RET\" and \"$EXP_RET\" differs" "$OPTIONS" "$MSG"
+    inform "OK"
+
+    SUCC_CNT=$(( $SUCC_CNT + 1 ))
+
+#    echo $VAL
+    
+}
+
 # list
 simple_test "list" 0 
 simple_test "list -g" 0
@@ -53,6 +79,9 @@ simple_test "list -lg MIT" 0
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json" 0
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lcc" 0 
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lpl" 0 
+stdin_test  "${FLICT_DIR}/example-data/europe-small.json" "verify -pf -" 0 "reading from stdin"
+stdin_test  "${FLICT_DIR}/example-data/europe-small.json" "verify -pf - -lcc" 0 "reading from stdin"
+stdin_test  "${FLICT_DIR}/example-data/europe-small.json" "verify -pf - -lpl" 0 "reading from stdin"
 
 # outbound-candidate
 simple_test "outbound-candidate MIT" 0 
