@@ -34,7 +34,7 @@ simple_test()
     
     inform_n "${MSG}"
 #    echo "command: " ${FLICT} ${OPTIONS}
-    echo ${FLICT} ${OPTIONS} | bash >/dev/null  2>/dev/null 
+    ${FLICT} ${OPTIONS}  >/dev/null  2>/dev/null
     RET=$?
     compare_exit "$RET" "$EXP_RET" "Return values \"$RET\" and \"$EXP_RET\" differs" "$OPTIONS" "$MSG"
     inform "OK"
@@ -48,7 +48,8 @@ simple_test()
 
 # verify
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json" 0
-simple_test "verify -pf ${FLICT_DIR}/example-data" 10
+simple_test "verify -pf ${FLICT_DIR}/example-data" 12
+simple_test "verify -pf ${FLICT_DIR}/setup.py" 10
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lcc" 0 
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lpl" 0 
 
