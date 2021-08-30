@@ -17,6 +17,8 @@
 import json
 import sys
 from flict.flictlib import logger
+from flict.flictlib.return_codes import FlictException
+from flict.flictlib.return_codes import ReturnCodes
 
 DEFAULT_MATRIX_FILE = "osadl-matrix.csv"
 
@@ -71,14 +73,19 @@ class Project:
 
     # get JSON data from self.project_file
     def _get_json_data(self):
-        if self.project_file == "-":
-            data = ""
-            for line in sys.stdin:
-                data += line
-            return json.loads(data)
-        else:
-            with open(self.project_file) as fp:
-                return json.load(fp)
+        try:
+            if self.project_file == "-":
+                file_name = "sys.stdin"
+                return json.load(sys.stdin)
+            else:
+                file_name = self.project_file
+                with open(self.project_file) as fp:
+                    return json.load(fp)
+        except json.JSONDecodeError as e:
+            raise FlictException(ReturnCodes.RET_INVALID_PROJECT, "File " + file_name + " does not contain valid JSON data")
+        except FileNotFoundError as e:
+            raise FlictException(ReturnCodes.RET_FILE_NOT_FOUND, "File " + file_name + " could not be found")
+
 
     def read_project_file(self):
         """This function reads a project file (JSON)
