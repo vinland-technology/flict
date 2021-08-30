@@ -94,15 +94,8 @@ class Project:
         If there is a meta section in the project def, this is added under self.meta
         """
         self.project_object = self._get_json_data()
-
-        if 'project' in self.project_object:
-            self.project = self.project_object['project']
-        elif 'component' in self.project_object:
-            self.project = self.project_object['component']
-        else:
-            return None
-        if 'meta' in self.project_object:
-            self.meta = self.project_object['meta']
+        self.project = self.project_object.get('project', self.project_object.get('component', None))
+        self.meta = self.project_object.get('meta', None) 
 
     # Some nifty methods to hide the storage structure
 
