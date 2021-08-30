@@ -95,7 +95,7 @@ class Project:
         """
         self.project_object = self._get_json_data()
         self.project = self.project_object.get('project', self.project_object.get('component', None))
-        self.meta = self.project_object.get('meta', None) 
+        self.meta = self.project_object.get('meta', None)
 
     # Some nifty methods to hide the storage structure
 
