@@ -81,11 +81,10 @@ class Project:
                 file_name = self.project_file
                 with open(self.project_file) as fp:
                     return json.load(fp)
-        except json.JSONDecodeError as e:
+        except json.JSONDecodeError:
             raise FlictException(ReturnCodes.RET_INVALID_PROJECT, "File " + file_name + " does not contain valid JSON data")
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             raise FlictException(ReturnCodes.RET_FILE_NOT_FOUND, "File " + file_name + " could not be found")
-
 
     def read_project_file(self):
         """This function reads a project file (JSON)
