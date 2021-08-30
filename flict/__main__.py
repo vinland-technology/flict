@@ -420,11 +420,7 @@ def verify_license_expression(args, flict_setup):
 
 def verify_project_file(args, flict_setup):
 
-    try:
-        project = Project(args.project_file, flict_setup.license_handler)
-    except:
-        raise FlictException(ReturnCodes.RET_INVALID_PROJECT,
-                             "Missing or invalid project file.")
+    project = Project(args.project_file, flict_setup.license_handler)
 
     formatted = ""
     if args.list_project_licenses:
