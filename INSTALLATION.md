@@ -37,7 +37,7 @@ Please [help](https://github.com/vinland-technology/flict/issues/26) us writing 
 
 Please [help](https://github.com/vinland-technology/flict/issues/25) us writing instructions for this
 
-# Install developing dependencies
+# Install development dependencies
 
 ```shell
 pip3 install -e .[dev]
