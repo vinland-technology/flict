@@ -31,11 +31,11 @@ pip3 install flict
 
 ### Windows
 
-Please [help](https://github.com/vinland-technology/flict/issues/26) us writing instructions for this
+Please help us writing instructions for this
 
 ### MacOS
 
-Please [help](https://github.com/vinland-technology/flict/issues/25) us writing instructions for this
+Please help us writing instructions for this
 
 # Install developing dependencies
 
