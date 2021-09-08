@@ -26,6 +26,7 @@ sudo apt-get install python3 python3-pip
 ```
 
 ```shell
+pip3 install license_expression
 pip3 install flict
 ```
 
