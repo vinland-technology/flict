@@ -36,6 +36,10 @@ done 2>&1 | tee $LOG_FILE
 
 ERRORS=$(grep ERROR $LOG_FILE | wc -l)
 
+echo LOC stats
+printf "Python:   %4s\n" `find . -name "*.py" | xargs wc -l | tail -1 | sed 's,total,,g'`
+printf "Bash:     %4s\n" `find . -name "*.sh" | xargs wc -l | tail -1 | sed 's,total,,g'`
+printf "Total:    %4s\n" `find . -name "*.py" -o -name "*.sh" | xargs wc -l | tail -1 | sed 's,total,,g'`
 exit $ERRORS
 
 
