@@ -93,6 +93,10 @@ inform()
     echo " * $*"
 }
 
+inform Reuse check
+reuse lint > /dev/null
+if [ $? -ne 0 ]; then echo "Failed checking license info with reuse"; exit 2; fi
+
 inform Clean up
 rm -fr /tmp/flict_$VERSION
 
@@ -116,14 +120,12 @@ inform Checkout $VERSION
 git checkout $VERSION
 if [ $? -ne 0 ]; then echo "Failed checking our $VERSION"; exit 2; fi
 
-inform Build
-make
+inform Test
+cd tests && ./all.sh
 if [ $? -ne 0 ]; then echo "Failed testing"; exit 2; fi
+cd -
 
 inform "All seem to be fine :)"
-exit 0
-
-echo "ALl fine"
 
 
 
