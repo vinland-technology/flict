@@ -123,24 +123,6 @@ if [ $? -ne 0 ]; then echo "Failed testing"; exit 2; fi
 inform "All seem to be fine :)"
 exit 0
 
-rm -fr .git
-if [ $? -ne 0 ]; then echo "Failed removing git dir"; exit 2; fi
-
-rm  /tmp/flict-$VERSION.zip
-zip -r  /tmp/flict-$VERSION.zip .
-if [ $? -ne 0 ]; then echo "Failed creating zip file "; exit 2; fi
-
-rm    /tmp/flict-$VERSION.tar
-tar cvf /tmp/flict-$VERSION.tar .
-if [ $? -ne 0 ]; then echo "Failed creating tar file "; exit 2; fi
-
-rm    /tmp/flict-$VERSION.tar.gz
-gzip    /tmp/flict-$VERSION.tar
-if [ $? -ne 0 ]; then echo "Failed gzipping tar file "; exit 2; fi
-
-ls -al /tmp/flict-$VERSION.tar.gz /tmp/flict-$VERSION.zip 
-if [ $? -ne 0 ]; then echo "relese files not present "; exit 2; fi
-
 echo "ALl fine"
 
 
