@@ -19,32 +19,41 @@ from argparse import RawTextHelpFormatter
 #
 #
 PROGRAM_NAME = "translator.py"
-PROGRAM_DESCRIPTION = "Translates license ids from misc spellings to known format (e.g SPDX)"
 PROGRAM_VERSION = "0.1"
-PROGRAM_URL = "https://github.com/vinland-technology/compliance-utils"  # TODO
-PROGRAM_COPYRIGHT = "(c) 2020 Henrik Sandklef<hesa@sandklef.com>"
-PROGRAM_LICENSE = "GPL-3.0-or-larer"
-PROGRAM_AUTHOR = "Henrik Sandklef"
-PROGRAM_SEE_ALSO = "yoga (yoda's generic aggregator)\n  yocr (yoga's compliance reporter)\n  flict (FOSS License Compatibility Tool)"
 
 DEFAULT_TRANSLATIONS_FILE = "translation.json"
 
+DESCIPTION = """
+NAME
+  translator.py
+
+DESCRIPTION
+  Translates license ids from misc spellings to known format (e.g SPDX)
+
+"""
+
+EPILOG = """
+AUTHOR
+  Henrik Sandklef
+
+REPORTING BUGS
+  File a ticket at https://github.com/vinland-technology/flict/issues
+
+COPYRIGHT
+  Copyright (c) 2020 Henrik Sandklef<hesa@sandklef.com>.
+  License GPL-3.0-or-larer
+
+SEE ALSO
+  yoga (yoda's generic aggregator)
+  yocr (yoga's compliance reporter)
+  flict (FOSS License Compatibility Tool)
+"""
+
 
 def parse():
-
-    description = "NAME\n  " + PROGRAM_NAME + "\n\n"
-    description = description + "DESCRIPTION\n  " + PROGRAM_DESCRIPTION + "\n\n"
-
-    epilog = ""
-    epilog = epilog + "AUTHOR\n  " + PROGRAM_AUTHOR + "\n\n"
-    epilog = epilog + "REPORTING BUGS\n  File a ticket at " + PROGRAM_URL + "\n\n"
-    epilog = epilog + "COPYRIGHT\n  Copyright " + \
-        PROGRAM_COPYRIGHT + ".\n  License " + PROGRAM_LICENSE + "\n\n"
-    epilog = epilog + "SEE ALSO\n  " + PROGRAM_SEE_ALSO + "\n\n"
-
     parser = argparse.ArgumentParser(
-        description=description,
-        epilog=epilog,
+        description=DESCIPTION,
+        epilog=EPILOG,
         formatter_class=RawTextHelpFormatter,
     )
     parser.add_argument('-tf', '--translation-file',
