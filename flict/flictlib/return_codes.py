@@ -10,25 +10,40 @@
 #
 ###################################################################
 
-from enum import IntEnum
+from enum import Enum
 
 
-class ReturnCodes(IntEnum):
+class ReturnCodes(Enum):
     # common
 
-    RET_SUCCESS = 0
+    RET_SUCCESS = (0, "Success")
     # 1
     # 2
     # 3
     # 4
-    RET_MISSING_ARGS = 5
+    RET_MISSING_ARGS = (5, "Missing arguments")
     # 6
     # 7
     # 8
     # 9
 
-    RET_INVALID_PROJECT = 10
-    RET_INVALID_EXPRESSSION = 11
+    RET_INVALID_PROJECT = (10, "Invalid project")
+    RET_INVALID_EXPRESSSION = (11, "Invalid expression")
+
+    @classmethod
+    def get_help(cls, indent="  "):
+        """
+        Return help string for all defined enum values
+        """
+        ret = []
+        for item in cls.__dict__.keys():
+            if not item.startswith("RET_"):
+                continue
+            _v = getattr(cls, item)
+            if not isinstance(_v, Enum):
+                continue
+            ret.append("{code}: {text}".format(code=_v.value[0], text=_v.value[1]))
+        return indent + f"\n{indent}".join(ret)
 
 
 class FLictException(Exception):
@@ -38,7 +53,7 @@ class FLictException(Exception):
         self._error_message = error_message
 
     def error_code(self):
-        return self._error_code
+        return self._error_code.value[0]
 
     def error_message(self):
         return self._error_message
