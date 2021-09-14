@@ -81,7 +81,7 @@ def parse():
     description = "NAME\n  " + PROGRAM_NAME + "\n\n"
     description = description + "DESCRIPTION\n  " + PROGRAM_DESCRIPTION + "\n\n"
 
-    epilog = ""
+    epilog = "Return codes:\n{codes}\n\n".format(codes=ReturnCodes.get_help())
     epilog = epilog + "CONFIGURATION\n  All config files can be found in\n  " + flict_config.VAR_DIR + "\n\n"
     epilog = epilog + "AUTHOR\n  " + PROGRAM_AUTHOR + "\n\n"
     epilog = epilog + "PROJECT SITE\n  " + PROGRAM_URL + "\n\n"
