@@ -28,22 +28,37 @@ PROGRAM_SEE_ALSO = "yoga (yoda's generic aggregator)\n  yocr (yoga's compliance 
 
 DEFAULT_RELICENSE_FILE = "relicensing.json"
 
+DESCRIPTION = """
+NAME
+  relicense.py
+
+DESCRIPTION
+  Add possibe relicensing for licenses
+
+"""
+
+EPILOG = """
+AUTHOR
+  Henrik Sandklef
+
+REPORTING BUGS
+  File a ticket at https://github.com/vinland-technology/flict/issues
+
+COPYRIGHT
+  Copyright (c) 2020 Henrik Sandklef<hesa@sandklef.com>.
+  License GPL-3.0-or-larer
+
+SEE ALSO
+  yoga (yoda's generic aggregator)
+  yocr (yoga's compliance reporter)
+  flict (FOSS License Compatibility Tool)
+"""
+
 
 def parse():
-
-    description = "NAME\n  " + PROGRAM_NAME + "\n\n"
-    description = description + "DESCRIPTION\n  " + PROGRAM_DESCRIPTION + "\n\n"
-
-    epilog = ""
-    epilog = epilog + "AUTHOR\n  " + PROGRAM_AUTHOR + "\n\n"
-    epilog = epilog + "REPORTING BUGS\n  File a ticket at " + PROGRAM_URL + "\n\n"
-    epilog = epilog + "COPYRIGHT\n  Copyright " + \
-        PROGRAM_COPYRIGHT + ".\n  License " + PROGRAM_LICENSE + "\n\n"
-    epilog = epilog + "SEE ALSO\n  " + PROGRAM_SEE_ALSO + "\n\n"
-
     parser = argparse.ArgumentParser(
-        description=description,
-        epilog=epilog,
+        description=DESCRIPTION,
+        epilog=EPILOG,
         formatter_class=RawTextHelpFormatter,
     )
     parser.add_argument('-f', '--relicense-file',
