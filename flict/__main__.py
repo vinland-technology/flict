@@ -29,16 +29,6 @@ import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
-PROGRAM_NAME = "flict (FOSS License Compatibility Tool)"
-PROGRAM_DESCRIPTION = "flict is a Free and Open Source Software tool to verify compatibility between licenses"
-PROGRAM_URL = "https://github.com/vinland-technology/flict"
-BUG_URL = "https://github.com/vinland-technology/flict/issues"
-PROGRAM_COPYRIGHT = "(c) 2021 Henrik Sandklef<hesa@sandklef.com>"
-PROGRAM_LICENSE = "GPL-3.0-or-later"
-PROGRAM_AUTHOR = "Henrik Sandklef"
-PROGRAM_ATTRIBUTION = "flict is using the license compatibility matrix from osadl.org,\n  which can be found at https://www.osadl.org/fileadmin/checklists/matrix.html"
-PROGRAM_SEE_ALSO = ""
-
 OUTPUT_FORMAT_JSON = "JSON"
 OUTPUT_FORMAT_TEXT = "text"
 OUTPUT_FORMAT_MARKDOWN = "markdown"
@@ -46,6 +36,37 @@ OUTPUT_FORMAT_DOT = "dot"
 DEFAULT_OUTPUT_FORMAT = OUTPUT_FORMAT_JSON
 
 DATE_FMT = '%Y-%m-%d'
+
+DESCRIPTION = """NAME
+  flict (FOSS License Compatibility Tool)
+
+  DESCRIPTION
+    flict is a Free and Open Source Software tool to verify compatibility between licenses
+
+  """
+
+EPILOG = f"""Return codes:
+{ReturnCodes.get_help()}
+
+CONFIGURATION
+    All config files can be found in
+    {flict_config.VAR_DIR}
+
+AUTHOR
+  Henrik Sandklef
+PROJECT SITE
+  https://github.com/vinland-technology/flict
+REPORTING BUGS
+  https://github.com/vinland-technology/flict/issues
+
+COPYRIGHT
+  Copyright (c) 2021 Henrik Sandklef<hesa@sandklef.com>
+  License GPL-3.0-or-later
+
+ATTRIBUTION
+  flict is using the license compatibility matrix from osadl.org,
+  which can be found at https://www.osadl.org/fileadmin/checklists/matrix.html
+"""
 
 
 class FlictSetup:
@@ -77,23 +98,9 @@ class FlictSetup:
 
 
 def parse():
-
-    description = "NAME\n  " + PROGRAM_NAME + "\n\n"
-    description = description + "DESCRIPTION\n  " + PROGRAM_DESCRIPTION + "\n\n"
-
-    epilog = "Return codes:\n{codes}\n\n".format(codes=ReturnCodes.get_help())
-    epilog = epilog + "CONFIGURATION\n  All config files can be found in\n  " + flict_config.VAR_DIR + "\n\n"
-    epilog = epilog + "AUTHOR\n  " + PROGRAM_AUTHOR + "\n\n"
-    epilog = epilog + "PROJECT SITE\n  " + PROGRAM_URL + "\n\n"
-    epilog = epilog + "REPORTING BUGS\n  Create an issue at " + BUG_URL + "\n\n"
-    epilog = epilog + "COPYRIGHT\n  Copyright " + \
-        PROGRAM_COPYRIGHT + ".\n  License " + PROGRAM_LICENSE + "\n\n"
-    epilog = epilog + "ATTRIBUTION\n  " + PROGRAM_ATTRIBUTION + "\n\n"
-    epilog = epilog + "SEE ALSO\n  " + PROGRAM_SEE_ALSO + "\n\n"
-
     parser = argparse.ArgumentParser(
-        description=description,
-        epilog=epilog,
+        description=DESCRIPTION,
+        epilog=EPILOG,
         formatter_class=RawTextHelpFormatter,
     )
 
