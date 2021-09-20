@@ -70,16 +70,20 @@ def _licenses_hash(a, b):
         return b + separator + a
 
 
+def _print_compare_line(left, right, color):
+    return f'"{left}" -> "{right}"  {color}'
+
+
 def _compat_to_dot(left, comp_left, right, comp_right):
     logger.main_logger.debug("_compat_to_dot")
 
     if comp_left == "true":
         logger.main_logger.debug("left true")
         if comp_right == "true":
-            return "\"" + left + "\"  -> \"" + right + "\" [dir=both] [color=\"darkgreen\"]"
+            return _print_compare_line(left, right, '[dir=both] [color="darkgreen"]')
         if comp_right == "false":
             logger.main_logger.debug("1 dslkjsljdflskdjfljdf")
-            res = "\"" + left + "\" -> \"" + right + "\"  [color=\"black\"] "
+            res = _print_compare_line(left, right, '[color="black"]')
             logger.main_logger.debug(left + "    " + right)
             logger.main_logger.debug("dot:      " + res)
             logger.main_logger.debug(
@@ -87,35 +91,34 @@ def _compat_to_dot(left, comp_left, right, comp_right):
             return res
 
         if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
-            res = "\"" + right + "\" -> \"" + left + "\"  [color=\"black\"]"
-            res += "\n\"" + left + "\" -> \"" + right + \
-                "\"  [color=\"gray\", style=\"dotted\"] \n "
-            return res
+            return f"""
+            {_print_compare_line(right, left, '[color="black"]')}
+            {_print_compare_line(left, right, '[color="gray", style="dotted"]')}
+            """
     elif comp_left == "false":
         logger.main_logger.debug("left false")
 
         if comp_right == "true":
             logger.main_logger.debug("left false right true")
-            return "\"" + right + "\"  -> \"" + left + "\" [color=\"black\"]"
+            return _print_compare_line(right, left, '[color="black"]')
         if comp_right == "false":
-            return "\"" + left + "\"\n    \"" + right + "\""
+            return f'"{left}"\n    "{right}"'
         if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
-            return "\"" + right + "\" -> \"" + left + "\"  [color=\"gray\", style=\"dotted\"] \n "
+            return _print_compare_line(right, left, '[color="gray", style="dotted"]') + " \n "
     elif comp_left == "question" or comp_left == "undefined" or comp_left == "depends":
         logger.main_logger.debug("left QUD")
         # QUD---->
         if comp_right == "true":
-            res = "\"" + left + "\" -> \"" + right + "\"  [color=\"black\"]"
-            res += "\n\"" + right + "\" -> \"" + left + \
-                "\"  [color=\"gray\", style=\"dotted\"] \n "
-            return res
+            return f"""
+            {_print_compare_line(left, right, '[color="black"]')}
+            {_print_compare_line(right, left, '[color="gray", style="dotted"]')}
+            """
         # QUD----|
         if comp_right == "false":
-            return "\"" + left + "\" -> \"" + right + "\"  [color=\"gray\", style=\"dotted\"] \n "
+            return _print_compare_line(left, right, '[color="gray", style="dotted"]') + " \n "
         # QUD----Q|U|D
         if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":
-            res = "\"" + left + "\" -> \"" + right + \
-                "\"  [color=\"gray\", style=\"dotted\"]"
-            res += "\n\"" + right + "\" -> \"" + left + \
-                "\"  [color=\"gray\", style=\"dotted\"] \n "
-            return res
+            return f"""
+            {_print_compare_line(left, right, '[color="gray", style="dotted"]')}
+            {_print_compare_line(right, left, '[color="gray", style="dotted"]')}
+            """
