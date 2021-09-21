@@ -7,9 +7,6 @@
 import os
 import sys
 import unittest
-from argparse import RawTextHelpFormatter
-import argparse
-import json
 
 TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -18,11 +15,8 @@ sys.path.insert(0, TEST_DIR)
 
 from flict.flictlib.project import Project
 from flict.flictlib.report import Report
-import flict.flictlib.license
 from flict.flictlib.compatibility import Compatibility
 from flict.flictlib.license import LicenseHandler
-from flict.flictlib.license import ManagedLicenseExpression
-from flict.flictlib.license import license_to_string_long
 from flict.var import VAR_DIR
 
 TRANSLATION_FILE   = os.path.join(VAR_DIR, "translation.json")
