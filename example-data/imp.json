@@ -1,0 +1,18 @@
+{
+  "project": {
+    "name": "immp - Image-program",
+    "license": "Libpng",
+    "dependencies": [
+      {
+        "name": "GNU Scientific Lib",
+        "license": "GPL-2.0-or-later",
+        "dependencies": []
+      },
+      {
+        "name": "zlib",
+        "license": "Zlib",
+        "dependencies": []
+      }
+    ]
+  }
+}
