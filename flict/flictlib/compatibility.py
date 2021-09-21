@@ -137,6 +137,8 @@ class Compatibility:
                 # - this is looping over all the top projects combinations (with its deps)
                 # - for every or in the license expression we get noe more combination (of the top project)
                 for combination in project.project_combination_list():
+                    # keep track of whether the combination's status
+                    combination_compat_status = True
                     combination_set = {}
                     #print("  CC: c:" + str((combination)))
 
@@ -170,15 +172,15 @@ class Compatibility:
 
                         # do we have compatibility? (check if reason=={})
                         status = (reason == set())
+                        combination_compat_status = combination_compat_status and status
 
                         #print("             " + str(license) + " ==> " + str(p['license']) + " : " + str(status))
 
-                        license_compat_status = license_compat_status or status
                         #print("  CC: c:" + str((combination)) + " ==> "  +str(status) + "    : " + str(reason))
                         #print("    CC: " + str(license_compat_status))
 
-                        if status:
-                            outbound_candidates.add(license)
+                    if combination_compat_status:
+                        outbound_candidates.add(license)
 
                     combination_set['combination'] = combination
                     combination_set['compatibility_fails'] = list(reason)
@@ -189,6 +191,10 @@ class Compatibility:
             else:
                 #print("single....: " + str(license))
                 pass
+
+            # The compat status of this license can be calculated by simply
+            # checking if the license is in outbound_candidates
+            license_compat_status = (license in outbound_candidates)
 
             #print("  <--  " + str(license) + " : " + str(license_compat_status))
             license_compatibility['compatibility_status'] = license_compat_status
