@@ -4,62 +4,36 @@ SPDX-FileCopyrightText: 2020 Henrik Sandklef <hesa@sandklef.com>
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
-
 # Required software
 
 The following software are needed to use flict:
 
-- Python (version 3)
-  - pip
-  - license-expression
+- Python (version 3.6+)
+- pip
 
-## Install required software
+## Install from pypi
 
-### GNU/Linux
+- run `pip3 install flict` _(might require sudo/root/admin rights)_
 
-#### Debian based distributions
+## Install from git clone
 
-Install Python and pip
+- run `git clone https://github.com/vinland-technology/flict`
+- *optional*: checkout the revision you like to install
+- run `cd flict`
+- run `pip3 install .` _(might require sudo/root/admin rights)_
 
-```shell
-sudo apt-get install python3 python3-pip
-```
+## Install development version
 
-```shell
-pip3 install flict
-```
+- run `git clone https://github.com/vinland-technology/flict`
+- *optional*: checkout the revision you like to install
+- run `cd flict`
+- run `pip3 install -e .[dev]` _(might require sudo/root/admin rights)_
 
-### Windows
+### Non-root installation
 
-Please [help](https://github.com/vinland-technology/flict/issues/26) us writing instructions for this
+In case you don't have root access on your machine you need add `--user` to all the `pip3` calls - e.g. `pip3 install --user -e .[dev]`.
 
-### MacOS
-
-Please [help](https://github.com/vinland-technology/flict/issues/25) us writing instructions for this
-
-# Install development dependencies
-
-```shell
-pip3 install -e .[dev]
-```
-
-## Install from git
-
-In case you want to install the tool for all user (requires sudo)
-
-```shell
-git clone https://github.com/vinland-technology/flict.git
-cd flict
-sudo python3 setup.py install
-```
-
-or alternatively for just the current user
-
-```shell
-git clone https://github.com/vinland-technology/flict.git
-cd flict
-python3 setup.py install --user
-```
+**NOTE: On __Debian__ system that is the default behavior**
 
 # Docker image
 
