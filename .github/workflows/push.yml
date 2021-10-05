@@ -28,8 +28,13 @@ jobs:
     - name: Test
       run: |
         cd tests
-        ./all.sh
+        JUNIT_REPORT=1 ./all.sh
       shell: bash
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v2
+      if: always() # always run even if the previous step fails
+      with:
+        report_paths: '**/TEST-*.xml'
     - name: Install additional tooling
       run: |
         pip3 install reuse

@@ -17,11 +17,16 @@ LOG_FILE=$(dirname ${BASH_SOURCE[0]}/)/all.log
 
 rm -f $LOG_FILE
 
+# Switch to enable CI to generate a JUnit format report
+# to be consumed in GitHub pull request UI.
+if [ "${JUNIT_REPORT:-0}" -eq "1" ]; then
+    PYTEST_ARGS="--junitxml=TEST-pytest-junit.xml"
+fi
 
 echo
 inform "Python test scripts"
 echo "---------------------------------"
-sh -c "cd .. && pytest" || exit 1
+sh -c "cd .. && pytest ${PYTEST_ARGS}" || exit 1
 
 
 echo
