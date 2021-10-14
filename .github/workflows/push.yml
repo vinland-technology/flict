@@ -3,6 +3,18 @@ name: Push test pipeline
 on: [push, pull_request]
 
 jobs:
+  gitlint:
+      runs-on: ubuntu-latest
+      name: GitLint
+      steps:
+        - name: Lint commits
+          uses: aschbacd/gitlint-action@v1.0.1
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            commit-message-body-max-length: 72
+            commit-message-body-min-length: 1
+            commit-message-subject-max-length: 50
+            commit-message-subject-min-length: 10
   build:
     runs-on: ubuntu-latest
     strategy:
