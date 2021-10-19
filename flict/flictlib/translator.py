@@ -141,9 +141,6 @@ def read_translations(translations_file):
                 if "scancode" in le:
                     logger.main_logger.debug(" IGNORING since scancode")
                     pass
-                elif "gpl" in le or "gnu" in le:
-                    logger.main_logger.debug(" IGNORING since gpl...")
-                    pass
                 else:
                     #print(" OK ")
                     transl = item['spdx_id']
