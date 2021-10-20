@@ -64,7 +64,7 @@ class DotFormatter(FormatInterface):
 
     def format_translation_information(self, license_handler):
         return None
-    
+
 # help functions
 
 
