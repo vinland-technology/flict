@@ -110,12 +110,15 @@ class LicenseHandler:
     def read_symbols(self, translations_files):
         symbols = []
         symbols_map = {}
+        self.translations = []
         for translations_file in translations_files.split():
             #print("reading translation file: " + str(translations_file))
             translation_data = read_translations(translations_file)
+            self.translations.append(translation_data)
             for lic_key in translation_data:
                 #print("lic_key:  \"" + str(lic_key) + "\"")
                 #print("  lic_alias:  " + str(translation_data[lic_key] ))
+                #print("transl: " + str(len(self.translations)))
                 if lic_key not in symbols_map:
                     symbols_map[lic_key] = set()
                 for val in translation_data[lic_key]:
@@ -431,6 +434,14 @@ class LicenseHandler:
                     new_list.append(lep_item)
 
         return new_list
+
+    def relicensing_information(self):
+        if self.relicense_map is None:
+            self.relicense_map = read_relicense_file(self.relicense_file)
+        return self.relicense_map
+
+    def translation_information(self):
+        return self.translations
 
 
 def _debug_license_expression_set_list(ilel):
