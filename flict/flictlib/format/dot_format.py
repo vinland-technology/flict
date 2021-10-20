@@ -59,6 +59,12 @@ class DotFormatter(FormatInterface):
         result += "\n}\n"
         return result
 
+    def format_relicense_information(self, license_handler):
+        return None
+
+    def format_translation_information(self, license_handler):
+        return None
+    
 # help functions
 
 
