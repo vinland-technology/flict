@@ -48,9 +48,11 @@ jobs:
       if: always() # always run even if the previous step fails
       with:
         report_paths: '**/TEST-*.xml'
+    # Install a specific version of python-debian, as there is a pending upstream bug
+    # with the latest version
     - name: Install additional tooling
       run: |
-        pip3 install reuse
+        pip3 install reuse python-debian==0.1.40
     - name: Reuse check
       run: |
         reuse lint
