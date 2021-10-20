@@ -69,3 +69,9 @@ class JsonFormatter(FormatInterface):
                            "compatible": compat,
                            "outbound_candidate": outbound_candidate}
                           )
+
+    def format_relicense_information(self, license_handler):
+        return json.dumps(license_handler.relicensing_information()['original']['relicense_definitions'])
+
+    def format_translation_information(self, license_handler):
+        return json.dumps(license_handler.translation_information())
