@@ -93,3 +93,30 @@ class TextFormatter(FormatInterface):
             ret_str += lic + "\n"
             ret_str += "NOTE: the suggested outbound candidate licenses need to be manually reviewed."
         return ret_str
+
+    def format_relicense_information(self, license_handler):
+        ret_str = None
+        for rel in license_handler.relicensing_information()['original']['relicense_definitions']:
+            if ret_str is not None:
+                ret_str += "\n"
+            else:
+                ret_str = ""
+            lic = rel['spdx']
+            later_list = []
+            for later in rel['later']:
+                later_list.append(later)
+
+            ret_str += lic + " --> " + str(later_list)
+        return ret_str
+
+    def format_translation_information(self, license_handler):
+        ret_str = None
+        for transl_list in license_handler.translation_information():
+            for transl in transl_list:
+                if ret_str is None:
+                    ret_str = ""
+                else:
+                    ret_str += "\n"
+                ret_str += transl + " <--- " + str(transl_list[transl])
+        return ret_str
+
