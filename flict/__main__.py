@@ -238,6 +238,14 @@ def parse():
                            dest='license_group',
                            type=str,
                            help='output group (if any) for license')
+    parser_li.add_argument('-r', '--relicensing',
+                           dest='list_relicensing',
+                           action='store_true',
+                           help='List relicensing information')
+    parser_li.add_argument('-t', '--translations',
+                           dest='list_translation',
+                           action='store_true',
+                           help='List translation information')
 
     # display-compatibility
     parser_d = subparsers.add_parser(
@@ -304,6 +312,18 @@ def output_license_group(compatibility, license_handler, args):
                                                            flict_setup.license_handler,
                                                            args.license_group,
                                                            args.extended_licenses)
+    flict_print(flict_setup, formatted)
+
+
+def output_relicense_information(license_handler, args):
+    flict_setup = FlictSetup.get_setup(args)
+    formatted = flict_setup.formatter.format_relicense_information(license_handler)
+    flict_print(flict_setup, formatted)
+
+
+def output_translation_information(license_handler, args):
+    flict_setup = FlictSetup.get_setup(args)
+    formatted = flict_setup.formatter.format_translation_information(license_handler)
     flict_print(flict_setup, formatted)
 
 
@@ -384,6 +404,10 @@ def list_licenses(args):
                              flict_setup.license_handler, args)
     elif args.list_supported_license_groups:
         output_supported_license_groups(flict_setup)
+    elif args.list_relicensing:
+        output_relicense_information(flict_setup.license_handler, args)
+    elif args.list_translation:
+        output_translation_information(flict_setup.license_handler, args)
     else:
         output_supported_licenses(flict_setup)
 
