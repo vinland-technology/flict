@@ -37,6 +37,35 @@ class MarkdownFormatter(FormatInterface):
     def format_compats(self, compats):
         return output_compat_markdown(compats)
 
+    def format_relicense_information(self, license_handler):
+        ret_str = None
+        for rel in license_handler.relicensing_information()['original']['relicense_definitions']:
+            if ret_str is not None:
+                ret_str += "\n"
+            else:
+                ret_str = ""
+            lic = rel['spdx']
+            later_str = None
+            for later in rel['later']:
+                if later_str is None:
+                    later_str = later
+                else:
+                    later_str += ", " + later
+
+            ret_str += lic + " --> " + later_str
+        return "# Relicense information\n" + ret_str
+
+    def format_translation_information(self, license_handler):
+        ret_str = None
+        for transl_list in license_handler.translation_information():
+            for transl in transl_list:
+                if ret_str is None:
+                    ret_str = ""
+                else:
+                    ret_str += "\n"
+                ret_str += transl + " <--- " + str(transl_list[transl])
+        return "# Translation information\n" + ret_str
+
 
 def _compat_to_fmt(comp_left, comp_right, fmt):
     left = compat_interprets['left'][comp_left][fmt]
@@ -71,3 +100,4 @@ def output_compat_markdown(compats):
             result += main_license + " " + compat_text + " " + inner_license + "\n\n"
 
     return result
+
