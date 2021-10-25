@@ -4,7 +4,7 @@
 #
 # flict - FOSS License Compatibility Tool
 #
-# SPDX-FileCopyrightText: 2020 Henrik Sandklef
+# SPDX-FileCopyrightText: 2021 Henrik Sandklef, 2021 Konrad Weihmann
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -95,27 +95,19 @@ class TextFormatter(FormatInterface):
         return ret_str
 
     def format_relicense_information(self, license_handler):
-        ret_str = None
-        for rel in license_handler.relicensing_information()['original']['relicense_definitions']:
-            if ret_str is not None:
+        ret_str = ""
+        for rel in license_handler.relicensing_information().get('original', {}).get('relicense_definitions', []):
+            if ret_str:
                 ret_str += "\n"
-            else:
-                ret_str = ""
-            lic = rel['spdx']
-            later_list = []
-            for later in rel['later']:
-                later_list.append(later)
-
-            ret_str += lic + " --> " + str(later_list)
+            later_str = rel.get('later', [])
+            ret_str += "{lic} --> {later}".format(lic=rel.get('spdx', 'NOASSERTATION'), later=", ".join(later_str))
         return ret_str
 
     def format_translation_information(self, license_handler):
-        ret_str = None
+        ret_str = ""
         for transl_list in license_handler.translation_information():
             for transl in transl_list:
-                if ret_str is None:
-                    ret_str = ""
-                else:
+                if ret_str:
                     ret_str += "\n"
                 ret_str += transl + " <--- " + str(transl_list[transl])
         return ret_str
