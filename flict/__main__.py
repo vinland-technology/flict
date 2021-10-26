@@ -311,9 +311,11 @@ def flict_print(flict_setup, msg):
     print(msg, file=flict_setup.output)
 
 
-def flict_exit(ret_code, msg):
+def flict_exit(ret_code, msg=None):
     if msg is not None:
         logger.main_logger.error(msg)
+    if isinstance(ret_code, ReturnCodes):
+        ret_code = ret_code.value[0]
     exit(ret_code)
 
 
@@ -507,7 +509,7 @@ def main():
     else:
         flict_exit(ReturnCodes.RET_MISSING_ARGS, "Missing command.")
 
-    #flict_exit(ReturnCodes.RET_SUCESS, None)
+    flict_exit(ReturnCodes.RET_SUCCESS)
 
 
 if __name__ == '__main__':
