@@ -43,7 +43,6 @@ OUTPUT_FORMAT_JSON = "JSON"
 OUTPUT_FORMAT_TEXT = "text"
 OUTPUT_FORMAT_MARKDOWN = "markdown"
 OUTPUT_FORMAT_DOT = "dot"
-DEFAULT_OUTPUT_FORMAT = OUTPUT_FORMAT_JSON
 
 DATE_FMT = '%Y-%m-%d'
 
@@ -170,8 +169,8 @@ def parse():
                         dest='output_format',
                         help="output format. Avilable formats: " + OUTPUT_FORMAT_JSON + ", " + OUTPUT_FORMAT_TEXT + ", " +
                         OUTPUT_FORMAT_MARKDOWN + ", " + OUTPUT_FORMAT_DOT +
-                        ". Defaults to " + DEFAULT_OUTPUT_FORMAT,
-                        default=DEFAULT_OUTPUT_FORMAT)
+                        ". Defaults to " + flict_config.DEFAULT_OUTPUT_FORMAT,
+                        default=flict_config.DEFAULT_OUTPUT_FORMAT)
 
     parser.add_argument('-v', '--verbose',
                         action='store_true',

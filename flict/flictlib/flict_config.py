@@ -2,13 +2,30 @@
 #
 # flict - FOSS License Compatibility Tool
 #
-# SPDX-FileCopyrightText: 2020 Henrik Sandklef
+# SPDX-FileCopyrightText: 2020 Henrik Sandklef, 2021 Konrad Weihmann
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 ###################################################################
 
+import json
 import os
+
+
+def read_user_config():
+    for path in [
+        os.environ.get('FLICT_USERCONFIG'),
+        os.path.join(os.environ.get('HOME'), '.flict.cfg')
+    ]:
+        try:
+            with open(path) as i:
+                return json.load(i)
+        except Exception: # noqa: S110 - it's okay ignore all errors here
+            pass
+    return {}
+
+
+_userconfig = read_user_config()
 
 flict_version = "0.1"
 
@@ -23,8 +40,9 @@ DEFAULT_RELICENSE_BASE_FILE = "relicense.json"
 DEFAULT_SCANCODE_BASE_FILE = "scancode-licenses.json"
 DEFAULT_MATRIX_BASE_FILE = "osadl-matrix.csv"
 
-DEFAULT_TRANSLATIONS_FILE = os.path.join(VAR_DIR, DEFAULT_TRANSLATIONS_BASE_FILE)
-DEFAULT_GROUP_FILE = os.path.join(VAR_DIR, DEFAULT_GROUP_BASE_FILE)
-DEFAULT_RELICENSE_FILE = os.path.join(VAR_DIR, DEFAULT_RELICENSE_BASE_FILE)
-DEFAULT_SCANCODE_FILE = os.path.join(VAR_DIR, DEFAULT_SCANCODE_BASE_FILE)
-DEFAULT_MATRIX_FILE = os.path.join(VAR_DIR, DEFAULT_MATRIX_BASE_FILE)
+DEFAULT_TRANSLATIONS_FILE = _userconfig.get('translations-file', os.path.join(VAR_DIR, DEFAULT_TRANSLATIONS_BASE_FILE))
+DEFAULT_GROUP_FILE = _userconfig.get('group-file', os.path.join(VAR_DIR, DEFAULT_GROUP_BASE_FILE))
+DEFAULT_RELICENSE_FILE = _userconfig.get('relicense-file', os.path.join(VAR_DIR, DEFAULT_RELICENSE_BASE_FILE))
+DEFAULT_SCANCODE_FILE = _userconfig.get('scancode-file', os.path.join(VAR_DIR, DEFAULT_SCANCODE_BASE_FILE))
+DEFAULT_MATRIX_FILE = _userconfig.get('matrix-file', os.path.join(VAR_DIR, DEFAULT_MATRIX_BASE_FILE))
+DEFAULT_OUTPUT_FORMAT = _userconfig.get('output-format', "JSON")

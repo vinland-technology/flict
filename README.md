@@ -113,6 +113,20 @@ This is currently rewritten and not available.
 
 Using this format you can create txt, html, pdf and what format pandoc can create from markdown.
 
+## User specific configuration
+
+You can create a user specific configuration for the tool that defines a few default parameters to your choices.
+Either create a json file at `~/.flict.cfg` or at a path defined by environment variable `FLICT_USERCONFIG`.
+
+| key               | sets CLI option         |
+| ----------------- | ----------------------- |
+| group-file        | -gf --group-file        |
+| matrix-file       | -mf --matrix-file       |
+| output-format     | -of --output-format     |
+| relicense-file    | -rf --relicense-file    |
+| scancode-file     | -sf --scancode-file     |
+| translations-file | -tf --translations-file |
+
 ## Policy report
 
 To the above report you can apply your own policy (see [SETTINGS](SETTINGS.md)). Applying this will create a policy report with your policy applied to the suggested outbound license from the usual report and with some complementary information.
