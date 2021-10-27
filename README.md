@@ -127,6 +127,16 @@ Either create a json file at `~/.flict.cfg` or at a path defined by environment 
 | scancode-file     | -sf --scancode-file     |
 | translations-file | -tf --translations-file |
 
+### Example user configuration
+
+```json
+{
+    "matrix-file": "/my/very/own/osadl-matrix.csv",
+    "output-format": "text",
+    "scancode-file": "/my/secret/stash/scancode-licenses.json"
+}
+```
+
 ## Policy report
 
 To the above report you can apply your own policy (see [SETTINGS](SETTINGS.md)). Applying this will create a policy report with your policy applied to the suggested outbound license from the usual report and with some complementary information.
