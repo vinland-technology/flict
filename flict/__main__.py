@@ -112,7 +112,7 @@ def parse():
     commmon_defaults_group.add_argument('-mf', '--matrix-file',
                                         type=str,
                                         dest='matrix_file',
-                                        help='File with license compatibility matrix, defaults to ' + flict_config.DEFAULT_MATRIX_BASE_FILE,
+                                        help='File with license compatibility matrix, defaults to osadl-matrix database',
                                         default=flict_config.DEFAULT_MATRIX_FILE)
 
     # DEFAULTS
