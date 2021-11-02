@@ -21,7 +21,7 @@ from flict.var import VAR_DIR
 
 TRANSLATION_FILE   = os.path.join(VAR_DIR, "translation.json")
 RELICENSE_FILE     = os.path.join(VAR_DIR, "relicense.json")
-MATRIX_FILE = os.path.join(VAR_DIR, "osadl-matrix.csv")
+from osadl_matrix import OSADL_MATRIX
 LICENSE_GROUP_FILE = os.path.join(VAR_DIR, "license-group.json")
 
 class ReportTest(unittest.TestCase):
@@ -29,7 +29,7 @@ class ReportTest(unittest.TestCase):
     def test_outbound(self):
         license_handler = LicenseHandler(TRANSLATION_FILE, RELICENSE_FILE, "")
         project = Project(TEST_DIR + "/example-data/imp.json", license_handler)
-        compatibility = Compatibility(MATRIX_FILE, None, LICENSE_GROUP_FILE, False)
+        compatibility = Compatibility(OSADL_MATRIX, None, LICENSE_GROUP_FILE, False)
         report_object = Report(project, compatibility)
         report = report_object.report()
 

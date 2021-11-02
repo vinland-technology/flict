@@ -18,12 +18,10 @@ sys.path.insert(0, TEST_DIR)
 
 from flict.flictlib.compat_matrix import CompatibilityMatrix, CompatMatrixStatus
 from flict.var import VAR_DIR
-
-MATRIX_FILE=os.path.join(VAR_DIR, "osadl-matrix.csv")
-
+from osadl_matrix import OSADL_MATRIX
 class TestOneWay(unittest.TestCase):
     def test_oneway(self):
-        _compat_matrix = CompatibilityMatrix(MATRIX_FILE)
+        _compat_matrix = CompatibilityMatrix(OSADL_MATRIX)
 
         # Check MIT and BSD-3-Clause noth ways - one at a time
         self.assertEqual(_compat_matrix.a_compatible_with_b("MIT", "BSD-3-Clause"), CompatMatrixStatus.TRUE)

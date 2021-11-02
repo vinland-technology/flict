@@ -18,7 +18,7 @@ from flict.var import VAR_DIR
 from flict.flictlib.compatibility import Compatibility
 from flict.flictlib.format.factory import FormatFactory
 
-MATRIX_FILE=os.path.join(VAR_DIR, "osadl-matrix.csv")
+from osadl_matrix import OSADL_MATRIX
 
 TRANSLATION_FILE   = os.path.join(VAR_DIR, "translation.json")
 RELICENSE_FILE     = os.path.join(VAR_DIR, "relicense.json")
@@ -29,7 +29,7 @@ class TestDotOutput(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         print('BasicTest.__init__')
         super(TestDotOutput, self).__init__(*args, **kwargs)
-        self.compatibility = Compatibility(MATRIX_FILE, None, LICENSE_GROUP_FILE)
+        self.compatibility = Compatibility(OSADL_MATRIX, None, LICENSE_GROUP_FILE)
         self.formatter = FormatFactory.formatter("dot")
 
     def license_to_dot(self, licenses):
