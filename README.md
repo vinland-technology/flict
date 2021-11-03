@@ -4,6 +4,7 @@ SPDX-FileCopyrightText: 2020 Henrik Sandklef <hesa@sandklef.com>
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
+![flict graphics](./logos/flict-logo-256-256.png)
 &nbsp;
 
 [![REUSE status][1]][2]
