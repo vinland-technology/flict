@@ -1,0 +1,12 @@
+{
+    "policy": {
+        "avoidlist": [
+            "Libpng"
+        ],
+        "denylist": [
+            "FTL",
+            "GPL-3.0-or-later",
+            "MIT"
+        ]
+    }
+}
