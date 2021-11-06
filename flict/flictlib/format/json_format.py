@@ -75,3 +75,6 @@ class JsonFormatter(FormatInterface):
 
     def format_translation_information(self, license_handler):
         return json.dumps(license_handler.translation_information())
+
+    def format_policy_report(self, policy_report):
+        return json.dumps(policy_report)
