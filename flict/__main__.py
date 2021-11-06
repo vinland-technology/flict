@@ -14,6 +14,7 @@ from flict.flictlib.license import decode_license_expression
 from flict.flictlib.compatibility import Compatibility
 from flict.flictlib.flict_config import flict_version
 from flict.flictlib.format.factory import FormatFactory
+from flict.flictlib.policy import Policy
 from flict.flictlib.project import Project
 from flict.flictlib.report import Report
 from flict.flictlib.return_codes import FlictException
@@ -271,12 +272,15 @@ def parse():
         'policy-report', help='create report with license policy applied')
     parser_p.set_defaults(which="policy-report", func=policy_report)
     parser_p.add_argument('--license-policy-file', '-lpf',
-                          type=argparse.FileType('r'),
+                          type=str,
                           dest='policy_file',
-                          help='file with license policy')
+                          help='file with license policy',
+                          default=None)
     parser_p.add_argument('--compliance-report-file', '-crf',
-                          type=argparse.FileType('r'),
-                          help='file with report as produced using "verify"')
+                          type=str,
+                          dest='report_file',
+                          help='file with report as produced using "verify"',
+                          default=None)
 
     args = parser.parse_args()
 
@@ -517,7 +521,13 @@ def suggest_outbound_candidate(args):
 
 
 def policy_report(args):
-    print("polict_report: " + str(args))
+    flict_setup = FlictSetup.get_setup(args)
+    compliance_report = read_compliance_report(args.report_file)
+    policy = Policy(args.policy_file)
+    policy_report = policy.report(compliance_report)
+    formatted = flict_setup.formatter.format_policy_report(policy_report)
+    flict_print(flict_setup, formatted)
+    return policy_report.get("policy_outbounds").get("policy_result")
 
 
 def main():
