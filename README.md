@@ -39,7 +39,7 @@ flict supports:
 
 * 925 licenses in experimental mode using scancode classification (```flict -es -of text list```) 
 
-* 'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-only or GPL-3.0-only)
+* 'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-or-later or GPL-3.0-or-later)
 
 * explicit relicensing (LGPL -> GPL)
 
