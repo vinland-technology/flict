@@ -52,3 +52,6 @@ class FormatInterface:
     def format_translation_information(self, license_handler):
         return "default implementation | format_translation_information(): "
 
+    def format_policy_report(self, policy_report):
+        return "default implementation | format_policy_report(): "
+
