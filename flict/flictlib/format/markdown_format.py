@@ -55,6 +55,38 @@ class MarkdownFormatter(FormatInterface):
                 ret_str += transl + " <--- " + str(transl_list[transl])
         return "# Translation information\n" + ret_str
 
+    def format_policy_report(self, policy_report):
+        outbounds = policy_report.get("policy_outbounds")
+        meta = policy_report.get("meta")
+        ret_str = "# Policy report\n\n"
+        ret_str += "## About\n\n"
+        ret_str += "* date: " + meta.get("start") + "\n\n"
+        ret_str += "* user: " + meta.get("user") + "\n\n"
+        policy_result = outbounds.get("policy_result")
+        ret_str += "## Result\n\n"
+        ret_str += "Policy result: "
+        if policy_result == 0:
+            ret_str += "OK"
+        elif policy_result == 1:
+            ret_str += "OK, with licenses to avoid"
+        elif policy_result == 2:
+            ret_str += "Failed identifying outbound license"
+        ret_str += "\n\n"
+        ret_str += "## Suggested outbound licenses \n\n"
+        ret_str += "### Allowed\n\n"
+        for lic in outbounds.get("allowed"):
+            ret_str += " * " + lic + "\n"
+        ret_str += "\n\n"
+        ret_str += "### Avoided\n\n"
+        for lic in outbounds.get("avoided"):
+            ret_str += " * " + lic + "\n"
+        ret_str += "\n\n"
+        ret_str += "### Denied\n\n"
+        for lic in outbounds.get("denied"):
+            ret_str += " * " + lic + "\n"
+
+        return ret_str
+
 
 def _compat_to_fmt(comp_left, comp_right, fmt):
     left = compat_interprets['left'][comp_left][fmt]
