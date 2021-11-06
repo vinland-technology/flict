@@ -32,10 +32,12 @@ class Policy:
         if self.policy_report['policy'] is None:
             return None
 
+        policy = self.policy_report['policy']['policy']
+
         outbounds = report['licensing']['outbound_candidates']
-        allowed = self.policy_report['policy']['policy']['allowlist']
-        avoid = self.policy_report['policy']['policy']['avoidlist']
-        denied = self.policy_report['policy']['policy']['denylist']
+        allowed = policy.get('allowlist', [])
+        avoid = policy.get('avoidlist', [])
+        denied = policy.get('denylist', [])
 
         #nr_outbounds = len(outbounds)
 
@@ -55,7 +57,7 @@ class Policy:
 
         policy_outbounds = {}
         policy_outbounds['allowed'] = list(allowed_outbound_candidates)
-        policy_outbounds['avoid'] = list(avoid_outbound_candidates)
+        policy_outbounds['avoided'] = list(avoid_outbound_candidates)
         policy_outbounds['denied'] = list(denied_outbound_candidates)
 
         if len(policy_outbounds['allowed']) > 0:
