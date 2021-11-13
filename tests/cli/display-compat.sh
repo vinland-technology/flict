@@ -24,6 +24,7 @@ echo "-------------------------"
 
 
 
+FLICT_CMD="$FLICT_CMD MIT"
 compare_exec     "$FLICT_CMD MIT"                          \
                  '{"compatibilities": [{"license": "MIT", "licenses": []}]}' \
                  0 "MIT only"
