@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-FLICT="PYTHONPATH=.. ../flict/__main__.py -of JSON -nr -tf \"\" display-compatibility "
+FLICT="flict -of JSON -nr -tf \"\" display-compatibility "
 
 echo "----which"
 which flict
