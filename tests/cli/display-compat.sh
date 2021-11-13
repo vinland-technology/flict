@@ -17,6 +17,13 @@ begin_test
 
 FLICT_CMD="$FLICT "
 
+echo "-------------------------"
+echo "command: $FLICT_CMD MIT"
+echo $FLICT_CMD MIT | sh
+echo "-------------------------"
+
+
+
 compare_exec     "$FLICT_CMD MIT"                          \
                  '{"compatibilities": [{"license": "MIT", "licenses": []}]}' \
                  0 "MIT only"
