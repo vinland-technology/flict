@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-FLICT="flict -of JSON -nr -tf \"\" display-compatibility "
+FLICT="flict display-compatibility "
 
 echo "----which"
 which flict
