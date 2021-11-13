@@ -7,30 +7,6 @@
     },
     "translations": [
         {
-            "license_expression": "BSD",
-            "spdx_id": "BSD-3-Clause"
-        },
-        {
-            "license_expression": "BSD-0-Clause",
-            "spdx_id": "0BSD"
-        },
-        {
-            "license_expression": "CDDL-1",
-            "spdx_id": "CDDL-1.0"
-        },
-        {
-            "license_expression": "CDDLv1",
-            "spdx_id": "CDDL-1.0"
-        },
-        {
-            "license_expression": "EPLv1.0",
-            "spdx_id": "EPL-1.0"
-        },
-        {
-            "license_expression": "FreeType",
-            "spdx_id": "FTL"
-        },
-        {
             "license_expression": "MIT-X",
             "spdx_id": "MIT"
         },
