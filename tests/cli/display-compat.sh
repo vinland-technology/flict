@@ -22,7 +22,9 @@ echo "command: $FLICT_CMD MIT"
 echo $FLICT_CMD MIT | sh
 echo "-------------------------"
 FLICT_CMD="$FLICT_CMD MIT"
-echo $FLICT_CMD MIT | bash
+echo $FLICT_CMD | bash
+echo "-------------------------"
+$FLICT_CMD 
 echo "-------------------------"
 
 
