@@ -6,6 +6,10 @@
 
 FLICT="flict -of JSON -nr -tf \"\" display-compatibility "
 
+echo "----which"
+which flict
+echo "------"
+
 source $(dirname ${BASH_SOURCE[0]}/)/common-funs
 if [ $? -ne 0 ];
 then
