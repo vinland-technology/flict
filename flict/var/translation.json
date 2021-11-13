@@ -85,62 +85,6 @@
         {
             "license_expression": "mit",
             "spdx_id": "MIT"
-        },
-        {
-            "license_expression": "MPL-1",
-            "spdx_id": "MPL-1.0"
-        },
-        {
-            "license_expression": "MPLv1",
-            "spdx_id": "MPL-1.0"
-        },
-        {
-            "license_expression": "MPLv1.1",
-            "spdx_id": "MPL-1.1"
-        },
-        {
-            "license_expression": "MPLv2",
-            "spdx_id": "MPL-2.0"
-        },
-        {
-            "license_expression": "mpl-1.1",
-            "spdx_id": "MPL-1.1"
-        },
-        {
-            "license_expression": "Nauman",
-            "spdx_id": "Naumen"
-        },
-        {
-            "license_expression": "openssl",
-            "spdx_id": "OpenSSL"
-        },
-        {
-            "license_expression": "PSF",
-            "spdx_id": "PSF-2.0"
-        },
-        {
-            "license_expression": "PSFv2",
-            "spdx_id": "PSF-2.0"
-        },
-        {
-            "license_expression": "Python-2",
-            "spdx_id": "Python-2.0"
-        },
-        {
-            "license_expression": "SGIv1",
-            "spdx_id": "SGI-1"
-        },
-        {
-            "license_expression": "openssl",
-            "spdx_id": "OpenSSL"
-        },
-        {
-            "license_expression": "tcl",
-            "spdx_id": "TCL"
-        },
-        {
-            "license_expression": "vim",
-            "spdx_id": "Vim"
         }
     ]
 }
