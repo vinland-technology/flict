@@ -7,50 +7,6 @@
     },
     "translations": [
         {
-            "license_expression": "AFL-1",
-            "spdx_id": "AFL-1.2"
-        },
-        {
-            "license_expression": "AFL-2",
-            "spdx_id": "AFL-2.0"
-        },
-        {
-            "license_expression": "AFLv1",
-            "spdx_id": "AFL-1.2"
-        },
-        {
-            "license_expression": "AFLv2",
-            "spdx_id": "AFL-2.0"
-        },
-        {
-            "license_expression": "Apache-2",
-            "spdx_id": "Apache-2.0"
-        },
-        {
-            "license_expression": "apache-1.0",
-            "spdx_id": "Apache-1.0"
-        },
-        {
-            "license_expression": "apache-2.0",
-            "spdx_id": "Apache-2.0"
-        },
-        {
-            "license_expression": "Apache-2",
-            "spdx_id": "Apache-2.0"
-        },
-        {
-            "license_expression": "Apachev2",
-            "spdx_id": "Apache-2.0"
-        },
-        {
-            "license_expression": "Artistic-1",
-            "spdx_id": "Artistic-1.0"
-        },
-        {
-            "license_expression": "Artisticv1",
-            "spdx_id": "Artistic-1.0"
-        },
-        {
             "license_expression": "BSD",
             "spdx_id": "BSD-3-Clause"
         },
