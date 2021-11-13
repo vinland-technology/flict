@@ -328,20 +328,6 @@
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "MIT-X",
-            "spdx_id": "MIT",
-            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
-        },
-        {
-            "license_expression": "MIT-style",
-            "spdx_id": "MIT",
-            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
-        },
-        {
-            "license_expression": "mit",
-            "spdx_id": "MIT"
-        },
-        {
             "license_expression": "MPL-1",
             "spdx_id": "MPL-1.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
