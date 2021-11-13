@@ -7,14 +7,6 @@
     },
     "translations": [
         {
-            "license_expression": "MIT-X",
-            "spdx_id": "MIT"
-        },
-        {
-            "license_expression": "MIT-style",
-            "spdx_id": "MIT"
-        },
-        {
             "license_expression": "mit",
             "spdx_id": "MIT"
         }
