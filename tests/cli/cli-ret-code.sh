@@ -52,6 +52,7 @@ simple_test "verify -pf ${FLICT_DIR}/example-data" 12
 simple_test "verify -pf ${FLICT_DIR}/setup.py" 10
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lcc" 0 
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lpl" 0 
+simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small-bad.json " 10
 
 # simplify
 simple_test "simplify MIT" 0 
