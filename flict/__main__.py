@@ -443,7 +443,12 @@ def verify_license_expression(args, flict_setup):
 
 def verify_project_file(args, flict_setup):
 
-    project = Project(args.project_file, flict_setup.license_handler)
+    try:
+        project = Project(args.project_file, flict_setup.license_handler)
+    except FlictException as e:
+        raise(e)
+    except Exception as e:
+        raise FlictException(ReturnCodes.RET_INVALID_PROJECT)
 
     formatted = ""
     if args.list_project_licenses:
