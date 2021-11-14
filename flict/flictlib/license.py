@@ -461,28 +461,9 @@ def license_to_string_long(license):
 
 
 def license_expression_set_list_to_string(set_list):
-    if set_list is None:
-        return "[]"
-    string = "[ "
-    first_set = True
-    set_list.sort()
-    for license_set in set_list:
-        if first_set:
-            first_set = False
-        else:
-            string = string + ", "
+    _sorted = [",".join(sorted(license_set)) for license_set in set_list.sort()]
 
-        string = string + "{"
-        first_item = True
-        for item in sorted(license_set):
-            if first_item:
-                first_item = False
-            else:
-                string = string + ", "
-            string = string + item
-        string = string + "}"
-    string = string + "]"
-    return string
+    return "[{0}]".format(",".join(_sorted))
 
 
 def _debug_interim_license_expression_list(lel):
