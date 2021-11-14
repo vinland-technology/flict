@@ -383,12 +383,8 @@ def present_and_set(args, key):
 
 def simplify(args):
     flict_setup = FlictSetup.get_setup(args)
-    lic_str = None
-    for lic in args.license_expression:
-        if lic_str is None:
-            lic_str = lic
-        else:
-            lic_str += " " + lic
+    lic_str = " ".join(args.license_expression)
+
     try:
         license = flict_setup.license_handler.license_expression_list(lic_str)
     except:
@@ -428,9 +424,7 @@ def verify(args):
 
 
 def verify_license_expression(args, flict_setup):
-    lic_str = ""
-    for lic in args.license_expression:
-        lic_str += " " + lic
+    lic_str = " ".join(args.license_expression)
 
     try:
         report = _empty_project_report(flict_setup.compatibility, flict_setup.license_handler,
@@ -470,9 +464,7 @@ def display_compatibility(args):
 
     try:
         # build up license string from all expressions
-        lic_str = ""
-        for lic in args.license_expression:
-            lic_str += " " + lic
+        lic_str = " ".join(args.license_expression)
 
         # encode (flict) all the license expression
         lic_str = encode_license_expression(lic_str)
@@ -508,9 +500,7 @@ def suggest_outbound_candidate(args):
     #print("suggest_outbound:    " + str(args))
     #print("verbose:             " + str(args.verbose))
     #print("license expression:: " + str(args.license_expression))
-    lic_str = ""
-    for lic in args.license_expression:
-        lic_str += " " + lic
+    lic_str = " ".join(args.license_expression)
 
     try:
         output_outbound_license(flict_setup, lic_str,
