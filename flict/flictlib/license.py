@@ -476,20 +476,12 @@ def interim_license_expression_list_to_string(lel):
         op = lel.op
     else:
         op = ""
-    string = op + " ["
-    first = True
-    for item in lel.list:
-        if first:
-            first = False
-        else:
-            string = string + ", "
-        if isinstance(item, LicenseExpressionList):
-            string = string + interim_license_expression_list_to_string(item)
-        else:
-            string = string + item
 
-    string = string + "]"
-    return string
+    _expr = [interim_license_expression_list_to_string(item)
+             if isinstance(item, LicenseExpressionList) else item
+             for item in lel.list]
+
+    return "{0} [{1}]".format(op, ", ".join(_expr))
 
 
 def encode_license_expression(license_expression):
