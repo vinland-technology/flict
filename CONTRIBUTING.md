@@ -10,5 +10,20 @@ signing off?
 
 # Governance
 
+# Testing
+
+To execute test flict:
+
+```
+$ python3 -m pytest tests
+```
+
+and optionall do:
+
+```
+$ cd tests/
+$ ./all.sh 
+```
+
 
 
