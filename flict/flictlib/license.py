@@ -450,14 +450,14 @@ def _debug_license_expression_set_list(ilel):
 
 
 def license_to_string_long(license):
-    res = ""
-    res = res + "original:   " + license.license_expression + "\n"
-    res = res + "translated: " + license.translated + "\n"
-    res = res + "expanded:   " + license.expanded + "\n"
-    res = res + "grouped:    " + license.grouped + "\n"
-    res = res + "simplified: " + license.simplified + "\n"
-    res = res + "set_list:   " + str(license.set_list) + "\n"
-    return res
+    return f"""
+            original:   {license.license_expression}
+            translated: {license.translated}
+            expanded:   {license.expanded}
+            grouped:    {license.grouped}
+            simplified: {license.simplified}
+            set_list:   {str(license.set_list)}
+            """
 
 
 def license_expression_set_list_to_string(set_list):
