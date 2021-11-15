@@ -23,3 +23,6 @@ tests/all.log
 .coverage
 
 tmp/*
+
+# python virtual environment related directory 
+.*venv
