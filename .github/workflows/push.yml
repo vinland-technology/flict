@@ -38,6 +38,9 @@ jobs:
       run: python3 setup.py build
     - name: Install
       run: python3 setup.py install
+    - name: Test
+      run: |
+        JUNIT_REPORT=1 python3 -m pytest
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v2
       if: always() # always run even if the previous step fails
