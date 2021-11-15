@@ -15,7 +15,7 @@ signing off?
 To execute test flict:
 
 ```
-$ python3 -m pytest tests
+$ python3 -m pytest 
 ```
 
 and optionally do:
