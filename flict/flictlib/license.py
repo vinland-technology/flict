@@ -73,21 +73,15 @@ class ManagedLicenseExpression:
         return mle
 
     def __str__(self):
-        ret_str = ""
-        ret_str += "license expression:                    " + str(self.license_expression)
-        ret_str += "\n"
-        ret_str += "translated license expression:         " + str(self.translated)
-        ret_str += "\n"
-        ret_str += "expanded license expression:           " + str(self.expanded)
-        ret_str += "\n"
-        ret_str += "grouped license expression:            " + str(self.grouped)
-        ret_str += "\n"
-        ret_str += "simplified license expression:         " + str(self.simplified)
-        ret_str += "\n"
-        ret_str += "interim license expression:            " + interim_license_expression_list_to_string(self.interim)
-        ret_str += "\n"
-        ret_str += "license expression list:               " + license_expression_set_list_to_string(self.set_list)
-        return ret_str
+        return f"""
+                license expression:                    {str(self.license_expression)}
+                translated license expression:         {str(self.translated)}
+                expanded license expression:           {str(self.expanded)}
+                grouped license expression:            {str(self.grouped)}
+                simplified license expression:         {str(self.simplified)}
+                interim license expression:            {interim_license_expression_list_to_string(self.interim)}
+                license expression list:               {license_expression_set_list_to_string(self.set_list)}
+                """
 
 
 class LicenseExpressionList:
