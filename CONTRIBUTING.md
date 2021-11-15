@@ -18,7 +18,7 @@ To execute test flict:
 $ python3 -m pytest tests
 ```
 
-and optionall do:
+and optionally do:
 
 ```
 $ cd tests/
