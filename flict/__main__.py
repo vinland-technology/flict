@@ -256,7 +256,7 @@ def parse():
                           help='create graph representation')
     parser_d.add_argument('--table', '-t', type=str,
                           help='create table representation')
-    parser_d.add_argument('licenses', type=str, nargs='+',
+    parser_d.add_argument('license_expression', type=str, nargs='+',
                           help='license expression to display compatibility for')
 
     # outbound-candidates
@@ -471,7 +471,7 @@ def display_compatibility(args):
     try:
         # build up license string from all expressions
         lic_str = ""
-        for lic in args.licenses:
+        for lic in args.license_expression:
             lic_str += " " + lic
 
         # encode (flict) all the license expression
@@ -496,7 +496,7 @@ def display_compatibility(args):
             licenses, args.extended_licenses)
     except:
         raise FlictException(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             "Could not parse license expression: " + str(args.licenses))
+                             "Could not parse license expression: " + str(args.license_expression))
 
     formatted = flict_setup.formatter.format_compats(compats)
     flict_print(flict_setup, formatted)
