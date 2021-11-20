@@ -53,11 +53,8 @@ class LicenseGroups:
         return self.license_groups[group]['licenses']
 
     def supported_licenses(self):
-        supported_list = []
-        for group in self.license_groups:
-            supported_list = supported_list + \
-                self.supported_licenses_per_group(group)
-        return supported_list
+        return [self.supported_licenses_per_group(group)
+                for group in self.license_groups]
 
     def meta_data(self):
         return self.scancode_object['meta_data']
