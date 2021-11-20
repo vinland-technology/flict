@@ -82,22 +82,16 @@ class TextFormatter(FormatInterface):
         return ret_str
 
     def format_relicense_information(self, license_handler):
-        ret_str = ""
-        for rel in license_handler.relicensing_information().get('original', {}).get('relicense_definitions', []):
-            if ret_str:
-                ret_str += "\n"
-            later_str = rel.get('later', [])
-            ret_str += "{lic} --> {later}".format(lic=rel.get('spdx', 'NOASSERTATION'), later=", ".join(later_str))
-        return ret_str
+        ret = ["{lic} --> {later}".format(lic=rel.get('spdx', 'NOASSERTATION'), later=", ".join(rel.get('later', [])))
+               for rel in license_handler.relicensing_information().get('original', {}).get('relicense_definitions', [])]
+        return "\n".join(ret)
 
     def format_translation_information(self, license_handler):
-        ret_str = ""
+        ret = []
         for transl_list in license_handler.translation_information():
             for transl in transl_list:
-                if ret_str:
-                    ret_str += "\n"
-                ret_str += transl + " <--- " + str(transl_list[transl])
-        return ret_str
+                ret.append(f"{transl} <--- {str(transl_list[transl])}")
+        return "\n".join(ret)
 
     def format_policy_report(self, policy_report):
         outbounds = policy_report.get("policy_outbounds")
