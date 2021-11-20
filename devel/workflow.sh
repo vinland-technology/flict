@@ -38,7 +38,7 @@ start_environment()
 
 install_dependencies()
 {
-    source ${VENV_DIR}/bin/activate
+    . ${VENV_DIR}/bin/activate
 
     echo "Update python package feed ..."
     python3 -m pip install --upgrade pip
@@ -57,21 +57,21 @@ install_dependencies()
 
 build()
 {
-    source ${VENV_DIR}/bin/activate
+    . ${VENV_DIR}/bin/activate
     cd ${PROJECT_DIR}
     python3 setup.py build
 }
 
 install()
 {
-    source ${VENV_DIR}/bin/activate
+    . ${VENV_DIR}/bin/activate
     cd ${PROJECT_DIR}
     python3 setup.py install
 }
 
 run_tests()
 {
-    source ${VENV_DIR}/bin/activate
+    . ${VENV_DIR}/bin/activate
     cd ${PROJECT_DIR}/tests
     ./all.sh
 }
