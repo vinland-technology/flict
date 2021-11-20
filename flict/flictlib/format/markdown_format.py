@@ -12,6 +12,7 @@
 
 from flict.flictlib.format.format import FormatInterface
 from flict.flictlib.format.common import compat_interprets
+from flict.flictlib.format.text_format import TextFormatter
 
 
 class MarkdownFormatter(FormatInterface):
@@ -38,22 +39,10 @@ class MarkdownFormatter(FormatInterface):
         return output_compat_markdown(compats)
 
     def format_relicense_information(self, license_handler):
-        ret_str = ""
-        for rel in license_handler.relicensing_information().get('original', {}).get('relicense_definitions', []):
-            if ret_str:
-                ret_str += "\n"
-            later_str = rel.get('later', [])
-            ret_str += "{lic} --> {later}".format(lic=rel.get('spdx', 'NOASSERTATION'), later=", ".join(later_str))
-        return "# Translation information\n" + ret_str
+        return "# Translation information\n" + TextFormatter.format_relicense_information(license_handler)
 
     def format_translation_information(self, license_handler):
-        ret_str = ""
-        for transl_list in license_handler.translation_information():
-            for transl in transl_list:
-                if ret_str:
-                    ret_str += "\n"
-                ret_str += transl + " <--- " + str(transl_list[transl])
-        return "# Translation information\n" + ret_str
+        return "# Translation information\n" + TextFormatter.format_translation_information(license_handler)
 
     def format_policy_report(self, policy_report):
         outbounds = policy_report.get("policy_outbounds")
