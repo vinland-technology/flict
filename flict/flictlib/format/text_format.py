@@ -37,14 +37,7 @@ class TextFormatter(FormatInterface):
         return str(project.projects_combinations())
 
     def format_outbound_license(self, outbound_candidate):
-        ret_str = None
-
-        for ol in outbound_candidate:
-            if ret_str is None:
-                ret_str = ol
-            else:
-                ret_str += ", " + ol
-        return ret_str
+        return ", ".join(outbound_candidate)
 
     def format_supported_license_groups(self, license_groups):
         ret_str = ""
@@ -84,13 +77,7 @@ class TextFormatter(FormatInterface):
             ret_str += "No outbound license candidate could be identified due to license incompatibility."
         else:
             ret_str += "Outbound license candidates: "
-            lic = None
-            for s in outbound_candidate:
-                if lic is None:
-                    lic = s
-                else:
-                    lic += ", " + s
-            ret_str += lic + "\n"
+            ret_str += ", ".join(outbound_candidate) + "\n"
             ret_str += "NOTE: the suggested outbound candidate licenses need to be manually reviewed."
         return ret_str
 
