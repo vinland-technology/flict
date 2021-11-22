@@ -113,20 +113,30 @@ $ flict list
 
 # Create a policy report of the Europe project
 
-***This feature is currently unavailable***
+Create a compatibility, `fontconfig-report.json`, report for `fontconfig.json`:
+```
+$ flict -o fontconfig-report.json verify -pf fontconfig.json 
+```
+
+Apply policy file, `flict-policy.json`, to newly created report:
+```
+$ flict policy-report -crf fontconfig-report.json -lpf flict-policy.json
+```
+
 
 ## JSON
 
-To get a policy, as specified in [example-data/europe-policy.json](example-data/europe-policy.json),
-report for the compatibility report of the project as specified in
-[example-data/europe.json](example-data/europe.json) and store the result in
-`europe-policy-report.json` type:
+To get a policy report from a policy, as specified in
+[example-data/europe-policy.json](example-data/europe-policy.json),
+and from the compatibility report of the project as specified in
+[example-data/europe.json](example-data/europe.json) and store the
+result in `europe-policy-report.json` type:
 
 ```
-$ flict -lpf example-data/europe-policy.json -crf europe-report.json > europe-policy-report.json 
+$ flict -o europe-policy-report.json -of JSON -lpf example-data/europe-policy.json -crf europe-report.json  
 ```
 
-This creates a policy report in JSON
+This creates a policy report (`europe-policy-report.json`) in JSON
 
 *Tip: . If you want to pretty print this file you can use tools such as `jq`: `jq . europe-policy-report.json`*
 
