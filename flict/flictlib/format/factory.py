@@ -31,8 +31,6 @@ class FormatFactory:
                 FormatFactory._instance = DotFormatter()
             elif format.lower() == "markdown":
                 FormatFactory._instance = MarkdownFormatter()
-            elif format.lower() == "markdown":
-                print("MARKDOWN COMING SOON: ")
             else:
                 pass
         else:
