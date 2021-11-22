@@ -88,23 +88,33 @@ flict outputs a report as well as an exit code.
 
 **10** - invalid project file
 
-**10** - invalid license expression
+**11** - invalid expression
 
-## Report
+**12** - file not found
+
+## Compatibility report
 
 A report of the component's compatibility with suggested outbound
 licenses is created. By default a short text report is created, but
 flict can provide a report in a couple of formats.
 
+## Policy report
+
+To the above report you can apply your own policy (see [SETTINGS](SETTINGS.md)). Applying this will create a policy report with your policy applied to the suggested outbound license from the usual report and with some complementary information.
+
 ## Report formats
 
 ### JSON
 
-This is currently rewritten and not available.
+Default. Available for all commands.
 
 ### Markdown
 
-Using this format you can create txt, html, pdf and what format pandoc can create from markdown.
+Using this format you can create txt, html, pdf and what format pandoc can create from markdown. Partially supported.
+
+### Text
+
+Partially supported. 
 
 ## User specific configuration
 
@@ -126,10 +136,6 @@ Either create a json file at `~/.flict.cfg` or at a path defined by environment 
     "output-format": "text",
 }
 ```
-
-## Policy report
-
-To the above report you can apply your own policy (see [SETTINGS](SETTINGS.md)). Applying this will create a policy report with your policy applied to the suggested outbound license from the usual report and with some complementary information.
 
 # Reporting bugs
 
