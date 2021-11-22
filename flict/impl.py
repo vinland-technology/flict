@@ -153,4 +153,4 @@ class FlictImpl:
             return self._formatter.format_outbound_license(_outbound_candidates)
         except:
             raise FlictException(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                 "Invalid license expression: " + str(self._args.licenses))
+                                 "Invalid license expression: " + str(self._args.license_expression))
