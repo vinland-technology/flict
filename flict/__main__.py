@@ -299,6 +299,8 @@ def policy_report(args):
 def main():
     args = parse()
 
+    logger.setup(args.debug_license, args.verbose)
+
     if 'which' in args:
         try:
             args.func(args)
