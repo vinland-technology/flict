@@ -6,6 +6,7 @@
 
 import os
 import sys
+import json
 import unittest
 
 TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,10 +32,9 @@ class ArgsMock:
 class OutboundTest(unittest.TestCase):
 
     def test_outbound(self):
-        # args = ArgsMock(['MIT'])
-        # ret = FlictImpl(args).suggest_outbound_candidate()
-        # self.assertEqual(ret, ['MIT'])
-        pass
+        args = ArgsMock(['MIT'])
+        ret = FlictImpl(args).suggest_outbound_candidate()
+        self.assertEqual(json.loads(ret), ["MIT"])
         
         
 if __name__ == '__main__':
