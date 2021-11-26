@@ -31,9 +31,10 @@ def test_outbound():
                     ['AGPL-3.0-or-later', 'GPL-2.0-only', 'GPL-2.0-or-later', 'GPL-3.0-or-later', 'LGPL-2.1-or-later'])
 
 def test_no_relicense():
-    # args = ArgsMock(license_expression=['GPL-2.0-only and MPL-2.0'], no_relicense=True)
-    # ret = FlictImpl(args).suggest_outbound_candidate()
-    # assert ['GPL-2.0-only'] == json.loads(ret)
+    args = ArgsMock(license_expression=['GPL-2.0-only and MPL-2.0'], relicense_file='', no_relicense=True)
+    imp = FlictImpl(args)
+    ret = imp.suggest_outbound_candidate()
+    assert ['GPL-2.0-only'] == json.loads(ret)
 
     args = ArgsMock(license_expression=['GPL-2.0-only and MPL-2.0'], relicense_file='')
     ret = FlictImpl(args).suggest_outbound_candidate()
