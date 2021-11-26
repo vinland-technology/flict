@@ -59,12 +59,12 @@ class Project:
             self.expanded = False
             self.dep_list = None
             self.project_file = None
-            project = {}
-            project['name'] = "dummy"
-            project['version'] = "0.0.0"
-            project['license'] = license_expression
-            project['dependencies'] = []
-            self.project = project
+            self.project = {
+                'name': "dummy",
+                'version': "0.0.0",
+                'license': license_expression,
+                'dependencies': []
+            }
             self.license_handler = license_handler
             self._expand_licenses()
             self.tot_combinations = None
@@ -80,9 +80,9 @@ class Project:
                 with open(self.project_file) as fp:
                     return json.load(fp)
         except json.JSONDecodeError:
-            raise FlictException(ReturnCodes.RET_INVALID_PROJECT, "File \"" + file_name + "\" does not contain valid JSON data")
+            raise FlictException(ReturnCodes.RET_INVALID_PROJECT, f'File "{file_name}" does not contain valid JSON data')
         except (FileNotFoundError, IsADirectoryError):
-            raise FlictException(ReturnCodes.RET_FILE_NOT_FOUND, "File \"" + file_name + "\" could not be found or is a directory")
+            raise FlictException(ReturnCodes.RET_FILE_NOT_FOUND, f'File "{file_name}" could not be found or is a directory')
 
     def read_project_file(self):
         """This function reads a project file (JSON)
@@ -114,16 +114,14 @@ class Project:
 
         returns the list of dependencies (as the name suggests)
         """
-        dep_list = []
-        me = {}
-        me['name'] = dep['name']
-        me['license'] = dep['license']
-        if 'version' in dep:
-            me['version'] = dep['version']
-        else:
-            me['version'] = ""
-        me['dependencies'] = []
-        dep_list.append(me)
+        dep_list = [
+            {
+                'name': dep['name'],
+                'license': dep['license'],
+                'version': dep['version'] if 'version' in dep else '',
+                'dependencies': []
+            }
+        ]
         if 'dependencies' in dep:
             for d in dep['dependencies']:
                 dep_list = dep_list + self._dependency_list(d)
@@ -159,8 +157,7 @@ class Project:
         (implied by set is that this is a uniqe collection of the project's licenses (including its dependencies)
         """
         licenses = set()
-        dep_pile = self.dependencies_pile()
-        for d in dep_pile:
+        for d in self.dependencies_pile():
 
             dep_licenses = d['expanded_license']
 
@@ -220,9 +217,8 @@ class Project:
 
         (number of licenses in list_set) for this projects and its dependencies.
         """
-        dep_pile = self.dependencies_pile()
         tot_combinations = 1
-        for proj in dep_pile:
+        for proj in self.dependencies_pile():
             tot_combinations = tot_combinations * \
                 self._project_combinations(proj)
         self.tot_combinations = tot_combinations
@@ -297,12 +293,11 @@ class Project:
         if self.expanded:
             return
 
-        dep_pile = self.dependencies_pile()
         combinations = self.projects_combinations()
         expanded_projects = []
 
         left = combinations
-        for proj in dep_pile:
+        for proj in self.dependencies_pile():
             expanded_project = []
             for i in range(combinations):
                 nr_licenses = len(proj['expanded_license']['set_list'])
@@ -325,11 +320,12 @@ class Project:
         self._project_combination_list = []
         for i in range(combinations):
             project_combination = []
-            for j in range(len(expanded_projects)):
-                project = {}
-                project['name'] = expanded_projects[j][i].name
-                project['license'] = expanded_projects[j][i].license
-                project['version'] = expanded_projects[j][i].version
+            for expanded_project in expanded_projects:
+                project = {
+                    'name': expanded_project[i].name,
+                    'license': expanded_project[i].license,
+                    'version': expanded_project[i].version
+                }
                 project_combination.append(project)
             self._project_combination_list.append(project_combination)
         self.expanded = True
@@ -347,4 +343,4 @@ class ExpandedProject:
         self.version = version
 
     def __str__(self):
-        return self.name + " (" + str(self.license) + ")"
+        return f'{self.name} ({self.license})'
