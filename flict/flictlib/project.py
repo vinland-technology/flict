@@ -49,7 +49,6 @@ class Project:
             self.license_handler = license_handler
             self._expand_licenses()
             self.tot_combinations = None
-            # self.expand_projects()
         else:
             """Creates a project definition, with no dependencies, from a license
             expression.
@@ -69,7 +68,6 @@ class Project:
             self.license_handler = license_handler
             self._expand_licenses()
             self.tot_combinations = None
-            # self.expand_projects()
 
     # get JSON data from self.project_file
     def _get_json_data(self):
@@ -117,9 +115,7 @@ class Project:
         returns the list of dependencies (as the name suggests)
         """
         dep_list = []
-        #logger.main_logger.debug(" * adding: " + dep['name'])
         me = {}
-        #print("dep: " +str(dep))
         me['name'] = dep['name']
         me['license'] = dep['license']
         if 'version' in dep:
@@ -128,11 +124,9 @@ class Project:
             me['version'] = ""
         me['dependencies'] = []
         dep_list.append(me)
-        #print("me: " + json.dumps(me))
         if 'dependencies' in dep:
             for d in dep['dependencies']:
                 dep_list = dep_list + self._dependency_list(d)
-                #logger.main_logger.debug(" * dep list: " + str(dep_list))
         return dep_list
 
     def dependencies_pile_map(self):
@@ -167,21 +161,17 @@ class Project:
         licenses = set()
         dep_pile = self.dependencies_pile()
         for d in dep_pile:
-            #print("\n\ndep_licenses_map:\n" + json.dumps(d))
 
             dep_licenses = d['expanded_license']
 
             for license_list in dep_licenses['set_list']:
-                #print("license_list: " + str(license_list))
                 for _license in license_list:
-                    #print("license: " + str(_license))
                     license = _license.replace("(", "").replace(")", "")
                     if license == "AND" or license == "and" or license == "OR" or license == "or":
                         pass
                     elif license == "":
                         pass
                     else:
-                        #print("add: " + license)
                         licenses.add(license)
         return licenses
 
@@ -192,7 +182,6 @@ class Project:
         This expression is simplified (with regards to boolean algebra).
         """
         license_handler = self.license_handler
-        # print("new_license_set...")
         combined_license = ""
         for proj in self.dependencies_pile():
             simplified = proj['expanded_license']['simplified']
@@ -201,10 +190,8 @@ class Project:
             else:
                 combined_license = combined_license + \
                     " and ( " + simplified + " ) "
-            #print("adding: " + proj['name'])
-        #print("new_license_set(): " + str(combined_license))
+
         simplified = license_handler.simplify(combined_license)
-        #print("new_license_set(): " + str(simplified))
         return simplified
 
     def project_combinations(self, license_handler, dep):
@@ -214,11 +201,9 @@ class Project:
         (ignoring the dependencies of this dependency).
 
         """
-        #proj_license = dep['license']
         managed_expression = dep['expanded_license']
         set_list = managed_expression['set_list']
 
-        #print("managed_expression:  " + str(set_list))
         return len(set_list)
 
     # internal only
@@ -259,17 +244,11 @@ class Project:
         """
         dep_pile = self.dependencies_pile()
         for proj in dep_pile:
-            #print(" --- : " + str(proj))
             exp_lic = self.license_handler.license_expression_list(
                 proj['license'], True)
             proj['expanded_license'] = exp_lic.to_json()
-            #print("ADDING: " + str(proj['expanded_license'].set_list) + " type: " + str(type(exp_lic)))
 
         logger.main_logger.debug("piles: " + str(dep_pile))
-
-        #combinations = self.projects_combinations(self.license_handler, dep_pile, True)
-        #logger.main_logger.debug("combinations: " +str(combinations))
-        # return combinations
 
     def expand_projects(self):
         """
@@ -335,14 +314,10 @@ class Project:
                 version = proj['version']
                 exp_project = ExpandedProject(name, license, version)
                 expanded_project.append(exp_project)
-                #print("adding: " + str(exp_project))
-                #print("   to:  " + str(expanded_project))
-            # print("")
+
             expanded_projects.append(expanded_project)
             # update for next round
             left = left // nr_licenses
-
-        # print(self._expanded_projects_string(expanded_projects))
 
         #
         # Second phase, create map
@@ -354,11 +329,9 @@ class Project:
                 project = {}
                 project['name'] = expanded_projects[j][i].name
                 project['license'] = expanded_projects[j][i].license
-                # project['license']=list(expanded_projects[j][i].license)
                 project['version'] = expanded_projects[j][i].version
                 project_combination.append(project)
             self._project_combination_list.append(project_combination)
-        # print(self.project_combination_list)
         self.expanded = True
 
     def project_combination_list(self):
