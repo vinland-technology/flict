@@ -13,44 +13,8 @@ TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Add to PYTHON_PATH
 sys.path.insert(0, TEST_DIR)
 
-from flict.flictlib import flict_config
 from flict.impl import FlictImpl
-
-
-class ArgsMock:
-    def __init__(self,
-                 debug_licenses=False,
-                 enable_scancode=False,
-                 extended_licenses=False,
-                 license_expression='',
-                 license_group_file=flict_config.DEFAULT_GROUP_FILE,
-                 licenses=None,
-                 matrix_file = flict_config.DEFAULT_MATRIX_FILE,
-                 no_relicense=False,
-                 outbound_licenses=None,
-                 output_format='JSON',
-                 relicense_file=flict_config.DEFAULT_RELICENSE_FILE,
-                 scancode_file=None,
-                 translations_file=flict_config.DEFAULT_TRANSLATIONS_FILE,
-                 verbose=False,
-                 version=False
-                 ):
-        self.debug_licenses = debug_licenses
-        self.enable_scancode = enable_scancode
-        self.extended_licenses = extended_licenses
-        self.license_expression = license_expression
-        self.license_group_file = license_group_file 
-        self.licenses = licenses
-        self.matrix_file = matrix_file
-        self.no_relicense = no_relicense
-        self.outbound_licenses = outbound_licenses
-        self.output_format = output_format
-        self.relicense_file = relicense_file
-        self.scancode_file = scancode_file
-        self.translations_file = translations_file
-        self.verbose = verbose
-        self.version = version
-
+from tests.args_mock import ArgsMock
 
 class SimplificationTest(unittest.TestCase):
 

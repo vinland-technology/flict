@@ -14,26 +14,13 @@ TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Add to PYTHON_PATH
 sys.path.insert(0, TEST_DIR)
 
-from flict.flictlib import flict_config
 from flict.impl import FlictImpl
-
-
-class ArgsMock:
-    def __init__(self, license_expression, no_relicense=False, relicense_file=flict_config.DEFAULT_RELICENSE_FILE):
-        self.output_format = 'JSON'
-        self.license_group_file = flict_config.DEFAULT_GROUP_FILE 
-        self.translations_file = flict_config.DEFAULT_TRANSLATIONS_FILE
-        self.relicense_file = relicense_file
-        self.matrix_file = flict_config.DEFAULT_MATRIX_FILE
-        self.scancode_file = None
-        self.extended_licenses = False
-        self.license_expression = license_expression
-        self.no_relicense = no_relicense
+from tests.args_mock import ArgsMock
 
 class OutboundTest(unittest.TestCase):
 
     def _test_expression(self, expression, result):
-        args = ArgsMock(expression)
+        args = ArgsMock(license_expression=expression)
         ret = FlictImpl(args).suggest_outbound_candidate()
         self.assertEqual(json.loads(ret), result)
 
@@ -56,11 +43,11 @@ class OutboundTest(unittest.TestCase):
                               ['AGPL-3.0-or-later', 'GPL-2.0-only', 'GPL-2.0-or-later', 'GPL-3.0-or-later', 'LGPL-2.1-or-later'])
 
     def test_no_relicense(self):
-        # args = ArgsMock(['GPL-2.0-only and MPL-2.0'], no_relicense=True)
+        # args = ArgsMock(license_expression=['GPL-2.0-only and MPL-2.0'], no_relicense=True)
         # ret = FlictImpl(args).suggest_outbound_candidate()
         # self.assertEqual(json.loads(ret), ['GPL-2.0-only'])
 
-        args = ArgsMock(['GPL-2.0-only and MPL-2.0'], relicense_file='')
+        args = ArgsMock(license_expression=['GPL-2.0-only and MPL-2.0'], relicense_file='')
         ret = FlictImpl(args).suggest_outbound_candidate()
         self.assertEqual(json.loads(ret), ['GPL-2.0-only'])
 
