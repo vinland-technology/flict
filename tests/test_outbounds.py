@@ -4,15 +4,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os
-import sys
 import json
 import unittest
-
-TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Add to PYTHON_PATH
-sys.path.insert(0, TEST_DIR)
 
 from flict.impl import FlictImpl
 from tests.args_mock import ArgsMock
