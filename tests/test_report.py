@@ -36,8 +36,8 @@ class ReportTest(unittest.TestCase):
         outbounds = report['licensing']['outbound_candidates']
         self.assertEqual(len(outbounds),2)
 
-        self.assertTrue("GPL-2.0-only" in outbounds)
-        self.assertTrue("GPL-3.0-only" in outbounds)
+        self.assertTrue("GPL-2.0-or-later" in outbounds)
+        self.assertTrue("GPL-3.0-or-later" in outbounds)
         
         
 if __name__ == '__main__':

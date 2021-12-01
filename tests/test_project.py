@@ -63,7 +63,7 @@ class Basic(unittest.TestCase):
         # Check license set (as a alist)
         lic_list = list(self.project.license_set())
         lic_list.sort()
-        exp_list = "['Apache-2.0', 'GPL-2.0-only', 'GPL-3.0-only', 'MPL-1.1']"
+        exp_list = "['Apache-2.0', 'GPL-2.0-or-later', 'GPL-3.0-only', 'GPL-3.0-or-later', 'MPL-1.1']"
         self.assertTrue(str(lic_list) == str(exp_list))
 
         actual_map = self.project.dependencies_pile_map()
@@ -85,11 +85,11 @@ class Basic(unittest.TestCase):
 
         self.assertEqual(sweden['license'], 'GPL-2.0-or-later or Apache-2.0 or MPL-1.1')
         self.assertEqual(len(sweden['dependencies']), 0)
-        self.assertEqual(sweden['expanded_license']['expanded'], "Apache-2.0 OR  ( GPL-3.0-only OR GPL-2.0-only )  OR MPL-1.1")
-        self.assertEqual(sweden['expanded_license']['grouped'], "Apache-2.0 OR  ( GPL-3.0-only OR GPL-2.0-only )  OR MPL-1.1")
+        self.assertEqual(sweden['expanded_license']['expanded'], "Apache-2.0 OR  ( GPL-3.0-or-later OR GPL-2.0-or-later )  OR MPL-1.1")
+        self.assertEqual(sweden['expanded_license']['grouped'], "Apache-2.0 OR  ( GPL-3.0-or-later OR GPL-2.0-or-later )  OR MPL-1.1")
         self.assertEqual(sweden['expanded_license']['simplified'], "Apache-2.0 OR GPL-2.0-or-later OR MPL-1.1")
         sweden['expanded_license']['set_list'].sort()
-        self.assertEqual(sweden['expanded_license']['set_list'], [['Apache-2.0'], ['GPL-2.0-only'], ['GPL-3.0-only'], ['MPL-1.1']])
+        self.assertEqual(sweden['expanded_license']['set_list'], [['Apache-2.0'], ['GPL-2.0-or-later'], ['GPL-3.0-or-later'], ['MPL-1.1']])
         
         # Check number of license combinations
         exp_combinations = 4 
@@ -110,11 +110,11 @@ class Basic(unittest.TestCase):
             ],
             [
                 {'name': 'Europe - a flict example', 'license': ['GPL-3.0-only']},
-                {'name': 'Sweden', 'license': ['GPL-2.0-only'] }
+                {'name': 'Sweden', 'license': ['GPL-2.0-or-later'] }
             ],
             [
                 {'name': 'Europe - a flict example', 'license': ['GPL-3.0-only']},
-                {'name': 'Sweden', 'license': ['GPL-3.0-only'] }
+                {'name': 'Sweden', 'license': ['GPL-3.0-or-later'] }
             ],
             [
                 {'name': 'Europe - a flict example', 'license': ['GPL-3.0-only']},
@@ -135,7 +135,7 @@ class Basic(unittest.TestCase):
         # Check license set
         lic_set_list = list(self.project.license_set())
         lic_set_list.sort()
-        exp_list = ['Apache-2.0', 'GPL-2.0-only', 'GPL-3.0-only', 'MPL-1.1'] # keep sorted
+        exp_list = ['Apache-2.0', 'GPL-2.0-or-later', 'GPL-3.0-only', 'GPL-3.0-or-later', 'MPL-1.1'] # keep sorted
         self.assertTrue(lic_set_list == exp_list)
 
         
@@ -186,7 +186,7 @@ class Basic(unittest.TestCase):
         # when retrieving the Project's license set:
         #     'GPL-2.0-only'
         #     'GPL-3.0-only'
-        exp_list = ['Apache-2.0', 'BSD-3-Clause', 'GPL-2.0-only', 'GPL-3.0-only', 'MIT', 'MPL-1.1'] # keep sorted
+        exp_list = ['Apache-2.0', 'BSD-3-Clause', 'GPL-2.0-only', 'GPL-2.0-or-later', 'GPL-3.0-or-later', 'MIT', 'MPL-1.1'] # keep sorted
         #print("e: " + str(exp_list))
         #print("l: " + str(lic_set_list))
         self.assertTrue(lic_set_list == exp_list)

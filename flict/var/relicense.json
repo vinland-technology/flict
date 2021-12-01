@@ -8,16 +8,16 @@
         {
             "spdx": "GPL-2.0-or-later",
             "later": [
-                "GPL-3.0-only",
-                "GPL-2.0-only"
+                "GPL-3.0-or-later",
+                "GPL-2.0-or-later"
             ]
         },       
         {
             "spdx": "LGPL-2.1-or-later",
             "later": [
-                "GPL-2.0-only",
-                "LGPL-2.1-only",
-                "LGPL-3.0-only"
+                "GPL-2.0-or-later",
+                "LGPL-2.1-or-later",
+                "LGPL-3.0-or-later"
             ]
         },
         {
@@ -30,8 +30,8 @@
         {
             "spdx": "GPL-2.1-or-later",
             "later": [
-                "GPL-2.1-only",
-                "GPL-3.0-only"
+                "GPL-2.1-or-later",
+                "GPL-3.0-or-later"
             ]
         },
         {
