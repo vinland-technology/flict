@@ -20,11 +20,7 @@ class TextFormatter(FormatInterface):
 
         ret_str = ""
         for item in supported_licenses:
-            lic_group = compatibility.license_group(item)
-            if lic_group is not None:
-                ret_str += " " + str(item) + ": (" + lic_group + ")\n"
-            else:
-                ret_str += " " + str(item) + "\n"
+            ret_str += " " + str(item) + "\n"
         return ret_str
 
     def format_license_list(self, license_list):
@@ -38,31 +34,6 @@ class TextFormatter(FormatInterface):
 
     def format_outbound_license(self, outbound_candidate):
         return ", ".join(outbound_candidate)
-
-    def format_supported_license_groups(self, license_groups):
-        ret_str = ""
-        for lg in license_groups:
-            ret_str += " " + str(lg)
-            if lg == "Permissive" or lg == "Public Domain":
-                pass
-            else:
-                ret_str += " (under consideration)"
-            ret_str += "\n"
-        return ret_str
-
-    def format_license_group(self, compatibility, license_handler, license_group, extended_licenses):
-        license_list = license_handler.license_expression_list(license_group,
-                                                               extended_licenses)
-        ret_str = ""
-        for lic in license_list.set_list:
-            for inner_lic in lic:
-                lic_group = compatibility.license_group(inner_lic)
-                if lic_group is not None:
-                    ret_str += inner_lic + ": " + str(lic_group)
-                else:
-                    ret_str += inner_lic + \
-                        ": does not belong to a group. It may still be supported by OSADL's matrix"
-        return ret_str
 
     def format_simplified(self, license_expression, simplified):
         return simplified

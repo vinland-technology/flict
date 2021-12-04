@@ -39,11 +39,9 @@ VAR_DIR = os.path.join(SCRIPT_DIR, "var")
 DEFAULT_TRANSLATIONS_BASE_FILE = "translation.json"
 DEFAULT_GROUP_BASE_FILE = "license-group.json"
 DEFAULT_RELICENSE_BASE_FILE = "relicense.json"
-DEFAULT_SCANCODE_BASE_FILE = "scancode-licenses.json"
 
 DEFAULT_TRANSLATIONS_FILE = _userconfig.get('translations-file', os.path.join(VAR_DIR, DEFAULT_TRANSLATIONS_BASE_FILE))
 DEFAULT_GROUP_FILE = _userconfig.get('group-file', os.path.join(VAR_DIR, DEFAULT_GROUP_BASE_FILE))
 DEFAULT_RELICENSE_FILE = _userconfig.get('relicense-file', os.path.join(VAR_DIR, DEFAULT_RELICENSE_BASE_FILE))
-DEFAULT_SCANCODE_FILE = _userconfig.get('scancode-file', os.path.join(VAR_DIR, DEFAULT_SCANCODE_BASE_FILE))
 DEFAULT_MATRIX_FILE = _userconfig.get('matrix-file', OSADL_MATRIX)
 DEFAULT_OUTPUT_FORMAT = _userconfig.get('output-format', "JSON")

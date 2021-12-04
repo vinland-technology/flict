@@ -26,8 +26,6 @@ class FlictImpl:
         self._formatter = FormatFactory.formatter(args.output_format)
         self._license_handler = LicenseHandler(args.translations_file, args.relicense_file, "")
         self._compatibility = Compatibility(args.matrix_file,
-                                            args.scancode_file,
-                                            args.license_group_file,
                                             args.extended_licenses)
 
     def _empty_project_report(self, licenses):
@@ -47,15 +45,7 @@ class FlictImpl:
 
     def list_licenses(self):
         formatted = ""
-        if self._args.license_group:
-            formatted = self._formatter.format_license_group(self._compatibility,
-                                                             self._license_handler,
-                                                             self._args.license_group,
-                                                             self._args.extended_licenses)
-        elif self._args.list_supported_license_groups:
-            supported_license_groups = self._compatibility.supported_license_groups().sort()
-            formatted = self._formatter.format_supported_license_groups(supported_license_groups)
-        elif self._args.list_relicensing:
+        if self._args.list_relicensing:
             formatted = self._formatter.format_relicense_information(self._license_handler)
         elif self._args.list_translation:
             formatted = self._formatter.format_translation_information(self._license_handler)
