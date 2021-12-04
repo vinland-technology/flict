@@ -38,27 +38,6 @@ class JsonFormatter(FormatInterface):
     def format_compats(self, compats):
         return json.dumps(compats)
 
-    def format_supported_license_groups(self, license_groups):
-        return json.dumps(license_groups)
-
-    def format_license_group(self, compatibility, license_handler, license_group, extended_licenses):
-        license_list = license_handler.license_expression_list(license_group,
-                                                               extended_licenses)
-        lg = []
-        for lic in license_list.set_list:
-            for inner_lic in lic:
-                lic_group = compatibility.license_group(inner_lic)
-                if lic_group is not None:
-                    item = {inner_lic: lic_group,
-                            'status': True}
-                    lg.append(item)
-                else:
-                    item = {inner_lic: lic_group,
-                            'status': False,
-                            'msg': inner_lic + ": does not belong to a group. It may still be supported by OSADL's matrix"}
-                    lg.append(item)
-        return json.dumps(lg)
-
     def format_simplified(self, license_expression, simplified):
         return json.dumps({'original':  license_expression,
                            'simplified': simplified})

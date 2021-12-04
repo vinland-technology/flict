@@ -63,14 +63,6 @@ def parse():
     deveveloper_group = parser.add_argument_group(title='Developer options')
 
     # DEFAULTS
-    commmon_defaults_group.add_argument('-gf', '--group-file',
-                                        type=str,
-                                        dest='license_group_file',
-                                        help='File with group definitions, defaults to' +
-                                        flict_config.DEFAULT_GROUP_BASE_FILE + ". EXPERIMENTAL",
-                                        default=flict_config.DEFAULT_GROUP_FILE)
-
-    # DEFAULTS
     commmon_defaults_group.add_argument('-mf', '--matrix-file',
                                         type=str,
                                         dest='matrix_file',
@@ -83,13 +75,6 @@ def parse():
                                         dest='relicense_file',
                                         help='File with relicensing information, defaults to ' + flict_config.DEFAULT_RELICENSE_BASE_FILE,
                                         default=flict_config.DEFAULT_RELICENSE_FILE)
-    # DEFAULTS
-    commmon_defaults_group.add_argument('-sf', '--scancode-file',
-                                        type=str,
-                                        dest='scancode_file',
-                                        help='File with scancode licenseses information, defaults to ' +
-                                        flict_config.DEFAULT_SCANCODE_BASE_FILE + ". EXPERIMENTAL",
-                                        default=flict_config.DEFAULT_SCANCODE_FILE)
 
     # DEFAULTS
     commmon_defaults_group.add_argument('-tf', '--translations-file',
@@ -97,13 +82,6 @@ def parse():
                                         dest='translations_file',
                                         help='File with license translations, defaults to' + flict_config.DEFAULT_TRANSLATIONS_BASE_FILE,
                                         default=flict_config.DEFAULT_TRANSLATIONS_FILE)
-
-    # COMMON
-    parser.add_argument('-es', '--enable-scancode',
-                        action='store_true',
-                        dest='enable_scancode',
-                        help="Use Scancode's license database - experimental so use with care",
-                        default=False)
 
     # COMMON
     parser.add_argument('-el', '--extended-licenses',
@@ -189,16 +167,8 @@ def parse():
 
     # list
     parser_li = subparsers.add_parser(
-        'list', help='list supported licenses or groups')
+        'list', help='list supported licenses')
     parser_li.set_defaults(which="list", func=list_licenses)
-    parser_li.add_argument('--groups', '-g',
-                           action='store_true',
-                           dest='list_supported_license_groups',
-                           help='output the license groups supported by flict')
-    parser_li.add_argument('-lg', '--license-group',
-                           dest='license_group',
-                           type=str,
-                           help='output group (if any) for license')
     parser_li.add_argument('-r', '--relicensing',
                            dest='list_relicensing',
                            action='store_true',
@@ -247,9 +217,6 @@ def parse():
 
     if args.no_relicense:
         args.relicense_file = ""
-
-    if not args.enable_scancode:
-        args.scancode_file = None
 
     return args
 

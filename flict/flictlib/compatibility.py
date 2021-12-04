@@ -19,8 +19,6 @@ except ImportError:
     # as compat_matrix imports this module as well, we bail out
     # on circular depedencies
     pass
-from flict.flictlib.license_groups import LicenseGroups
-from flict.flictlib.scancode_licenses import ScancodeLicenses
 from flict.flictlib import logger
 
 # Bail out if combinations is greater than...
@@ -37,27 +35,13 @@ class CompatibilityStatus(Enum):
 
 class Compatibility:
 
-    def __init__(self, matrix_file, scancode_file, group_file, check_all_licenses=False):
+    def __init__(self, matrix_file, check_all_licenses=False):
         self.compat_matrix = CompatibilityMatrix(matrix_file)
         self.check_all_licenses = check_all_licenses
-        if scancode_file is not None:
-            self.scancode_licenses = ScancodeLicenses(scancode_file)
-        else:
-            self.scancode_licenses = None
-        self.license_groups = LicenseGroups(group_file)
 
     def supported_licenses(self):
         license_set = set(self.compat_matrix.supported_licenses())
-        if self.scancode_licenses is not None:
-            license_set = license_set.union(
-                self.scancode_licenses.supported_licenses())
         return list(license_set)
-
-    def supported_license_groups(self):
-        if self.scancode_licenses is not None:
-            return list(self.scancode_licenses.supported_license_groups())
-        else:
-            return []
 
     def _supported_license(self, lic):
         #print("license: " + str(lic))
@@ -65,17 +49,6 @@ class Compatibility:
         #print(" 1 => " + str(matrix_lic))
         if matrix_lic is not None:
             return matrix_lic
-
-        if self.scancode_licenses is not None:
-            scan_lic = self.scancode_licenses.supported_license(lic)
-            #print(" 2 => " + str(scan_lic))
-            if scan_lic is not None:
-                return scan_lic
-
-        group_lic = self.license_groups.supported_license(lic)
-        #print(" 3 => " + str(group_lic))
-        if group_lic is not None:
-            return group_lic
 
         #print(" 4 => " + lic)
         return lic
@@ -263,21 +236,16 @@ class Compatibility:
             outer_licenses = list(licenses)
             #print("outer licenses: " + str(outer_licenses))
 
-        for license_a in outer_licenses:
-            #print("check for: " + str(license_a))
-            #lic_str = str(l_fmt) % license_a
+        for lic_a in outer_licenses:
+            #print("check for: " + str(lic_a))
+            #lic_str = str(l_fmt) % lic_a
             #compatible = True
             inner_licenses = []
-            for license_b in licenses:
-                #print(" * : " + str(license_b))
-                if license_a == license_b:
-                    #print(license_a + " not checked against itself")
+            for lic_b in licenses:
+                #print(" * : " + str(lic_b))
+                if lic_a == lic_b:
+                    #print(lic_a + " not checked against itself")
                     continue
-
-                # If license not supported by matrix
-                # check (and use) if group is available
-                lic_a = self._supported_license(license_a)
-                lic_b = self._supported_license(license_b)
 
                 comp_left = self._a_compatible_with_b(lic_a, lic_b)
                 comp_right = self._a_compatible_with_b(lic_b, lic_a)
@@ -289,7 +257,7 @@ class Compatibility:
                     "  compat: " + lic_b + " ? " + lic_a + " => " + str(comp_right))
 
                 inner_compat = {}
-                inner_compat['license'] = license_b
+                inner_compat['license'] = lic_b
                 inner_compat['compatible_right'] = self._compatibility_status_json(
                     comp_right)
                 inner_compat['compatible_left'] = self._compatibility_status_json(
@@ -298,18 +266,13 @@ class Compatibility:
                 inner_licenses.append(inner_compat)
 
             compat = {}
-            compat['license'] = license_a
+            compat['license'] = lic_a
             compat['licenses'] = inner_licenses
             compats.append(compat)
 
         compat_object = {}
         compat_object['compatibilities'] = compats
         return compat_object
-
-    def license_group(self, license):
-        if self.scancode_licenses is not None:
-            return self.scancode_licenses.license_group(license)
-        return None
 
     def report(self, project):
         self.compatility_report = {}

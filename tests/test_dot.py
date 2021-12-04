@@ -22,14 +22,13 @@ from osadl_matrix import OSADL_MATRIX
 
 TRANSLATION_FILE   = os.path.join(VAR_DIR, "translation.json")
 RELICENSE_FILE     = os.path.join(VAR_DIR, "relicense.json")
-LICENSE_GROUP_FILE = os.path.join(VAR_DIR, "license-group.json")
 
 class TestDotOutput(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         print('BasicTest.__init__')
         super(TestDotOutput, self).__init__(*args, **kwargs)
-        self.compatibility = Compatibility(OSADL_MATRIX, None, LICENSE_GROUP_FILE)
+        self.compatibility = Compatibility(OSADL_MATRIX)
         self.formatter = FormatFactory.formatter("dot")
 
     def license_to_dot(self, licenses):
