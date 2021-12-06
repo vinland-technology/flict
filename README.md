@@ -37,15 +37,11 @@ flict supports:
 
 * 71 licenses (```flict -of text list```) 
 
-* 925 licenses in experimental mode using scancode classification (```flict -es -of text list```) 
-
 * 'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-only or GPL-3.0-only)
 
 * explicit relicensing (LGPL -> GPL)
 
 * common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only)
-
-* grouping of common licenses in to well known license classification 
 
 * policy framework where you can specify which licenses you want to: allow, avoid or deny
 
@@ -71,10 +67,6 @@ Read more in [SETTINGS](SETTINGS.md)
 
 To check compatibility between two licenses flict is using [OSADL](https://www.osadl.org/)'s
 [matrix](https://www.osadl.org/fileadmin/checklists/matrix.html).
-
-## Scancode's db
-
-Flict can also (*experimentally*) use Scancode's [database](https://scancode-licensedb.aboutcode.org/).
 
 # Installing
 
@@ -121,11 +113,9 @@ Either create a json file at `~/.flict.cfg` or at a path defined by environment 
 
 | key               | sets CLI option         |
 | ----------------- | ----------------------- |
-| group-file        | -gf --group-file        |
 | matrix-file       | -mf --matrix-file       |
 | output-format     | -of --output-format     |
 | relicense-file    | -rf --relicense-file    |
-| scancode-file     | -sf --scancode-file     |
 | translations-file | -tf --translations-file |
 
 ### Example user configuration
@@ -134,7 +124,6 @@ Either create a json file at `~/.flict.cfg` or at a path defined by environment 
 {
     "matrix-file": "/my/very/own/osadl-matrix.csv",
     "output-format": "text",
-    "scancode-file": "/my/secret/stash/scancode-licenses.json"
 }
 ```
 
