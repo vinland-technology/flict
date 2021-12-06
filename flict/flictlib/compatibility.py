@@ -44,13 +44,10 @@ class Compatibility:
         return list(license_set)
 
     def _supported_license(self, lic):
-        #print("license: " + str(lic))
         matrix_lic = self.compat_matrix.supported_license(lic)
-        #print(" 1 => " + str(matrix_lic))
         if matrix_lic is not None:
             return matrix_lic
 
-        #print(" 4 => " + lic)
         return lic
 
     def _compatibility_status_json(self, status):
@@ -82,7 +79,6 @@ class Compatibility:
             return CompatibilityStatus.DEPENDS
 
     def check_compatibility(self, license_set, project):
-        #print("CC: set: " + str(license_set))
         license_compatibilities = []
         outbound_candidates = set()
         if self.check_all_licenses:
@@ -98,7 +94,6 @@ class Compatibility:
         # For every license among all the licenses
         # - check compat against all licenses
         for license in licenses_set:
-            #print("\n  CC: license: " + str(license))
             license_compatibility = {}
             license_compatibility['outbound'] = license
             license_compatibility['combinations'] = []
@@ -113,12 +108,10 @@ class Compatibility:
                     # keep track of whether the combination's status
                     combination_compat_status = True
                     combination_set = {}
-                    #print("  CC: c:" + str((combination)))
 
                     status = False
                     # loop through the top project and its deps in this project combination
                     for p in combination:
-                        #print("    CC: ---> " + str(p['license']))
 
                         reason = set()
                         # and for each such, loop through license(s)
@@ -147,29 +140,22 @@ class Compatibility:
                         status = (reason == set())
                         combination_compat_status = combination_compat_status and status
 
-                        #print("             " + str(license) + " ==> " + str(p['license']) + " : " + str(status))
-
-                        #print("  CC: c:" + str((combination)) + " ==> "  +str(status) + "    : " + str(reason))
-                        #print("    CC: " + str(license_compat_status))
-
                     if combination_compat_status:
                         outbound_candidates.add(license)
 
                     combination_set['combination'] = combination
                     combination_set['compatibility_fails'] = list(reason)
                     combination_set['compatibility_status'] = status
-                    #print("CC: z   : " + str(len(reason)) + " ==> " + str(combination_set['compatibility_status']))
+
                     license_combinations.append(combination_set)
                     license_compatibility['combinations'] = license_combinations
             else:
-                #print("single....: " + str(license))
                 pass
 
             # The compat status of this license can be calculated by simply
             # checking if the license is in outbound_candidates
             license_compat_status = (license in outbound_candidates)
 
-            #print("  <--  " + str(license) + " : " + str(license_compat_status))
             license_compatibility['compatibility_status'] = license_compat_status
             license_compatibilities.append(license_compatibility)
 
@@ -181,14 +167,10 @@ class Compatibility:
         return license_compatibilities_set
 
     def check_project_pile(self, project):
-        #print("CC: Checking license compat with: " + str(project.name()))
         license_expr = project.license()
         license_set = project.license_set()
         self.compatility_report['license'] = license_expr
         self.compatility_report['license_pile'] = list(license_set)
-
-        #print("check_project_pile: " + license_expr)
-        #print("check_project_pile: " + str(license_set))
 
         # Begin checking compatibility with licenses from all project (incl dps)
         self.compatility_report['compatibilities'] = self.check_compatibility(
@@ -218,7 +200,6 @@ class Compatibility:
 
     def check_compatibilities(self, licenses, check_all=False):
         """Check compatbilitiy between all licenses"""
-        # print("check_compatibilities")
         compats = []
 
         if check_all:
@@ -234,17 +215,11 @@ class Compatibility:
             outer_licenses = list(licenses_set)
         else:
             outer_licenses = list(licenses)
-            #print("outer licenses: " + str(outer_licenses))
 
         for lic_a in outer_licenses:
-            #print("check for: " + str(lic_a))
-            #lic_str = str(l_fmt) % lic_a
-            #compatible = True
             inner_licenses = []
             for lic_b in licenses:
-                #print(" * : " + str(lic_b))
                 if lic_a == lic_b:
-                    #print(lic_a + " not checked against itself")
                     continue
 
                 comp_left = self._a_compatible_with_b(lic_a, lic_b)
