@@ -72,8 +72,6 @@ stdin_test()
 
 # list
 simple_test "list" 0 
-simple_test "list -g" 0
-simple_test "list -lg MIT" 0
 
 # verify
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json" 0
