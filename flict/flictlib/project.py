@@ -178,18 +178,8 @@ class Project:
         of the project's dependencies OR together.
         This expression is simplified (with regards to boolean algebra).
         """
-        license_handler = self.license_handler
-        combined_license = ""
-        for proj in self.dependencies_pile():
-            simplified = proj['expanded_license']['simplified']
-            if combined_license == "":
-                combined_license = " ( " + simplified + " ) "
-            else:
-                combined_license = combined_license + \
-                    " and ( " + simplified + " ) "
-
-        simplified = license_handler.simplify(combined_license)
-        return simplified
+        combined_license = [' ( {0} ) '.format(proj['expanded_license']['simplified']) for proj in self.dependencies_pile()]
+        return self.license_handler.simplify(' and '.join(combined_license))
 
     def project_combinations(self, license_handler, dep):
         """returns the number of combinations
