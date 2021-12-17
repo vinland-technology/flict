@@ -41,8 +41,7 @@ class CompatibilityMatrix:
             for row in csv_reader:
                 #print("ROW: " + str(row))
                 if line_count == 0:
-                    logger.main_logger.debug(
-                        str(row) + " cols: " + str(len(row)))
+                    logger.main_logger.debug(f'{row} cols: {len(row)}')
                     col_count = 0
                     for col in row:
                         indices_map[col] = col_count
@@ -53,8 +52,7 @@ class CompatibilityMatrix:
                     for col in row:
                         license_row_data.append(col)
                     if row[0] != license_row_data[0]:
-                        logger.main_logger.error(
-                            "Could not read matrix file (" + self.matrix_file + ")")
+                        logger.main_logger.error(f'Could not read matrix file ({self.matrix_file})')
                         return None
                     license_data.append(license_row_data)
                 line_count += 1
@@ -85,8 +83,7 @@ class CompatibilityMatrix:
         #print("\n\n****Check: " + license_a + " against " + license_b+ "\n\n")
         value_ab = self._a_compatible_with_b(license_a, license_b)
         if value_ab is None:
-            logger.main_logger.error("Could not check compatibility between \"" + str(
-                license_a) + "\" and \"" + str(license_b) + "\"")
+            logger.main_logger.error(f'Could not check compatibility between "{license_a}" and "{license_b}"')
             return CompatMatrixStatus.UNDEFINED
 
         # TODO: not yes, does not imply no ... could be depends
@@ -101,18 +98,18 @@ class CompatibilityMatrix:
         elif lc_value == "?":
             return CompatMatrixStatus.QUESTION
         else:
-            logger.main_logger.error("compat sign: \"" + str(lc_value) + "\"")
+            logger.main_logger.error(f'compat sign: {lc_value}')
             return CompatMatrixStatus.UNDEFINED
 
     def _a_compatible_with_b(self, license_a, license_b):
         indices = self.matrix_map['license_indices']
 
         if license_a not in indices:
-            msg = license_a + " is not a supported license."
+            msg = f'{license_a} is not a supported license.'
             logger.main_logger.error(msg)
             raise Exception(msg)
         if license_b not in indices:
-            msg = license_b + " is not a supported license."
+            msg = f'{license_b} is not a supported license.'
             logger.main_logger.error(msg)
             raise Exception(msg)
 
@@ -133,6 +130,6 @@ class CompatibilityMatrix:
             # TODO: no print, rather raise exception?
             logger.main_logger.exception(
                 msg="Exception when check compatibility: ", exc_info=e)
-            print(" " + license_a + " index: " + str(index_a))
-            print(" " + license_b + " index: " + str(index_b))
+            print(f' {license_a} index: {index_a}')
+            print(f' {license_b} index: {index_b}')
             return None
