@@ -41,7 +41,7 @@ class FlictImpl:
             return self._formatter.format_simplified(lic_str, license.simplified)
         except:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             "Invalid expression to simplify: " + str(self._args.license_expression))
+                             f'Invalid expression to simplify: {self._args.license_expression}')
 
     def list_licenses(self):
         formatted = ""
@@ -62,7 +62,7 @@ class FlictImpl:
             return self._formatter.format_verified_license(lic_str, candidates)
         except:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             f"Could not parse expression \"{str(self._args.license_expression)}\"")
+                             f'Could not parse expression "{self._args.license_expression}"')
 
     def _verify_project_file(self):
         try:
@@ -130,7 +130,7 @@ class FlictImpl:
             compats = self._compatibility.check_compatibilities(licenses, self._args.extended_licenses)
         except:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             "Could not parse license expression: " + str(self._args.license_expression))
+                             f'Could not parse license expression: {self._args.license_expression}')
 
         return self._formatter.format_compats(compats)
 
@@ -143,4 +143,4 @@ class FlictImpl:
             return self._formatter.format_outbound_license(_outbound_candidates)
         except:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             "Invalid license expression: " + str(self._args.license_expression))
+                             f'Invalid license expression: {self._args.license_expression}')
