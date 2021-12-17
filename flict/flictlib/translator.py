@@ -81,23 +81,14 @@ def parse():
     return args
 
 
-#
-# TODO: update_license needs a rewrite
-#       - overly complicated due to Henrik's lack of Pythonian skills
-#
 def update_license(translations, license_expr):
-    new_license = ""
+    new_license = []
     for license in license_expr.replace("(", " ( ").replace(")", " ) ").split():
-        #print(" ---> test??: " + license)
         if license in translations['translations_map']:
-            new_single = translations['translations_map'][license]["spdx_id"]
-            #print("TRANSLATING " + license + " ---> " + new_single)
-            new_license = new_license + " " + new_single
+            new_license.append(translations['translations_map'][license]["spdx_id"])
         else:
-            #print("TRANSLATING NOT " + license)
-            new_license = new_license + " " + license
-    #print("TRANSLATING " + license_expr + " ---> " + new_license)
-    return new_license
+            new_license.append(license)
+    return ' '.join(new_license)
 
 
 def update_packages(translations, dependencies):
@@ -105,8 +96,7 @@ def update_packages(translations, dependencies):
     for dep in dependencies:
         #        print("license: \"" + dep["license"] + "\"")
         license = dep["license"].strip()
-        updated_license = update_license(translations, license)
-        dep["license"] = updated_license
+        dep["license"] = update_license(translations, license)
         dep_deps = dep["dependencies"]
         updates_deps = update_packages(translations, dep_deps)
     return updates_deps
@@ -122,11 +112,10 @@ def _read_translations(translations_file):
             if item['translation'] is not None:
                 translations_map[item['value']] = item
 
-        translations_data = {}
-        translations_data['original'] = translations_object
-        translations_data['translations_map'] = translations_map
-
-        return translations_data
+        return {
+            'original': translations_object,
+            'translations_map': translations_map
+        }
 
 
 def read_translations(translations_file):
