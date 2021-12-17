@@ -110,7 +110,8 @@ Default. Available for all commands.
 
 ### Markdown
 
-Using this format you can create txt, html, pdf and what format pandoc can create from markdown. Partially supported.
+With markdown output you can use pandoc to create output in other
+formats (e.g. html, pdf). Partially supported.
 
 ### Text
 
