@@ -9,7 +9,7 @@ import argparse
 
 from flict.flictlib import logger
 from flict.flictlib.flict_config import flict_version
-from flict.flictlib.return_codes import FlictException
+from flict.flictlib.return_codes import FlictError
 from flict.flictlib.return_codes import ReturnCodes
 from flict.flictlib import flict_config
 from flict.impl import FlictImpl
@@ -271,7 +271,7 @@ def main():
     if 'which' in args:
         try:
             args.func(args)
-        except FlictException as e:
+        except FlictError as e:
             flict_exit(e.error_code(), e.error_message())
 
     else:

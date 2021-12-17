@@ -47,7 +47,7 @@ class ReturnCodes(Enum):
         return indent + f"\n{indent}".join(ret)
 
 
-class FlictException(Exception):
+class FlictError(Exception):
 
     def __init__(self, error_code, error_message = None):
         self._error_code = error_code
