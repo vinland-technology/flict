@@ -15,7 +15,7 @@ from flict.flictlib.license import LicenseHandler, decode_license_expression, en
 from flict.flictlib.policy import Policy
 from flict.flictlib.project import Project
 from flict.flictlib.report import Report, outbound_candidates
-from flict.flictlib.return_codes import FlictException, ReturnCodes
+from flict.flictlib.return_codes import FlictError, ReturnCodes
 
 import json
 
@@ -40,8 +40,8 @@ class FlictImpl:
             license = self._license_handler.license_expression_list(lic_str)
             return self._formatter.format_simplified(lic_str, license.simplified)
         except:
-            raise FlictException(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                 "Invalid expression to simplify: " + str(self._args.license_expression))
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             "Invalid expression to simplify: " + str(self._args.license_expression))
 
     def list_licenses(self):
         formatted = ""
@@ -61,16 +61,16 @@ class FlictImpl:
             candidates = report['compatibility_report']['compatibilities']['outbound_candidates']
             return self._formatter.format_verified_license(lic_str, candidates)
         except:
-            raise FlictException(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                 f"Could not parse expression \"{str(self._args.license_expression)}\"")
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             f"Could not parse expression \"{str(self._args.license_expression)}\"")
 
     def _verify_project_file(self):
         try:
             project = Project(self._args.project_file, self._license_handler)
-        except FlictException as e:
+        except FlictError as e:
             raise(e)
         except:
-            raise FlictException(ReturnCodes.RET_INVALID_PROJECT)
+            raise FlictError(ReturnCodes.RET_INVALID_PROJECT)
 
         formatted = ""
         if self._args.list_project_licenses:
@@ -93,8 +93,8 @@ class FlictImpl:
         elif self._present_and_set(self._args, 'license_expression'):
             formatted = self._verify_license_expression()
         else:
-            raise FlictException(ReturnCodes.RET_MISSING_ARGS,
-                                 "Missing argument to the verify command")
+            raise FlictError(ReturnCodes.RET_MISSING_ARGS,
+                             "Missing argument to the verify command")
         return formatted
 
     def _read_compliance_report(self, report_file):
@@ -129,8 +129,8 @@ class FlictImpl:
 
             compats = self._compatibility.check_compatibilities(licenses, self._args.extended_licenses)
         except:
-            raise FlictException(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                 "Could not parse license expression: " + str(self._args.license_expression))
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             "Could not parse license expression: " + str(self._args.license_expression))
 
         return self._formatter.format_compats(compats)
 
@@ -142,5 +142,5 @@ class FlictImpl:
             _outbound_candidates = outbound_candidates(_report)
             return self._formatter.format_outbound_license(_outbound_candidates)
         except:
-            raise FlictException(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                 "Invalid license expression: " + str(self._args.license_expression))
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             "Invalid license expression: " + str(self._args.license_expression))

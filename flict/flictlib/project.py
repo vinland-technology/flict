@@ -17,7 +17,7 @@
 import json
 import sys
 from flict.flictlib import logger
-from flict.flictlib.return_codes import FlictException
+from flict.flictlib.return_codes import FlictError
 from flict.flictlib.return_codes import ReturnCodes
 
 DEFAULT_MATRIX_FILE = "osadl-matrix.csv"
@@ -80,9 +80,9 @@ class Project:
                 with open(self.project_file) as fp:
                     return json.load(fp)
         except json.JSONDecodeError:
-            raise FlictException(ReturnCodes.RET_INVALID_PROJECT, f'File "{file_name}" does not contain valid JSON data')
+            raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'File "{file_name}" does not contain valid JSON data')
         except (FileNotFoundError, IsADirectoryError):
-            raise FlictException(ReturnCodes.RET_FILE_NOT_FOUND, f'File "{file_name}" could not be found or is a directory')
+            raise FlictError(ReturnCodes.RET_FILE_NOT_FOUND, f'File "{file_name}" could not be found or is a directory')
 
     def read_project_file(self):
         """This function reads a project file (JSON)
