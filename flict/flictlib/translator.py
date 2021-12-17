@@ -23,7 +23,7 @@ PROGRAM_VERSION = "0.1"
 
 DEFAULT_TRANSLATIONS_FILE = "translation.json"
 
-DESCIPTION = """
+DESCRIPTION = """
 NAME
   translator.py
 
@@ -52,7 +52,7 @@ SEE ALSO
 
 def parse():
     parser = argparse.ArgumentParser(
-        description=DESCIPTION,
+        description=DESCRIPTION,
         epilog=EPILOG,
         formatter_class=RawTextHelpFormatter,
     )
