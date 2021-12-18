@@ -38,12 +38,11 @@ class Report:
         return self.report_map
 
     def project_data(self):
-        project_meta = {}
-        project_meta['project_file'] = self.project.project_file
-        project_meta['project_definition'] = self.project.project
-        project_meta['project_pile'] = self.project.dependencies_pile_map()
-
-        return project_meta
+        return {
+            'project_file': self.project.project_file,
+            'project_definition': self.project.project,
+            'project_pile': self.project.dependencies_pile_map()
+        }
 
     def licensing_data(self):
         licensing = {}
