@@ -55,37 +55,28 @@ class Policy:
             else:
                 allowed_outbound_candidates.add(out_lic)
 
-        policy_outbounds = {}
-        policy_outbounds['allowed'] = list(allowed_outbound_candidates)
-        policy_outbounds['avoided'] = list(avoid_outbound_candidates)
-        policy_outbounds['denied'] = list(denied_outbound_candidates)
+        result = 2
+        if len(allowed_outbound_candidates) > 0:
+            result = 0
+        elif len(avoid_outbound_candidates) > 0:
+            result = 1
 
-        if len(policy_outbounds['allowed']) > 0:
-            policy_outbounds['policy_result'] = 0
-        elif len(policy_outbounds['avoid']) > 0:
-            policy_outbounds['policy_result'] = 1
-        else:
-            policy_outbounds['policy_result'] = 2
-
-        self.policy_report['policy_outbounds'] = policy_outbounds
+        self.policy_report['policy_outbounds'] = {
+            'allowed': list(allowed_outbound_candidates),
+            'avoided': list(avoid_outbound_candidates),
+            'denied': list(denied_outbound_candidates),
+            'policy_result': result
+        }
 
         project = report['project']
-        project_info = {}
-        project_info['project_file'] = project['project_file']
-
-        #print(" project :     " + str(project))
-        #print(" project def : " + str(project['project_definition']))
-
         project_definition = project['project_definition']
-        project_info['name'] = project_definition['name']
-        #project_info['top_project_license'] = project_definition['top_project_license']
-        project_info['license'] = project_definition['license']
-        if 'version' in project_definition:
-            project_info['version'] = project_definition['version']
-        else:
-            project_info['version'] = ""
 
-        self.policy_report['project'] = project_info
+        self.policy_report['project'] = {
+            'project_file': project['project_file'],
+            'name': project_definition['name'],
+            'license': project_definition['license'],
+            'version': project_definition['version'] if 'version' in project_definition else ""
+        }
 
         return self.policy_report
 
