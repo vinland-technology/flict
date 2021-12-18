@@ -27,10 +27,9 @@ class JsonFormatter(FormatInterface):
         return json.dumps(report.report())
 
     def format_license_combinations(self, project):
-        combinations = project.projects_combinations()
-        comb = {}
-        comb['license_combinations'] = combinations
-        return json.dumps(comb)
+        return json.dumps({
+            'license_combinations': project.projects_combinations()
+        })
 
     def format_outbound_license(self, outbound_candidate):
         return json.dumps(outbound_candidate)
