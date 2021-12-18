@@ -46,8 +46,7 @@ COPYRIGHT
   License GPL-3.0-or-larer
 
 ATTRIBUTION
-  flict is using the license compatibility matrix from osadl.org,
-  which can be found at https://www.osadl.org/fileadmin/checklists/matrix.html
+  flict is using the license compatibility matrix from osadl.org .
 
 SEE ALSO
 
