@@ -30,8 +30,6 @@ class CompatibilityMatrix:
         self.read_matrix_csv()
 
     def read_matrix_csv(self):
-        self.matrix_map = {}
-        self.matrix_map['matrix_file'] = self.matrix_file
         indices_map = {}
         license_data = []
 
@@ -56,8 +54,12 @@ class CompatibilityMatrix:
                         return None
                     license_data.append(license_row_data)
                 line_count += 1
-        self.matrix_map['license_indices'] = indices_map
-        self.matrix_map['license_data'] = license_data
+
+        self.matrix_map = {
+            'matrix_file': self.matrix_file,
+            'license_indices': indices_map,
+            'license_data': license_data
+        }
         #logger.main_logger.debug("indices:  " + str(self.matrix_map['license_indices']))
         #logger.main_logger.debug("MIT:      " + str(self.matrix_map['license_indices']['MIT']))
         #logger.main_logger.debug("data:     " + str(self.matrix_map['license_data']))
