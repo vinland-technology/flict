@@ -127,14 +127,11 @@ class Compatibility:
                             if a_b == CompatibilityStatus.TRUE:
                                 pass
                             elif a_b == CompatibilityStatus.FALSE:
-                                reason.add(
-                                    license + "\" not compatible with \"" + lic + "\".")
+                                reason.add(f'{license}" not compatible with "{lic}".')
                             elif a_b == CompatibilityStatus.UNDEFINED:
-                                reason.add(
-                                    license + "\" has undefined compatibility with \"" + lic + "\".")
+                                reason.add(f'{license}" has undefined compatibility with "{lic}".')
                             elif a_b == CompatibilityStatus.QUESTION:
-                                reason.add(
-                                    license + "\" has questioned compatibility with \"" + lic + "\".")
+                                reason.add(f'{license}" has questioned compatibility with "{lic}".')
 
                         # do we have compatibility? (check if reason=={})
                         status = (reason == set())
@@ -226,28 +223,23 @@ class Compatibility:
                 comp_right = self._a_compatible_with_b(lic_b, lic_a)
 
                 logger.main_logger.debug("Compatibility check")
-                logger.main_logger.debug(
-                    "  compat: " + lic_a + " ? " + lic_b + " => " + str(comp_left))
-                logger.main_logger.debug(
-                    "  compat: " + lic_b + " ? " + lic_a + " => " + str(comp_right))
+                logger.main_logger.debug(f'  compat: {lic_a} ? {lic_b} => {comp_left}')
+                logger.main_logger.debug(f'  compat: {lic_b} ? {lic_a} => {comp_right}')
 
-                inner_compat = {}
-                inner_compat['license'] = lic_b
-                inner_compat['compatible_right'] = self._compatibility_status_json(
-                    comp_right)
-                inner_compat['compatible_left'] = self._compatibility_status_json(
-                    comp_left)
+                inner_licenses.append({
+                    'license': lic_b,
+                    'compatible_right': self._compatibility_status_json(comp_right),
+                    'compatible_left': self._compatibility_status_json(comp_left)
+                })
 
-                inner_licenses.append(inner_compat)
+            compats.append({
+                'license': lic_a,
+                'licenses': inner_licenses
+            })
 
-            compat = {}
-            compat['license'] = lic_a
-            compat['licenses'] = inner_licenses
-            compats.append(compat)
-
-        compat_object = {}
-        compat_object['compatibilities'] = compats
-        return compat_object
+        return {
+            'compatibilities': compats
+        }
 
     def report(self, project):
         self.compatility_report = {}
