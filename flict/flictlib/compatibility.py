@@ -94,9 +94,6 @@ class Compatibility:
         # For every license among all the licenses
         # - check compat against all licenses
         for license in licenses_set:
-            license_compatibility = {}
-            license_compatibility['outbound'] = license
-            license_compatibility['combinations'] = []
             license_combinations = []
             license_compat_status = False
             if project is not None:
@@ -107,7 +104,6 @@ class Compatibility:
                 for combination in project.project_combination_list():
                     # keep track of whether the combination's status
                     combination_compat_status = True
-                    combination_set = {}
 
                     status = False
                     # loop through the top project and its deps in this project combination
@@ -140,12 +136,16 @@ class Compatibility:
                     if combination_compat_status:
                         outbound_candidates.add(license)
 
-                    combination_set['combination'] = combination
-                    combination_set['compatibility_fails'] = list(reason)
-                    combination_set['compatibility_status'] = status
+                    license_combinations.append({
+                        'combination': combination,
+                        'compatibility_fails': list(reason),
+                        'compatibility_status': status
+                    })
 
-                    license_combinations.append(combination_set)
-                    license_compatibility['combinations'] = license_combinations
+                    license_compatibility = {
+                        'outbound': license,
+                        'combinations': license_combinations
+                    }
             else:
                 pass
 
@@ -156,12 +156,12 @@ class Compatibility:
             license_compatibility['compatibility_status'] = license_compat_status
             license_compatibilities.append(license_compatibility)
 
-        license_compatibilities_set = {}
-        license_compatibilities_set['license_compatibilities'] = license_compatibilities
         outs = list(outbound_candidates)
         outs.sort()
-        license_compatibilities_set['outbound_candidates'] = outs
-        return license_compatibilities_set
+        return {
+            'license_compatibilities': license_compatibilities,
+            'outbound_candidates': outs
+        }
 
     def check_project_pile(self, project):
         license_expr = project.license()
