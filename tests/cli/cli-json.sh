@@ -74,9 +74,6 @@ stdin_test()
 simple_test "list" 0 
 
 # verify
-simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json" 0
-simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lcc" 0 
-simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lpl" 0 
 stdin_test  "${FLICT_DIR}/example-data/europe-small.json" "verify -pf -" 0 "reading from stdin"
 stdin_test  "${FLICT_DIR}/example-data/europe-small.json" "verify -pf - -lcc" 0 "reading from stdin"
 stdin_test  "${FLICT_DIR}/example-data/europe-small.json" "verify -pf - -lpl" 0 "reading from stdin"
