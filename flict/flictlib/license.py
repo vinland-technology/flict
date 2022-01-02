@@ -64,13 +64,12 @@ class ManagedLicenseExpression:
         _debug_license_expression_set_list(self.set_list)
 
     def to_json(self):
-        mle = {}
-        mle['expanded'] = self.expanded
-        mle['grouped'] = self.grouped
-        mle['simplified'] = self.simplified
-        #print("set_list: " + str(self.set_list))
-        mle['set_list'] = self.set_list
-        return mle
+        return {
+            'expanded': self.expanded,
+            'grouped': self.grouped,
+            'simplified': self.simplified,
+            'set_list': self.set_list
+        }
 
     def __str__(self):
         return f"""
@@ -177,15 +176,15 @@ class LicenseHandler:
 
     def license_expression_list_json(self, license_expression, relicense=True):
         license = self.license_expression_list(license_expression, relicense)
-        output = {}
-        output["license_expression"] = license_expression
-        output["expanded"] = license.expanded
-        output["grouped"] = license.grouped
-        output["translated"] = license.translated
-        output["simplified"] = license.simplified
-        output["interim"] = license.interim
-        output["set_list"] = license.set_list
-        return output
+        return {
+            "license_expression": license_expression,
+            "expanded": license.expanded,
+            "grouped": license.grouped,
+            "translated": license.translated,
+            "simplified": license.simplified,
+            "interim": license.interim,
+            "set_list": license.set_list
+        }
 
     def license_expression_list(self, license_expression, relicense=True):
 
