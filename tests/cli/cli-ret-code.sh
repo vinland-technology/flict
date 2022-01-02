@@ -54,19 +54,4 @@ simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lcc" 0
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small.json -lpl" 0 
 simple_test "verify -pf ${FLICT_DIR}/example-data/europe-small-bad.json " 10
 
-# simplify
-simple_test "simplify MIT" 0 
-simple_test "simplify MIT and BSD ,,," 11
-
-# display-compatibility
-simple_test "display-compatibility MIT" 0 
-simple_test "display-compatibility MIT ..." 11
-
-# list
-## not possible to do wrong??
-
-# outbound-candidate
-simple_test "outbound-candidate MIT" 0 
-simple_test "outbound-candidate MIT ,,," 11
-
 end_test
