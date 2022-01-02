@@ -79,11 +79,8 @@ class ScancodeLicenses:
         return None
 
     def supported_licenses(self):
-        supported_list = []
-        for group in self.supported_groups:
-            supported_list = supported_list + \
-                self.supported_licenses_per_group(group)
-        return supported_list
+        return [self.supported_licenses_per_group(group)
+                for group in self.supported_groups]
 
     def original_data_info(self):
         return self.scancode_object['original_data']
