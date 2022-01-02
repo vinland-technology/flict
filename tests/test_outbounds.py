@@ -16,6 +16,7 @@ def _test_expression(expression, result):
 def test_outbound():
     _test_expression(['MIT'], ['MIT'])
     _test_expression(['MIT and MIT'], ['MIT'])
+    _test_expression(['MIT and GPL-2.0-only'], ['GPL-2.0-only'])
     _test_expression(['MIT and MIT and BSD-3-Clause'], ['BSD-3-Clause', 'MIT'])
     _test_expression(['GPL-2.0-only and (MIT or BSD-3-Clause)'], ['GPL-2.0-only'])
     _test_expression(['GPL-2.0-only or (MIT and BSD-3-Clause)'], ['BSD-3-Clause', 'GPL-2.0-only', 'MIT'])
