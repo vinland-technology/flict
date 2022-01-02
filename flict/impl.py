@@ -83,14 +83,11 @@ class FlictImpl:
 
         return formatted
 
-    def _present_and_set(self, args, key):
-        return key in args and vars(args)[key] is not None
-
     def verify(self):
         formatted = ""
-        if self._present_and_set(self._args, 'project_file'):
+        if self._args.project_file:
             formatted = self._verify_project_file()
-        elif self._present_and_set(self._args, 'license_expression'):
+        elif self._args.license_expression:
             formatted = self._verify_license_expression()
         else:
             raise FlictError(ReturnCodes.RET_MISSING_ARGS,
