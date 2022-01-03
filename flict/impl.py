@@ -44,14 +44,12 @@ class FlictImpl:
                              f'Invalid expression to simplify: {self._args.license_expression}')
 
     def list_licenses(self):
-        formatted = ""
         if self._args.list_relicensing:
-            formatted = self._formatter.format_relicense_information(self._license_handler)
+            return self._formatter.format_relicense_information(self._license_handler)
         elif self._args.list_translation:
-            formatted = self._formatter.format_translation_information(self._license_handler)
+            return self._formatter.format_translation_information(self._license_handler)
         else:
-            formatted = self._formatter.format_support_licenses(self._compatibility)
-        return formatted
+            return self._formatter.format_support_licenses(self._compatibility)
 
     def _verify_license_expression(self):
         lic_str = " ".join(self._args.license_expression)
@@ -72,27 +70,22 @@ class FlictImpl:
         except:
             raise FlictError(ReturnCodes.RET_INVALID_PROJECT)
 
-        formatted = ""
         if self._args.list_project_licenses:
-            formatted = self._formatter.format_license_list(list(project.license_set()))
+            return self._formatter.format_license_list(list(project.license_set()))
         elif self._args.license_combination_count:
-            formatted = self._formatter.format_license_combinations(project)
+            return self._formatter.format_license_combinations(project)
         else:
             report = Report(project, self._compatibility)
-            formatted = self._formatter.format_report(report)
-
-        return formatted
+            return self._formatter.format_report(report)
 
     def verify(self):
-        formatted = ""
         if self._args.project_file:
-            formatted = self._verify_project_file()
+            return self._verify_project_file()
         elif self._args.license_expression:
-            formatted = self._verify_license_expression()
+            return self._verify_license_expression()
         else:
             raise FlictError(ReturnCodes.RET_MISSING_ARGS,
                              "Missing argument to the verify command")
-        return formatted
 
     def _read_compliance_report(self, report_file):
         with open(report_file) as fp:
