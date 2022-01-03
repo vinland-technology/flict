@@ -50,9 +50,6 @@ install_dependencies()
         echo "Installing test dependencies ..."
         python3 -m pip install -r ${PROJECT_DIR}/requirements-dev.txt
     fi
-
-    echo "Install linux dependencies ..."
-    apt update && apt install -y jq
 }
 
 build()
@@ -72,8 +69,7 @@ install()
 run_tests()
 {
     . ${VENV_DIR}/bin/activate
-    cd ${PROJECT_DIR}/tests
-    ./all.sh
+    pytest
 }
 
 build_and_install()
