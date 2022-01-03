@@ -24,7 +24,7 @@ class JsonFormatter(FormatInterface):
         return json.dumps(license_list)
 
     def format_report(self, report):
-        return json.dumps(report.report())
+        return report.to_json()
 
     def format_license_combinations(self, project):
         return json.dumps({

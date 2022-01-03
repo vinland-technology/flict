@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 ###################################################################
 #
 # flict - FOSS License Compatibility Tool
@@ -15,6 +13,9 @@ import getpass
 import json
 import os
 
+from flict.flictlib.compatibility import Compatibility
+from flict.flictlib.project import Project
+
 
 def timestamp():
     return str(datetime.datetime.now())
@@ -22,37 +23,25 @@ def timestamp():
 
 class Report:
 
-    def __init__(self, project, compatibility):
-        self.report_map = {}
-        self.project = project
-        self.compatibility = compatibility
+    def __init__(self, project: Project, compatibility: Compatibility):
+        self.meta = self.__meta()
+        self.project = self.__project_data(project)
+        self.compatibility_report = compatibility.report(project)
+        self.licensing = self.__licensing_data()
 
-    def report(self):
-        self.report_map['meta'] = self.meta()
-        self.report_map['project'] = self.project_data()
-        self.report_map['compatibility_report'] = self.compatibility.report(
-            self.project)
-        if self.report_map['compatibility_report'] is None:
-            return None
-        self.report_map['licensing'] = self.licensing_data()
-        return self.report_map
-
-    def project_data(self):
+    def __project_data(self, project: Project):
         return {
-            'project_file': self.project.project_file,
-            'project_definition': self.project.project,
-            'project_pile': self.project.dependencies_pile_map()
+            'project_file': project.project_file,
+            'project_definition': project.project,
+            'project_pile': project.dependencies_pile_map()
         }
 
-    def licensing_data(self):
-        licensing = {}
+    def __licensing_data(self):
+        return {
+            'outbound_candidates': self.outbound_candidates()
+        }
 
-        outbounds = self.report_map['compatibility_report']['compatibilities']['outbound_candidates']
-        licensing['outbound_candidates'] = outbounds
-
-        return licensing
-
-    def meta(self):
+    def __meta(self):
         uname = os.uname()
         return {
             'os': uname.sysname,
@@ -65,8 +54,7 @@ class Report:
         }
 
     def to_json(self):
-        return json.dumps(self.report_map)
+        return json.dumps(self, default=lambda o: o.__dict__)
 
-
-def outbound_candidates(report):
-    return report['compatibility_report']['compatibilities']['outbound_candidates']
+    def outbound_candidates(self):
+        return self.compatibility_report['compatibilities']['outbound_candidates']

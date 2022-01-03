@@ -29,10 +29,8 @@ class ReportTest(unittest.TestCase):
         license_handler = LicenseHandler(TRANSLATION_FILE, RELICENSE_FILE, "")
         project = Project(TEST_DIR + "/example-data/imp.json", license_handler)
         compatibility = Compatibility(OSADL_MATRIX, False)
-        report_object = Report(project, compatibility)
-        report = report_object.report()
+        outbounds = Report(project, compatibility).outbound_candidates()
 
-        outbounds = report['licensing']['outbound_candidates']
         self.assertEqual(len(outbounds),2)
 
         self.assertTrue("GPL-2.0-only" in outbounds)
