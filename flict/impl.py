@@ -14,7 +14,7 @@ from flict.flictlib.format.factory import FormatFactory
 from flict.flictlib.license import LicenseHandler, decode_license_expression, encode_license_expression
 from flict.flictlib.policy import Policy
 from flict.flictlib.project import Project
-from flict.flictlib.report import Report, outbound_candidates
+from flict.flictlib.report import Report
 from flict.flictlib.return_codes import FlictError, ReturnCodes
 
 import json
@@ -30,8 +30,7 @@ class FlictImpl:
 
     def _empty_project_report(self, licenses):
         project = Project(None, self._license_handler, licenses)
-        report_object = Report(project, self._compatibility)
-        return report_object.report()
+        return Report(project, self._compatibility)
 
     def simplify(self):
         lic_str = " ".join(self._args.license_expression)
@@ -56,7 +55,7 @@ class FlictImpl:
 
         try:
             report = self._empty_project_report(lic_str)
-            candidates = report['compatibility_report']['compatibilities']['outbound_candidates']
+            candidates = report.outbound_candidates()
             return self._formatter.format_verified_license(lic_str, candidates)
         except:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
@@ -129,7 +128,7 @@ class FlictImpl:
 
         try:
             _report = self._empty_project_report(lic_str)
-            _outbound_candidates = outbound_candidates(_report)
+            _outbound_candidates = _report.outbound_candidates()
             return self._formatter.format_outbound_license(_outbound_candidates)
         except:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
