@@ -20,4 +20,5 @@ def test_complex_compat():
     jret = json.loads(ret)
 
     # this can not be a direct comparism as the result is in random order as of now
-    assert len(jret['compatibilities']) == 3
+    for lic in ['BSD-3-Clause', 'GPL-2.0-only WITH Classpath-exception-2.0', 'MIT']:
+        assert any(x['license'] == lic for x in jret['compatibilities'])
