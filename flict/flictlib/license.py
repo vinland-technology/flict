@@ -21,12 +21,6 @@ from flict.flictlib import logger
 OR_STRING = " or "
 AND_STRING = " and "
 
-# 3
-
-#
-# debug and devel variable
-#
-
 
 class ManagedLicenseExpression:
     """
@@ -98,42 +92,24 @@ class LicenseHandler:
         self.group_file = group_file
         symbols = self.read_symbols(self.translations_files)
         self.licensing = Licensing(symbols)
-        #print("symbols: " + str(symbols))
 
     def read_symbols(self, translations_files):
         symbols = []
         symbols_map = {}
         self.translations = []
         for translations_file in translations_files.split():
-            #print("reading translation file: " + str(translations_file))
             translation_data = read_translations(translations_file)
             self.translations.append(translation_data)
             for lic_key in translation_data:
-                #print("lic_key:  \"" + str(lic_key) + "\"")
-                #print("  lic_alias:  " + str(translation_data[lic_key] ))
-                #print("transl: " + str(len(self.translations)))
                 if lic_key not in symbols_map:
                     symbols_map[lic_key] = set()
                 for val in translation_data[lic_key]:
                     symbols_map[lic_key].add(val)
 
-                #lic_aliases = tuple(translation_data[lic_key])
-                #symbols.append(LicenseSymbol(key=key, aliases=lic_aliases))
 
         for key, value in symbols_map.items():
-            #print("Adding to symbols: " + key)
-            #print(" - " + str(value))
             symbols.append(LicenseSymbol(key=key, aliases=tuple(value)))
 
-        # debugging
-        # print("Symbols")
-        # for sym in symbols:
-            #print(" sym: " + (str(sym.key)))
-            #print("    aliases :  " + (str(sym.aliases)))
-            #l = Licensing([sym])
-            #print("    licensing: " + (str(l)))
-
-        #print("symbols: " + str(symbols))
         return symbols
 
     def translate_and_relicense(self, license_expression):
@@ -143,11 +119,9 @@ class LicenseHandler:
         transl = self.translate(license_expression)
         if transl is None or not transl:
             transl = license_expression
-        #print("translate_and_relicenseself: " + license_expression + " ==> " + transl)
         rel = self.expand_relicense(transl)
         if rel is None:
             rel = transl
-        #print("translate_and_relicenseself: " + rel)
         return rel
 
     def expand_relicense(self, license_expression):
@@ -169,9 +143,6 @@ class LicenseHandler:
 
     def simplify(self, license_expression):
         parsed = self.licensing.parse(license_expression)
-        #parsed = self.licensing._parse_and_simplify(license_expression)
-        #print("simplified: " + str(parsed.simplify()))
-        # return parsed.simplify()
         return parsed.simplify()
 
     def license_expression_list_json(self, license_expression, relicense=True):
@@ -254,46 +225,38 @@ class LicenseHandler:
         for token in tokenized:
             tok = token.string
             if tok == '(':
-                # print("(")
                 if paren_expr is None:
                     paren_expr = ""
                 else:
                     paren_expr = paren_expr + " " + tok
                     paren_count = paren_count + 1
             elif tok == ')':
-                #print("about to parse: \"" + paren_expr + "\"  count: " + str(paren_count))
                 if paren_count == 0:
                     current_license = self.interim_license_expression_list(
                         paren_expr, licensing)
-                    #print("got:            \"" + str(current_license) + "\"")
                     paren_expr = None
                 else:
                     paren_count = paren_count - 1
                     paren_expr = paren_expr + " " + tok
             elif tok == 'OR' or tok == 'AND':
                 if paren_expr is not None:
-                    #print("TEMP " + tok)
                     paren_expr = paren_expr + " " + tok
                 else:
-                    #print("OPERATOR " + tok + " (" + str(current_op) + ")")
                     if current_licenses is None:
                         raise Exception(
                             "Internal failure. Failed creating interim license expression. current_licenses is None")
                     if current_op is None:
                         # first operator
                         current_op = tok
-                        #print("=cop: " + tok + "   " + current_license)
                         current_licenses.append(current_license)
                     elif current_op == tok:
                         # same operator
-                        #print("-cop: " + tok + "   " + current_license)
                         current_licenses.append(current_license)
                     else:
                         # different operator
                         raise Exception(
                             "Internal failure. Failed creating interim license expression.")
             else:
-                #print("tok: \"" + tok + "\"")
                 if paren_expr is not None:
                     paren_expr = paren_expr + " " + tok
                 else:
@@ -304,11 +267,9 @@ class LicenseHandler:
             current_op = "AND"
 
         list = LicenseExpressionList(current_op, current_licenses)
-        #print("DONE: " + str(license_expression) + " => " + str(list))
         return list
 
     def _combinations(self, lel):
-        #print("lel : " + str(lel))
         if not isinstance(lel, LicenseExpressionList):
             return 1
         if lel.op == "AND":
@@ -340,7 +301,6 @@ class LicenseHandler:
         """
         expanded_list = []
 
-        #print("Count: " + str(_combinations(interim_license_expression_list)))
         if not isinstance(interim_license_expression_list, LicenseExpressionList):
             # single license
             license_set = {decode_license_expression(interim_license_expression_list)}
@@ -349,7 +309,6 @@ class LicenseHandler:
                 "LEAF, returning " + str(expanded_list))
             logger.license_logger.debug(
                 "cop: " + interim_license_expression_list)
-            #print("managed____ \""  + str(expanded_list) + "\"  <---- MIDDLE")
             return expanded_list
 
         current_op = interim_license_expression_list.op
@@ -368,7 +327,6 @@ class LicenseHandler:
                 lep_list = self.interim_license_expression_set_list(lep)
                 expanded_list = self._manage_list_item_and(
                     expanded_list, lep_list)
-        #print("managed____ \""  + str(expanded_list) + "\"  <---- FINAL")
         return expanded_list
 
     def _manage_list_item_and(self, license_list, lep):
