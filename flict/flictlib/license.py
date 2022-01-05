@@ -304,46 +304,43 @@ class LicenseHandler:
             if current_op is None:
                 raise Exception("Internal failure. No operator found")
 
-            elif current_op == "OR":
-                lep_list = self.interim_license_expression_set_list(lep)
+            lep_list = self.interim_license_expression_set_list(lep)
+            if current_op == "OR":
                 expanded_list = self._manage_list_item_or(
                     expanded_list, lep_list)
 
             elif current_op == "AND":
-                lep_list = self.interim_license_expression_set_list(lep)
                 expanded_list = self._manage_list_item_and(
                     expanded_list, lep_list)
         return expanded_list
 
     def _manage_list_item_and(self, license_list, lep):
         if isinstance(lep, LicenseExpressionList):
-            raise Exception("Internal failure. Wrong type " +
-                            str(type(lep)) + " for: " + str(lep))
-        else:
-            # single license
-            if len(license_list) == 0:
-                license_list = lep
-            else:
-                new_list = []
-                for item in license_list:
-                    for lep_item in lep:
-                        new_item = list(set(item + lep_item))
-                        new_list.append(new_item)
-                license_list = new_list
-            return license_list
+            raise Exception(f"Internal failure. Wrong type {lep} for: {lep}")
+
+        # single license
+        if len(license_list) == 0:
+            return lep
+
+        new_list = []
+        for item in license_list:
+            for lep_item in lep:
+                new_item = list(set(item + lep_item))
+                new_list.append(new_item)
+
+        return new_list
 
     def _manage_list_item_or(self, license_list, lep):
         if isinstance(lep, LicenseExpressionList):
-            raise Exception("Internal failure. Wrong type " +
-                            str(type(lep)) + " for: " + str(lep))
-        else:
-            # single license
-            if len(license_list) == 0:
-                new_list = lep
-            else:
-                new_list = license_list
-                for lep_item in lep:
-                    new_list.append(lep_item)
+            raise Exception(f"Internal failure. Wrong type {lep} for: {lep}")
+
+        # single license
+        if len(license_list) == 0:
+            return lep
+
+        new_list = license_list
+        for lep_item in lep:
+            new_list.append(lep_item)
 
         return new_list
 
