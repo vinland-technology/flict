@@ -11,6 +11,8 @@
 ###################################################################
 
 
+from flict.flictlib.return_codes import FlictError
+from flict.flictlib.return_codes import ReturnCodes
 from flict.flictlib.relicense import read_relicense_file
 from flict.flictlib.relicense import relicense_license
 from flict.flictlib.translator import read_translations
@@ -235,8 +237,8 @@ class LicenseHandler:
                     paren_expr = paren_expr + " " + tok
                 else:
                     if current_licenses is None:
-                        raise Exception(
-                            "Internal failure. Failed creating interim license expression. current_licenses is None")
+                        raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                                         "Internal failure. Failed creating interim license expression. current_licenses is None")
                     if current_op is None:
                         # first operator
                         current_op = tok
@@ -246,8 +248,8 @@ class LicenseHandler:
                         current_licenses.append(current_license)
                     else:
                         # different operator
-                        raise Exception(
-                            "Internal failure. Failed creating interim license expression.")
+                        raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                                         "Internal failure. Failed creating interim license expression.")
             else:
                 if paren_expr is not None:
                     paren_expr = paren_expr + " " + tok
@@ -275,8 +277,8 @@ class LicenseHandler:
                 sum = sum + self._combinations(item)
             return sum
         else:
-            raise Exception(
-                "Internal failure. Failed identifying operator: " + str(lel))
+            FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                       f"Internal failure. Failed identifying operator: {lel}")
 
     def interim_license_expression_set_list(self, interim_license_expression_list):
         """
@@ -302,7 +304,8 @@ class LicenseHandler:
         current_op = interim_license_expression_list.op
         for lep in interim_license_expression_list.list:
             if current_op is None:
-                raise Exception("Internal failure. No operator found")
+                raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                                 "Internal failure. No operator found")
 
             lep_list = self.interim_license_expression_set_list(lep)
             if current_op == "OR":
@@ -316,7 +319,8 @@ class LicenseHandler:
 
     def _manage_list_item_and(self, license_list, lep):
         if isinstance(lep, LicenseExpressionList):
-            raise Exception(f"Internal failure. Wrong type {lep} for: {lep}")
+            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                             f"Internal failure. Wrong type {lep} for: {lep}")
 
         # single license
         if len(license_list) == 0:
@@ -332,7 +336,8 @@ class LicenseHandler:
 
     def _manage_list_item_or(self, license_list, lep):
         if isinstance(lep, LicenseExpressionList):
-            raise Exception(f"Internal failure. Wrong type {lep} for: {lep}")
+            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                             f"Internal failure. Wrong type {lep} for: {lep}")
 
         # single license
         if len(license_list) == 0:
