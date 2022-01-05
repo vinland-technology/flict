@@ -17,7 +17,7 @@ class ReturnCodes(Enum):
     # common
 
     RET_SUCCESS = (0, "Success")
-    # 1
+    RET_INTERNAL_ERROR = (1, "Internal error")
     # 2
     # 3
     # 4
