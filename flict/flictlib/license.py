@@ -174,30 +174,6 @@ class LicenseHandler:
 
         return license
 
-    #
-    def _license_expression_list(self, license_expression, relicense=True):
-
-        license = ManagedLicenseExpression(license_expression)
-        license.translated = self.translate(license_expression)
-
-        if relicense:
-            license.expanded = self.expand_relicense(license.translated)
-        else:
-            license.expanded = license.translated
-
-        license.grouped = self.group(license.expanded)
-
-        # We need str to skip verbose output
-        license.simplified = str(self.simplify(license.grouped))
-
-        license.interim = self.interim_license_expression_list(
-            license.simplified, self.licensing)
-
-        license.set_list = self.interim_license_expression_set_list(
-            license.interim)
-
-        return license
-
     def interim_license_expression_list(self, license_expression, licensing):
         """
         Transforms and boolean symbolic expression
