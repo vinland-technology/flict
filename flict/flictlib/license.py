@@ -109,16 +109,12 @@ class LicenseHandler:
                 for key, value in symbols_map.items()]
 
     def translate_and_relicense(self, license_expression):
-        license_expression = license_expression.replace(
-            "&", AND_STRING).replace("|", OR_STRING)
-
         transl = self.translate(license_expression)
-        if transl is None or not transl:
+        if not transl:
             transl = license_expression
         rel = self.expand_relicense(transl)
-        if rel is None:
-            rel = transl
-        return rel
+
+        return rel if rel else transl
 
     def expand_relicense(self, license_expression):
         if self.relicense_file is not None and self.relicense_file:
