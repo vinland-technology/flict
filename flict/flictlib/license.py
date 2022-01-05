@@ -305,16 +305,10 @@ class LicenseHandler:
             # single license
             license_set = {decode_license_expression(interim_license_expression_list)}
             expanded_list.append(list(license_set))
-            logger.license_logger.debug(
-                "LEAF, returning " + str(expanded_list))
-            logger.license_logger.debug(
-                "cop: " + interim_license_expression_list)
             return expanded_list
 
         current_op = interim_license_expression_list.op
-        logger.license_logger.debug("cop: " + current_op)
         for lep in interim_license_expression_list.list:
-            logger.license_logger.debug(" ------ lep ----- " + str(lep))
             if current_op is None:
                 raise Exception("Internal failure. No operator found")
 
@@ -330,58 +324,33 @@ class LicenseHandler:
         return expanded_list
 
     def _manage_list_item_and(self, license_list, lep):
-        logger.license_logger.debug(" * Andy")
         if isinstance(lep, LicenseExpressionList):
             raise Exception("Internal failure. Wrong type " +
                             str(type(lep)) + " for: " + str(lep))
         else:
             # single license
             if len(license_list) == 0:
-                logger.license_logger.debug("wooops: " + str(license_list))
-                logger.license_logger.debug("wooops: " + str(lep))
                 license_list = lep
             else:
-                logger.license_logger.debug("daisy: " + str(license_list))
-                logger.license_logger.debug("daisy: " + str(lep))
-                logger.license_logger.debug(
-                    " -------------====== Andy ====----------------- SINGLE: " + str(license_list))
                 new_list = []
                 for item in license_list:
-                    logger.license_logger.debug(
-                        "  item: " + str(item) + " <--- " + str(lep))
                     for lep_item in lep:
-                        logger.license_logger.debug(
-                            "    item: " + str(item) + " <--- " + str(lep_item))
                         new_item = list(set(item + lep_item))
-                        logger.license_logger.debug("    item: " + str(item))
                         new_list.append(new_item)
-                    logger.license_logger.debug("    list: " + str(new_list))
                 license_list = new_list
             return license_list
 
     def _manage_list_item_or(self, license_list, lep):
-        logger.license_logger.debug(" * Orleans: " + (str(lep)))
         if isinstance(lep, LicenseExpressionList):
             raise Exception("Internal failure. Wrong type " +
                             str(type(lep)) + " for: " + str(lep))
         else:
             # single license
-            logger.license_logger.debug("HERE I AM .... \"" + str(lep) + "\"")
             if len(license_list) == 0:
                 new_list = lep
-                logger.license_logger.debug(
-                    "topsss: " + str(license_list) + " size: " + str(len(license_list)))
-                logger.license_logger.debug(
-                    "topsss: " + str(lep) + " size: " + str(len(lep)))
-                logger.license_logger.debug(
-                    "topsss: " + str(new_list) + " size: " + str(len(new_list)))
             else:
                 new_list = license_list
-                logger.license_logger.debug("dapsss: " + str(license_list))
-                logger.license_logger.debug("dappss: " + str(lep))
                 for lep_item in lep:
-                    logger.license_logger.debug(
-                        "    item: " + str(license_list) + " <--- " + str(lep_item))
                     new_list.append(lep_item)
 
         return new_list
