@@ -196,7 +196,7 @@ class LicenseHandler:
 
         return license
 
-    def interim_license_expression_list(self, _license_expression, licensing):
+    def interim_license_expression_list(self, license_expression, licensing):
         """
         Transforms and boolean symbolic expression
 
@@ -206,9 +206,9 @@ class LicenseHandler:
             AND [G, OR [A, B]]
         The latter is an interim format.
         """
-        license_expression = encode_license_expression(_license_expression)
+        encoded = encode_license_expression(license_expression)
         tokenizer = licensing.get_advanced_tokenizer()
-        tokenized = tokenizer.tokenize(license_expression)
+        tokenized = tokenizer.tokenize(encoded)
         current_license = None
         current_licenses = []
         current_op = None
