@@ -94,7 +94,6 @@ class LicenseHandler:
         self.licensing = Licensing(symbols)
 
     def read_symbols(self, translations_files):
-        symbols = []
         symbols_map = {}
         self.translations = []
         for translations_file in translations_files.split():
@@ -106,11 +105,8 @@ class LicenseHandler:
                 for val in translation_data[lic_key]:
                     symbols_map[lic_key].add(val)
 
-
-        for key, value in symbols_map.items():
-            symbols.append(LicenseSymbol(key=key, aliases=tuple(value)))
-
-        return symbols
+        return [LicenseSymbol(key=key, aliases=tuple(value))
+                for key, value in symbols_map.items()]
 
     def translate_and_relicense(self, license_expression):
         license_expression = license_expression.replace(
