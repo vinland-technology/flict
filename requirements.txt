@@ -1,2 +1,2 @@
 license-expression>=1.2, <99.99.99
-osadl-matrix==2021.11.2.91119
+osadl-matrix==2022.1.19.70101
