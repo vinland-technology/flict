@@ -91,7 +91,7 @@ class CompatibilityMatrix:
         # TODO: not yes, does not imply no ... could be depends
         lc_value = value_ab.replace("\"", "").lower().replace(
             " ", "").replace("\t", "")
-        if lc_value == "yes":
+        if lc_value in ["yes", "same"]:
             return CompatMatrixStatus.TRUE
         elif lc_value == "no":
             return CompatMatrixStatus.FALSE
