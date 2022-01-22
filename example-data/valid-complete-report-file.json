@@ -1,0 +1,14 @@
+{
+  "project": {
+    "project_definition": {
+      "name": "name",
+      "license": "MIT"
+    },
+    "project_file": {
+      "name": "aname"
+    }
+  },
+  "licensing": {
+      "outbound_candidates": "candidates"
+  }
+}

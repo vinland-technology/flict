@@ -87,8 +87,12 @@ class FlictImpl:
                              "Missing argument to the verify command")
 
     def _read_compliance_report(self, report_file):
-        with open(report_file) as fp:
-            return json.load(fp)
+        on_error = "Internal error, report file has improper format, required: JSON"
+        try:
+            with open(report_file) as file_:
+                return json.load(file_)
+        except json.decoder.JSONDecodeError:
+            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR, on_error)
 
     def policy_report(self):
         _compliance_report = self._read_compliance_report(self._args.report_file)
