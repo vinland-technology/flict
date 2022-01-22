@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 # SPDX-FileCopyrightText: 2021 Henrik Sandklef
 #
@@ -43,12 +43,11 @@ REPORTING BUGS
 
 COPYRIGHT
   Copyright (c) 2021 Henrik Sandklef<hesa@sandklef.com>.
-  License GPL-3.0-or-larer
+  License GPL-3.0-or-later
 
 ATTRIBUTION
-  flict is using the license compatibility matrix from osadl.org .
+  flict is using the license compatibility matrix from osadl.org.
 
-SEE ALSO
 
 """
 
