@@ -19,7 +19,11 @@ class ArgsMock:
     outbound_licenses : str = None
     output_format : str = 'JSON'
     project_file : str = None
+    report_file : str = None
     relicense_file : str = flict_config.DEFAULT_RELICENSE_FILE
     translations_file : str = flict_config.DEFAULT_TRANSLATIONS_FILE
     verbose : str = False
     version : str = False
+    def __init__(self, **kwargs):
+        for key in kwargs:
+            self.__dict__.update({key: kwargs[key]})

@@ -1,0 +1,10 @@
+{
+  "project": {
+    "project_file": {
+      "name": "aname"
+    }
+  },
+  "licensing": {
+      "outbound_candidates": "candidates"
+  }
+}

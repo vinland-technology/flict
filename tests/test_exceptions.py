@@ -50,3 +50,19 @@ def test_exceptions():
         FlictImpl(args).verify()
 
     assert _error.value.args[0] == ReturnCodes.RET_INVALID_PROJECT
+
+    with pytest.raises(FlictError) as _error:
+        rep = os.path.join(TEST_DIR, 'example-data/bad-non-json-file.json')
+        args = ArgsMock(report_file=rep)
+        FlictImpl(args).policy_report()
+
+    assert _error.value.args[0] == ReturnCodes.RET_INTERNAL_ERROR
+
+    with pytest.raises(FlictError) as _error:
+        rep = os.path.join(TEST_DIR, 'example-data/valid-empty-json-file.json')
+        prj = os.path.join(TEST_DIR, 'example-data/bad-non-json-file.json')
+        args = ArgsMock(report_file=rep, policy_file=prj)
+        FlictImpl(args).policy_report()
+
+    assert _error.value.args[0] == ReturnCodes.RET_INTERNAL_ERROR
+

@@ -15,6 +15,9 @@ import getpass
 import json
 import os
 
+from flict.flictlib.logger import main_logger as logger
+from flict.flictlib.return_codes import FlictError, ReturnCodes
+
 
 def timestamp():
     return str(datetime.datetime.now())
@@ -25,14 +28,52 @@ class Policy:
         self.policy_report = {}
         self.policy_report['meta'] = self.meta()
         self.policy_report['policy_file'] = policy_file
-        with open(policy_file) as fp:
-            self.policy_report['policy'] = json.load(fp)
+        try:
+            with open(policy_file) as file_:
+                self.policy_report['policy'] = json.load(file_)
+        except json.decoder.JSONDecodeError:
+            error = "Internal error, policy file has improper JSON format"
+            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR, error)
 
-    def report(self, report):
-        if self.policy_report['policy'] is None:
+    def sanity(self, json_obj, requirements):
+        logger.debug(f"Checking sanity of report {json_obj}")
+
+        def exists(json_, chain):
+            key = chain.pop(0) # this empties list, hence reqscopy as list.copy()
+            if key in json_:
+                return exists(json_[key], chain) if chain else key
             return None
 
-        policy = self.policy_report['policy']['policy']
+        expected = [req[-1] for req in requirements]
+        reqscopy = [[it for it in line] for line in requirements] # noqa: C416
+        checked = [exists(json_obj, req) for req in requirements]
+        on_failure = "Improper file format, missing key: '{expected}' in {path}"
+        fail = False
+        for i, _ in enumerate(expected):
+            expected_it, pathway = expected[i], " -> ".join(reqscopy[i])
+            error = on_failure.format(expected=expected_it, path=pathway)
+            try:
+                if checked[i] != expected[i]:
+                    logger.error(error)
+                    fail = True
+            except IndexError:
+                logger.error(error)
+                fail = True
+        if fail:
+            on_error = "Internal error, file is missing required keys"
+            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR, on_error)
+
+    def report(self, report):
+        if not self.policy_report['policy']:
+            return None
+
+        requirements = [["project", "project_definition", "license"],
+                        ["project", "project_definition", "name"],
+                        ["project", "project_file"],
+                        ["licensing", "outbound_candidates"]]
+        self.sanity(report, requirements)
+
+        policy = self.policy_report['policy'].get('policy', {})
 
         outbounds = report['licensing']['outbound_candidates']
         allowed = policy.get('allowlist', [])

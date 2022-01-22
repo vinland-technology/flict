@@ -212,12 +212,12 @@ def parse():
                           type=str,
                           dest='policy_file',
                           help='file with license policy',
-                          default=None)
+                          required=True)
     parser_p.add_argument('--compliance-report-file', '-crf',
                           type=str,
                           dest='report_file',
                           help='file with report as produced using "verify"',
-                          default=None)
+                          required=True)
 
     args = parser.parse_args()
 
@@ -265,6 +265,16 @@ def suggest_outbound_candidate(args):
 
 
 def policy_report(args):
+    on_error = "Provided file {fname} was not found."
+    on_error_code = ReturnCodes.RET_FILE_NOT_FOUND
+    try:
+        open(args.report_file).close()
+    except (FileNotFoundError, PermissionError):
+        flict_exit(on_error_code, on_error.format(fname=args.report_file))
+    try:
+        open(args.policy_file).close()
+    except (FileNotFoundError, PermissionError):
+        flict_exit(on_error_code, on_error.format(fname=args.policy_file))
     ret = FlictImpl(args).policy_report()
     flict_print(args, ret)
 
