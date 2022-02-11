@@ -39,7 +39,7 @@ REPORTING BUGS
 
 COPYRIGHT
   Copyright (c) 2020 Henrik Sandklef<hesa@sandklef.com>.
-  License GPL-3.0-or-larer
+  License GPL-3.0-or-later
 
 SEE ALSO
   yoga (yoda's generic aggregator)
@@ -61,10 +61,6 @@ def parse():
                         help='files with relicense definitions, default is ' + DEFAULT_RELICENSE_FILE,
                         default=DEFAULT_RELICENSE_FILE)
     args = parser.parse_args()
-
-    global VERBOSE
-    VERBOSE = args.verbose
-
     return args
 
 

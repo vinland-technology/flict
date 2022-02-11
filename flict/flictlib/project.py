@@ -36,28 +36,14 @@ class Project:
     """
 
     def __init__(self, project_file, license_handler, license_expression=None):
-        if license_expression is None:
-            """
-            Reads a project definition from a JSON file.
-            expands the licenses (see below)
-
-            """
-            self.expanded = False
-            self.dep_list = None
+        self.expanded = False
+        self.dep_list = None
+        self.tot_combinations = None
+        self.license_handler = license_handler
+        if not license_expression:
             self.project_file = project_file
-            self.read_project_file()
-            self.license_handler = license_handler
-            self._expand_licenses()
-            self.tot_combinations = None
+            self.project = self.read_project_file()
         else:
-            """Creates a project definition, with no dependencies, from a license
-            expression.
-
-            expands the licenses (see below)
-
-            """
-            self.expanded = False
-            self.dep_list = None
             self.project_file = None
             self.project = {
                 'name': "dummy",
@@ -65,11 +51,8 @@ class Project:
                 'license': license_expression,
                 'dependencies': []
             }
-            self.license_handler = license_handler
-            self._expand_licenses()
-            self.tot_combinations = None
+        self._expand_licenses()
 
-    # get JSON data from self.project_file
     def _get_json_data(self):
         try:
             if self.project_file == "-":
@@ -92,8 +75,8 @@ class Project:
         If there is a meta section in the project def, this is added under self.meta
         """
         self.project_object = self._get_json_data()
-        self.project = self.project_object.get('project', self.project_object.get('component', None))
         self.meta = self.project_object.get('meta', None)
+        return self.project_object.get('project', self.project_object.get('component', None))
 
     # Some nifty methods to hide the storage structure
 
