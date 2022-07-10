@@ -6,7 +6,7 @@ jobs:
   gitlint:
       runs-on: ubuntu-latest
       name: GitLint
-      if: github.event_name == 'pull_request'
+      if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
       steps:
         - name: Lint commits
           uses: aschbacd/gitlint-action@v1.0.1
