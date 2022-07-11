@@ -9,7 +9,7 @@ jobs:
       if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
       steps:
         - name: Lint commits
-          uses: aschbacd/gitlint-action@v1.0.1
+          uses: aschbacd/gitlint-action@v1.1.0
           with:
             github-token: ${{ secrets.GITHUB_TOKEN }}
             commit-message-body-max-length: 72
