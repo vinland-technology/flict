@@ -34,9 +34,9 @@ class TestOneWay(unittest.TestCase):
         self.assertEqual(_compat_matrix.a_compatible_with_b("GPL-2.0-only", "BSD-3-Clause"), CompatMatrixStatus.TRUE)
         self.assertEqual(_compat_matrix.a_compatible_with_b("BSD-3-Clause", "GPL-2.0-only"), CompatMatrixStatus.FALSE)
         
-        # GPL-2.0 and LGPL-2.1 or compatible both ways
+        # GPL-2.0 and LGPL-2.1 are only compatible one way
         self.assertEqual(_compat_matrix.a_compatible_with_b("GPL-2.0-only", "LGPL-2.1-only"), CompatMatrixStatus.TRUE)
-        self.assertEqual(_compat_matrix.a_compatible_with_b("LGPL-2.1-only", "GPL-2.0-only"), CompatMatrixStatus.TRUE)
+        self.assertEqual(_compat_matrix.a_compatible_with_b("LGPL-2.1-only", "GPL-2.0-only"), CompatMatrixStatus.FALSE)
         
         # GPL-3.0 and LGPL-2.1 or compatible one way
         self.assertEqual(_compat_matrix.a_compatible_with_b("GPL-3.0-only", "LGPL-2.1-only"), CompatMatrixStatus.TRUE)
