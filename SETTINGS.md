@@ -6,126 +6,151 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 You can tweak flict by providing:
 
-* [_Relicense_](#relicense) - change the interpretation of a license with "or-later" (e g `GPL-2.0-or-later`) or relicensing by some other means
-
-* [_Policy_](#policy) - specify which licenses you would like to avoid and which should be denied
-
-* [_Translate_](#translate) - translations for "non standard" spelled licenes (e.g. 'BSD3 -> BSD-3-Clause')
-
-* [_Group_](#group) - undocumented and experimental feature
+* [_Alias__](#alias) - alias for "non standard" spelled licenes (e.g. 'BSD3 -> BSD-3-Clause')
 
 # Configuration and runtime files 
 
-<a name="policy"></a>
-## Policy (no built in, optional)
-
-With a policy file you can tell this tool which licenses you disallow
-and which you prefer not to avoid. Here's an example policy file:
-
-```
-{
-    "meta" : {
-        "software":"FOSS License Compatibility Tool",
-        "version":"0.1"
-    } ,
-    "policy": {
-        "allowlist": [],
-        "avoidlist": [
-            "BSD-3-Clause"
-        ],
-        "deniedlist": [
-            "MIT",
-            "Zlib"
-        ]
-    }
-}
-```
-
-When applying a policy to a report you'll get notified whether the
-suggested outbound licenses are in compliance with your policy.
-
-<a name="relicense"></a>
-## Relicense defininitions (built in or custom)
-
-Some licenses can be specifed saying "or-later", e.g.
-GPL-2.0-or-later. You can provide a list of definitions for this tool
-to decide how these licenses should be interpreted.
-
-By default flict uses the following relicense file: [var/relicense.json](var/relicense.json)
-
-Let's start with an example:
-
-
-```
-{
-    "meta": {
-        "software":"FOSS License Compatibility Tool",
-        "type": "later-definitions",
-        "version":"0.1"
-    },
-    "relicense-definitions": [
-        {
-            "spdx": "GPL-2.0-or-later",
-            "later": [
-                "GPL-2.0-only"
-                "GPL-3.0-only"
-            ]
-        }
-    ]
-}
-```
-
-As with previous example you can for now skip the meta section. A later definition is specified using:
-
-```spdx``` - the license (SPDX short name) this later definition is valid for
-
-```later``` - a list of licenses (SPDX short name) that the above license can be turned into
-
-In the above example we state that GPL-2.0-or-later should be
-translated to "GPL-2.0-only or GPL-2.0-only". If you want to use your
-own later definition file or disable later definitions by providing an
-empty file you can use the option ```--relicense-file```.
-
-<a name="translate"></a>
-## License translation defininitions (built in or custom)
+<a name="alias"></a>
+## License alias defininitions
 
 Sometimes licenses are not expressed in an SPDX compliant way. This
 files is intended to translate from "non SPDX" to SPDX. You can
 provide a list of definitions for this tool to decide how these
 "incorrectly spelled" licenses should be interpreted.
 
-By default flict uses the following translation file: [var/translation.json](var/translation.json)
+By default flict uses the following alias file: [var/alias.json](var/alias.json)
 
-Let's start with an example:
-
+Example:
 
 ```
 {
-    "meta": {
-        "software":"FOSS License Compatibility Tool",
-        "type": "later-definitions",
-        "version":"0.1"
-    },
-    "translations": [
+    "aliases": [
         {
-            "value": "&",
-            "translation": "and"
-        },
-        {
-            "value": "Apache-2",
-            "translation": "Apache-2.0"
+            "alias": "GPLv2+",
+            "license": "GPL-2.0-or-later",
+            "comment": "As found in ...."
         }
-    ]
 }
 ```
 
 As with previous example you can for now skip the meta section. A translation definition is specified using:
 
-```value``` - the expression we want to translate
+```alias``` - the expression we want to translate to a "proper" license, e.gg GPLv2+
 
-```translation``` - tre translated value
+```license``` - a licenses identifier e.g. GPL-2.0-or-later
 
-In the above example we state that `&` should be
-translated to `and` and `Apache-2` to `Apache-2.0`. If you want to use your
-own later definition file or disable later definitions by providing an
-empty file you can use the option ```--translations-file```.
+<a name="denied"></a>
+## Denied licenses
+
+If you, for some reason, want to deny a license (e.g. 'MIT*) to be used as outbound or inbound license.
+
+Example:
+
+```
+{
+    "licenses_denied": ["MIT"]
+}                  
+```
+
+If you store this in a file, `denied-list.json`, you can use it like this:
+
+```
+$ flict -of text verify -il MIT AND BSD-3-Clause -ol X11
+Yes
+$ flict -of text -ldf example-data/denied-licenses.json verify  -il MIT AND BSD-3-Clause -ol X11
+No
+```
+
+<a name="preference"></a>
+## Preferred licenses
+
+In cases where a choice between licenses can be made flict chose the
+most preferred license. By default flict counts how many other
+licenses each license is compatible with. The more licenses a license
+is compatible with the more preferred it will be. If two licenses have
+the same number of compaitbilities alpabetical order will be used to
+chose license.
+
+If you want to provide your own ordered list of license preference, you do this like this:
+
+Example:
+
+```
+{
+    "license_preferences": [
+        "curl", "MIT"
+    ]
+
+}                  
+```
+
+If you store this in a file, `license-preferences.json`, you can use it with the `-lpf` option.
+
+<a name="extending"></a>
+## Extending the license db
+
+If you want to extend or override the license database with new
+licenses you can do this with a custom database.
+
+Let's say you want to add support for a new license, called 'ABC'. You need to add how this new license is compatible with all other in both ways. 
+
+Adding information how existing licenses ('0BSD', 'AFL-2.0' and so on), can use 'ABC':
+```
+    "0BSD": {
+      "ABC": "Yes"
+    },
+    "AFL-2.0": {
+      "ABC": "Yes"
+    },
+        .... and so on
+```
+
+Adding information how the new license, 'ABC', can use the existing licenses (`0BSD`, `AFL-2.0` and so on):
+```
+    "ABC": {
+      "0BSD": "Yes",
+      "AFL-2.0": "Yes"
+    }
+```
+
+These should be placed inside `osadl_additional_licenses` like this:
+
+```
+{
+  "osadl_additional_licenses": {
+    "0BSD": {
+      "ABC": "Yes"
+    },
+    "AFL-2.0": {
+      "ABC": "Yes"
+    },
+    "ABC": {
+      "0BSD": "Yes",
+      "AFL-2.0": "Yes"
+    }
+```
+
+*Note: the above is an incomplete example. All licenses supported by
+ the OSADL matrix need to be defined in relation to the new license,
+ not only '0BSD' and 'AFL-2.0'.*
+
+To apply the new license db and store the result in `merged-matrix.csv`:
+
+```
+flict merge -lf additional_matrix.json > merged-matrix.csv
+
+```
+
+To list the supported licenses, with the added licenses:
+
+```
+flict -lmf merged-matrix.csv list
+```
+
+To use this merged license database when for example veryfing a license:
+
+```
+flict -lmf merged-matrix.csv verify -il 0BSD -ol ABC
+```
+
+
