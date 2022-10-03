@@ -14,6 +14,7 @@ from flict.flictlib.compatibility import LICENSE_COMPATIBILITY_OR
 from flict.flictlib.compatibility import CompatibilityLicenseChoser
 from flict.flictlib.compatibility import CustomLicenseChoser
 from flict.flictlib.alias import Alias
+from flict.flictlib.return_codes import FlictError, ReturnCodes
 
 COMPATIBILITY_TAG = "compatibility"
 
@@ -27,7 +28,7 @@ class LicenseCompatibilty:
 
         self.compatibility = CompatibilityFactory.get_compatibility(self.alias, license_db)
 
-        if licenses_preferences is None or licenses_preferences == []:
+        if not licenses_preferences or licenses_preferences == []:
             self.license_choser = CompatibilityLicenseChoser(self.compatibility.supported_licenses())
         else:
             self.license_choser = CustomLicenseChoser(licenses_preferences)
@@ -154,9 +155,8 @@ class LicenseCompatibilty:
 
             return expr
         else:
-            # TODO: raise exception
-            logging.debug("whats???? ")
-            pass
+            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                             f"Could not parse one of the expression: {outbound}, {expr}")
 
     def _update_compat(self, op, current, new):
 
@@ -170,7 +170,6 @@ class LicenseCompatibilty:
         if updated:
             return CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value
         return CompatibilityStatus.LICENSE_COMPATIBILITY_INCOMPATIBLE.value
-        # TODO: raise exception
 
     def _update_allowed(self, op, current, new):
 
