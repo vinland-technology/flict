@@ -52,8 +52,8 @@ class ProjectReader:
     def _flatten_packages(self, packages):
         package_list = []
 
-        for pkg in packages.items():
-            _package = pkg[1]
+        for _k, v in packages.items():
+            _package = v
             tmp_dict = {}
 
             for dep in _package['dependencies']:
@@ -204,7 +204,8 @@ class SPDXJsonProjectReader(ProjectReader):
 
         if spdx_version.startswith("2.2"):
             return self._read_spdx_2_2(only_packages=None)
-        # TODO: raise exception with meaningful hint that SPDX version not supported
+        raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                         f"SPDX version ({spdx_version}) not supported.")
 
     def _flatten_package_tree(self, packages):
         package_dict = {}
