@@ -149,11 +149,11 @@ def parse():
     parser_v = subparsers.add_parser(
         'verify', help='verify license compatibility')
     parser_v.set_defaults(which="verify", func=verify)
-    parser_v.add_argument('--outbound-license', '-ol', type=str, dest='out_license', help='Outbound license', default=None)
-    parser_v.add_argument('--inbound-license', '-il', type=str, nargs='+', dest='in_license_expr', help='Inbound license(s)', default=[])
-    parser_v.add_argument('--sbom', '-s', type=str, dest='verify_sbom', help='')
-    parser_v.add_argument('--sbom-dirs', '-sd', type=str, nargs='+', dest='sbom_dirs', help='', default='.')
-    parser_v.add_argument('--flict', '-f', type=str, dest='verify_flict', help='')
+    parser_v.add_argument('--outbound-license', '-ol', type=str, dest='out_license', help='Outbound license for the licenses to verify compatibibility', default=None)
+    parser_v.add_argument('--inbound-license', '-il', type=str, nargs='+', dest='in_license_expr', help='Inbound license(s) for the licenses to verify compatibibility', default=[])
+    parser_v.add_argument('--sbom', '-s', type=str, dest='verify_sbom', help='SBoM file to verify')
+    parser_v.add_argument('--sbom-dirs', '-sd', type=str, nargs='+', dest='sbom_dirs', help='Directories where SBoM files are searched for.', default='.')
+    parser_v.add_argument('--flict', '-f', type=str, dest='verify_flict', help='Flict project file to verify')
 
 #    parser_v.add_argument('--project-file', '-pf', type=argparse.FileType('r'), help='verify license compatibility for project in project file')
 #    parser_v.add_argument('--project-file', '-pf', type=str,
