@@ -1,212 +1,103 @@
 #!/usr/bin/env python3
 
-###################################################################
-#
-# flict - FOSS License Compatibility Tool
-#
-# SPDX-FileCopyrightText: 2020 Henrik Sandklef
+# SPDX-FileCopyrightText: 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-#
-###################################################################
+
+import logging
 
 from enum import Enum
+import osadl_matrix
 
-try:
-    from flict.flictlib.compat_matrix import CompatibilityMatrix
-    from flict.flictlib.compat_matrix import CompatMatrixStatus
-except ImportError:
-    # as compat_matrix imports this module as well, we bail out
-    # on circular depedencies
-    pass
-from flict.flictlib import logger
-
-# Bail out if combinations is greater than...
-COMBINATION_THRESHOLD = 10000
+from flict.flictlib.return_codes import FlictError, ReturnCodes
+from flict.flictlib.alias import replace_aliases
 
 
 class CompatibilityStatus(Enum):
-    UNDEFINED = 0
-    TRUE = 1
-    FALSE = 2
-    DEPENDS = 3
-    QUESTION = 4
+    LICENSE_COMPATIBILITY_COMPATIBLE = "Yes"
+    LICENSE_COMPATIBILITY_INCOMPATIBLE = "No"
+    LICENSE_COMPATIBILITY_UNKNOWN = "Unknown"
+    LICENSE_COMPATIBILITY_MANUALLY_CHECK = "Check dependencies manually"
+    LICENSE_COMPATIBILITY_UNDEFINED = "Undefined"
+
+
+LICENSE_COMPATIBILITY_AND = "AND"
+LICENSE_COMPATIBILITY_OR = "OR"
+COMPATIBILITY_TAG = "compatibility"
+
+
+class CompatibilityFactory:
+    """Class to provide Compatibility objects via get_compatibility
+    """
+
+    @staticmethod
+    def get_compatibility(license_db=None):
+        """Returns a Compatibility object.
+
+            Parameters:
+                licensedb: licensedb to use if not using default
+
+        Currently only OsadlCompatibility is available.
+        """
+        return OsadlCompatibility(license_db)
 
 
 class Compatibility:
+    """Class to determine compatibility between licenses.
 
-    def __init__(self, matrix_file, check_all_licenses=False):
-        self.compat_matrix = CompatibilityMatrix(matrix_file)
-        self.check_all_licenses = check_all_licenses
+    This class need to be implemented in sub classes.
+    """
+    def __init__(self, license_db=None):
+        return None
+
+    def check_compat(self, outbound, inbound):
+        return None
 
     def supported_licenses(self):
-        license_set = set(self.compat_matrix.supported_licenses())
-        return list(license_set)
+        return None
 
-    def _supported_license(self, lic):
-        matrix_lic = self.compat_matrix.supported_license(lic)
-        if matrix_lic is not None:
-            return matrix_lic
+    def display_compatibility(self):
+        try:
+            # build up license string from all expressions
+            lic_str = " ".join(self._args.license_expression)
 
-        return lic
+            # encode (flict) all the license expression
+            lic_str = self._encode_license_expression(lic_str)
 
-    def _compatibility_status_json(self, status):
-        if status == CompatibilityStatus.TRUE:
-            return "true"
-        elif status == CompatibilityStatus.FALSE:
-            return "false"
-        elif status == CompatibilityStatus.UNDEFINED:
-            return "undefined"
-        elif status == CompatibilityStatus.DEPENDS:
-            return "depends"
-        elif status == CompatibilityStatus.QUESTION:
-            return "question"
+            # build up license string from the expression string
+            _licenses = set()
+            for lic in lic_str.split():
 
-    def _a_compatible_with_b(self, a, b):
-        """wrapper to compat_matrix' method, translates to our enum"""
-        compat = self.compat_matrix.a_compatible_with_b(a, b)
-        logger.main_logger.debug("ncompat: " + str(compat))
-        if compat == CompatMatrixStatus.TRUE:
-            return CompatibilityStatus.TRUE
-        elif compat == CompatMatrixStatus.FALSE:
-            return CompatibilityStatus.FALSE
-        elif compat == CompatMatrixStatus.UNDEFINED:
-            return CompatibilityStatus.UNDEFINED
-        elif compat == CompatMatrixStatus.QUESTION:
-            logger.main_logger.debug(" " + a + " " + b + " ==> QUESTION")
-            return CompatibilityStatus.QUESTION
-        elif compat == CompatMatrixStatus.DEPENDS:
-            return CompatibilityStatus.DEPENDS
+                lic_list = lic.replace("(", "").replace(
+                    ")", "").replace(" ", "").replace("OR", " ").replace("AND", " ").strip().split(" ")
 
-    def check_compatibility(self, license_set, project):
-        license_compatibilities = []
-        outbound_candidates = set()
-        if self.check_all_licenses:
-            supported = self.supported_licenses()
-            if 'Compatibility' in supported:
-                supported.remove('Compatibility')
-            if 'Copyleft' in supported:
-                supported.remove('Copyleft')
-            licenses_set = set(list(license_set) + supported)
-        else:
-            licenses_set = license_set
+                for lic in lic_list:
+                    if lic != "":
+                        _licenses.add(self._decode_license_expression(lic))
 
-        # For every license among all the licenses
-        # - check compat against all licenses
-        for license in licenses_set:
-            license_combinations = []
-            license_compat_status = False
-            if project is not None:
+            licenses = list(_licenses)
 
-                # loop through project license combinations
-                # - this is looping over all the top projects combinations (with its deps)
-                # - for every or in the license expression we get noe more combination (of the top project)
-                for combination in project.project_combination_list():
-                    # keep track of whether the combination's status
-                    combination_compat_status = True
+            inter_compats = self.check_compatibilities(licenses, self._args.extended_licenses)
+        except:
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             f'Could not parse license expression: {self._args.license_expression}')
 
-                    status = False
-                    # loop through the top project and its deps in this project combination
-                    for p in combination:
+        return inter_compats
 
-                        reason = set()
-                        # and for each such, loop through license(s)
-                        for lic in p['license']:
-                            # and check if the license is
-                            # a) supported
-                            # b) compatible with the top level licenses we're looping over (top loop)
-                            _license = self._supported_license(license)
-                            _lic = self._supported_license(lic)
+    def _encode_license_expression(self, license_expression):
+        return license_expression.replace(" WITH ", "_WITH_")
 
-                            a_b = self._a_compatible_with_b(_license, _lic)
-
-                            if a_b == CompatibilityStatus.TRUE:
-                                pass
-                            elif a_b == CompatibilityStatus.FALSE:
-                                reason.add(f'{license}" not compatible with "{lic}".')
-                            elif a_b == CompatibilityStatus.UNDEFINED:
-                                reason.add(f'{license}" has undefined compatibility with "{lic}".')
-                            elif a_b == CompatibilityStatus.QUESTION:
-                                reason.add(f'{license}" has questioned compatibility with "{lic}".')
-
-                        # do we have compatibility? (check if reason=={})
-                        status = (reason == set())
-                        combination_compat_status = combination_compat_status and status
-
-                    if combination_compat_status:
-                        outbound_candidates.add(license)
-
-                    license_combinations.append({
-                        'combination': combination,
-                        'compatibility_fails': list(reason),
-                        'compatibility_status': status
-                    })
-
-                    license_compatibility = {
-                        'outbound': license,
-                        'combinations': license_combinations
-                    }
-            else:
-                pass
-
-            # The compat status of this license can be calculated by simply
-            # checking if the license is in outbound_candidates
-            license_compat_status = (license in outbound_candidates)
-
-            license_compatibility['compatibility_status'] = license_compat_status
-            license_compatibilities.append(license_compatibility)
-
-        outs = list(outbound_candidates)
-        outs.sort()
-        return {
-            'license_compatibilities': license_compatibilities,
-            'outbound_candidates': outs
-        }
-
-    def check_project_pile(self, project):
-        license_expr = project.license()
-        license_set = project.license_set()
-        self.compatility_report['license'] = license_expr
-        self.compatility_report['license_pile'] = list(license_set)
-
-        # Begin checking compatibility with licenses from all project (incl dps)
-        self.compatility_report['compatibilities'] = self.check_compatibility(
-            license_set, project)
-        self.valid = True
-
-    def check(self, project):
-
-        combinations = project.projects_combinations()
-
-        if combinations < COMBINATION_THRESHOLD:
-            return self.check_project_pile(project)
-        else:
-            logger.main_logger.error(
-                "***ERROR*** maximum amount of combinations reached")
-            logger.main_logger.error(
-                "Will use coming method to check compatibility")
-            logger.main_logger.error(
-                " * current number of combinations: " + str(combinations))
-            logger.main_logger.error(
-                " * maximum number of combinations: " + str(COMBINATION_THRESHOLD))
-            logger.main_logger.error(" * coming method has \"complexity\": 2^ " + str(
-                str(project.license_piled_license_check()).count(" OR") + 1).strip())
-            self.valid = False
-            # All licenses in compat object
-            # TODO: do we need this?
+    def _decode_license_expression(self, license_expression):
+        return license_expression.replace("_WITH_", " WITH ")
 
     def check_compatibilities(self, licenses, check_all=False):
-        """Check compatbilitiy between all licenses"""
+        """Check compatbilitiy between supplied licenses"""
         compats = []
 
         if check_all:
             supported = self.supported_licenses()
             if 'Compatibility' in supported:
                 supported.remove('Compatibility')
-
-            # TODO: arrange so we can keep the copylefted licenses
-            if 'Copyleft' in supported:
-                supported.remove('Copyleft')
 
             licenses_set = set(licenses + supported)
             outer_licenses = list(licenses_set)
@@ -216,15 +107,9 @@ class Compatibility:
         for lic_a in outer_licenses:
             inner_licenses = []
             for lic_b in licenses:
-                if lic_a == lic_b:
-                    continue
 
-                comp_left = self._a_compatible_with_b(lic_a, lic_b)
-                comp_right = self._a_compatible_with_b(lic_b, lic_a)
-
-                logger.main_logger.debug("Compatibility check")
-                logger.main_logger.debug(f'  compat: {lic_a} ? {lic_b} => {comp_left}')
-                logger.main_logger.debug(f'  compat: {lic_b} ? {lic_a} => {comp_right}')
+                comp_left = self.check_compat(lic_a, lic_b)['compatibility']
+                comp_right = self.check_compat(lic_b, lic_a)['compatibility']
 
                 inner_licenses.append({
                     'license': lic_b,
@@ -241,10 +126,210 @@ class Compatibility:
             'compatibilities': compats
         }
 
-    def report(self, project):
-        self.compatility_report = {}
-        self.check(project)
-        if not self.valid:
+    def _compatibility_status_json(self, status):
+        if status == "Yes":
+            return "true"
+        elif status == "No":
+            return "false"
+        elif status == "Undefined":
+            return "undefined"
+        elif status == "Check dependencies manually":
+            return "depends"
+        elif status == "Unknown":
+            return "question"
 
-            self.compatility_report = None
-        return self.compatility_report
+    def extend_license_db(self, file_name):
+        return None
+
+
+class OsadlCompatibility(Compatibility):
+    """Class to determine compatibility between licenses using OSADL's matrix
+
+    This class implements Compatibility
+    """
+
+    def __init__(self, license_db=None):
+        self.license_db = license_db
+
+    def check_compat(self, _outbound, _inbound):
+
+        #print(f"check_compat({_outbound}, {_inbound})")
+        outbound = replace_aliases(_outbound)
+        inbound = replace_aliases(_inbound)
+        #print(f"check_compat({outbound}, {inbound})")
+        raw_result = osadl_matrix.get_compatibility(outbound, inbound, self.license_db)
+
+        logging.info(f"check_compat({outbound}, {inbound} => {raw_result}")
+
+        #import sys
+        #print("raw_result: " + str(raw_result))
+        if raw_result == osadl_matrix.OSADLCompatibility.YES:
+            result = CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value
+        elif raw_result == osadl_matrix.OSADLCompatibility.NO:
+            result = CompatibilityStatus.LICENSE_COMPATIBILITY_INCOMPATIBLE.value
+        elif raw_result == osadl_matrix.OSADLCompatibility.UNKNOWN:
+            result = CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value
+            logging.debug(f"compatibility: {outbound}  --> {inbound}: {result}")
+        elif raw_result == osadl_matrix.OSADLCompatibility.CHECKDEP:
+            result = CompatibilityStatus.LICENSE_COMPATIBILITY_MANUALLY_CHECK.value
+            logging.debug(f"compatibility: {outbound}  --> {inbound}: {result}")
+        elif raw_result == osadl_matrix.OSADLCompatibility.UNDEF:
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined since (at least) one of the licenses are not supported.")
+
+        else:
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined. The result was: {result}")
+
+        return {
+            "inbound": inbound,
+            "outbound": outbound,
+            COMPATIBILITY_TAG: result
+        }
+
+    def supported_licenses(self):
+        """Returns a list of supported licenses"""
+        return list(osadl_matrix.supported_licenses(self.license_db))
+
+    def _create_matrix(self, raw):
+        """
+        Copied from https://github.com/priv-kweihmann/osadl-matrix/blob/master/scripts/scrapper.py
+        Modified by Henrik Sandklef
+        # SPDX-FileCopyrightText: 2021 Konrad Weihmann
+        # SPDX-FileCopyrightText: 2022 Henrik Sandklef
+        # SPDX-License-Identifier: Unlicensed
+        """
+        # create a csv
+
+        _csv = [
+            ['Compatibility*'] + sorted(raw.keys())
+        ]
+
+        for key in sorted(raw.keys()):
+            _line = [key]
+            for key2 in sorted(raw.keys()):
+                _line.append(raw[key][key2])
+            _csv.append(_line)
+
+        for line in _csv:
+            if len(line) < 3:
+                continue
+            #print(line)
+        return _csv
+
+    def _create_matrix_csv_data(self, file_name):
+        import json
+        # read file with additional license data
+        with open(file_name) as fp:
+            additional_data = json.load(fp)['osadl_additional_licenses']
+
+        # read osadl matrix data
+        import osadl_matrix
+        with open(osadl_matrix.OSADL_MATRIX_JSON) as fp:
+            osadl_data = json.load(fp)
+
+        # merge osadl and our data
+        for key, value in additional_data.items():
+            if key in osadl_data:
+                osadl_data[key].update(value)
+            else:
+                osadl_data[key] = value
+
+        new_matrix_data = self._create_matrix(osadl_data)
+        rows = []
+        for row in new_matrix_data:
+            rows.append(",".join(row))
+        return "\n".join(rows)
+
+    def extend_license_db(self, file_name):
+        """Extends the current license db with licese db provided in file_name.
+
+        Parameters:
+            file_name - file (str) with license db (JSON)
+
+        See SETTINGS.md for more information about format and
+        requirements for a custom database.
+        """
+        return self._create_matrix_csv_data(file_name)
+
+
+class LicenseChoser:
+    """Interface for classes to choose from inbound licenses (where a
+    choice is offered via OR).
+
+    """
+
+    def __init__(self, licenses):
+        """Parameters:
+               licenses - the licenses to create a chose object for
+        """
+        self.licenses = licenses
+        print("self.licenses: " + str(self.licenses))
+
+    def chose(self, licenses):
+        """Chose the most preferred license
+
+        Parameters:
+            licenses - list of licenses to chose the most preferred from
+        """
+        index = None
+        for lic in licenses:
+            lic_index = self.licenses.index(lic)
+            if index is None or lic_index < index:
+                index = lic_index
+
+        if index is None:
+            return None
+        else:
+            return self.licenses[index]
+
+    def list(self):
+        """returns a list of licenses in preference order"""
+        return self.licenses
+
+
+class CustomLicenseChoser(LicenseChoser):
+    """This class provides a custom way to choose from inbound licenses
+    (where a choice is offered via OR). By providing a list of licenses in order of preference, this list is used"""
+    pass
+
+
+class CompatibilityLicenseChoser(LicenseChoser):
+    """This class provides a simple way to choose from inbound licenses
+    (where a choice is offered via OR).
+
+    It counts how many other licenses each license is compatible
+    with. The more licenses a license is compatible with the more
+    preferred it will be. If two licenses have the same number of
+    compaitbilities alpabetical order will be used to chose license.
+    """
+
+    def __init__(self, licenses):
+        """Parameters:
+               licenses - the licenses to create a choser object for
+        """
+        self.licenses = self._license_preferences(licenses)
+
+    def _count_compat(self, inbound, supported_licenses):
+        compat_cnt = 0
+        for outbound in supported_licenses:
+            if osadl_matrix.is_compatible(outbound, inbound):
+                compat_cnt += 1
+        return {
+            "inbound": inbound,
+            "compatible_count": compat_cnt
+        }
+
+    def _count_compats(self, supported_licenses):
+        compats = []
+        for inbound in supported_licenses:
+            compats.append(self._count_compat(inbound, supported_licenses))
+        compats_sorted = sorted(compats, key = lambda element: (element['compatible_count'], element['inbound']))
+        compats_sorted.reverse()
+        return compats_sorted
+
+    def _license_preferences(self, supported_licenses):
+        compats_sorted = self._count_compats(supported_licenses)
+        pref_list = []
+        for lic in compats_sorted:
+            pref_list.append(lic['inbound'])
+
+        return pref_list
