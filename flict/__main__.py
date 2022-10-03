@@ -82,10 +82,10 @@ def parse():
     commmon_defaults_group.add_argument('--licenses-preference-file', '-lpf', type=str, dest='licenses_preference_file', help='', default=None)
 
     commmon_defaults_group.add_argument('--alias-file', '-af',
-                        action='store_true',
-                        dest='alias_file',
-                        help=f'Which file with aliases to use. Default to {flict_config.DEFAULT_FLICT_ALIAS_FILE}',
-                        default=False)
+                                        action='store_true',
+                                        dest='alias_file',
+                                        help=f'Which file with aliases to use. Default to {flict_config.DEFAULT_FLICT_ALIAS_FILE}',
+                                        default=False)
 
     commmon_defaults_group.add_argument('--license-info-file', '-lif', type=str, dest='licenses_info_file', help='Short for applying -lmf <file> -ldf <file> -lpf <file>', default=None)
 
