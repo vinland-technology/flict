@@ -11,43 +11,31 @@
 ###################################################################
 
 from flict.flictlib import logger
-from flict.flictlib.format.format import FormatInterface
+from flict.flictlib.format.format import FlictFormatter
 from flict.flictlib.format.markdown_format import _compat_to_markdown
 
 
-class DotFormatter(FormatInterface):
-
-    def format_support_licenses(self, compatibility):
-        return None
-
-    def format_license_list(self, license_list):
-        return None
-
-    def format_report(self, report):
-        return None
-
-    def format_license_project(self, project):
-        return None
-
-    def format_outbound_license(self, outbound_candidate):
-        return None
-
-    def format_license_combinations(self, combinations):
-        return None
+class DotFormatter(FlictFormatter):
 
     def format_compats(self, compats):
         checked_set = set()
-        result = "digraph depends {\n    node [shape=plaintext]\n"
+        result = []
+        result.append("digraph depends {\n    node [shape=plaintext]\n")
         for compat in compats['compatibilities']:
             #print("checked: " + str(checked_set))
             main_license = compat['license']
             for lic in compat['licenses']:
                 inner_license = lic['license']
+                #print("main: " + main_license + " <---> " + inner_license)
+                if main_license == inner_license:
+                    #print("skip same:      " + main_license + " "+ inner_license)
+                    continue
                 text_hash = _licenses_hash(main_license, inner_license)
                 # If already handled, continue
                 if text_hash in checked_set:
-                    #print(text_hash + " already handled")
+                    #print("skip text_hash: " + text_hash)
                     continue
+
                 checked_set.add(text_hash)
                 comp_left = lic['compatible_left']
                 comp_right = lic['compatible_right']
@@ -55,15 +43,10 @@ class DotFormatter(FormatInterface):
                 # print(json.dumps(lic))
                 compat_dot = _compat_to_dot(
                     main_license, comp_left, inner_license, comp_right)
-                result += "    " + compat_dot + "\n"
-        result += "\n}\n"
-        return result
-
-    def format_relicense_information(self, license_handler):
-        return None
-
-    def format_translation_information(self, license_handler):
-        return None
+                if compat_dot != "":
+                    result.append(f"    {compat_dot}\n")
+        result.append('}\n')
+        return " ".join(result)
 
 # help functions
 
@@ -128,3 +111,5 @@ def _compat_to_dot(left, comp_left, right, comp_right):
             {_print_compare_line(left, right, '[color="gray", style="dotted"]')}
             {_print_compare_line(right, left, '[color="gray", style="dotted"]')}
             """
+    else:
+        print("WHAT???")
