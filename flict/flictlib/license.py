@@ -7,8 +7,7 @@
 import license_expression
 
 from flict.flictlib.return_codes import FlictError, ReturnCodes
-import flict.flictlib.alias
-
+from flict.flictlib.alias import Alias
 import logging
 
 LICENSE_SYMBOL = "LicenseSymbol"
@@ -20,14 +19,15 @@ LICENSE_EXPRESSION_AND = "AND"
 class LicenseParserFactory:
 
     @staticmethod
-    def get_parser(denied_licenses):
+    def get_parser(denied_licenses, alias=None):
         # Not much of a choice really :)
-        return PrettyLicenseParser(denied_licenses)
+        return PrettyLicenseParser(denied_licenses, alias or Alias())
 
 
 class LicenseParser:
 
-    def __init__(self, denied_licenses):
+    def __init__(self, denied_licenses, alias):
+        self.alias = alias
         self._denied_licenses = denied_licenses
         self.utils = ParseUtils()
 
@@ -75,8 +75,8 @@ class LicenseParser:
 
 class PrettyLicenseParser(LicenseParser):
 
-    def __init__(self, denied_licenses):
-        super(PrettyLicenseParser, self).__init__(denied_licenses)
+    def __init__(self, denied_licenses, alias):
+        super(PrettyLicenseParser, self).__init__(denied_licenses, alias)
         self.licensing = license_expression.Licensing()
 
     def parse_license(self, expr):
@@ -195,7 +195,7 @@ class PrettyLicenseParser(LicenseParser):
 
     def simplify_license(self, expr):
         try:
-            aliased = flict.flictlib.alias.replace_aliases(expr)
+            aliased = self.alias.replace_aliases(expr)
             parsed = self.licensing.parse(aliased)
             simplified = str(parsed.simplify())
             return {
