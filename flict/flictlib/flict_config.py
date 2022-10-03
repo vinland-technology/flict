@@ -33,15 +33,10 @@ flict_version = "0.1"
 
 SCRIPT_DIR = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../"))
 
-# TODO: replace this with something that makes installation easy
 VAR_DIR = os.path.join(SCRIPT_DIR, "var")
 
-DEFAULT_TRANSLATIONS_BASE_FILE = "translation.json"
-DEFAULT_GROUP_BASE_FILE = "license-group.json"
-DEFAULT_RELICENSE_BASE_FILE = "relicense.json"
+BUILTIN_ALIAS_FILE = os.path.join(VAR_DIR,"alias.json")
 
-DEFAULT_TRANSLATIONS_FILE = _userconfig.get('translations-file', os.path.join(VAR_DIR, DEFAULT_TRANSLATIONS_BASE_FILE))
-DEFAULT_GROUP_FILE = _userconfig.get('group-file', os.path.join(VAR_DIR, DEFAULT_GROUP_BASE_FILE))
-DEFAULT_RELICENSE_FILE = _userconfig.get('relicense-file', os.path.join(VAR_DIR, DEFAULT_RELICENSE_BASE_FILE))
+DEFAULT_FLICT_ALIAS_FILE = os.path.join(VAR_DIR, BUILTIN_ALIAS_FILEf)
 DEFAULT_MATRIX_FILE = _userconfig.get('matrix-file', OSADL_MATRIX)
 DEFAULT_OUTPUT_FORMAT = _userconfig.get('output-format', "JSON")
