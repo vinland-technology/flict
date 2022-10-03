@@ -1,0 +1,468 @@
+{
+    "meta": {
+        "software":"",
+        "type": "",
+        "version":"0.1",
+        "description": ""
+    },
+    "aliases": [
+        {
+            "alias": "AFL-1",
+            "license": "AFL-1.2",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AFL-2",
+            "license": "AFL-2.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AFLv1",
+            "license": "AFL-1.2",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AFLv2",
+            "license": "AFL-2.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AGPL-3",
+            "license": "AGPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AGPL-3+",
+            "license": "AGPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AGPL-3.0",
+            "license": "AGPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AGPL-3.0+",
+            "license": "AGPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AGPLv3",
+            "license": "AGPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AGPLv3+",
+            "license": "AGPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AGPLv3.0",
+            "license": "AGPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "AGPLv3.0+",
+            "license": "AGPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "Apache-2",
+            "license": "Apache-2.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "apache-1.0",
+            "license": "Apache-1.0"
+        },
+        {
+            "alias": "apache-2.0",
+            "license": "Apache-2.0"
+        },
+        {
+            "alias": "Apache-2",
+            "license": "Apache-2.0"
+        },
+        {
+            "alias": "Apachev2",
+            "license": "Apache-2.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "Artistic-1",
+            "license": "Artistic-1.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "Artisticv1",
+            "license": "Artistic-1.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "BSD",
+            "license": "BSD-3-Clause"
+        },
+        {
+            "alias": "BSD-0-Clause",
+            "license": "0BSD",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "CDDL-1",
+            "license": "CDDL-1.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "CDDLv1",
+            "license": "CDDL-1.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "EPLv1.0",
+            "license": "EPL-1.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "FreeType",
+            "license": "FTL",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-1",
+            "license": "GPL-1.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-1+",
+            "license": "GPL-1.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-1.0",
+            "license": "GPL-1.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-1.0+",
+            "license": "GPL-1.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-2",
+            "license": "GPL-2.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-2+",
+            "license": "GPL-2.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-2.0",
+            "license": "GPL-2.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-2.0+",
+            "license": "GPL-2.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-3",
+            "license": "GPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-3+",
+            "license": "GPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-3.0",
+            "license": "GPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPL-3.0+",
+            "license": "GPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv1",
+            "license": "GPL-1.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv1+",
+            "license": "GPL-1.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv1.0",
+            "license": "GPL-1.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv1.0+",
+            "license": "GPL-1.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv2",
+            "license": "GPL-2.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv2+",
+            "license": "GPL-2.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv2.0",
+            "license": "GPL-2.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv2.0+",
+            "license": "GPL-2.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv3",
+            "license": "GPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv3+",
+            "license": "GPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv3.0",
+            "license": "GPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "GPLv3.0+",
+            "license": "GPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPL-2.0",
+            "license": "LGPL-2.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPL-2.0+",
+            "license": "LGPL-2.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPL-2.1",
+            "license": "LGPL-2.1-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPL-2.1+",
+            "license": "LGPL-2.1-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPL-3.0",
+            "license": "LGPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPL-3.0+",
+            "license": "LGPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPL2.1",
+            "license": "LGPL-2.1-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPL2.1+",
+            "license": "LGPL-2.1-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPLv2",
+            "license": "LGPL-2.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPLv2+",
+            "license": "LGPL-2.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPLv2.0",
+            "license": "LGPL-2.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPLv2.0+",
+            "license": "LGPL-2.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPLv2.1",
+            "license": "LGPL-2.1-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPLv2.1+",
+            "license": "LGPL-2.1-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPLv3",
+            "license": "LGPL-3.0-only",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "LGPLv3+",
+            "license": "LGPL-3.0-or-later",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "MIT-X",
+            "license": "MIT",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "MIT-style",
+            "license": "MIT",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "mit",
+            "license": "MIT"
+        },
+        {
+            "alias": "MPL-1",
+            "license": "MPL-1.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "MPLv1",
+            "license": "MPL-1.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "MPLv1.1",
+            "license": "MPL-1.1",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "MPLv2",
+            "license": "MPL-2.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "mpl-1.1",
+            "license": "MPL-1.1"
+        },
+        {
+            "alias": "Nauman",
+            "license": "Naumen",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "openssl",
+            "license": "OpenSSL"
+        },
+        {
+            "alias": "PSF",
+            "license": "PSF-2.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "PSFv2",
+            "license": "PSF-2.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "Python-2",
+            "license": "Python-2.0",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "SGIv1",
+            "license": "SGI-1",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "openssl",
+            "license": "OpenSSL",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "tcl",
+            "license": "TCL",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "vim",
+            "license": "Vim",
+            "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "zlib",
+            "license": "Zlib",
+            "comment": ""
+        },
+        {
+            "alias": "PD",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "LicenseRef-vinland-Public-Domain",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "Public-Domain",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "LicenseRef-vinland-Proprietary-Linked",
+            "license": "Proprietary-linked",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "LicenseRef-vinland-Proprietary",
+            "license": "Proprietary",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "GPL-3.0-or-later WITH GCC-exception-3.1",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "SLA0044",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "SLA0048",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "Mongose",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "libwww",
+            "license": "MIT",
+            "comment": "TESTING"
+        }
+    ]
+}
