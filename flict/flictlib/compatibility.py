@@ -10,7 +10,7 @@ from enum import Enum
 import osadl_matrix
 
 from flict.flictlib.return_codes import FlictError, ReturnCodes
-from flict.flictlib.alias import replace_aliases
+from flict.flictlib.alias import Alias
 
 
 class CompatibilityStatus(Enum):
@@ -31,15 +31,16 @@ class CompatibilityFactory:
     """
 
     @staticmethod
-    def get_compatibility(license_db=None):
+    def get_compatibility(alias=None, license_db=None):
         """Returns a Compatibility object.
 
             Parameters:
+                alias: alias object
                 licensedb: licensedb to use if not using default
 
         Currently only OsadlCompatibility is available.
         """
-        return OsadlCompatibility(license_db)
+        return OsadlCompatibility(alias or Alias(), license_db)
 
 
 class Compatibility:
@@ -47,7 +48,7 @@ class Compatibility:
 
     This class need to be implemented in sub classes.
     """
-    def __init__(self, license_db=None):
+    def __init__(self, alias, license_db=None):
         return None
 
     def check_compat(self, outbound, inbound):
@@ -111,6 +112,10 @@ class Compatibility:
                 comp_left = self.check_compat(lic_a, lic_b)['compatibility']
                 comp_right = self.check_compat(lic_b, lic_a)['compatibility']
 
+                if comp_left == CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value or comp_right == CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value:
+                    raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                                     f'One of the license expressions "{lic_a}" and "{lic_b}" is not supported.')
+
                 inner_licenses.append({
                     'license': lic_b,
                     'compatible_right': self._compatibility_status_json(comp_right),
@@ -148,14 +153,15 @@ class OsadlCompatibility(Compatibility):
     This class implements Compatibility
     """
 
-    def __init__(self, license_db=None):
+    def __init__(self, alias, license_db=None):
         self.license_db = license_db
+        self.alias = alias
 
     def check_compat(self, _outbound, _inbound):
 
         #print(f"check_compat({_outbound}, {_inbound})")
-        outbound = replace_aliases(_outbound)
-        inbound = replace_aliases(_inbound)
+        outbound = self.alias.replace_aliases(_outbound)
+        inbound = self.alias.replace_aliases(_inbound)
         #print(f"check_compat({outbound}, {inbound})")
         raw_result = osadl_matrix.get_compatibility(outbound, inbound, self.license_db)
 
@@ -174,7 +180,9 @@ class OsadlCompatibility(Compatibility):
             result = CompatibilityStatus.LICENSE_COMPATIBILITY_MANUALLY_CHECK.value
             logging.debug(f"compatibility: {outbound}  --> {inbound}: {result}")
         elif raw_result == osadl_matrix.OSADLCompatibility.UNDEF:
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined since (at least) one of the licenses are not supported.")
+            result = CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value
+
+            #raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined since (at least) one of the licenses are not supported.")
 
         else:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined. The result was: {result}")
@@ -262,7 +270,6 @@ class LicenseChoser:
                licenses - the licenses to create a chose object for
         """
         self.licenses = licenses
-        print("self.licenses: " + str(self.licenses))
 
     def chose(self, licenses):
         """Chose the most preferred license
