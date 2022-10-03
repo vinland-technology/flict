@@ -123,8 +123,8 @@ class FlictProjectReader(ProjectReader):
             raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'File "{project_file}" does not contain valid JSON data')
         except (FileNotFoundError, IsADirectoryError):
             raise FlictError(ReturnCodes.RET_FILE_NOT_FOUND, f'File "{project_file}" could not be found or is a directory')
-        except:
-            raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'File "{project_file}" could not be parsed, probably not a flict project file.')
+        except Exception as e:
+            raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'File "{project_file}" could not be parsed, probably not a flict project file: {e}')
 
 
 class SPDXJsonProjectReader(ProjectReader):
