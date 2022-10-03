@@ -129,7 +129,7 @@ class MarkdownFlictFormatter(FlictFormatter):
 
             output.append(self.package_name_header(package['name']))
             description = package.get('description', "")
-            if description != "":
+            if not description:
                 output.append(f"*Description*: {description}\n")
 
             if identified_licenses == []:
