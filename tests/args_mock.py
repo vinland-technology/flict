@@ -14,14 +14,20 @@ class ArgsMock:
     license_expression : str = ''
     licenses : str = None
     list_project_licenses : bool = False
-    matrix_file : str = flict_config.DEFAULT_MATRIX_FILE
-    no_relicense : str = False
+    license_matrix_file : str = flict_config.DEFAULT_MATRIX_FILE
+    licenses_info_file = None
+    in_license_expr = None
+    out_license = None
     outbound_licenses : str = None
     output_format : str = 'JSON'
-    project_file : str = None
-    report_file : str = None
-    relicense_file : str = flict_config.DEFAULT_RELICENSE_FILE
-    translations_file : str = flict_config.DEFAULT_TRANSLATIONS_FILE
+    verify_flict = None
+    verify_sbom = None
+    licenses_denied_file = None
+    licenses_preference_file = None
+    licenses_info_file = None
+    suggest_outbound_candidate = False
+    out_license = None
+    in_license = None
     verbose : str = False
     version : str = False
     def __init__(self, **kwargs):
