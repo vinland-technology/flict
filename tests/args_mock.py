@@ -22,6 +22,7 @@ class ArgsMock:
     output_format : str = 'JSON'
     verify_flict = None
     verify_sbom = None
+    alias_file = None
     licenses_denied_file = None
     licenses_preference_file = None
     licenses_info_file = None
