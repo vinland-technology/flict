@@ -31,7 +31,7 @@ flict can:
 
 * display, in misc format, compatibilies between licenses 
 
-* check outbound licenses against a policy (policy as supplied by the user)
+* ~~check outbound licenses against a policy (policy as supplied by the user)~~ (automatic now)
 
 flict supports:
 
@@ -92,15 +92,11 @@ flict outputs a report as well as an exit code.
 
 **12** - file not found
 
-## Compatibility report
+## Compatibility verification report
 
 A report of the component's compatibility with suggested outbound
 licenses is created. By default a short text report is created, but
 flict can provide a report in a couple of formats.
-
-## Policy report
-
-To the above report you can apply your own policy (see [SETTINGS](SETTINGS.md)). Applying this will create a policy report with your policy applied to the suggested outbound license from the usual report and with some complementary information.
 
 ## Report formats
 
@@ -122,18 +118,19 @@ Partially supported.
 You can create a user specific configuration for the tool that defines a few default parameters to your choices.
 Either create a json file at `~/.flict.cfg` or at a path defined by environment variable `FLICT_USERCONFIG`.
 
-| key               | sets CLI option         |
-| ----------------- | ----------------------- |
-| matrix-file       | -mf --matrix-file       |
-| output-format     | -of --output-format     |
-| relicense-file    | -rf --relicense-file    |
-| translations-file | -tf --translations-file |
+| key                   | sets CLI option              |
+| --------------------- | ---------------------------- |
+| license_matrix-file   | -lmf --license-matrix-file   |
+| licenses_denied_file  | -ldf --licenses-denied-file  |
+| licenses_denied_file  | -ldf --licenses-denied-file  |
+| alias-file            | -af  --alias-file            |
+| output-format         | -of  --output-format         |
 
 ### Example user configuration
 
 ```json
 {
-    "matrix-file": "/my/very/own/osadl-matrix.csv",
+    "license_matrix-file": "/my/very/own/osadl-matrix.csv",
     "output-format": "text",
 }
 ```
