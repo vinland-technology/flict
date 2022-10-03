@@ -1,0 +1,530 @@
+{
+    "osadl_additional_licenses" : {
+        "0BSD":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "AFL-2.0":  {
+            "Proprietary": "?",
+            "Permissive": "yes"
+        },
+        "AFL-2.1":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "AFL-3.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "AGPL-3.0-only":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "AGPL-3.0-or-later":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Apache-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Apache-1.1":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Apache-2.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Artistic-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Artistic-1.0-Perl":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Artistic-2.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "BSD-1-Clause":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "BSD-2-Clause":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "BSD-2-Clause-Patent":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "BSD-3-Clause":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "BSD-4-Clause":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "BSD-4-Clause-UC":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "BSD-Source-Code":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "BSL-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "CC0-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "CDDL-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "CDDL-1.1":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "CPL-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "EFL-2.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "EPL-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "EPL-2.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "EUPL-1.1":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "EUPL-1.2":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "FSFAP":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "FSFULLR":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "FTL":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "GPL-1.0-only":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "GPL-1.0-or-later":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "GPL-2.0-only":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "GPL-2.0-only WITH Classpath-exception-2.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "GPL-2.0-or-later":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "GPL-3.0-only":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "GPL-3.0-or-later":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "HPND":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "IBM-pibs":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "ICU":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "IJG":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "IPL-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "ISC":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Info-ZIP":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "LGPL-2.1-only":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "LGPL-2.1-or-later":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "LGPL-3.0-only":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "LGPL-3.0-or-later":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Libpng":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "MIT":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "MIT-CMU":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "MPL-1.1":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "MPL-2.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "MPL-2.0-no-copyleft-exception":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "MS-PL":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "MS-RL":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "MirOS":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "NBPL-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "NTP":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "OSL-3.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "OpenSSL":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "PHP-3.01":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "PostgreSQL":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Python-2.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Qhull":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "RSA-MD":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "SunPro":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "UPL-1.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Unicode-DFS-2015":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Unicode-DFS-2016":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Unlicense":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "W3C":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "W3C-19980720":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "W3C-20150513":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "WTFPL":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "X11":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "XFree86-1.1":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "ZPL-2.0":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Zlib":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "bzip2-1.0.5":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "bzip2-1.0.6":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "curl":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "libtiff":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "zlib-acknowledgement":  {
+            "Proprietary": "?",
+            "Permissive": "Yes"
+        },
+        "Proprietary": {
+            "0BSD": "Yes",
+            "AFL-2.0": "Yes",
+            "AFL-2.1": "Yes",
+            "AFL-3.0": "Yes",
+            "AGPL-3.0-only": "No",
+            "AGPL-3.0-or-later": "No",
+            "Apache-1.0": "Yes",
+            "Apache-1.1": "Yes",
+            "Apache-2.0": "Yes",
+            "Artistic-1.0": "Yes",
+            "Artistic-1.0-Perl": "Yes",
+            "Artistic-2.0": "Yes",
+            "BSD-1-Clause": "Yes",
+            "BSD-2-Clause": "Yes",
+            "BSD-2-Clause-Patent": "Yes",
+            "BSD-3-Clause": "Yes",
+            "BSD-4-Clause": "Yes",
+            "BSD-4-Clause-UC": "Yes",
+            "BSD-Source-Code": "Yes",
+            "BSL-1.0": "Yes",
+            "CC0-1.0": "Yes",
+            "CDDL-1.0": "Yes",
+            "CDDL-1.1": "Yes",
+            "CPL-1.0": "No",
+            "EFL-2.0": "Yes",
+            "EPL-1.0": "No",
+            "EPL-2.0": "Yes",
+            "EUPL-1.1": "No",
+            "EUPL-1.2": "Yes",
+            "FSFAP": "Yes",
+            "FSFULLR": "Yes",
+            "FTL": "Yes",
+            "GPL-1.0-only": "No",
+            "GPL-1.0-or-later": "No",
+            "GPL-2.0-only": "No",
+            "GPL-2.0-only WITH Classpath-exception-2.0": "Yes",
+            "GPL-2.0-or-later": "No",
+            "GPL-3.0-only": "No",
+            "GPL-3.0-or-later": "No",
+            "HPND": "Yes",
+            "IBM-pibs": "Yes",
+            "ICU": "Yes",
+            "IJG": "Yes",
+            "IPL-1.0": "No",
+            "ISC": "Yes",
+            "Info-ZIP": "Yes",
+            "LGPL-2.1-only": "Yes",
+            "LGPL-2.1-or-later": "Yes",
+            "LGPL-3.0-only": "Yes",
+            "LGPL-3.0-or-later": "Yes",
+            "Libpng": "Yes",
+            "MIT": "Yes",
+            "MIT-CMU": "Yes",
+            "MPL-1.1": "Yes",
+            "MPL-2.0": "Yes",
+            "MPL-2.0-no-copyleft-exception": "Yes",
+            "MS-PL": "Unknown",
+            "MS-RL": "No",
+            "MirOS": "Yes",
+            "NBPL-1.0": "Yes",
+            "NTP": "Yes",
+            "OSL-3.0": "No",
+            "OpenSSL": "Unknown",
+            "Permissive": "Yes",
+            "PHP-3.01": "Yes",
+            "PostgreSQL": "Yes",
+            "Python-2.0": "Yes",
+            "Qhull": "Yes",
+            "RSA-MD": "Yes",
+            "SunPro": "Yes",
+            "UPL-1.0": "Yes",
+            "Unicode-DFS-2015": "Yes",
+            "Unicode-DFS-2016": "Yes",
+            "Unlicense": "Yes",
+            "W3C": "Yes",
+            "W3C-19980720": "Yes",
+            "W3C-20150513": "Yes",
+            "WTFPL": "Yes",
+            "X11": "Yes",
+            "XFree86-1.1": "Yes",
+            "ZPL-2.0": "Yes",
+            "Zlib": "Yes",
+            "bzip2-1.0.5": "Yes",
+            "bzip2-1.0.6": "Yes",
+            "curl": "Yes",
+            "libtiff": "Yes",
+            "zlib-acknowledgement": "Yes",
+            "Proprietary": "Same"
+        }
+        ,
+        "Permissive": {
+            "0BSD": "Yes",
+            "AFL-2.0": "Yes",
+            "AFL-2.1": "Yes",
+            "AFL-3.0": "Yes",
+            "AGPL-3.0-only": "No",
+            "AGPL-3.0-or-later": "No",
+            "Apache-1.0": "Yes",
+            "Apache-1.1": "Yes",
+            "Apache-2.0": "Yes",
+            "Artistic-1.0": "Yes",
+            "Artistic-1.0-Perl": "Yes",
+            "Artistic-2.0": "Yes",
+            "BSD-1-Clause": "Yes",
+            "BSD-2-Clause": "Yes",
+            "BSD-2-Clause-Patent": "Yes",
+            "BSD-3-Clause": "Yes",
+            "BSD-4-Clause": "Yes",
+            "BSD-4-Clause-UC": "Yes",
+            "BSD-Source-Code": "Yes",
+            "BSL-1.0": "Yes",
+            "CC0-1.0": "Yes",
+            "CDDL-1.0": "No",
+            "CDDL-1.1": "No",
+            "CPL-1.0": "No",
+            "EFL-2.0": "Yes",
+            "EPL-1.0": "No",
+            "EPL-2.0": "No",
+            "EUPL-1.1": "No",
+            "EUPL-1.2": "No",
+            "FSFAP": "Yes",
+            "FSFULLR": "Yes",
+            "FTL": "Yes",
+            "GPL-1.0-only": "No",
+            "GPL-1.0-or-later": "No",
+            "GPL-2.0-only": "No",
+            "GPL-2.0-only WITH Classpath-exception-2.0": "No",
+            "GPL-2.0-or-later": "No",
+            "GPL-3.0-only": "No",
+            "GPL-3.0-or-later": "No",
+            "HPND": "Yes",
+            "IBM-pibs": "Yes",
+            "ICU": "Yes",
+            "IJG": "Yes",
+            "IPL-1.0": "No",
+            "ISC": "Yes",
+            "Info-ZIP": "Yes",
+            "LGPL-2.1-only": "No",
+            "LGPL-2.1-or-later": "No",
+            "LGPL-3.0-only": "No",
+            "LGPL-3.0-or-later": "No",
+            "Libpng": "Yes",
+            "MIT": "Yes",
+            "MIT-CMU": "Yes",
+            "MPL-1.1": "No",
+            "MPL-2.0": "No",
+            "MPL-2.0-no-copyleft-exception": "No",
+            "MS-PL": "Unknown",
+            "MS-RL": "No",
+            "MirOS": "Yes",
+            "NBPL-1.0": "Yes",
+            "NTP": "Yes",
+            "OSL-3.0": "No",
+            "OpenSSL": "Unknown",
+            "Permissive": "Same",
+            "PHP-3.01": "Yes",
+            "PostgreSQL": "Yes",
+            "Proprietary": "?",
+            "Proprietary-linked": "?",
+            "Python-2.0": "Yes",
+            "Qhull": "Yes",
+            "RSA-MD": "Yes",
+            "SunPro": "Yes",
+            "UPL-1.0": "Yes",
+            "Unicode-DFS-2015": "Yes",
+            "Unicode-DFS-2016": "Yes",
+            "Unlicense": "Yes",
+            "W3C": "Yes",
+            "W3C-19980720": "Yes",
+            "W3C-20150513": "Yes",
+            "WTFPL": "Yes",
+            "X11": "Yes",
+            "XFree86-1.1": "Yes",
+            "ZPL-2.0": "Yes",
+            "Zlib": "Yes",
+            "bzip2-1.0.5": "Yes",
+            "bzip2-1.0.6": "Yes",
+            "curl": "Yes",
+            "libtiff": "Yes",
+            "zlib-acknowledgement": "Yes"
+        }
+    }
+}
