@@ -55,9 +55,9 @@ Example:
 If you store this in a file, `denied-list.json`, you can use it like this:
 
 ```
-$ flict -of text verify -il MIT AND BSD-3-Clause -ol X11
+$ flict -of text verify -il 'MIT AND BSD-3-Clause' -ol X11
 Yes
-$ flict -of text -ldf example-data/denied-licenses.json verify  -il MIT AND BSD-3-Clause -ol X11
+$ flict -of text -ldf example-data/denied-licenses.json verify  -il 'MIT AND BSD-3-Clause' -ol X11
 No
 ```
 
