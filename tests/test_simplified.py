@@ -11,8 +11,6 @@ from tests.args_mock import ArgsMock
 def _test_expression(expression, result):
     args = ArgsMock(license_expression=expression)
     ret = FlictImpl(args).simplify()
-    print("ret:    " + str(ret))
-    print("result: " + str(result))
     assert json.loads(result) == ret
 
 def test_simplify():
