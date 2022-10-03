@@ -13,6 +13,7 @@
 from flict.flictlib import logger
 from flict.flictlib.format.format import FlictFormatter
 from flict.flictlib.format.markdown_format import _compat_to_markdown
+from flict.flictlib.return_codes import FlictError, ReturnCodes
 
 
 class DotFormatter(FlictFormatter):
@@ -112,4 +113,5 @@ def _compat_to_dot(left, comp_left, right, comp_right):
             {_print_compare_line(right, left, '[color="gray", style="dotted"]')}
             """
     else:
-        print("WHAT???")
+        FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                   f"Invalid state in dot_format: {left}, {comp_left}, {right}, {comp_right}")
