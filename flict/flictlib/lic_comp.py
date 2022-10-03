@@ -13,17 +13,19 @@ from flict.flictlib.compatibility import LICENSE_COMPATIBILITY_AND
 from flict.flictlib.compatibility import LICENSE_COMPATIBILITY_OR
 from flict.flictlib.compatibility import CompatibilityLicenseChoser
 from flict.flictlib.compatibility import CustomLicenseChoser
-import flict.flictlib.alias
+from flict.flictlib.alias import Alias
 
 COMPATIBILITY_TAG = "compatibility"
 
 
 class LicenseCompatibilty:
 
-    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None):
-        self.license_parser = LicenseParserFactory.get_parser(denied_licenses)
+    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, alias_file=None):
+        self.alias = Alias(alias_file)
 
-        self.compatibility = CompatibilityFactory.get_compatibility(license_db)
+        self.license_parser = LicenseParserFactory.get_parser(denied_licenses, self.alias)
+
+        self.compatibility = CompatibilityFactory.get_compatibility(self.alias, license_db)
 
         if licenses_preferences is None or licenses_preferences == []:
             self.license_choser = CompatibilityLicenseChoser(self.compatibility.supported_licenses())
@@ -31,7 +33,7 @@ class LicenseCompatibilty:
             self.license_choser = CustomLicenseChoser(licenses_preferences)
 
     def inbound_outbound_compatibility(self, outbound, inbound):
-        return self.compatibility.check_compat(flict.flictlib.alias.replace_aliases(outbound), flict.flictlib.alias.replace_aliases(inbound))
+        return self.compatibility.check_compat(self.alias.replace_aliases(outbound), self.alias.replace_aliases(inbound))
 
     def inbounds_outbound_compatibility(self, outbound, expr):
         """
@@ -105,8 +107,8 @@ class LicenseCompatibilty:
         if self.license_parser.is_license(expr):
             license = self.license_parser.license(expr)
 
-            outbound_aliased = flict.flictlib.alias.replace_aliases(self.license_parser.license(outbound))
-            license_aliased = flict.flictlib.alias.replace_aliases(license)
+            outbound_aliased = self.alias.replace_aliases(self.license_parser.license(outbound))
+            license_aliased = self.alias.replace_aliases(license)
 
             compat = self.compatibility.check_compat(outbound_aliased, license_aliased)
 
@@ -188,7 +190,7 @@ class LicenseCompatibilty:
         return self.compatibility.supported_licenses()
 
     def replace_aliases(self, expr):
-        return flict.flictlib.alias.replace_aliases(expr)
+        return self.alias.replace_aliases(expr)
 
     def check_compatibilities(self, licenses, check_all=False):
         return self.compatibility.check_compatibilities(licenses, check_all)
