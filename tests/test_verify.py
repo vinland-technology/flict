@@ -35,7 +35,7 @@ class TestVerification(unittest.TestCase):
         compat = package['compatibility'][0]
 
         compats = package['compatibility']
-        self.assertTrue(len(compats)==1)
+        self.assertEqual(len(compats), 1)
 
         self.assertIsNotNone(compat['allowed'])
         allowed = compat['allowed']
@@ -53,7 +53,7 @@ class TestVerification(unittest.TestCase):
         # freetype specific check
         package = verification['packages'][0]
         compats = package['compatibility']
-        self.assertTrue(len(compats)>1)
+        self.assertEqual(len(compats), 4)
 
 
 if __name__ == '__main__':
