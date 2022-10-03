@@ -68,7 +68,7 @@ In cases where a choice between licenses can be made flict chose the
 most preferred license. By default flict counts how many other
 licenses each license is compatible with. The more licenses a license
 is compatible with the more preferred it will be. If two licenses have
-the same number of compaitbilities alpabetical order will be used to
+the same number of compatibilities alpabetical order will be used to
 chose license.
 
 If you want to provide your own ordered list of license preference, you do this like this:
