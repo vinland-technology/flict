@@ -5,7 +5,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import datetime
-import getpass
 import os
 
 
@@ -21,7 +20,7 @@ def meta_information(start_time=""):
         'osVersion': uname.version,
         'machine': uname.machine,
         'host': uname.nodename,
-        'user': getpass.getuser(),
+        'user': os.environ.get('USER'),
         "start_time": start_time,
         'stop_time': timestamp()
     }
