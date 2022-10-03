@@ -1,382 +1,304 @@
 #!/usr/bin/env python3
 
-###################################################################
-#
-# flict - FOSS License Compatibility Tool
-#
-# SPDX-FileCopyrightText: 2020 Henrik Sandklef
+# SPDX-FileCopyrightText: 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-#
-###################################################################
+
+import license_expression
+
+from flict.flictlib.return_codes import FlictError, ReturnCodes
+import flict.flictlib.alias
+
+import logging
+
+LICENSE_SYMBOL = "LicenseSymbol"
+LICENSE_WITH_SYMBOL = "LicenseWithExceptionSymbol"
+LICENSE_EXPRESSION_OR = "OR"
+LICENSE_EXPRESSION_AND = "AND"
 
 
-from flict.flictlib.return_codes import FlictError
-from flict.flictlib.return_codes import ReturnCodes
-from flict.flictlib.relicense import read_relicense_file
-from flict.flictlib.relicense import relicense_license
-from flict.flictlib.translator import read_translations
-from license_expression import LicenseSymbol
-from license_expression import Licensing
-from flict.flictlib import logger
+class LicenseParserFactory:
 
-OR_STRING = " or "
-AND_STRING = " and "
+    @staticmethod
+    def get_parser(denied_licenses):
+        # Not much of a choice really :)
+        return PrettyLicenseParser(denied_licenses)
 
 
-class ManagedLicenseExpression:
-    """
-    This class contains all the different transforms of a license expression.
+class LicenseParser:
 
-    translated - "&" => "and", "GPLv2+" => "GPL-2-or-later"
-    expanded   - relicensed, e.g. "LGPL-2.1-or-later" => "GPL-2.0-only")
-    grouped    - "keithp-x11" => "Permissive"
-    simplified - simplified (boolean algebra) "MIT and MIT" => "MIT"
-    interim    - for internal use only
-    set_list   - see interim_license_expression_set_list()
-    """
+    def __init__(self, denied_licenses):
+        self._denied_licenses = denied_licenses
+        self.utils = ParseUtils()
 
-    def __init__(self, license_expression):
-        self.license_expression = license_expression
-        self.expanded = []
-        self.grouped = []
-        self.translated = []
-        self.simplified = []
-        self.interim = []
-        self.set_list = None
+    def denied_licenses(self):
+        return self._denied_licenses
 
-    def _debug_license(self, license_expression):
-        logger.license_logger.info(
-            "license expression:                    " + str(self.license_expression))
-        logger.license_logger.info(
-            "translated license expression:         " + str(self.translated))
-        logger.license_logger.info(
-            "expanded license expression:           " + str(self.expanded))
-        logger.license_logger.info(
-            "grouped license expression:            " + str(self.grouped))
-        logger.license_logger.info(
-            "simplified license expression:         " + str(self.simplified))
-        _debug_interim_license_expression_list(self.interim)
-        _debug_license_expression_set_list(self.set_list)
+    def parse_license(self, expr):
+        return
 
-    def to_json(self):
+    def licenses(self, expr):
+        return
+
+    def license_denied(self, license):
+        if self._denied_licenses:
+            return license in self._denied_licenses
+        return False
+
+    def license_allowed(self, license):
+        return not self.license_denied(license)
+
+    def is_operator(self, expr):
+        return expr['type'] == "operator"
+
+    def is_license(self, expr):
+        return expr['type'] == "license"
+
+    def operator(self, expr):
+        #assert (self.is_operator(expr))
+        return expr['name']
+
+    def is_or(self, expr):
+        return self.expr_operator(expr) == LICENSE_EXPRESSION_OR
+
+    def is_and(self, expr):
+        return self.operator(expr) == LICENSE_EXPRESSION_AND
+
+    def license(self, expr):
+        #assert (self.is_license(expr))
+        return expr['name']
+
+    def operands(self, expr):
+        #assert (self.is_operator(expr))
+        return expr['operands']
+
+
+class PrettyLicenseParser(LicenseParser):
+
+    def __init__(self, denied_licenses):
+        super(PrettyLicenseParser, self).__init__(denied_licenses)
+        self.licensing = license_expression.Licensing()
+
+    def parse_license(self, expr):
+        logging.debug(f"parse_license(\"{expr}\")")
+
+        if not isinstance(expr, list):
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Internal error: Expression to parse must be a list: {expr}")
+
+        if len(expr) == 0:
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Internal error: Expression list cannot be empty: {expr}")
+
+        if len(expr[0]) == 0:
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, "Internal error: Expression list's first item cannot be empty")
+
+        lic_expr = " ".join(expr).replace(")", " ) ").replace("(", " ( ")
+        logging.debug(f"expression:         {lic_expr}")
+
+        parsed = self.licensing.parse(lic_expr)
+        logging.debug(f"parsed expression:  {parsed}")
+
+        simplified = parsed.simplify()
+        logging.debug(f"parsed expression:  {simplified}")
+
+        pretty = self.licensing.parse(simplified).pretty()
+        logging.debug(f"pretty expression:  {pretty}")
+
+        trimmed = pretty.replace("\n", "")
+        logging.debug(f"trimmed expression: {trimmed}")
+
+        logging.debug(f"parse_license(\"{expr}\") => {trimmed}")
         return {
-            'expanded': self.expanded,
-            'grouped': self.grouped,
-            'simplified': self.simplified,
-            'set_list': self.set_list
+            "license": self._parse_license(trimmed),
+            'original': lic_expr,
+            'trimmed': trimmed
         }
 
-    def __str__(self):
-        return f"""
-                license expression:                    {str(self.license_expression)}
-                translated license expression:         {str(self.translated)}
-                expanded license expression:           {str(self.expanded)}
-                grouped license expression:            {str(self.grouped)}
-                simplified license expression:         {str(self.simplified)}
-                interim license expression:            {interim_license_expression_list_to_string(self.interim)}
-                license expression list:               {license_expression_set_list_to_string(self.set_list)}
-                """
+    def _parse_license(self, expr):
+        logging.info(f"_parse_license(\"{expr}\")")
 
+        is_operator = self.utils.is_operator(expr)
 
-class LicenseExpressionList:
-    def __init__(self, op, list):
-        self.op = op
-        self.list = list
+        if is_operator:
 
+            op = self.utils.next_operator(expr)
+            rest = expr[len(op):]
 
-class LicenseHandler:
+            # assert next token is "("
+            #assert ( rest.strip()[:1] == "(" )
 
-    def __init__(self, translations_files, relicense_file, group_file):
-        self.translations_files = translations_files
-        self.relicense_file = relicense_file
-        self.relicense_map = None
-        self.group_file = group_file
-        symbols = self.read_symbols(self.translations_files)
-        self.licensing = Licensing(symbols)
+            # find last parenthesis and
+            rest = rest[1:self.utils.index_last_parenthesis(rest)].strip()
 
-    def read_symbols(self, translations_files):
-        symbols_map = {}
-        self.translations = []
-        for translations_file in translations_files.split():
-            translation_data = read_translations(translations_file)
-            self.translations.append(translation_data)
-            for lic_key in translation_data:
-                if lic_key not in symbols_map:
-                    symbols_map[lic_key] = set()
-                for val in translation_data[lic_key]:
-                    symbols_map[lic_key].add(val)
+            operands = []
 
-        return [LicenseSymbol(key=key, aliases=tuple(value))
-                for key, value in symbols_map.items()]
-
-    def translate_and_relicense(self, license_expression):
-        transl = self.translate(license_expression)
-        if not transl:
-            transl = license_expression
-        rel = self.expand_relicense(transl)
-
-        return rel if rel else transl
-
-    def expand_relicense(self, license_expression):
-        if self.relicense_file is not None and self.relicense_file:
-            self.relicense_map = read_relicense_file(self.relicense_file)
-            expanded = relicense_license(
-                self.relicense_map, license_expression)
-            return expanded.strip()
         else:
-            return license_expression.strip()
+            rest = expr
 
-    def group(self, license_expression):
-        return license_expression.strip()
+        while (rest != ""):
+            if self.utils.is_license(rest):
+                lic, rest = self.utils.get_license(rest)
+                operand = {
+                    'type': 'license',
+                    'name': lic
+                }
 
-    def translate(self, license_expression):
-        license_expression = license_expression.replace(
-            "&", AND_STRING).replace("|", OR_STRING)
-        return str(self.simplify(license_expression))
-
-    def simplify(self, license_expression):
-        parsed = self.licensing.parse(license_expression)
-        return parsed.simplify()
-
-    def license_expression_list_json(self, license_expression, relicense=True):
-        license = self.license_expression_list(license_expression, relicense)
-        return {
-            "license_expression": license_expression,
-            "expanded": license.expanded,
-            "grouped": license.grouped,
-            "translated": license.translated,
-            "simplified": license.simplified,
-            "interim": license.interim,
-            "set_list": license.set_list
-        }
-
-    def license_expression_list(self, license_expression, relicense=True):
-
-        license = ManagedLicenseExpression(license_expression)
-        license.translated = self.translate(license_expression)
-
-        # We need str to skip verbose output
-        license.simplified = str(self.simplify(license.translated))
-
-        if relicense:
-            license.expanded = self.expand_relicense(license.simplified)
-        else:
-            license.expanded = license.simplified
-
-        license.grouped = self.group(license.expanded)
-
-        license.interim = self.interim_license_expression_list(
-            license.grouped, self.licensing)
-
-        license.set_list = self.interim_license_expression_set_list(
-            license.interim)
-
-        return license
-
-    def interim_license_expression_list(self, license_expression, licensing):
-        """
-        Transforms and boolean symbolic expression
-
-        Turns an expression like this:
-            G AND (A OR B)
-        into:
-            AND [G, OR [A, B]]
-        The latter is an interim format.
-        """
-        encoded = encode_license_expression(license_expression)
-        tokenizer = licensing.get_advanced_tokenizer()
-        tokenized = tokenizer.tokenize(encoded)
-        current_license = None
-        current_licenses = []
-        current_op = None
-        paren_expr = None
-        paren_count = 0
-        for token in tokenized:
-            tok = token.string
-            if tok == '(':
-                if paren_expr is None:
-                    paren_expr = ""
+                if (is_operator):
+                    operands.append(operand)
                 else:
-                    paren_expr = paren_expr + " " + tok
-                    paren_count = paren_count + 1
-            elif tok == ')':
-                if paren_count == 0:
-                    current_license = self.interim_license_expression_list(
-                        paren_expr, licensing)
-                    paren_expr = None
-                else:
-                    paren_count = paren_count - 1
-                    paren_expr = paren_expr + " " + tok
-            elif tok == 'OR' or tok == 'AND':
-                if paren_expr is not None:
-                    paren_expr = paren_expr + " " + tok
-                else:
-                    if current_licenses is None:
-                        raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
-                                         "Internal failure. Failed creating interim license expression. current_licenses is None")
-                    if current_op is None:
-                        # first operator
-                        current_op = tok
-                        current_licenses.append(current_license)
-                    elif current_op == tok:
-                        # same operator
-                        current_licenses.append(current_license)
-                    else:
-                        # different operator
-                        raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
-                                         "Internal failure. Failed creating interim license expression.")
+                    return operand
+            elif self.utils.is_operator(rest):
+                operation, rest = self.utils._get_op_expr(rest)
+                logging.info(f"  operation: {operation}")
+                parsed = self._parse_license(operation)
+                operands.append(parsed)
+            elif self.utils.next_token(rest) == ",":
+                rest = self.utils.remove_comma(rest)
+            elif self.utils.next_token(rest) == LICENSE_WITH_SYMBOL:
+                lic, rest = self.utils.get_license(rest)
+                operand = {
+                    'type': 'license',
+                    'name': lic
+                }
             else:
-                if paren_expr is not None:
-                    paren_expr = paren_expr + " " + tok
-                else:
-                    current_license = tok
+                logging.error("*** PANIC IN DETROIT ***")
+                logging.error(rest)
+                # TODO: raise exception
+        return {
+            'type': 'operator',
+            'name': op,
+            'operands': operands
+        }
 
-        current_licenses.append(current_license)
-        if current_op is None:
-            current_op = "AND"
-
-        list = LicenseExpressionList(current_op, current_licenses)
-        return list
-
-    def _combinations(self, lel):
-        if not isinstance(lel, LicenseExpressionList):
-            return 1
-        if lel.op == "AND":
-            prod = 1
-            for item in lel.list:
-                prod = prod * self._combinations(item)
-            return prod
-        elif lel.op == "OR":
-            sum = 0
-            for item in lel.list:
-                sum = sum + self._combinations(item)
-            return sum
-        else:
-            FlictError(ReturnCodes.RET_INTERNAL_ERROR,
-                       f"Internal failure. Failed identifying operator: {lel}")
-
-    def interim_license_expression_set_list(self, interim_license_expression_list):
+    def licenses(self, expr):
         """
-        Transforms a boolean symbolic expression
+        Given a license expression, the licenses in the expression is returned as a list.
 
-        Turns an expression like this:
-            AND [G, OR [A, B]]
-        into:
-            [
-              { G, A },
-              { G, B }
-            ]
-        The latter is an interim format.
+        Parameters:
+            expr - license expression
+
+        Examples:
+          licenses("( FTL OR GPL-2.0-or-later ) AND (  ( Libpng)  AND  ( Zlib)  ) ")
+
+          will return:
+            'GPL-2.0-or-later', 'Zlib', 'FTL', 'Libpng'
         """
-        expanded_list = []
+        try:
+            logging.debug(f"licenses(\"{expr}\")")
+            parsed = self.licensing.parse(expr.replace(" WITH ", "_WITH_"))
+            keys = self.licensing.license_keys(parsed)
+            key_set = set()
+            for key in keys:
+                key_set.add(key.replace("_WITH_", " WITH "))
+            return list(key_set)
+        except:
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Could not parse and list license expression: {expr}")
 
-        if not isinstance(interim_license_expression_list, LicenseExpressionList):
-            # single license
-            license_set = {decode_license_expression(interim_license_expression_list)}
-            expanded_list.append(list(license_set))
-            return expanded_list
-
-        current_op = interim_license_expression_list.op
-        for lep in interim_license_expression_list.list:
-            if current_op is None:
-                raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
-                                 "Internal failure. No operator found")
-
-            lep_list = self.interim_license_expression_set_list(lep)
-            if current_op == "OR":
-                expanded_list = self._manage_list_item_or(
-                    expanded_list, lep_list)
-
-            elif current_op == "AND":
-                expanded_list = self._manage_list_item_and(
-                    expanded_list, lep_list)
-        return expanded_list
-
-    def _manage_list_item_and(self, license_list, lep):
-        if isinstance(lep, LicenseExpressionList):
-            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
-                             f"Internal failure. Wrong type {lep} for: {lep}")
-
-        # single license
-        if len(license_list) == 0:
-            return lep
-
-        new_list = []
-        for item in license_list:
-            for lep_item in lep:
-                new_item = list(set(item + lep_item))
-                new_list.append(new_item)
-
-        return new_list
-
-    def _manage_list_item_or(self, license_list, lep):
-        if isinstance(lep, LicenseExpressionList):
-            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
-                             f"Internal failure. Wrong type {lep} for: {lep}")
-
-        # single license
-        if len(license_list) == 0:
-            return lep
-
-        new_list = license_list
-        for lep_item in lep:
-            new_list.append(lep_item)
-
-        return new_list
-
-    def relicensing_information(self):
-        if self.relicense_map is None:
-            self.relicense_map = read_relicense_file(self.relicense_file)
-        return self.relicense_map
-
-    def translation_information(self):
-        return self.translations
+    def simplify_license(self, expr):
+        try:
+            aliased = flict.flictlib.alias.replace_aliases(expr)
+            parsed = self.licensing.parse(aliased)
+            simplified = str(parsed.simplify())
+            return {
+                "original": expr,
+                "simplified": simplified
+            }
+        except:
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Could not parse or simplify license expression: {expr}")
 
 
-def _debug_license_expression_set_list(ilel):
-    logger.license_logger.debug("interim license expression set list:  {i}".format(
-        i=license_expression_set_list_to_string(ilel)))
+class ParseUtils:
+
+    def _find_expr_end(self, expr):
+        logging.debug(f"_find_expr_end(\"{expr}\")")
+
+        first_found = False
+        paren_count = 0
+        size = 0
+        for tok in expr:
+            if tok == "(":
+                #logging.debug("-found (  :" + expr[size:])
+                paren_count += 1
+                first_found = True
+            elif tok == ")":
+                #logging.debug("-found )  :" + expr[size:])
+                paren_count -= 1
+
+            size += 1
+            if paren_count == 0 and first_found:
+                #logging.debug(" -: " + str(size))
+                #logging.debug("1-: " + expr[1:size])
+                # may be some space and crap
+                index = 0
+                #if ")" in expr[size+1:]:
+                #    index = expr[size+1:].index(")")
+
+                #logging.debug("2-: " + expr[1:size+index])
+                return size + index
+
+        # TODO: raise exception
+
+    def next_token(self, expr):
+        for i in range(len(expr)):
+            if i == " " or i == "\n":
+                pass
+            else:
+                if expr.startswith(LICENSE_EXPRESSION_OR):
+                    return LICENSE_EXPRESSION_OR
+                elif expr.startswith(LICENSE_EXPRESSION_AND):
+                    return LICENSE_EXPRESSION_AND
+                elif expr.startswith(LICENSE_SYMBOL):
+                    return LICENSE_SYMBOL
+                elif expr.startswith(LICENSE_WITH_SYMBOL):
+                    return LICENSE_WITH_SYMBOL
+
+                return expr[i]
+
+    def next_operator(self, expr):
+        token = self.next_token(expr)
+        if token == LICENSE_EXPRESSION_OR or token == LICENSE_EXPRESSION_AND:
+            return token
+        return None
+
+    def is_operator(self, expr):
+        #assert (expr != None)
+        return self.next_operator(expr) is not None
+
+    def is_license(self, expr):
+        return expr.startswith(LICENSE_SYMBOL) or expr.startswith(LICENSE_WITH_SYMBOL)
+
+    def is_with(self, expr):
+        return expr.startswith(LICENSE_WITH_SYMBOL)
+
+    def remove_comma(self, expr):
+        stripped = expr.strip()
+        #assert( stripped[0] == "," )
+        return stripped[1:].strip()
+
+    def _get_op_expr(self, expr):
+        #assert (self.is_operator(expr))
+        expr = expr.strip()
+        index = self._find_expr_end(expr)
+        #assert ( index != None )
+        operation = expr[:index]
+        rest = expr[index:]
+        #logging.debug("_get_op_expr => ")
+        #logging.debug("    expression: \"" + expr + "\"")
+        #logging.debug("    operation:  \"" + operation + "\"")
+        #logging.debug("    rest:       \"" + rest + "\"")
+        return (operation, rest)
+
+    def get_license(self, expr):
+        #assert( self.is_license(expr) )
+        index = expr.index(")")
+        if LICENSE_WITH_SYMBOL in expr:
+            lic = expr[len(LICENSE_WITH_SYMBOL) + 1:index].replace("'", "")
+        elif LICENSE_SYMBOL in expr:
+            lic = expr[len(LICENSE_SYMBOL) + 1:index].replace("'", "")
+
+        rest = expr[index + 1:]
+        return (lic, rest)
+
+    def index_last_parenthesis(self, expr):
+        return expr.rfind(")")
 
 
-def license_to_string_long(license):
-    return f"""
-            original:   {license.license_expression}
-            translated: {license.translated}
-            expanded:   {license.expanded}
-            grouped:    {license.grouped}
-            simplified: {license.simplified}
-            set_list:   {str(license.set_list)}
-            """
-
-
-def license_expression_set_list_to_string(set_list):
-    _sorted = [",".join(sorted(license_set)) for license_set in set_list.sort()]
-
-    return "[{0}]".format(",".join(_sorted))
-
-
-def _debug_interim_license_expression_list(lel):
-    logger.license_logger.debug("interim license expression list:       {i}".format(
-        i=interim_license_expression_list_to_string(lel)))
-
-
-def interim_license_expression_list_to_string(lel):
-    if lel.op is not None:
-        op = lel.op
-    else:
-        op = ""
-
-    _expr = [interim_license_expression_list_to_string(item)
-             if isinstance(item, LicenseExpressionList) else item
-             for item in lel.list]
-
-    return "{0} [{1}]".format(op, ", ".join(_expr))
-
-
-def encode_license_expression(license_expression):
-    return license_expression.replace(" WITH ", "_WITH_")
-
-
-def decode_license_expression(license_expression):
-    return license_expression.replace("_WITH_", " WITH ")
