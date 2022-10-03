@@ -16,14 +16,14 @@ from flict.flictlib.utils import timestamp
 class Arbiter:
     """Arbiter is a class to verify compatibility"""
 
-    def __init__(self, license_db = None, licenses_preferences = None, denied_licenses=None):
+    def __init__(self, license_db = None, licenses_preferences = None, denied_licenses=None, alias_file=None):
         """Initializes Arbiter objects
              Parameters:
                  license_db: license database to use instead of builtin
                  licenses_preferences: license preferences to use instead of builtin
                  denied_licenses: licenses that cannot be used
         """
-        self.license_compatibility = LicenseCompatibilty(license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses)
+        self.license_compatibility = LicenseCompatibilty(license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses, alias_file=alias_file)
 
     def supported_licenses(self):
         """Returns the supported licenses"""
