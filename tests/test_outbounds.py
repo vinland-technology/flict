@@ -24,19 +24,10 @@ def test_outbound():
     _test_expression(['GPL-2.0-only or (Apache-2.0 and MIT)'], ['Apache-2.0', 'GPL-2.0-only', 'MIT'])
     _test_expression(['GPL-2.0-only and Apache-2.0'], [])
     _test_expression(['GPL-2.0-only and Apache-2.0 and MPL-2.0'], [])
-    _test_expression(['GPL-2.0-only and MPL-2.0'], ['GPL-2.0-only', 'GPL-2.0-or-later'])
-    _test_expression(['GPL-2.0-only and MPL-2.0'], ['GPL-2.0-only', 'GPL-2.0-or-later'])
+    _test_expression(['GPL-2.0-only and MPL-2.0'], ['GPL-2.0-only'])
+    _test_expression(['GPL-2.0-only and MPL-2.0'], ['GPL-2.0-only'])
     _test_expression(['GPL-2.0-only and (MPL-2.0 or Apache-2.0) and BSD-3-Clause'],
-                    ['GPL-2.0-only', 'GPL-2.0-or-later'])
+                    ['GPL-2.0-only'])
     _test_expression(['(GPL-2.0-only or MPL-2.0) and (Apache-2.0 or BSD-3-Clause)'],
-                    ['AGPL-3.0-or-later', 'GPL-2.0-only', 'GPL-2.0-or-later', 'GPL-3.0-or-later', 'LGPL-2.1-or-later'])
+                    ['GPL-2.0-only', 'MPL-2.0'])
 
-def test_no_relicense():
-    args = ArgsMock(license_expression=['GPL-2.0-only and MPL-2.0'], relicense_file='', no_relicense=True)
-    imp = FlictImpl(args)
-    ret = imp.suggest_outbound_candidate()
-    assert ['GPL-2.0-only'] == json.loads(ret)
-
-    args = ArgsMock(license_expression=['GPL-2.0-only and MPL-2.0'], relicense_file='')
-    ret = FlictImpl(args).suggest_outbound_candidate()
-    assert ['GPL-2.0-only'] == json.loads(ret)

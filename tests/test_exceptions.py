@@ -32,37 +32,22 @@ def test_exceptions():
 
     with pytest.raises(FlictError) as _error:
         prj = os.path.join(TEST_DIR, 'example-data')
-        args = ArgsMock(project_file=prj)
+        args = ArgsMock(verify_flict=prj)
         FlictImpl(args).verify()
 
     assert _error.value.args[0] == ReturnCodes.RET_FILE_NOT_FOUND
 
     with pytest.raises(FlictError) as _error:
         prj = os.path.join(TEST_DIR, 'setup.py')
-        args = ArgsMock(project_file=prj)
+        args = ArgsMock(verify_flict=prj)
         FlictImpl(args).verify()
 
     assert _error.value.args[0] == ReturnCodes.RET_INVALID_PROJECT
 
     with pytest.raises(FlictError) as _error:
         prj = os.path.join(TEST_DIR, 'example-data/europe-small-bad.json')
-        args = ArgsMock(project_file=prj)
+        args = ArgsMock(verify_flict=prj)
         FlictImpl(args).verify()
 
     assert _error.value.args[0] == ReturnCodes.RET_INVALID_PROJECT
-
-    with pytest.raises(FlictError) as _error:
-        rep = os.path.join(TEST_DIR, 'example-data/bad-non-json-file.json')
-        args = ArgsMock(report_file=rep)
-        FlictImpl(args).policy_report()
-
-    assert _error.value.args[0] == ReturnCodes.RET_INTERNAL_ERROR
-
-    with pytest.raises(FlictError) as _error:
-        rep = os.path.join(TEST_DIR, 'example-data/valid-empty-json-file.json')
-        prj = os.path.join(TEST_DIR, 'example-data/bad-non-json-file.json')
-        args = ArgsMock(report_file=rep, policy_file=prj)
-        FlictImpl(args).policy_report()
-
-    assert _error.value.args[0] == ReturnCodes.RET_INTERNAL_ERROR
 
