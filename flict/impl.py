@@ -78,6 +78,7 @@ class FlictImpl:
     def _get_arbiter(self):
         licenses_denied_file = self._args.licenses_denied_file
         licenses_preference_file = self._args.licenses_preference_file
+        alias_file = self._args.alias_file
 
         if self._args.licenses_info_file:
             licenses_denied_file = self._args.licenses_info_file
@@ -86,7 +87,7 @@ class FlictImpl:
         licenses_denied = self._read_json_object(licenses_denied_file, "licenses_denied", [])
         licenses_preferences = self._read_json_object(licenses_preference_file, "license_preferences", [])
         #parser = LicenseParserFactory.get_parser(licenses_preferences, licenses_denied)
-        arbiter = Arbiter(license_db=self._args.license_matrix_file, licenses_preferences=licenses_preferences, denied_licenses=licenses_denied)
+        arbiter = Arbiter(license_db=self._args.license_matrix_file, licenses_preferences=licenses_preferences, denied_licenses=licenses_denied, alias_file=alias_file)
 
         return arbiter
 
