@@ -3,137 +3,108 @@
 # flict - FOSS License Compatibility Tool
 #
 # SPDX-FileCopyrightText: 2021 Jens Erdmann
+# SPDX-FileCopyrightText: 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 ###################################################################
 
 
-from flict.flictlib.compatibility import Compatibility
-from flict.flictlib.format.factory import FormatFactory
-from flict.flictlib.license import LicenseHandler, decode_license_expression, encode_license_expression
-from flict.flictlib.policy import Policy
-from flict.flictlib.project import Project
-from flict.flictlib.report import Report
 from flict.flictlib.return_codes import FlictError, ReturnCodes
+
+from flict.flictlib.arbiter import Arbiter
+from flict.flictlib.format.factory import FormatterFactory
+from flict.flictlib.project.reader import ProjectReaderFactory
 
 import json
 
 
 class FlictImpl:
+
     def __init__(self, args) -> None:
         self._args = args
-        self._formatter = FormatFactory.formatter(args.output_format)
-        self._license_handler = LicenseHandler(args.translations_file, args.relicense_file, "")
-        self._compatibility = Compatibility(args.matrix_file,
-                                            args.extended_licenses)
+        self._formatter = FormatterFactory.formatter(args.output_format)
 
-    def _empty_project_report(self, licenses):
-        project = Project(None, self._license_handler, licenses)
-        return Report(project, self._compatibility)
-
-    def simplify(self):
-        lic_str = " ".join(self._args.license_expression)
-
-        try:
-            license = self._license_handler.license_expression_list(lic_str)
-            return self._formatter.format_simplified(lic_str, license.simplified)
-        except:
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             f'Invalid expression to simplify: {self._args.license_expression}')
-
-    def list_licenses(self):
-        if self._args.list_relicensing:
-            return self._formatter.format_relicense_information(self._license_handler)
-        elif self._args.list_translation:
-            return self._formatter.format_translation_information(self._license_handler)
-        else:
-            return self._formatter.format_support_licenses(self._compatibility)
-
-    def _verify_license_expression(self):
-        lic_str = " ".join(self._args.license_expression)
-
-        try:
-            report = self._empty_project_report(lic_str)
-            candidates = report.outbound_candidates()
-            return self._formatter.format_verified_license(lic_str, candidates)
-        except:
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             f'Could not parse expression "{self._args.license_expression}"')
-
-    def _verify_project_file(self):
-        try:
-            project = Project(self._args.project_file, self._license_handler)
-        except FlictError as e:
-            raise(e)
-        except:
-            raise FlictError(ReturnCodes.RET_INVALID_PROJECT)
-
-        if self._args.list_project_licenses:
-            return self._formatter.format_license_list(list(project.license_set()))
-        elif self._args.license_combination_count:
-            return self._formatter.format_license_combinations(project)
-        else:
-            report = Report(project, self._compatibility)
-            return self._formatter.format_report(report)
-
-    def verify(self):
-        if self._args.project_file:
-            return self._verify_project_file()
-        elif self._args.license_expression:
-            return self._verify_license_expression()
-        else:
-            raise FlictError(ReturnCodes.RET_MISSING_ARGS,
-                             "Missing argument to the verify command")
-
-    def _read_compliance_report(self, report_file):
-        on_error = "Internal error, report file has improper format, required: JSON"
-        try:
-            with open(report_file) as file_:
-                return json.load(file_)
-        except json.decoder.JSONDecodeError:
-            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR, on_error)
-
-    def policy_report(self):
-        _compliance_report = self._read_compliance_report(self._args.report_file)
-        _policy = Policy(self._args.policy_file)
-        _policy_report = _policy.report(_compliance_report)
-        return self._formatter.format_policy_report(_policy_report)
+    def merge_license_db(self):
+        arbiter = self._get_arbiter()
+        return arbiter.extend_license_db(self._args.license_file)
 
     def display_compatibility(self):
-        try:
-            # build up license string from all expressions
-            lic_str = " ".join(self._args.license_expression)
+        arbiter = self._get_arbiter()
+        inter_compats = arbiter.check_compatibilities(self._args.license_expression)
+        return self._formatter.format_compats(inter_compats)
 
-            # encode (flict) all the license expression
-            lic_str = encode_license_expression(lic_str)
-
-            # build up license string from the expression string
-            _licenses = []
-            for lic in lic_str.split():
-                lic_list = self._license_handler.translate_and_relicense(lic).replace("(", "").replace(
-                    ")", "").replace(" ", "").replace("OR", " ").replace("AND", " ").strip().split(" ")
-
-                for lic in lic_list:
-                    _licenses.append(decode_license_expression(lic))
-
-            # Diry trick to remove all duplicates
-            licenses = list(set(_licenses))
-
-            compats = self._compatibility.check_compatibilities(licenses, self._args.extended_licenses)
-        except:
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             f'Could not parse license expression: {self._args.license_expression}')
-
-        return self._formatter.format_compats(compats)
+    def simplify(self):
+        arbiter = self._get_arbiter()
+        return arbiter.simplify_license(" ".join(self._args.license_expression))
 
     def suggest_outbound_candidate(self):
-        lic_str = " ".join(self._args.license_expression)
-
+        arbiter = self._get_arbiter()
+        licenses = arbiter.licenses(" ".join(self._args.license_expression))
+        outbounds = []
         try:
-            _report = self._empty_project_report(lic_str)
-            _outbound_candidates = _report.outbound_candidates()
-            return self._formatter.format_outbound_license(_outbound_candidates)
+            for outbound in licenses:
+                compats = arbiter.inbounds_outbound_check(outbound, self._args.license_expression)
+                compatible = (compats['compatibility'] == "Yes")
+                if compatible:
+                    outbounds.append(outbound)
+
+            outbounds.sort()
+            return self._formatter.format_outbound_license(outbounds)
+
         except:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                              f'Invalid license expression: {self._args.license_expression}')
+
+    def list_licenses(self):
+        arbiter = self._get_arbiter()
+        licenses = list(arbiter.supported_licenses())
+        licenses.sort(key=str.lower)
+        return self._formatter.format_support_licenses(licenses)
+
+    def _handle_lico_project(self, arbiter, reader, project_file, formatter):
+        project = reader.read_project(project_file)
+        verification = arbiter.verify(project)
+        verification_report = formatter.format_verification(verification)
+        return verification_report
+
+    def _read_json_object(self, file_name, object_key, ret):
+        if not file_name:
+            return ret
+        else:
+            with open(file_name) as fp:
+                return json.load(fp)[object_key]
+
+    def _get_arbiter(self):
+        licenses_denied_file = self._args.licenses_denied_file
+        licenses_preference_file = self._args.licenses_preference_file
+
+        if self._args.licenses_info_file:
+            licenses_denied_file = self._args.licenses_info_file
+            licenses_preference_file = self._args.licenses_info_file
+
+        licenses_denied = self._read_json_object(licenses_denied_file, "licenses_denied", [])
+        licenses_preferences = self._read_json_object(licenses_preference_file, "license_preferences", [])
+        #parser = LicenseParserFactory.get_parser(licenses_preferences, licenses_denied)
+        arbiter = Arbiter(license_db=self._args.license_matrix_file, licenses_preferences=licenses_preferences, denied_licenses=licenses_denied)
+
+        return arbiter
+
+    def verify(self):
+        arbiter = self._get_arbiter()
+        formatter = FormatterFactory.formatter(self._args.output_format)
+
+        if self._args.out_license and self._args.in_license_expr != []:
+            compats = arbiter.inbounds_outbound_check(self._args.out_license, self._args.in_license_expr)
+            formatted = formatter.format_compatibilities(compats)
+            return formatted
+
+        elif self._args.verify_flict:
+            #print("con flict: " + str(self._args.license_matrix_file))
+            project_reader = ProjectReaderFactory.get_projectreader(self._args.verify_flict, None, "flict")
+            return self._handle_lico_project(arbiter, project_reader, self._args.verify_flict, formatter)
+
+        elif self._args.verify_sbom:
+            project_reader = ProjectReaderFactory.get_projectreader(self._args.verify_sbom, self._args.sbom_dirs)
+            return self._handle_lico_project(arbiter, project_reader, self._args.verify_sbom, formatter)
+
