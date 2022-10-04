@@ -4,27 +4,24 @@
 #
 # flict - FOSS License Compatibility Tool
 #
-# SPDX-FileCopyrightText: 2020 Henrik Sandklef
+# SPDX-FileCopyrightText: 2020, 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 ###################################################################
 
-from flict.flictlib.format.format import FormatInterface
+from flict.flictlib.format.format import FlictFormatter
 
 import json
 
 
-class JsonFormatter(FormatInterface):
+class JsonFormatter(FlictFormatter):
 
-    def format_support_licenses(self, compatibility):
-        return json.dumps(compatibility.supported_licenses())
+    def format_support_licenses(self, supported_licenses):
+        return json.dumps(supported_licenses)
 
     def format_license_list(self, license_list):
         return json.dumps(license_list)
-
-    def format_report(self, report):
-        return report.to_json()
 
     def format_license_combinations(self, project):
         return json.dumps({
@@ -56,3 +53,13 @@ class JsonFormatter(FormatInterface):
 
     def format_policy_report(self, policy_report):
         return json.dumps(policy_report)
+
+    def format_compatibilities(self, compats):
+        return json.dumps(compats)
+
+    def format_licenses(self, licenses):
+        return json.dumps(licenses)
+
+    def format_verification(self, verification):
+        #print(str(verification))
+        return json.dumps(verification)

@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import json
 import pytest
 
 from flict.impl import FlictImpl
@@ -10,7 +11,7 @@ from tests.args_mock import ArgsMock
 def _test_expression(expression, result):
     args = ArgsMock(license_expression=expression)
     ret = FlictImpl(args).simplify()
-    assert result == ret
+    assert json.loads(result) == ret
 
 def test_simplify():
     _test_expression(['MIT'], '{"original": "MIT", "simplified": "MIT"}')

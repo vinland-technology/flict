@@ -8,7 +8,7 @@
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
 main_logger = logging.getLogger('flict')
 
@@ -25,5 +25,7 @@ def setup(debug_license, verbose):
 
     if verbose:
         main_logger.setLevel(logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG)
     else:
         main_logger.setLevel(logging.WARNING)
+        logging.basicConfig(level=logging.WARNING)

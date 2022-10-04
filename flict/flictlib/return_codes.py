@@ -30,6 +30,7 @@ class ReturnCodes(Enum):
     RET_INVALID_PROJECT = (10, "Invalid project")
     RET_INVALID_EXPRESSSION = (11, "Invalid expression")
     RET_FILE_NOT_FOUND = (12, "File not found")
+    RET_INVALID_ALIAS_FILE = (13, "Invalid alias file")
 
     @classmethod
     def get_help(cls, indent="  "):

@@ -1,413 +1,468 @@
 {
     "meta": {
-        "software":"FOSS License Compliance Tool",
-        "type": "later-definitions",
+        "software":"",
+        "type": "",
         "version":"0.1",
-        "description": "This file contains translation between misspelled or oddly named licenses and either SPDX or Scancode key values (used if OSADL's matrix does not support the license)"
+        "description": ""
     },
-    "translations": [
+    "aliases": [
         {
-            "license_expression": "AFL-1",
-            "spdx_id": "AFL-1.2",
+            "alias": "AFL-1",
+            "license": "AFL-1.2",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AFL-2",
-            "spdx_id": "AFL-2.0",
+            "alias": "AFL-2",
+            "license": "AFL-2.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AFLv1",
-            "spdx_id": "AFL-1.2",
+            "alias": "AFLv1",
+            "license": "AFL-1.2",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AFLv2",
-            "spdx_id": "AFL-2.0",
+            "alias": "AFLv2",
+            "license": "AFL-2.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AGPL-3",
-            "spdx_id": "AGPL-3.0-only",
+            "alias": "AGPL-3",
+            "license": "AGPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AGPL-3+",
-            "spdx_id": "AGPL-3.0-or-later",
+            "alias": "AGPL-3+",
+            "license": "AGPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AGPL-3.0",
-            "spdx_id": "AGPL-3.0-only",
+            "alias": "AGPL-3.0",
+            "license": "AGPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AGPL-3.0+",
-            "spdx_id": "AGPL-3.0-or-later",
+            "alias": "AGPL-3.0+",
+            "license": "AGPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AGPLv3",
-            "spdx_id": "AGPL-3.0-only",
+            "alias": "AGPLv3",
+            "license": "AGPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AGPLv3+",
-            "spdx_id": "AGPL-3.0-or-later",
+            "alias": "AGPLv3+",
+            "license": "AGPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AGPLv3.0",
-            "spdx_id": "AGPL-3.0-only",
+            "alias": "AGPLv3.0",
+            "license": "AGPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "AGPLv3.0+",
-            "spdx_id": "AGPL-3.0-or-later",
+            "alias": "AGPLv3.0+",
+            "license": "AGPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "Apache-2",
-            "spdx_id": "Apache-2.0",
+            "alias": "Apache-2",
+            "license": "Apache-2.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "apache-1.0",
-            "spdx_id": "Apache-1.0"
+            "alias": "apache-1.0",
+            "license": "Apache-1.0"
         },
         {
-            "license_expression": "apache-2.0",
-            "spdx_id": "Apache-2.0"
+            "alias": "apache-2.0",
+            "license": "Apache-2.0"
         },
         {
-            "license_expression": "Apache-2",
-            "spdx_id": "Apache-2.0"
+            "alias": "Apache-2",
+            "license": "Apache-2.0"
         },
         {
-            "license_expression": "Apachev2",
-            "spdx_id": "Apache-2.0",
+            "alias": "Apachev2",
+            "license": "Apache-2.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "Artistic-1",
-            "spdx_id": "Artistic-1.0",
+            "alias": "Artistic-1",
+            "license": "Artistic-1.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "Artisticv1",
-            "spdx_id": "Artistic-1.0",
+            "alias": "Artisticv1",
+            "license": "Artistic-1.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "BSD",
-            "spdx_id": "BSD-3-Clause"
+            "alias": "BSD",
+            "license": "BSD-3-Clause"
         },
         {
-            "license_expression": "BSD-0-Clause",
-            "spdx_id": "0BSD",
+            "alias": "BSD-0-Clause",
+            "license": "0BSD",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "CDDL-1",
-            "spdx_id": "CDDL-1.0",
+            "alias": "CDDL-1",
+            "license": "CDDL-1.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "CDDLv1",
-            "spdx_id": "CDDL-1.0",
+            "alias": "CDDLv1",
+            "license": "CDDL-1.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "EPLv1.0",
-            "spdx_id": "EPL-1.0",
+            "alias": "EPLv1.0",
+            "license": "EPL-1.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "FreeType",
-            "spdx_id": "FTL",
+            "alias": "FreeType",
+            "license": "FTL",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-1",
-            "spdx_id": "GPL-1.0-only",
+            "alias": "GPL-1",
+            "license": "GPL-1.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-1+",
-            "spdx_id": "GPL-1.0-or-later",
+            "alias": "GPL-1+",
+            "license": "GPL-1.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-1.0",
-            "spdx_id": "GPL-1.0-only",
+            "alias": "GPL-1.0",
+            "license": "GPL-1.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-1.0+",
-            "spdx_id": "GPL-1.0-or-later",
+            "alias": "GPL-1.0+",
+            "license": "GPL-1.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-2",
-            "spdx_id": "GPL-2.0-only",
+            "alias": "GPL-2",
+            "license": "GPL-2.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-2+",
-            "spdx_id": "GPL-2.0-or-later",
+            "alias": "GPL-2+",
+            "license": "GPL-2.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-2.0",
-            "spdx_id": "GPL-2.0-only",
+            "alias": "GPL-2.0",
+            "license": "GPL-2.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-2.0+",
-            "spdx_id": "GPL-2.0-or-later",
+            "alias": "GPL-2.0+",
+            "license": "GPL-2.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-3",
-            "spdx_id": "GPL-3.0-only",
+            "alias": "GPL-3",
+            "license": "GPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-3+",
-            "spdx_id": "GPL-3.0-or-later",
+            "alias": "GPL-3+",
+            "license": "GPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-3.0",
-            "spdx_id": "GPL-3.0-only",
+            "alias": "GPL-3.0",
+            "license": "GPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPL-3.0+",
-            "spdx_id": "GPL-3.0-or-later",
+            "alias": "GPL-3.0+",
+            "license": "GPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv1",
-            "spdx_id": "GPL-1.0-only",
+            "alias": "GPLv1",
+            "license": "GPL-1.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv1+",
-            "spdx_id": "GPL-1.0-or-later",
+            "alias": "GPLv1+",
+            "license": "GPL-1.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv1.0",
-            "spdx_id": "GPL-1.0-only",
+            "alias": "GPLv1.0",
+            "license": "GPL-1.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv1.0+",
-            "spdx_id": "GPL-1.0-or-later",
+            "alias": "GPLv1.0+",
+            "license": "GPL-1.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv2",
-            "spdx_id": "GPL-2.0-only",
+            "alias": "GPLv2",
+            "license": "GPL-2.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv2+",
-            "spdx_id": "GPL-2.0-or-later",
+            "alias": "GPLv2+",
+            "license": "GPL-2.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv2.0",
-            "spdx_id": "GPL-2.0-only",
+            "alias": "GPLv2.0",
+            "license": "GPL-2.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv2.0+",
-            "spdx_id": "GPL-2.0-or-later",
+            "alias": "GPLv2.0+",
+            "license": "GPL-2.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv3",
-            "spdx_id": "GPL-3.0-only",
+            "alias": "GPLv3",
+            "license": "GPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv3+",
-            "spdx_id": "GPL-3.0-or-later",
+            "alias": "GPLv3+",
+            "license": "GPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv3.0",
-            "spdx_id": "GPL-3.0-only",
+            "alias": "GPLv3.0",
+            "license": "GPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "GPLv3.0+",
-            "spdx_id": "GPL-3.0-or-later",
+            "alias": "GPLv3.0+",
+            "license": "GPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPL-2.0",
-            "spdx_id": "LGPL-2.0-only",
+            "alias": "LGPL-2.0",
+            "license": "LGPL-2.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPL-2.0+",
-            "spdx_id": "LGPL-2.0-or-later",
+            "alias": "LGPL-2.0+",
+            "license": "LGPL-2.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPL-2.1",
-            "spdx_id": "LGPL-2.1-only",
+            "alias": "LGPL-2.1",
+            "license": "LGPL-2.1-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPL-2.1+",
-            "spdx_id": "LGPL-2.1-or-later",
+            "alias": "LGPL-2.1+",
+            "license": "LGPL-2.1-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPL-3.0",
-            "spdx_id": "LGPL-3.0-only",
+            "alias": "LGPL-3.0",
+            "license": "LGPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPL-3.0+",
-            "spdx_id": "LGPL-3.0-or-later",
+            "alias": "LGPL-3.0+",
+            "license": "LGPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPL2.1",
-            "spdx_id": "LGPL-2.1-only",
+            "alias": "LGPL2.1",
+            "license": "LGPL-2.1-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPL2.1+",
-            "spdx_id": "LGPL-2.1-or-later",
+            "alias": "LGPL2.1+",
+            "license": "LGPL-2.1-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPLv2",
-            "spdx_id": "LGPL-2.0-only",
+            "alias": "LGPLv2",
+            "license": "LGPL-2.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPLv2+",
-            "spdx_id": "LGPL-2.0-or-later",
+            "alias": "LGPLv2+",
+            "license": "LGPL-2.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPLv2.0",
-            "spdx_id": "LGPL-2.0-only",
+            "alias": "LGPLv2.0",
+            "license": "LGPL-2.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPLv2.0+",
-            "spdx_id": "LGPL-2.0-or-later",
+            "alias": "LGPLv2.0+",
+            "license": "LGPL-2.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPLv2.1",
-            "spdx_id": "LGPL-2.1-only",
+            "alias": "LGPLv2.1",
+            "license": "LGPL-2.1-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPLv2.1+",
-            "spdx_id": "LGPL-2.1-or-later",
+            "alias": "LGPLv2.1+",
+            "license": "LGPL-2.1-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPLv3",
-            "spdx_id": "LGPL-3.0-only",
+            "alias": "LGPLv3",
+            "license": "LGPL-3.0-only",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "LGPLv3+",
-            "spdx_id": "LGPL-3.0-or-later",
+            "alias": "LGPLv3+",
+            "license": "LGPL-3.0-or-later",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "MIT-X",
-            "spdx_id": "MIT",
+            "alias": "MIT-X",
+            "license": "MIT",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "MIT-style",
-            "spdx_id": "MIT",
+            "alias": "MIT-style",
+            "license": "MIT",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "mit",
-            "spdx_id": "MIT"
+            "alias": "mit",
+            "license": "MIT"
         },
         {
-            "license_expression": "MPL-1",
-            "spdx_id": "MPL-1.0",
+            "alias": "MPL-1",
+            "license": "MPL-1.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "MPLv1",
-            "spdx_id": "MPL-1.0",
+            "alias": "MPLv1",
+            "license": "MPL-1.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "MPLv1.1",
-            "spdx_id": "MPL-1.1",
+            "alias": "MPLv1.1",
+            "license": "MPL-1.1",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "MPLv2",
-            "spdx_id": "MPL-2.0",
+            "alias": "MPLv2",
+            "license": "MPL-2.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "mpl-1.1",
-            "spdx_id": "MPL-1.1"
+            "alias": "mpl-1.1",
+            "license": "MPL-1.1"
         },
         {
-            "license_expression": "Nauman",
-            "spdx_id": "Naumen",
+            "alias": "Nauman",
+            "license": "Naumen",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "openssl",
-            "spdx_id": "OpenSSL"
+            "alias": "openssl",
+            "license": "OpenSSL"
         },
         {
-            "license_expression": "PSF",
-            "spdx_id": "PSF-2.0",
+            "alias": "PSF",
+            "license": "PSF-2.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "PSFv2",
-            "spdx_id": "PSF-2.0",
+            "alias": "PSFv2",
+            "license": "PSF-2.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "Python-2",
-            "spdx_id": "Python-2.0",
+            "alias": "Python-2",
+            "license": "Python-2.0",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "SGIv1",
-            "spdx_id": "SGI-1",
+            "alias": "SGIv1",
+            "license": "SGI-1",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "openssl",
-            "spdx_id": "OpenSSL",
+            "alias": "openssl",
+            "license": "OpenSSL",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "tcl",
-            "spdx_id": "TCL",
+            "alias": "tcl",
+            "license": "TCL",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
         },
         {
-            "license_expression": "vim",
-            "spdx_id": "Vim",
+            "alias": "vim",
+            "license": "Vim",
             "comment": "Origin: http://git.yoctoproject.org/cgit/cgit.cgi/poky/plain/meta/conf/licenses.conf"
+        },
+        {
+            "alias": "zlib",
+            "license": "Zlib",
+            "comment": ""
+        },
+        {
+            "alias": "PD",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "LicenseRef-vinland-Public-Domain",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "Public-Domain",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "LicenseRef-vinland-Proprietary-Linked",
+            "license": "Proprietary-linked",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "LicenseRef-vinland-Proprietary",
+            "license": "Proprietary",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "GPL-3.0-or-later WITH GCC-exception-3.1",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "SLA0044",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "SLA0048",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "Mongose",
+            "license": "Permissive",
+            "comment": "TESTING"
+        },
+        {
+            "alias": "libwww",
+            "license": "MIT",
+            "comment": "TESTING"
         }
     ]
 }
