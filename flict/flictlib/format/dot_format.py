@@ -113,5 +113,5 @@ def _compat_to_dot(left, comp_left, right, comp_right):
             {_print_compare_line(right, left, '[color="gray", style="dotted"]')}
             """
     else:
-        FlictError(ReturnCodes.RET_INTERNAL_ERROR,
-                   f"Invalid state in dot_format: {left}, {comp_left}, {right}, {comp_right}")
+        raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                         f"Invalid state in dot_format: {left}, {comp_left}, {right}, {comp_right}")
