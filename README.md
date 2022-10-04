@@ -35,15 +35,15 @@ flict can:
 
 flict supports:
 
-* 71 licenses (```flict -of text list```) 
+* 87 licenses (```flict -of text list```) 
 
-* 'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-only or GPL-3.0-only)
+* ~~'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-only or GPL-3.0-only)~~
 
-* explicit relicensing (LGPL -> GPL)
+* ~~explicit relicensing (LGPL -> GPL)~~
 
 * common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only)
 
-* policy framework where you can specify which licenses you want to: allow, avoid or deny
+* ~~policy framework where you can specify which licenses you want to: allow, avoid or deny~~
 
 # Examples
 
@@ -146,4 +146,3 @@ See [CONTRIBUTING](CONTRIBUTING.md)
 # License of flict
 
 flict is released under GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
-
