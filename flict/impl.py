@@ -95,7 +95,7 @@ class FlictImpl:
         arbiter = self._get_arbiter()
         formatter = FormatterFactory.formatter(self._args.output_format)
 
-        if self._args.out_license and self._args.in_license_expr != []:
+        if self._args.out_license and self._args.in_license_expr:
             compats = arbiter.inbounds_outbound_check(self._args.out_license, self._args.in_license_expr)
             formatted = formatter.format_compatibilities(compats)
             return formatted
