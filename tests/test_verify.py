@@ -1,31 +1,61 @@
-# SPDX-FileCopyrightText: 2022 Jens Erdmann
+#!/usr/bin/env python3
+
+# SPDX-FileCopyrightText: 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os
-import pytest
+import unittest
+from flict.flictlib.arbiter import Arbiter
+from flict.flictlib.project.reader import ProjectReaderFactory
 
-from flict.impl import FlictImpl
-from tests.args_mock import ArgsMock
+class TestVerification(unittest.TestCase):
 
-TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    def __init__(self, *args, **kwargs):
+        super(TestVerification, self).__init__(*args, **kwargs)
+        self.arbiter = Arbiter()
 
-def test_verify_file():
-    prj_file = os.path.join(TEST_DIR, 'example-data/europe-small.json')
+    def _verify_verification(self, verification):
+        self.assertIsNotNone(verification['project_name'])
+        self.assertIsNotNone(verification['packages'])
 
-    args = ArgsMock(project_file=prj_file)
-    ret = FlictImpl(args).verify()
-    assert ret != None
+        for package in verification['packages']:
+            self.assertIsNotNone(package['compatibility'])
 
-    args = ArgsMock(project_file=prj_file, license_combination_count=True)
-    ret = FlictImpl(args).verify()
-    assert ret != None
+    def test_zlib_verification(self):
+        reader = ProjectReaderFactory.get_projectreader(project_format="spdx")
+        zlib = reader.read_project("example-data/zlib-1.2.11.spdx.json")
 
-    args = ArgsMock(project_file=prj_file, list_project_licenses=True)
-    ret = FlictImpl(args).verify()
-    assert ret != None
+        verification = self.arbiter.verify(zlib)
 
-def test_verify_expression():
-    args = ArgsMock(license_expression=['MIT'])
-    ret = FlictImpl(args).verify()
-    assert ret != None
+        # generic check
+        self._verify_verification(verification)
+
+        # zlib specific check
+        package = verification['packages'][0]
+        compat = package['compatibility'][0]
+
+        compats = package['compatibility']
+        self.assertEqual(len(compats), 1)
+
+        self.assertIsNotNone(compat['allowed'])
+        allowed = compat['allowed']
+        self.assertTrue(allowed)
+
+    def test_freetype_verification(self):
+        reader = ProjectReaderFactory.get_projectreader(project_format="spdx", project_dirs=["example-data"])
+        freetype = reader.read_project("example-data/freetype-2.9.spdx.json")
+
+        verification = self.arbiter.verify(freetype)
+
+        # generic check
+        self._verify_verification(verification)
+
+        # freetype specific check
+        package = verification['packages'][0]
+        compats = package['compatibility']
+        self.assertEqual(len(compats), 4)
+
+
+if __name__ == '__main__':
+    unittest.main()
+    

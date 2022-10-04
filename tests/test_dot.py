@@ -10,13 +10,14 @@ import sys
 import unittest
 
 TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from flict.flictlib.arbiter import Arbiter
 
 # Add to PYTHON_PATH
 sys.path.insert(0, TEST_DIR)
 
 from flict.var import VAR_DIR
-from flict.flictlib.compatibility import Compatibility
-from flict.flictlib.format.factory import FormatFactory
+from flict.flictlib.format.factory import FormatterFactory
+
 
 from osadl_matrix import OSADL_MATRIX
 
@@ -28,12 +29,12 @@ class TestDotOutput(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         print('BasicTest.__init__')
         super(TestDotOutput, self).__init__(*args, **kwargs)
-        self.compatibility = Compatibility(OSADL_MATRIX)
-        self.formatter = FormatFactory.formatter("dot")
+        self.arbiter =  Arbiter()
+        self.formatter = FormatterFactory.formatter("dot")
 
     def license_to_dot(self, licenses):
         """This method returns the dot formatted versions of the list of licenses"""
-        compats = self.compatibility.check_compatibilities(licenses, False)
+        compats = self.arbiter.check_compatibilities(licenses, False)
         formatted = self.formatter.format_compats(compats)
         return formatted.replace(" ", "")
 
@@ -49,7 +50,7 @@ class TestDotOutput(unittest.TestCase):
         formatted_list = formatted.split("\n")
 
         # line count
-        self.assertEqual(len(formatted_list), 6)
+        self.assertEqual(len(formatted_list), 5)
 
         # only one line with "->"
         self.assertEqual(len(re.findall("->", formatted)), 1)
@@ -65,10 +66,9 @@ class TestDotOutput(unittest.TestCase):
     def test_bsd_mit_apache(self):
         formatted = self.license_to_dot([ "BSD-3-Clause", "MIT", "Apache-2.0" ])
         formatted_list = formatted.split("\n")
-        #print(formatted)
         
         # line count
-        self.assertEqual(len(formatted_list), 8)
+        self.assertEqual(len(formatted_list), 7)
 
         # only one line with "->"
         self.assertEqual(len(re.findall("->", formatted)), 3)
@@ -86,10 +86,9 @@ class TestDotOutput(unittest.TestCase):
     def test_bsd_gpl2_apache(self):
         formatted = self.license_to_dot([ "BSD-3-Clause", "GPL-2.0-or-later", "Apache-2.0" ])
         formatted_list = formatted.split("\n")
-        print(formatted)
         
         # line count
-        self.assertEqual(len(formatted_list), 9)
+        self.assertEqual(len(formatted_list), 8)
 
         # only one line with "->"
         self.assertEqual(len(re.findall("->", formatted)), 2)

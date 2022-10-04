@@ -10,33 +10,39 @@
 #
 ###################################################################
 
-from flict.flictlib.format.format import FormatInterface
+from flict.flictlib.format.format import FlictFormatter
 from flict.flictlib.format.common import compat_interprets
 from flict.flictlib.format.text_format import TextFormatter
 
 
-class MarkdownFormatter(FormatInterface):
+COMPATIBILITY_TAG = "compatibility"
 
-    def format_support_licenses(self, compatibility):
-        return None
+MANIFEST_HEADERS = {
+    "projects": "#",
+    "packages": "##",
+    "package_name": "###",
+    "dependencies": "####",
+    "problems": "####",
+    "dependency": "#####",
+    "identified_license": "####"
+}
 
-    def format_license_list(self, license_list):
-        return None
 
-    def format_report(self, report):
-        return None
+PACKAGE_HEADERS = {
+    "projects": "",
+    "packages": "#",
+    "package_name": "##",
+    "dependencies": "###",
+    "problems": "###",
+    "dependency": "####",
+    "identified_license": "###"
+}
 
-    def format_license_porject(self, project):
-        return None
 
-    def format_outbound_license(self, suggested_outbounds):
-        return None
-
-    def format_license_combinations(self, combinations):
-        return None
+class MarkdownFlictFormatter(FlictFormatter):
 
     def format_compats(self, compats):
-        return output_compat_markdown(compats)
+        return self.output_compat_markdown(compats)
 
     def format_relicense_information(self, license_handler):
         return "# Translation information\n" + TextFormatter.format_relicense_information(license_handler)
@@ -44,37 +50,143 @@ class MarkdownFormatter(FormatInterface):
     def format_translation_information(self, license_handler):
         return "# Translation information\n" + TextFormatter.format_translation_information(license_handler)
 
-    def format_policy_report(self, policy_report):
-        outbounds = policy_report.get("policy_outbounds")
-        meta = policy_report.get("meta")
-        ret_str = "# Policy report\n\n"
-        ret_str += "## About\n\n"
-        ret_str += "* date: " + meta.get("start") + "\n\n"
-        ret_str += "* user: " + meta.get("user") + "\n\n"
-        policy_result = outbounds.get("policy_result")
-        ret_str += "## Result\n\n"
-        ret_str += "Policy result: "
-        if policy_result == 0:
-            ret_str += "OK"
-        elif policy_result == 1:
-            ret_str += "OK, with licenses to avoid"
-        elif policy_result == 2:
-            ret_str += "Failed identifying outbound license"
-        ret_str += "\n\n"
-        ret_str += "## Suggested outbound licenses \n\n"
-        ret_str += "### Allowed\n\n"
-        for lic in outbounds.get("allowed"):
-            ret_str += " * " + lic + "\n"
-        ret_str += "\n\n"
-        ret_str += "### Avoided\n\n"
-        for lic in outbounds.get("avoided"):
-            ret_str += " * " + lic + "\n"
-        ret_str += "\n\n"
-        ret_str += "### Denied\n\n"
-        for lic in outbounds.get("denied"):
-            ret_str += " * " + lic + "\n"
+    def format_compatibilities(self, compats):
+        return compats[COMPATIBILITY_TAG]
 
-        return ret_str
+    def format_licenses(self, licenses):
+        return "\n".join(licenses)
+
+    def parsed_to_license(self, parsed_expr):
+        expr_type = parsed_expr['type']
+
+        if expr_type == 'license':
+            return parsed_expr['name']
+
+        if expr_type == 'operator':
+            name = parsed_expr['name']
+
+            operands = []
+            for op in parsed_expr['operands']:
+                if op['compatibility'] != "Yes":
+                    pass
+                else:
+                    parsed_op = self.parsed_to_license(op)
+                    operands.append(parsed_op)
+            operand_str = f" {name} "
+            expr = operand_str.join(operands)
+            if name == "OR" and len(operands) > 1:
+                expr = f" ( {expr} ) "
+            return expr
+
+    def packages_header(self):
+        return f"{self.headers['packages']} Packages\n"
+
+    def package_name_header(self, name):
+        return f"{self.headers['package_name']} {name}\n"
+
+    def dependencies_header(self):
+        return f"{self.headers['dependencies']} Dependencies\n"
+
+    def problem_header(self):
+        return f"{self.headers['problems']} Problems\n"
+
+    def dependency_header(self, name):
+        return f"{self.headers['dependency']} {name}\n"
+
+    def identified_license_header(self):
+        return f"{self.headers['identified_license']} Identified licenses in the combined work\n"
+
+    def output_compat_markdown(self, compats):
+        # print(str(compats))
+        result = []
+
+        result.append("# License compatibilities\n\n")
+
+        result.append("# Licenses\n\n")
+        for compat in compats['compatibilities']:
+            result.append(" * " + compat['license'] + "\n")
+
+        result.append("\n\n# Compatibilities\n\n")
+        for compat in compats['compatibilities']:
+            main_license = compat['license']
+            result.append(self._output_compat_markdown_licenses(main_license, compat))
+
+        return result
+
+    def format_verification(self, verification):
+        output = []
+        output.append(self.packages_header())
+        identified_license = None
+        for package in verification['packages']:
+
+            #            identified_license = package.get('identified_license', None)
+            #            identified_license_aliased = package.get('identified_license_aliased', identified_license)
+            identified_license = package.get('outbound_license', None)
+            identified_license_aliased = package.get('outbound_license_aliased', None)
+
+            identified_licenses = package.get('outbound_licenses', None)
+            #identified_licenses_aliased = package.get('outbound_licenses_aliased', identified_licenses)
+
+            output.append(self.package_name_header(package['name']))
+            description = package.get('description', "")
+            if not description:
+                output.append(f"*Description*: {description}\n")
+
+            if identified_licenses == []:
+                output.append("Main license: Could not be identified, see problems section below.\n")
+                output.append(f"Declared license: {package['license']}\n")
+            else:
+                # Out of the outbound licenses, present the first and suggest the others
+                #identified_license = identified_licenses[0]
+                #identified_license_aliased = identified_licenses_aliased[0]
+                output.append(f"Main license: {identified_license}\n")
+
+                if identified_license != identified_license_aliased:
+                    output.append(f"Main license alias: {identified_license_aliased}\n")
+                if identified_licenses and len(identified_licenses) > 1:
+                    output.append(f"*Other possible main licenses*: {identified_license}\n".format(identified=", ".join(identified_licenses[1:])))
+
+            output.append(self.dependencies_header())
+            for dep in package['dependencies']:
+
+                if not identified_license:
+                    dep_identified_license = None
+                else:
+                    dep_identified_license = super()._get_dep_license(dep, identified_license)
+
+                version = dep.get('version', None)
+
+                output.append(self.dependency_header(dep['name']))
+                if version:
+                    output.append(f"* version: {version}")
+                output.append(f"* declared license:  {dep['license']}")
+                if dep_identified_license:
+                    output.append(f"* concluded license: {dep_identified_license}")
+                output.append("\n")
+
+            output.append(self.identified_license_header())
+            license_list = list(verification['all_licenses'])
+            license_list.sort(key=str.lower)
+            for lic in license_list:
+                output.append(f"* {lic}\n")
+
+            # Add problem discussion
+            if not dep_identified_license:
+                output.append(self.problem_header())
+                output.append("Could not conclude an outbound license for the combined work.\n")
+        return "\n".join(output)
+
+
+class ManifestMarkdownFlictFormatter(MarkdownFlictFormatter):
+
+    def __init__(self):
+        self.headers = MANIFEST_HEADERS
+
+
+class PackageMarkdownFlictFormatter(MarkdownFlictFormatter):
+
+    def __init__(self):
+        self.headers = PACKAGE_HEADERS
 
 
 def _compat_to_fmt(comp_left, comp_right, fmt):
@@ -87,27 +199,14 @@ def _compat_to_markdown(left, comp_left, right, comp_right):
     return _compat_to_fmt(comp_left, comp_right, "markdown")
 
 
-def output_compat_markdown(compats):
-    # print(str(compats))
-    result = "# License compatibilities\n\n"
-
-    result += "# Licenses\n\n"
-    for compat in compats['compatibilities']:
-        result += " * " + compat['license'] + "\n"
-
-    result += "\n\n# Compatibilities\n\n"
-    for compat in compats['compatibilities']:
-        main_license = compat['license']
-        for lic in compat['licenses']:
-            # print(str(compat))
-            # print(json.dumps(compat))
-            # print(json.dumps(lic))
-            inner_license = lic['license']
-            comp_left = lic['compatible_left']
-            comp_right = lic['compatible_right']
-            compat_text = _compat_to_markdown(
-                main_license, comp_left, inner_license, comp_right)
-            result += main_license + " " + compat_text + " " + inner_license + "\n\n"
-
-    return result
+def _output_compat_markdown_licenses(main_license, compat):
+    result = []
+    for lic in compat['licenses']:
+        inner_license = lic['license']
+        comp_left = lic['compatible_left']
+        comp_right = lic['compatible_right']
+        compat_text = _compat_to_markdown(
+            main_license, comp_left, inner_license, comp_right)
+        result.append(main_license + " " + compat_text + " " + inner_license + "\n\n")
+    return "".join(result)
 

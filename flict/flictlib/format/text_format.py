@@ -10,14 +10,15 @@
 #
 ###################################################################
 
-from flict.flictlib.format.format import FormatInterface
+from flict.flictlib.format.format import FlictFormatter
 
 
-class TextFormatter(FormatInterface):
+class TextFormatter(FlictFormatter):
 
-    def format_support_licenses(self, compatibility):
-        supported_licenses = compatibility.supported_licenses()
+    def __init__(self):
+        self.col_size = 18
 
+    def format_support_licenses(self, supported_licenses):
         ret_str = ""
         for item in supported_licenses:
             ret_str += " " + str(item) + "\n"
@@ -26,14 +27,11 @@ class TextFormatter(FormatInterface):
     def format_license_list(self, license_list):
         return "text implmentation | format_license_list(): " + str(license_list)
 
-    def format_report(self, report):
-        return "text implmentation | format_report(): " + str(report)
-
     def format_license_combinations(self, project):
         return str(project.projects_combinations())
 
-    def format_outbound_license(self, outbound_candidate):
-        return ", ".join(outbound_candidate)
+    def format_outbound_license(self, outbound_candidates):
+        return ", ".join(outbound_candidates)
 
     def format_simplified(self, license_expression, simplified):
         return simplified
@@ -79,3 +77,64 @@ class TextFormatter(FormatInterface):
         ret_str += "Avoided (suggested) outbound licenses: " + str(outbounds.get("avoid", "")) + "\n"
         ret_str += "Denied (suggested) outbound licenses: " + str(outbounds.get("denied", ""))
         return ret_str
+
+    def _find_compat(self, compats, license_name):
+        for compat in compats['compatibilities']:
+            if compat["license"] == license_name:
+                return compat
+
+    def _find_license_compat(self, compat, license_name):
+        #print("")
+        #print("find " + license_name + " in:")
+        #print(str(compat))
+        for lic in compat['licenses']:
+            if lic['license'] == license_name:
+                return lic['compatible_left'].replace("true", "Yes").replace("false", "No")
+
+    def _format_lic(self, lic):
+        str_size = "{0: <" + str(self.col_size) + "}"
+        return str_size.format(lic)[:self.col_size - 1] + " "
+
+    def _format_line(self):
+        return self._format_lic("-" * (self.col_size - 1))
+
+    def format_compats(self, compats):
+        licenses = set()
+        for compat in compats['compatibilities']:
+            licenses.add(compat["license"])
+        license_list = list(licenses)
+        license_list.sort()
+
+        ret = []
+
+        inner = []
+        inner.append(self._format_lic(""))
+        for lic in license_list:
+            inner.append(self._format_lic(lic))
+        ret.append("".join(inner))
+
+        inner = []
+        inner.append(self._format_line())
+#        for lic in license_list:
+#            inner.append(self._format_line())
+        ret.append("".join(inner))
+
+        for lic in license_list:
+            inner = []
+            inner.append(self._format_lic(lic + ": "))
+            compat = self._find_compat(compats, lic)
+            for inner_lic in license_list:
+                if inner_lic == lic:
+                    lic_compat = "Yes"
+                else:
+                    lic_compat = self._find_license_compat(compat, inner_lic)
+                inner.append(self._format_lic(lic_compat))
+            ret.append("".join(inner))
+
+        return "\n".join(ret)
+
+    def format_compatibilities(self, compats):
+        compatible = compats['compatibility'] == "Yes"
+        allowed = compats['allowed']
+        return "Yes" if compatible and allowed else "No"
+

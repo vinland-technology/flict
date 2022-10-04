@@ -1,0 +1,33 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.2",
+  "creationInfo": {
+    "created": "2021-09-13T14:38:51Z",
+    "creators": [
+      "Person: Henrik Sandklef <hesa@sandklef.com>",
+      "Organization: Sandklef GNU Labs"
+    ]
+  },
+  "name": "zlib-1.2.11",
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "zlib-1.2.11-22f6a44b-02ad-43da-bfff-682de90d9639",
+  "documentDescribes": [
+    "SPDXRef-Package-zlib"
+  ],
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-zlib",
+      "description": "zlib (1.2.11) a free, general-purpose, legally unencumbered lossless data-compression library.",
+      "copyrightText": "Copyright Jean-loup Gailly Osma Ahvenlampi <Osma.Ahvenlampi@hut.fi>",
+      "downloadLocation": "http://zlib.net/zlib-1.2.11.tar.gz",
+      "filesAnalyzed": true,
+      "homepage": "http://zlib.net",
+      "licenseConcluded": "Zlib",
+      "licenseDeclared": "Zlib",
+      "supplier": "Yak Shavers Corp",
+      "name": "zlib",
+      "versionInfo": "1.2.11",
+      "originator": "Person: Mark Adler, Jean-loup Gailly"
+    }
+  ]
+}
