@@ -1,0 +1,19 @@
+{
+    "meta": {
+        "software":"License Policy Checker",
+        "version":"0.1"
+    },
+    "project": {
+        "name": "Europe - a flict example",
+        "version": "sth",
+        "license": "Proprietary",
+        "dependencies": [
+            {
+                "name": "Sweden",
+                "version": "something else",
+                "license": "LGPL-2.1-only AND GPL-3.0-or-later WITH GCC-exception-3.1",
+                "dependencies": []
+            }
+        ]
+    }
+}
