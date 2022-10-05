@@ -56,5 +56,5 @@ class Alias:
     def format_aliased(self, lic):
         alias = self.replace_aliases(lic)
         if alias != lic:
-            return lic + " (aliased to " + alias + ")"
+            return f'{lic} (aliased to {alias})'
         return lic
