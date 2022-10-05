@@ -5,12 +5,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import logging
-import sys
 
 from flict.flictlib.lic_comp import LicenseCompatibilty
 from flict.flictlib.project.reader import Project
 from flict.flictlib.utils import meta_information
 from flict.flictlib.utils import timestamp
+from flict.flictlib.return_codes import FlictError, ReturnCodes
 
 
 class Arbiter:
@@ -42,12 +42,7 @@ class Arbiter:
         inbound_license = package['license']
         logging.debug(f"   * Inbound license:  {inbound_license}")
 
-        compats = []
-        for outbound_license in licenses:
-            compat = self.inbounds_outbound_check(outbound_license, [inbound_license])
-            compats.append(compat)
-
-        return compats
+        return [self.inbounds_outbound_check(outbound_license, [inbound_license]) for outbound_license in licenses]
 
     def _package_info_compatibility(self, package_info, outbound):
         for compat in package_info['compatibility']:
@@ -70,22 +65,26 @@ class Arbiter:
 
         return (False, None)
 
-    def _combined_work_compatible(self, outbound_license, package_info, dep_infos):
-        compatible_license = self._package_info_compatibility(package_info, outbound_license)
-        if not compatible_license:
-            logging.debug("None such ... probably because complex")
-            # TODO: investigate if this can happen at all
-            sys.exit(1)
-        else:
-            compatible = compatible_license[0]
-
+    def _combined_work_compatible_dependencies(self, outbound_license, dep_infos):
+        compatible = True
         for dep_info in dep_infos:
             # Get the corresponding compatiblity for outbound_license for dep_info
             compatible_license = self._package_info_compatibility(dep_info, outbound_license)
             dep_compatible = compatible_license[0]
             compatible = compatible and dep_compatible
-
             logging.debug("        {dep_info['name']}: {dep_compatible} ===> {compatible}")
+        return compatible
+
+    def _combined_work_compatible(self, outbound_license, package_info, dep_infos):
+        compatible_license = self._package_info_compatibility(package_info, outbound_license)
+        if not compatible_license:
+            raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
+                             f"Found license incompatibility for \"{package_info}\", \"{outbound_license}\"")
+        else:
+            compatible = compatible_license[0]
+
+        # AND together compatible status from dependencies
+        compatible = compatible and self._combined_work_compatible_dependencies(outbound_license, dep_infos)
 
         logging.debug(f"    --> combined work compatible: {compatible}\n")
         return compatible
