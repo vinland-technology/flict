@@ -174,11 +174,10 @@ class SPDXJsonProjectReader(ProjectReader):
                     if dep_package_name == _pkg_name:
                         packages[top_package]['dependencies'].append({_pkg_name: _pkg[1]})
 
-        ret = {
+        return {
             "packages": packages,
             "project_name": project_name
         }
-        return ret
 
     def _read_spdx(self, spdx_file, only_packages=None):
 
