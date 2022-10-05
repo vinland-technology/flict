@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # SPDX-FileCopyrightText: 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
@@ -59,9 +57,7 @@ class ProjectReader:
             for dep in _package['dependencies']:
                 tmp_dict.update(self._flatten_package_tree(dep))
 
-            dep_list = []
-            for dep in tmp_dict.values():
-                dep_list.append(dep)
+            dep_list = tmp_dict.values()
 
             package = {
                 'name': _package['name'],
@@ -177,8 +173,6 @@ class SPDXJsonProjectReader(ProjectReader):
                     _pkg_name = _pkg[1]['id']
                     if dep_package_name == _pkg_name:
                         packages[top_package]['dependencies'].append({_pkg_name: _pkg[1]})
-                    else:
-                        pass
 
         ret = {
             "packages": packages,
