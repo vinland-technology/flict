@@ -155,17 +155,8 @@ def parse():
     parser_v.add_argument('--sbom-dirs', '-sd', type=str, nargs='+', dest='sbom_dirs', help='Directories where SBoM files are searched for.', default='.')
     parser_v.add_argument('--flict', '-f', type=str, dest='verify_flict', help='Flict project file to verify')
 
-#    parser_v.add_argument('--project-file', '-pf', type=argparse.FileType('r'), help='verify license compatibility for project in project file')
-#    parser_v.add_argument('--project-file', '-pf', type=str,
-#                          help='verify license compatibility for project in project file')
-
     parser_v.add_argument('--manifest-file', '-mf', type=str,
                           help='verify license compatibility for project in manifest file')
-#    parser_v.add_argument('--license-combination-count', '-lcc', action='store_true', dest='license_combination_count',
-#                         help='output the number of license combinations in the specified project')
-#    parser_v.add_argument('--list-project_licenses', '-lpl', action='store_true',
-#                          dest='list_project_licenses',
-#                          help='output the licenses in the specified project')
 
     # simplify
     parser_si = subparsers.add_parser(
@@ -178,10 +169,6 @@ def parse():
     parser_li = subparsers.add_parser(
         'list', help='list supported licenses')
     parser_li.set_defaults(which="list", func=list_licenses)
-#    parser_li.add_argument('-r', '--relicensing',
-#                           dest='list_relicensing',
-#                           action='store_true',
-#                           help='List relicensing information')
     parser_li.add_argument('-t', '--translations',
                            dest='list_translation',
                            action='store_true',
