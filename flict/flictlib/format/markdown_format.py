@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 ###################################################################
 #
 # flict - FOSS License Compatibility Tool
@@ -129,7 +127,7 @@ class MarkdownFlictFormatter(FlictFormatter):
 
             output.append(self.package_name_header(package['name']))
             description = package.get('description', "")
-            if not description:
+            if description:
                 output.append(f"*Description*: {description}\n")
 
             if identified_licenses == []:
