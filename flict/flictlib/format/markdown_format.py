@@ -11,7 +11,7 @@
 from flict.flictlib.format.format import FlictFormatter
 from flict.flictlib.format.common import compat_interprets
 from flict.flictlib.format.text_format import TextFormatter
-
+from flict.flictlib.license import License
 
 COMPATIBILITY_TAG = "compatibility"
 
@@ -39,6 +39,9 @@ PACKAGE_HEADERS = {
 
 class MarkdownFlictFormatter(FlictFormatter):
 
+    def __init__(self):
+        self.license = License(None)
+
     def format_compats(self, compats):
         return self.output_compat_markdown(compats)
 
@@ -53,28 +56,6 @@ class MarkdownFlictFormatter(FlictFormatter):
 
     def format_licenses(self, licenses):
         return "\n".join(licenses)
-
-    def parsed_to_license(self, parsed_expr):
-        expr_type = parsed_expr['type']
-
-        if expr_type == 'license':
-            return parsed_expr['name']
-
-        if expr_type == 'operator':
-            name = parsed_expr['name']
-
-            operands = []
-            for op in parsed_expr['operands']:
-                if op['compatibility'] != "Yes":
-                    pass
-                else:
-                    parsed_op = self.parsed_to_license(op)
-                    operands.append(parsed_op)
-            operand_str = f" {name} "
-            expr = operand_str.join(operands)
-            if name == "OR" and len(operands) > 1:
-                expr = f" ( {expr} ) "
-            return expr
 
     def packages_header(self):
         return f"{self.headers['packages']} Packages\n"
@@ -150,7 +131,7 @@ class MarkdownFlictFormatter(FlictFormatter):
                 if not identified_license:
                     dep_identified_license = None
                 else:
-                    dep_identified_license = super()._get_dep_license(dep, identified_license)
+                    dep_identified_license = self.get_dep_license(dep, identified_license)
 
                 version = dep.get('version', None)
 
@@ -178,12 +159,14 @@ class MarkdownFlictFormatter(FlictFormatter):
 class ManifestMarkdownFlictFormatter(MarkdownFlictFormatter):
 
     def __init__(self):
+        self.license = License(None)
         self.headers = MANIFEST_HEADERS
 
 
 class PackageMarkdownFlictFormatter(MarkdownFlictFormatter):
 
     def __init__(self):
+        self.license = License(None)
         self.headers = PACKAGE_HEADERS
 
 
