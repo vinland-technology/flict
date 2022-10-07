@@ -98,7 +98,7 @@ class TextFormatter(FlictFormatter):
     def _format_line(self):
         return self._format_lic("-" * (self.col_size - 1))
 
-    def _format_compats_licenses(self, compats):
+    def _format_compats_licenses(self, compats, license_list):
         ret = []
         for lic in license_list:
             inner = []
@@ -112,7 +112,7 @@ class TextFormatter(FlictFormatter):
                 inner.append(self._format_lic(lic_compat))
             ret.append("".join(inner))
         return ret
-    
+
     def format_compats(self, compats):
         licenses = set()
         for compat in compats['compatibilities']:
@@ -132,7 +132,7 @@ class TextFormatter(FlictFormatter):
         inner.append(self._format_line())
         ret.append("".join(inner))
 
-        ret += self.__format_compats_licenses(compats)
+        ret += self._format_compats_licenses(compats, license_list)
 
         return "\n".join(ret)
 
