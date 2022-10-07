@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # SPDX-FileCopyrightText: 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
@@ -99,7 +97,6 @@ class Arbiter:
         if compatible:
             outbound_licenses.add(package_info['license'])
 
-        logging.debug("ALL LICENSES OUTBOUND")
         #
         # Let's loop through all the other licenses in the combined work
         #
@@ -196,8 +193,7 @@ class Arbiter:
                  outbound: the outbound license (e.g. "GPL-2.0-only")
                  expr: license expr with inbound license (e.g. "MPL-2.0 OR MIT")
         """
-        compats = self.license_compatibility.inbounds_outbound_compatibility(outbound, expr)
-        return compats
+        return self.license_compatibility.inbounds_outbound_compatibility(outbound, expr)
 
     def inbound_outbound_check(self, outbound, inbound):
         """Check an outbound license against an inbound license
@@ -205,8 +201,7 @@ class Arbiter:
                  outbound: the outbound license (e.g. "GPL-2.0-only")
                  ibound: inbound license (e.g. "MPL-2.0")
         """
-        compats = self.license_compatibility.inbound_outbound_compatibility(outbound, inbound)
-        return compats
+        return self.license_compatibility.inbound_outbound_compatibility(outbound, inbound)
 
     def check_compatibilities(self, licenses, check_all=False):
         """Check compatbilitiy between supplied licenses"""

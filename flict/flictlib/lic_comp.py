@@ -95,61 +95,63 @@ class LicenseCompatibilty:
         parsed = self.license.get_license(expr)
         logging.debug(f"inbounds_outbound_check: parsed:{parsed}")
 
-        compats = self._inbounds_outbound_check(parsed_outbound, parsed)
+        return self._inbounds_outbound_check(parsed_outbound, parsed)
 
-        return compats
+    def _inbounds_outbound_check_operator(self, outbound, expr):
+        compat_summary = None
+        allowed_summary = None
+        op = self.license.operator(expr)
+        operands = self.license.operands(expr)
+        for operand in operands:
+            logging.debug(f"Check operand: {operand}")
+
+            # get compatibility_tag between the operand and the outbound
+            # and calculate and store the summarized compatibility
+            compat = self._inbounds_outbound_check(outbound, operand)
+            compat_summary = self._update_compat(op, compat_summary, compat[COMPATIBILITY_TAG] == CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value)
+
+            # are licenses allowed or denied for this expression
+            allowed = compat['allowed']
+            allowed_summary = self._update_allowed(op, allowed_summary, allowed)
+            operand['allowed'] = allowed
+            operand['allowed'] = allowed
+            #                operand['compatibility_info'] = compat
+            operand[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
+
+        # store outbound to make for easier reading of result
+        expr['outbound'] = outbound
+        #expr['compatibility_info'] = compat
+        expr[COMPATIBILITY_TAG] = compat_summary
+
+        expr['outbound'] = outbound
+        expr["allowed"] = allowed_summary
+        expr['check'] = 'inbounds_outbound'
+
+        return expr
+
+    def _inbounds_outbound_check_license(self, outbound, expr):
+        license = self.license.license_name(expr)
+
+        outbound_aliased = self.license.replace_aliases(self.license.license_name(outbound))
+        license_aliased = self.license.replace_aliases(license)
+
+        compat = self.compatibility.check_compat(outbound_aliased, license_aliased)
+
+        expr['license_aliased'] = license_aliased
+        expr['check'] = 'inbounds_outbound'
+        expr['outbound'] = outbound
+        expr['outbound_aliased'] = outbound_aliased
+        expr['allowed'] = self.license.license_allowed(license)
+
+        expr[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
+        return expr
 
     def _inbounds_outbound_check(self, outbound, expr):
         logging.debug(f"_inbounds_outbound_check({outbound}, {expr})")
         if self.license.is_license(expr):
-            license = self.license.license_name(expr)
-
-            outbound_aliased = self.license.replace_aliases(self.license.license_name(outbound))
-            license_aliased = self.license.replace_aliases(license)
-
-            compat = self.compatibility.check_compat(outbound_aliased, license_aliased)
-
-            expr['license_aliased'] = license_aliased
-            expr['check'] = 'inbounds_outbound'
-            expr['outbound'] = outbound
-            expr['outbound_aliased'] = outbound_aliased
-            expr['allowed'] = self.license.license_allowed(license)
-
-            expr[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
-            return expr
-
+            return self._inbounds_outbound_check_license(outbound, expr)
         elif self.license.is_operator(expr):
-
-            compat_summary = None
-            allowed_summary = None
-            op = self.license.operator(expr)
-            operands = self.license.operands(expr)
-            for operand in operands:
-                logging.debug(f"Check operand: {operand}")
-
-                # get compatibility_tag between the operand and the outbound
-                # and calculate and store the summarized compatibility
-                compat = self._inbounds_outbound_check(outbound, operand)
-                compat_summary = self._update_compat(op, compat_summary, compat[COMPATIBILITY_TAG] == CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value)
-
-                # are licenses allowed or denied for this expression
-                allowed = compat['allowed']
-                allowed_summary = self._update_allowed(op, allowed_summary, allowed)
-                operand['allowed'] = allowed
-                operand['allowed'] = allowed
-#                operand['compatibility_info'] = compat
-                operand[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
-
-            # store outbound to make for easier reading of result
-            expr['outbound'] = outbound
-            #expr['compatibility_info'] = compat
-            expr[COMPATIBILITY_TAG] = compat_summary
-
-            expr['outbound'] = outbound
-            expr["allowed"] = allowed_summary
-            expr['check'] = 'inbounds_outbound'
-
-            return expr
+            return self._inbounds_outbound_check_operator(outbound, expr)
         else:
             raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
                              f"Could not parse one of the expression: {outbound}, {expr}")

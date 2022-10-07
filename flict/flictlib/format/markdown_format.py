@@ -88,9 +88,9 @@ class MarkdownFlictFormatter(FlictFormatter):
         result.append("\n\n# Compatibilities\n\n")
         for compat in compats['compatibilities']:
             main_license = compat['license']
-            result.append(self._output_compat_markdown_licenses(main_license, compat))
+            result.append(_output_compat_markdown_licenses(main_license, compat))
 
-        return result
+        return "\n".join(list(set(result)))
 
     def format_verification(self, verification):
         output = []
@@ -151,9 +151,15 @@ class MarkdownFlictFormatter(FlictFormatter):
 
             # Add problem discussion
             if not dep_identified_license:
-                output.append(self.problem_header())
-                output.append("Could not conclude an outbound license for the combined work.\n")
+                output += self._problem("Could not conclude an outbound license for the combined work.\n")
+
         return "\n".join(output)
+
+    def _problem(self, message):
+        return [
+            self.problem_header(),
+            message
+        ]
 
 
 class ManifestMarkdownFlictFormatter(MarkdownFlictFormatter):

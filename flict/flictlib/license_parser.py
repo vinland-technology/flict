@@ -47,7 +47,6 @@ class LicenseParser:
         return expr['type'] == "license"
 
     def operator(self, expr):
-        #assert (self.is_operator(expr))
         return expr['name']
 
     def is_or(self, expr):
@@ -57,11 +56,9 @@ class LicenseParser:
         return self.operator(expr) == LicenseExpression.LICENSE_EXPRESSION_AND.value
 
     def license(self, expr):
-        #assert (self.is_license(expr))
         return expr['name']
 
     def operands(self, expr):
-        #assert (self.is_operator(expr))
         return expr['operands']
 
 
@@ -117,9 +114,6 @@ class PrettyLicenseParser(LicenseParser):
             op = self.utils.next_operator(expr)
             rest = expr[len(op):]
 
-            # assert next token is "("
-            #assert ( rest.strip()[:1] == "(" )
-
             # find last parenthesis and
             rest = rest[1:self.utils.index_last_parenthesis(rest)].strip()
 
@@ -156,7 +150,7 @@ class PrettyLicenseParser(LicenseParser):
             else:
                 logging.error("*** PANIC IN DETROIT ***")
                 logging.error(rest)
-                # TODO: raise exception
+                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Internal error: Remaining expression to valid: {rest}")
         return {
             'type': 'operator',
             'name': op,
@@ -198,26 +192,17 @@ class ParseUtils:
         size = 0
         for tok in expr:
             if tok == "(":
-                #logging.debug("-found (  :" + expr[size:])
                 paren_count += 1
                 first_found = True
             elif tok == ")":
-                #logging.debug("-found )  :" + expr[size:])
                 paren_count -= 1
 
             size += 1
             if paren_count == 0 and first_found:
-                #logging.debug(" -: " + str(size))
-                #logging.debug("1-: " + expr[1:size])
-                # may be some space and crap
                 index = 0
-                #if ")" in expr[size+1:]:
-                #    index = expr[size+1:].index(")")
-
-                #logging.debug("2-: " + expr[1:size+index])
                 return size + index
 
-        # TODO: raise exception
+        raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Internal error: Could not find end of expression: {expr}")
 
     def next_token(self, expr):
         for i in range(len(expr)):
@@ -242,7 +227,6 @@ class ParseUtils:
         return None
 
     def is_operator(self, expr):
-        #assert (expr != None)
         return self.next_operator(expr) is not None
 
     def is_license(self, expr):
@@ -253,24 +237,16 @@ class ParseUtils:
 
     def remove_comma(self, expr):
         stripped = expr.strip()
-        #assert( stripped[0] == "," )
         return stripped[1:].strip()
 
     def _get_op_expr(self, expr):
-        #assert (self.is_operator(expr))
         expr = expr.strip()
         index = self._find_expr_end(expr)
-        #assert ( index != None )
         operation = expr[:index]
         rest = expr[index:]
-        #logging.debug("_get_op_expr => ")
-        #logging.debug("    expression: \"" + expr + "\"")
-        #logging.debug("    operation:  \"" + operation + "\"")
-        #logging.debug("    rest:       \"" + rest + "\"")
         return (operation, rest)
 
     def get_license(self, expr):
-        #assert( self.is_license(expr) )
         index = expr.index(")")
         if PrettyLicenseSymbol.LICENSE_WITH_SYMBOL.value in expr:
             lic = expr[len(PrettyLicenseSymbol.LICENSE_WITH_SYMBOL.value) + 1:index].replace("'", "")

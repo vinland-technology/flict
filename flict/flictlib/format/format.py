@@ -55,10 +55,8 @@ class FlictFormatter:
     def get_dep_license(self, dep, outbound):
         for lic_compat in dep.get('compatibility'):
             outbound_lic = lic_compat['outbound']['name']
-            #print("--compare: " + str(outbound_lic) + " <--> " + outbound)
 
             if outbound_lic == outbound:
-                #print("--found: " + str(outbound_lic) + " <--> " + outbound)
                 name = self.license.verified_to_license(lic_compat)
                 return name
         return None
