@@ -9,24 +9,17 @@ import unittest
 from flict.flictlib.return_codes import FlictError
 from flict.flictlib.return_codes import ReturnCodes
 
-from flict.flictlib.license import LicenseParserFactory
-from flict.flictlib.license import PrettyLicenseParser
+from flict.flictlib.license_parser import LicenseParserFactory
+from flict.flictlib.license_parser import PrettyLicenseParser
 
-
-denied = [ "curl" ]
 
 class TestLicenseParser(unittest.TestCase):
 
     def _parse_and_get_simple_license(self, parser, expr):
         return parser.parse_license([expr])['license']['name']
     
-    def test_license_parser_constructor(self):
-        parser = LicenseParserFactory.get_parser(denied)
-        self.assertTrue(isinstance(parser, PrettyLicenseParser))
-        self.assertEqual(parser.denied_licenses(), denied)
-
     def test_license_parser_parse_license(self):
-        parser = LicenseParserFactory.get_parser(denied)
+        parser = LicenseParserFactory.get_parser()
         
         self.assertEqual(self._parse_and_get_simple_license(parser, "MIT"), "MIT")
         self.assertEqual(self._parse_and_get_simple_license(parser, "X11"), "X11")
@@ -53,7 +46,7 @@ class TestLicenseParser(unittest.TestCase):
             parser.parse_license([""])
 
     def test_licenses(self):
-        parser = LicenseParserFactory.get_parser(denied)
+        parser = LicenseParserFactory.get_parser()
         license_list = parser.licenses("MIT and BSD-3-Clause OR X11 AND MIT OR BSD-3-Clause")
         print("license_list: " + str(license_list))
             
