@@ -54,7 +54,7 @@ class Arbiter:
                 allowed = compat['allowed']
                 compatibility = compat['compatibility']
                 compatible = compatibility == "Yes"
-                name = name = compat['name']
+                name = compat['name']
                 logging.debug(f"         *** type:          {type}")
                 logging.debug(f"         *** allowed:       {allowed}")
                 logging.debug(f"         *** compatibility: {compatibility}")
