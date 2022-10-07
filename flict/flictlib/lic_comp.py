@@ -1,12 +1,9 @@
-#!/usr/bin/env python3
-
 # SPDX-FileCopyrightText: 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import logging
 
-from flict.flictlib.license import LicenseParserFactory
 from flict.flictlib.compatibility import CompatibilityFactory
 from flict.flictlib.compatibility import CompatibilityStatus
 from flict.flictlib.compatibility import LICENSE_COMPATIBILITY_AND
@@ -14,6 +11,7 @@ from flict.flictlib.compatibility import LICENSE_COMPATIBILITY_OR
 from flict.flictlib.compatibility import CompatibilityLicenseChoser
 from flict.flictlib.compatibility import CustomLicenseChoser
 from flict.flictlib.alias import Alias
+from flict.flictlib.license import License
 from flict.flictlib.return_codes import FlictError, ReturnCodes
 
 COMPATIBILITY_TAG = "compatibility"
@@ -24,7 +22,7 @@ class LicenseCompatibilty:
     def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, alias_file=None):
         self.alias = Alias(alias_file)
 
-        self.license_parser = LicenseParserFactory.get_parser(denied_licenses, self.alias)
+        self.license = License(denied_licenses, self.alias)
 
         self.compatibility = CompatibilityFactory.get_compatibility(self.alias, license_db)
 
@@ -91,12 +89,10 @@ class LicenseCompatibilty:
             }
 
         """
-        parsed_outbound = self.license_parser.parse_license([outbound])['license']
-        #assert(self.license_parser.is_license(parsed_outbound))
+        parsed_outbound = self.license.get_license([outbound])
 
         logging.debug(f"inbounds_outbound_check({outbound}, {expr})")
-        parsed = self.license_parser.parse_license(expr)['license']
-        logging.debug(f"inbounds_outbound_check: parsed:{self.license_parser.parse_license(expr)}")
+        parsed = self.license.get_license(expr)
         logging.debug(f"inbounds_outbound_check: parsed:{parsed}")
 
         compats = self._inbounds_outbound_check(parsed_outbound, parsed)
@@ -105,11 +101,11 @@ class LicenseCompatibilty:
 
     def _inbounds_outbound_check(self, outbound, expr):
         logging.debug(f"_inbounds_outbound_check({outbound}, {expr})")
-        if self.license_parser.is_license(expr):
-            license = self.license_parser.license(expr)
+        if self.license.is_license(expr):
+            license = self.license.license_name(expr)
 
-            outbound_aliased = self.alias.replace_aliases(self.license_parser.license(outbound))
-            license_aliased = self.alias.replace_aliases(license)
+            outbound_aliased = self.license.replace_aliases(self.license.license_name(outbound))
+            license_aliased = self.license.replace_aliases(license)
 
             compat = self.compatibility.check_compat(outbound_aliased, license_aliased)
 
@@ -117,17 +113,17 @@ class LicenseCompatibilty:
             expr['check'] = 'inbounds_outbound'
             expr['outbound'] = outbound
             expr['outbound_aliased'] = outbound_aliased
-            expr['allowed'] = self.license_parser.license_allowed(license)
+            expr['allowed'] = self.license.license_allowed(license)
 
             expr[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
             return expr
 
-        elif self.license_parser.is_operator(expr):
+        elif self.license.is_operator(expr):
 
             compat_summary = None
             allowed_summary = None
-            op = self.license_parser.operator(expr)
-            operands = self.license_parser.operands(expr)
+            op = self.license.operator(expr)
+            operands = self.license.operands(expr)
             for operand in operands:
                 logging.debug(f"Check operand: {operand}")
 
@@ -183,7 +179,7 @@ class LicenseCompatibilty:
         return updated
 
     def licenses(self, expr):
-        return self.license_parser.licenses(expr)
+        return self.license.licenses(expr)
 
     def supported_licenses(self):
         return self.compatibility.supported_licenses()
@@ -198,10 +194,10 @@ class LicenseCompatibilty:
         return self.compatibility.extend_license_db(file_name)
 
     def simplify_license(self, expr):
-        return self.license_parser.simplify_license(expr)
+        return self.license.simplify_license(expr)
 
-    def parse_license(self, expr):
-        return self.license_parser.parse_license(expr)
+    def get_license(self, expr):
+        return self.license.get_license(expr)
 
     def chose_license(self, licenses):
         return self.license_choser.chose(licenses)
