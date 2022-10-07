@@ -51,13 +51,13 @@ Check out our [EXAMPLES](EXAMPLES.md)
 
 # Extensible and tweakable
 
-flict does not come with any knowledge about certain policies,
-licenses and their compatibilities. These things are specified outside
-the tool, using JSON and CSV files. By default flict has files
-defining licenses and compatibilities which probably gets most of our
-users going. Having licenses and compatibilities (and even more stuff)
-defined outside the tool makes it easy to extend the tool with new
-licenses etc without modifying the code.
+flict does not come with any knowledge about licenses and their
+compatibilities or license prioritiy prefeerences. These things are
+specified outside the tool, using JSON and CSV files. By default flict
+has files defining licenses and compatibilities which probably gets
+most of our users going. Having licenses and compatibilities (and even
+more stuff) defined outside the tool makes it easy to extend the tool
+with new licenses etc without modifying the code.
 
 Read more in [SETTINGS](SETTINGS.md)
 
@@ -65,8 +65,12 @@ Read more in [SETTINGS](SETTINGS.md)
 
 ## License matrix
 
-To check compatibility between two licenses flict is using [OSADL](https://www.osadl.org/)'s
-[matrix](https://www.osadl.org/fileadmin/checklists/matrix.html).
+To check compatibility between two licenses flict is using
+[osadl-matrix](https://github.com/priv-kweihmann/osadl-matrix) which
+is using [OSADL](https://www.osadl.org/)'s
+[matrix.json](https://www.osadl.org/fileadmin/checklists/matrix.json)
+as found in [Open Source License
+Checklists](https://www.osadl.org/OSADL-Open-Source-License-Checklists.oss-compliance-lists.0.html)
 
 # Installing
 
