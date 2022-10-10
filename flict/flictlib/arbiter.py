@@ -163,13 +163,14 @@ class Arbiter:
                 index = outbound_licenses_aliased.index(chosen_alias)
                 chosen_license = outbound_licenses[index]
 
-            package_infos.append(package_info | {
+            package_info.update({
                 'dependencies': dep_infos,
                 'outbound_licenses': outbound_licenses,
                 'outbound_licenses_aliased': outbound_licenses_aliased,
                 'outbound_license': chosen_license,
                 'outbound_license_aliased': chosen_alias
             })
+            package_infos.append(package_info)
 
         return {
             "project_name": project_name,
