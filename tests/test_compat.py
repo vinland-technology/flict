@@ -9,8 +9,8 @@ import unittest
 from flict.flictlib.compatibility import CompatibilityFactory
 from flict.flictlib.compatibility import CompatibilityStatus
 from flict.flictlib.arbiter import Arbiter
-from flict.flictlib.compatibility import CompatibilityLicenseChoser
-from flict.flictlib.compatibility import CustomLicenseChoser
+from flict.flictlib.compatibility import CompatibilityLicenseChooser
+from flict.flictlib.compatibility import CustomLicenseChooser
 
 class TestCompatibilty(unittest.TestCase):
 
@@ -30,51 +30,51 @@ class TestCompatibilty(unittest.TestCase):
         compat = compatbility.check_compat("GPL-2.0-only", "MIT")
         self.assertEqual(CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value, compat['compatibility'])
 
-class TestLicenseChoser(unittest.TestCase):
+class TestLicenseChooser(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
-        super(TestLicenseChoser, self).__init__(*args, **kwargs)
+        super(TestLicenseChooser, self).__init__(*args, **kwargs)
         self.arbiter = Arbiter()
-        self.choser = CompatibilityLicenseChoser(self.arbiter.supported_licenses())
+        self.chooser = CompatibilityLicenseChooser(self.arbiter.supported_licenses())
 
     def test_license_list(self):
-        license_list = self.choser.list()
+        license_list = self.chooser.list()
         self.assertTrue(len(license_list)>10)
 
     def test_one_license(self):
-        self.assertEqual(self.choser.chose(['curl']), 'curl')
+        self.assertEqual(self.chooser.choose(['curl']), 'curl')
 
     def test_two_license(self):
-        self.assertEqual(self.choser.chose(['curl', 'GPL-2.0-only']), 'curl')
-        self.assertEqual(self.choser.chose(['LGPL-2.1-or-later', 'GPL-2.0-only']), 'LGPL-2.1-or-later')
-        self.assertEqual(self.choser.chose(['X11', 'MIT']), 'X11')
+        self.assertEqual(self.chooser.choose(['curl', 'GPL-2.0-only']), 'curl')
+        self.assertEqual(self.chooser.choose(['LGPL-2.1-or-later', 'GPL-2.0-only']), 'LGPL-2.1-or-later')
+        self.assertEqual(self.chooser.choose(['X11', 'MIT']), 'X11')
         #license_list = self.choser.list()
-        self.assertEqual(self.choser.chose(['BSD-3-Clause', 'BSD-4-Clause']), 'BSD-3-Clause')
-        self.assertEqual(self.choser.chose(['GPL-2.0-only', 'LGPL-2.1-only']), 'LGPL-2.1-only')
+        self.assertEqual(self.chooser.choose(['BSD-3-Clause', 'BSD-4-Clause']), 'BSD-3-Clause')
+        self.assertEqual(self.chooser.choose(['GPL-2.0-only', 'LGPL-2.1-only']), 'LGPL-2.1-only')
 
     def test_multiple_license(self):
-        self.assertEqual(self.choser.chose(['curl', 'X11', 'MIT', 'BSD-3-Clause', 'BSD-4-Clause']), 'curl')
+        self.assertEqual(self.chooser.choose(['curl', 'X11', 'MIT', 'BSD-3-Clause', 'BSD-4-Clause']), 'curl')
 
-class TestCustomLicenseChoser(unittest.TestCase):
+class TestCustomLicenseChooser(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
-        super(TestCustomLicenseChoser, self).__init__(*args, **kwargs)
-        self.choser = CustomLicenseChoser(['MIT', 'curl', 'BSD-3-Clause', 'X11' ])
+        super(TestCustomLicenseChooser, self).__init__(*args, **kwargs)
+        self.chooser = CustomLicenseChooser(['MIT', 'curl', 'BSD-3-Clause', 'X11' ])
 
     def test_license_list(self):
-        license_list = self.choser.list()
+        license_list = self.chooser.list()
         self.assertTrue(len(license_list)==4)
 
     def test_one_license(self):
-        self.assertEqual(self.choser.chose(['curl']), 'curl')
+        self.assertEqual(self.chooser.choose(['curl']), 'curl')
 
     def test_two_license(self):
-        license_list = self.choser.list()
-        self.assertEqual(self.choser.chose(['curl', 'MIT']), 'MIT')
+        license_list = self.chooser.list()
+        self.assertEqual(self.chooser.choose(['curl', 'MIT']), 'MIT')
 
     def test_multiple_license(self):
-        license_list = self.choser.list()
-        self.assertEqual(self.choser.chose(['curl', 'MIT', 'BSD-3-Clause']), 'MIT')
+        license_list = self.chooser.list()
+        self.assertEqual(self.chooser.choose(['curl', 'MIT', 'BSD-3-Clause']), 'MIT')
 
 
 if __name__ == '__main__':
