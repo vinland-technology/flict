@@ -194,6 +194,6 @@ def _output_compat_markdown_licenses(main_license, compat):
         comp_right = lic['compatible_right']
         compat_text = _compat_to_markdown(
             main_license, comp_left, inner_license, comp_right)
-        result.append(main_license + " " + compat_text + " " + inner_license + "\n\n")
+        result.append(f"{main_license} {compat_text} {inner_license}\n\n")
     return "".join(result)
 
