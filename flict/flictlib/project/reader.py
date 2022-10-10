@@ -114,7 +114,6 @@ class FlictProjectReader(ProjectReader):
                         }
                     ]
                 }
-
         except json.JSONDecodeError:
             raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'File "{project_file}" does not contain valid JSON data')
         except (FileNotFoundError, IsADirectoryError):
