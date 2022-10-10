@@ -78,19 +78,6 @@ class TextFormatter(FlictFormatter):
         ret_str += "Denied (suggested) outbound licenses: " + str(outbounds.get("denied", ""))
         return ret_str
 
-    def _find_compat(self, compats, license_name):
-        for compat in compats['compatibilities']:
-            if compat["license"] == license_name:
-                return compat
-
-    def _find_license_compat(self, compat, license_name):
-        #print("")
-        #print("find " + license_name + " in:")
-        #print(str(compat))
-        for lic in compat['licenses']:
-            if lic['license'] == license_name:
-                return lic['compatible_left'].replace("true", "Yes").replace("false", "No")
-
     def _format_lic(self, lic):
         str_size = f'{0: <{self.col_size}}'
         return str_size.format(lic)[:self.col_size - 1] + " "
@@ -103,12 +90,12 @@ class TextFormatter(FlictFormatter):
         for lic in license_list:
             inner = []
             inner.append(self._format_lic(lic + ": "))
-            compat = self._find_compat(compats, lic)
+            compat = self.find_compat(compats, lic)
             for inner_lic in license_list:
                 if inner_lic == lic:
                     lic_compat = "Yes"
                 else:
-                    lic_compat = self._find_license_compat(compat, inner_lic)
+                    lic_compat = self.find_license_compat(compat, inner_lic)
                 inner.append(self._format_lic(lic_compat))
             ret.append("".join(inner))
         return ret
@@ -128,9 +115,7 @@ class TextFormatter(FlictFormatter):
             inner.append(self._format_lic(lic))
         ret.append("".join(inner))
 
-        inner = []
-        inner.append(self._format_line())
-        ret.append("".join(inner))
+        ret.append("".join(self._format_line()))
 
         ret += self._format_compats_licenses(compats, license_list)
 

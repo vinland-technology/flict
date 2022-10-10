@@ -60,3 +60,13 @@ class FlictFormatter:
                 name = self.license.verified_to_license(lic_compat)
                 return name
         return None
+
+    def find_compat(self, compats, license_name):
+        for compat in compats['compatibilities']:
+            if compat["license"] == license_name:
+                return compat
+
+    def find_license_compat(self, compat, license_name):
+        for lic in compat['licenses']:
+            if lic['license'] == license_name:
+                return lic['compatible_left'].replace("true", "Yes").replace("false", "No")
