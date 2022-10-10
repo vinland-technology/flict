@@ -145,36 +145,31 @@ class Arbiter:
 
             package_info = self._package_info(package, licenses)
 
-            dep_infos = []
-            for dep in package.get('dependencies', []):
-                dep_info = self._package_info(dep, licenses)
-                dep_infos.append(dep_info)
-            package_info['dependencies'] = dep_infos
+            dep_infos = [self._package_info(dep, licenses) for dep in package.get('dependencies', [])]
 
             # Get a list of the outbound licenses for all packages
             outbound_licenses = self._top_package_license(package['license'], licenses, package_info, dep_infos)
-            package_info['outbound_licenses'] = outbound_licenses
 
             # Get the alias for all outbound licenses
-            package_info['outbound_licenses_aliased'] = []
-            for lic in outbound_licenses:
-                package_info['outbound_licenses_aliased'].append(self.license_compatibility.replace_aliases(lic))
+            outbound_licenses_aliased = [self.license_compatibility.replace_aliases(lic) for lic in outbound_licenses]
 
             # Identify single outbound (chosen) license (from the aliased outbound licenses)
-            chosen_alias = self.license_compatibility.choose_license(package_info['outbound_licenses_aliased'])
+            chosen_alias = self.license_compatibility.choose_license(outbound_licenses_aliased)
             if chosen_alias is None:
                 chosen_license = None
-                package_info['outbound_license'] = None
-                package_info['outbound_license_aliased'] = None
             else:
                 # Find the index of the aliased license
                 # and use that to identify the original (not aliased) license
-                index = package_info['outbound_licenses_aliased'].index(chosen_alias)
+                index = outbound_licenses_aliased.index(chosen_alias)
                 chosen_license = outbound_licenses[index]
-                package_info['outbound_license'] = chosen_license
-                package_info['outbound_license_aliased'] = chosen_alias
 
-            package_infos.append(package_info)
+            package_infos.append(package_info | {
+                'dependencies': dep_infos,
+                'outbound_licenses': outbound_licenses,
+                'outbound_licenses_aliased': outbound_licenses_aliased,
+                'outbound_license': chosen_license,
+                'outbound_license_aliased': chosen_alias
+            })
 
         return {
             "project_name": project_name,
