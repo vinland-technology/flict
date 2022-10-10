@@ -8,8 +8,8 @@ from flict.flictlib.compatibility import CompatibilityFactory
 from flict.flictlib.compatibility import CompatibilityStatus
 from flict.flictlib.compatibility import LICENSE_COMPATIBILITY_AND
 from flict.flictlib.compatibility import LICENSE_COMPATIBILITY_OR
-from flict.flictlib.compatibility import CompatibilityLicenseChoser
-from flict.flictlib.compatibility import CustomLicenseChoser
+from flict.flictlib.compatibility import CompatibilityLicenseChooser
+from flict.flictlib.compatibility import CustomLicenseChooser
 from flict.flictlib.alias import Alias
 from flict.flictlib.license import License
 from flict.flictlib.return_codes import FlictError, ReturnCodes
@@ -27,9 +27,9 @@ class LicenseCompatibilty:
         self.compatibility = CompatibilityFactory.get_compatibility(self.alias, license_db)
 
         if not licenses_preferences or licenses_preferences == []:
-            self.license_choser = CompatibilityLicenseChoser(self.compatibility.supported_licenses())
+            self.license_chooser = CompatibilityLicenseChooser(self.compatibility.supported_licenses())
         else:
-            self.license_choser = CustomLicenseChoser(licenses_preferences)
+            self.license_chooser = CustomLicenseChooser(licenses_preferences)
 
     def inbound_outbound_compatibility(self, outbound, inbound):
         return self.compatibility.check_compat(self.alias.replace_aliases(outbound), self.alias.replace_aliases(inbound))
@@ -114,16 +114,13 @@ class LicenseCompatibilty:
             allowed = compat['allowed']
             allowed_summary = self._update_allowed(op, allowed_summary, allowed)
             operand['allowed'] = allowed
-            operand['allowed'] = allowed
             #                operand['compatibility_info'] = compat
             operand[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
 
         # store outbound to make for easier reading of result
         expr['outbound'] = outbound
-        #expr['compatibility_info'] = compat
         expr[COMPATIBILITY_TAG] = compat_summary
 
-        expr['outbound'] = outbound
         expr["allowed"] = allowed_summary
         expr['check'] = 'inbounds_outbound'
 
@@ -201,8 +198,8 @@ class LicenseCompatibilty:
     def get_license(self, expr):
         return self.license.get_license(expr)
 
-    def chose_license(self, licenses):
-        return self.license_choser.chose(licenses)
+    def choose_license(self, licenses):
+        return self.license_chooser.choose(licenses)
 
 
 # TODO: add to utils or similar

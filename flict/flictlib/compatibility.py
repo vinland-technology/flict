@@ -257,7 +257,7 @@ class OsadlCompatibility(Compatibility):
         return self._create_matrix_csv_data(file_name)
 
 
-class LicenseChoser:
+class LicenseChooser:
     """Interface for classes to choose from inbound licenses (where a
     choice is offered via OR).
 
@@ -265,15 +265,15 @@ class LicenseChoser:
 
     def __init__(self, licenses):
         """Parameters:
-               licenses - the licenses to create a chose object for
+               licenses - the licenses to create a choose object for
         """
         self.licenses = licenses
 
-    def chose(self, licenses):
-        """Chose the most preferred license
+    def choose(self, licenses):
+        """Choose the most preferred license
 
         Parameters:
-            licenses - list of licenses to chose the most preferred from
+            licenses - list of licenses to choose the most preferred from
         """
         index = None
         for lic in licenses:
@@ -291,25 +291,25 @@ class LicenseChoser:
         return self.licenses
 
 
-class CustomLicenseChoser(LicenseChoser):
+class CustomLicenseChooser(LicenseChooser):
     """This class provides a custom way to choose from inbound licenses
     (where a choice is offered via OR). By providing a list of licenses in order of preference, this list is used"""
     pass
 
 
-class CompatibilityLicenseChoser(LicenseChoser):
+class CompatibilityLicenseChooser(LicenseChooser):
     """This class provides a simple way to choose from inbound licenses
     (where a choice is offered via OR).
 
     It counts how many other licenses each license is compatible
     with. The more licenses a license is compatible with the more
     preferred it will be. If two licenses have the same number of
-    compaitbilities alpabetical order will be used to chose license.
+    compaitbilities alpabetical order will be used to choose license.
     """
 
     def __init__(self, licenses):
         """Parameters:
-               licenses - the licenses to create a choser object for
+               licenses - the licenses to create a chooser object for
         """
         self.licenses = self._license_preferences(licenses)
 
