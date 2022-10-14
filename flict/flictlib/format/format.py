@@ -11,19 +11,13 @@
 ###################################################################
 
 
-class FormatInterface:
+class FlictFormatter:
 
     def format_support_licenses(self, supported_licenses):
         return "default implementation | format_support_licenses(): " + str(supported_licenses)
 
     def format_license_list(self, license_list):
         return "default implementation | format_license_list(): " + str(license_list)
-
-    def format_report(self, report):
-        return "default implementation | format_report(): " + str(report)
-
-    def format_license_project(self, project):
-        return "default implementation | format_license_combinations(): " + str(project)
 
     def format_outbound_license(self, outbounds):
         return "default implementation | format_outbound_license(): " + str(outbounds)
@@ -49,3 +43,30 @@ class FormatInterface:
     def format_policy_report(self, policy_report):
         return "default implementation | format_policy_report(): "
 
+    def format_compatibilities(self, compats):
+        return
+
+    def format_licenses(self, licenses):
+        return
+
+    def format_verification(self, verification):
+        return
+
+    def get_dep_license(self, dep, outbound):
+        for lic_compat in dep.get('compatibility'):
+            outbound_lic = lic_compat['outbound']['name']
+
+            if outbound_lic == outbound:
+                name = self.license.verified_to_license(lic_compat)
+                return name
+        return None
+
+    def find_compat(self, compats, license_name):
+        for compat in compats['compatibilities']:
+            if compat["license"] == license_name:
+                return compat
+
+    def find_license_compat(self, compat, license_name):
+        for lic in compat['licenses']:
+            if lic['license'] == license_name:
+                return lic['compatible_left'].replace("true", "Yes").replace("false", "No")

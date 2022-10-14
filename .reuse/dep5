@@ -11,15 +11,11 @@ Files: flict/var/osadl-matrix.csv
 Copyright: 2017 - 2020 Open Source Automation Development Lab (OSADL) eG and contributors, 2021 Henrik Sandklef <hesa@sandklef.com>
 License: GPL-3.0-or-later
 
-Files: flict/var/license-group.json
-Copyright: 2021 Henrik Sandklef <hesa@sandklef.com>
+Files: devel/additional_matrix.json
+Copyright: 2022 Henrik Sandklef <hesa@sandklef.com>
 License: GPL-3.0-or-later
 
-Files: flict/var/translation.json
-Copyright: 2021 Henrik Sandklef <hesa@sandklef.com>
-License: GPL-3.0-or-later
-
-Files: flict/var/relicense.json
+Files: flict/var/alias.json
 Copyright: 2021 Henrik Sandklef <hesa@sandklef.com>
 License: GPL-3.0-or-later
 

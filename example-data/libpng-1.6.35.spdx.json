@@ -1,0 +1,65 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.2",
+  "creationInfo": {
+    "created": "2021-09-13T16:38:51Z",
+    "creators": [
+      "Person: Henrik Sandklef <hesa@sandklef.com>",
+      "Organization: Sandklef GNU Labs"
+    ]
+  },
+  "name": "libpng-1.6.35",
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "libpng-1.6.35-b6ce9b91-4e80-4db4-900b-d87f673bc1cb",
+  "documentDescribes": [
+    "SPDXRef-Package-libpng"
+  ],
+  "externalDocumentRefs": [
+    {
+      "externalDocumentId": "DocumentRef-zlib-1.2.11",
+      "checksum": {
+        "algorithm": "SHA1",
+        "checksumValue": "8311e25014b6bf62cb1f71539f3bb182bac96724"
+      },
+      "spdxDocument": "zlib-1.2.11.spdx.json"
+    }
+  ],
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-libpng-libpng",
+      "description": "libpng ",
+      "copyrightText": "(c) Copyright 1997 Tom Tanner Test \n copyright 1995 Guy Eric Schalnat, Group 42, Inc.  \n Copyright (c) 1995, 1996 Frank J. T. Wojcik  \n Copyright (c) 1995, 1996 Guy Eric Schalnat, Group 42, Inc.  \n Copyright (c) 1995-1996 Guy Eric Schalnat, Group 42, Inc.  \n Copyright (c) 1995-2000 Wolf Faust  \n Copyright (c) 1995 Guy Eric Schalnat, Group  \n Copyright (c) 1995 Guy Eric Schalnat, Group 42, Inc.  \n Copyright (c) 1996, 1997 Andreas Dilger  \n Copyright (c) 1996,1997 Andreas Dilger  \n Copyright (c) 1996-1997 Andreas Dilger  \n copyright (c) 1996 Massachusetts Institute of Technology  \n Copyright (c) 1998,1999,2002,2006,2008,2010-2014,2017 Greg Roelofs a  \n Copyright (c) 1998, 1999, 2002, 2006, 2008, 2010-2014 Greg Roelofs a  \n Copyright (c) 1998, 1999 Greg Roelofs  \n Copyright (c) 1998-2000 Glenn Randers-Pehrson  \n Copyright (c) 1998-2001 Greg Roelofs  \n Copyright (c) 1998-2002,2004,2006-2013,2018 Glenn Randers-Pehrson  \n Copyright (c) 1998-2002,2004,2006-2013 Glenn Randers-Pehrson  \n Copyright (c) 1998-2002,2004,2006-2014,2016,2018 Glenn Randers-Pehrs  \n Copyright (c) 1998-2002,2004,2006-2014,2016 Glenn Randers-Pehrson  \n Copyright (c) 1998-2002,2004,2006-2016,2018 Glenn Randers-Pehrson  \n Copyright (c) 1998-2002,2004,2006-2017 Glenn Randers-Pehrson  \n Copyright (c) 1998-2002,2004,2006-2018 Glenn Randers-Pehrson  \n Copyright (c) 1998-2002,2006-2016 Glenn Randers-Pehrson  \n Copyright (c) 1998-2006 Glenn Randers-Pehrson  \n Copyright (c) 1998-2011 Glenn Randers-Pehrson  \n Copyright (c) 1998-2014 Glenn Randers-Pehrson  \n Copyright (c) 1998-2017 Glenn Randers-Pehrson  \n Copyright (c) 1998-2018 Glenn Randers-Pehrson  \n Copyright (c) 1998 by Andreas R. Kleinert  \n Copyright (c) 1998 Greg Roelofs  \n Copyright (c) 1998 Tim Wegner  \n Copyright (c) 1999-2002, 2006, 2009, 2010-2014 Glenn Randers-Pehrson  \n Copyright (c) 1999-2002, 2006, 2010-2014 Glenn Randers-Pehrson  \n copyright (c) 1999 Glenn Randers-Pehrson  \n Copyright (c) 1999 Greg Roelofs  \n Copyright (c) 2000-2002, 2004, 2006-2018 Glenn Randers-Pehrson  \n Copyright (c) 2000-2002, 2006, 2010-2014 Glenn Randers-Pehrson  \n Copyright (c) 2000 Cosmin Truta  \n Copyright (c) 2000 Marc O. Gloor  \n Copyright (c) 2000, Pawel Mrochen  \n Copyright (c) 2001-2002, 2006, 2007, 2010-2014 Glenn Randers-Pehrson  \n Copyright (c) 2001-2002, 2006, 2010-2014 Glenn Randers-Pehrson  \n Copyright (c) 2001 Christoph Pfisterer  \n Copyright (c) 2001, Laurent  \n Copyright (c) 2002, 2004, 2006, 2008, 2010-2014 Glenn Randers-Pehrso  \n Copyright (c) 2002, 2006, 2008, 2010-2014 Glenn Randers-Pehrson  \n Copyright (c) 2002, 2006-2008, 2010-2014 Glenn Randers-Pehrson  \n Copyright (c) 2002, 2006, 2009, 2014 Glenn Randers-Pehrson  \n Copyright (c) 2002, 2006, 2009-2014 Glenn Randers-Pehrson  \n Copyright (c) 2002, 2006-2009, 2014 Glenn Randers-Pehrson  \n Copyright (c) 2002, 2006, 2010-2014 Glenn Randers-Pehrson  \n Copyright (c) 2002, 2006, 2014 Glenn Randers-Pehrson  \n Copyright (c) 2002, 2007, 2009 Glenn Randers-Pehrson and Andrey A. C  \n Copyright (c) 2002, 2014 Glenn Randers-Pehrson  \n Copyright (c) 2002 Patrick R.L. Welche  \n Copyright (c) 2003 W3C. (MIT, ERCIM, Keio)  \n Copyright (c) 2004, 2006-2008, 2010-2014 Glenn Randers-Pehrson  \n Copyright (c) 2006-11-28 Charles Poynton  \n Copyright (c) 2006,2009,2011,2014 Glenn Randers-Pehrson  \n Copyright (c) 2006, 2009, 2014 Glenn Randers-Pehrson  \n Copyright (c) 2006, 2014 Glenn Randers-Pehrson  \n Copyright (c) 2007, 2009, 2014 Glenn Randers-Pehrson  \n Copyright (c) 2007-2009, 2014 Glenn Randers-Pehrson  \n Copyright (c) 2007,2009-2018 Glenn Randers-Pehrson  \n Copyright (c) 2008, 2014 Glenn Randers-Pehrson  \n Copyright (c) 2008 Vincent Torri  \n Copyright (c) 2011-2014 Glenn Randers-Pehrson  \n Copyright (c) 2012 Glenn Randers-Pehrson and Christopher M. Wheeler  \n Copyright (c) 2013-2014 Glenn Randers-Pehrson  \n Copyright (c) 2014,2016 Glenn Randers-Pehrson  \n Copyright (c) 2014,2017 Glenn Randers-Pehrson  \n Copyright (c) 2014 Glenn Randers-Pehrson and Andrey A. Chernov  \n Copyright (c) 2016-2017 Glenn Randers-Pehrson  \n Copyright (c) 2016 Glenn Randers-Pehrson  \n Copyright (c) 2017 Glenn Randers-Pehrson  \n",
+      "downloadLocation": "https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/libpng-1.6.35.tar.gz/download",
+      "filesAnalyzed": true,
+      "homepage": "http://www.libpng.org/pub/png/libpng.html",
+      "licenseConcluded": "Libpng",
+      "licenseDeclared": "Libpng",
+      "supplier": "Yak Shavers Corp",
+      "name": "libpng",
+      "versionInfo": "1.6.35",
+      "originator": "Person: Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, et al"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-libpng-tools",
+      "description": "Tools contributed to libpng ",
+      "copyrightText": "COPYRIGHT Written by Glenn Randers-Pehrson, 2016  \n COPYRIGHT Written by John Cunningham Bowler, 2010  \n COPYRIGHT Written by John Cunningham Bowler, 2013  \n COPYRIGHT Written by John Cunningham Bowler, 2015  \n Copyright (c) 2013 John Cunningham Bowler  \n Copyright (c) 2014-2017 John Cunningham Bowler  \n Copyright (c) 2016 John Cunningham Bowler  \n Copyright 2015 Glenn Randers-Pehrson  \n",
+      "downloadLocation": "https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/libpng-1.6.35.tar.gz/download",
+      "filesAnalyzed": true,
+      "homepage": "http://www.libpng.org/pub/png/libpng.html",
+      "licenseConcluded": "Libpng",
+      "licenseDeclared": "Libpng and public-domain",
+      "licenseComments": "Discarding public-domain",
+      "supplier": "Yak Shavers Corp",
+      "name": "libpng-tools",
+      "versionInfo": "1.6.35",
+      "originator": "Person: Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, et al"
+    }
+  ],
+    "relationships": [
+        {
+            "spdxElementId": "DocumentRef-zlib-1.2.11:SPDXRef-Package-zlib",
+            "relatedSpdxElement": "SPDXRef-Package-libpng-libpng",
+            "relationshipType": "DYNAMIC_LINK"
+        }
+    ]
+}

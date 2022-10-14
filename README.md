@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2020 Henrik Sandklef <hesa@sandklef.com>
+SPDX-FileCopyrightText: 2022 Henrik Sandklef <hesa@sandklef.com>
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
@@ -31,19 +31,19 @@ flict can:
 
 * display, in misc format, compatibilies between licenses 
 
-* check outbound licenses against a policy (policy as supplied by the user)
+* ~~check outbound licenses against a policy (policy as supplied by the user)~~ (automatic now)
 
 flict supports:
 
-* 71 licenses (```flict -of text list```) 
+* 87 licenses (```flict -of text list```) 
 
-* 'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-only or GPL-3.0-only)
+* ~~'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-only or GPL-3.0-only)~~
 
-* explicit relicensing (LGPL -> GPL)
+* ~~explicit relicensing (LGPL -> GPL)~~
 
 * common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only)
 
-* policy framework where you can specify which licenses you want to: allow, avoid or deny
+* ~~policy framework where you can specify which licenses you want to: allow, avoid or deny~~
 
 # Examples
 
@@ -51,13 +51,13 @@ Check out our [EXAMPLES](EXAMPLES.md)
 
 # Extensible and tweakable
 
-flict does not come with any knowledge about certain policies,
-licenses and their compatibilities. These things are specified outside
-the tool, using JSON and CSV files. By default flict has files
-defining licenses and compatibilities which probably gets most of our
-users going. Having licenses and compatibilities (and even more stuff)
-defined outside the tool makes it easy to extend the tool with new
-licenses etc without modifying the code.
+flict does not come with any knowledge about licenses and their
+compatibilities or license prioritiy prefeerences. These things are
+specified outside the tool, using JSON and CSV files. By default flict
+has files defining licenses and compatibilities which probably gets
+most of our users going. Having licenses and compatibilities (and even
+more stuff) defined outside the tool makes it easy to extend the tool
+with new licenses etc without modifying the code.
 
 Read more in [SETTINGS](SETTINGS.md)
 
@@ -65,8 +65,12 @@ Read more in [SETTINGS](SETTINGS.md)
 
 ## License matrix
 
-To check compatibility between two licenses flict is using [OSADL](https://www.osadl.org/)'s
-[matrix](https://www.osadl.org/fileadmin/checklists/matrix.html).
+To check compatibility between two licenses flict is using
+[osadl-matrix](https://github.com/priv-kweihmann/osadl-matrix) which
+is using [OSADL](https://www.osadl.org/)'s
+[matrix.json](https://www.osadl.org/fileadmin/checklists/matrix.json)
+as found in [Open Source License
+Checklists](https://www.osadl.org/OSADL-Open-Source-License-Checklists.oss-compliance-lists.0.html)
 
 # Installing
 
@@ -92,15 +96,11 @@ flict outputs a report as well as an exit code.
 
 **12** - file not found
 
-## Compatibility report
+## Compatibility verification report
 
 A report of the component's compatibility with suggested outbound
 licenses is created. By default a short text report is created, but
 flict can provide a report in a couple of formats.
-
-## Policy report
-
-To the above report you can apply your own policy (see [SETTINGS](SETTINGS.md)). Applying this will create a policy report with your policy applied to the suggested outbound license from the usual report and with some complementary information.
 
 ## Report formats
 
@@ -122,18 +122,19 @@ Partially supported.
 You can create a user specific configuration for the tool that defines a few default parameters to your choices.
 Either create a json file at `~/.flict.cfg` or at a path defined by environment variable `FLICT_USERCONFIG`.
 
-| key               | sets CLI option         |
-| ----------------- | ----------------------- |
-| matrix-file       | -mf --matrix-file       |
-| output-format     | -of --output-format     |
-| relicense-file    | -rf --relicense-file    |
-| translations-file | -tf --translations-file |
+| key                   | sets CLI option              |
+| --------------------- | ---------------------------- |
+| license_matrix-file   | -lmf --license-matrix-file   |
+| licenses_denied_file  | -ldf --licenses-denied-file  |
+| licenses_denied_file  | -ldf --licenses-denied-file  |
+| alias-file            | -af  --alias-file            |
+| output-format         | -of  --output-format         |
 
 ### Example user configuration
 
 ```json
 {
-    "matrix-file": "/my/very/own/osadl-matrix.csv",
+    "license_matrix-file": "/my/very/own/osadl-matrix.csv",
     "output-format": "text",
 }
 ```
@@ -149,4 +150,3 @@ See [CONTRIBUTING](CONTRIBUTING.md)
 # License of flict
 
 flict is released under GPLv3 (https://www.gnu.org/licenses/gpl-3.0.en.html)
-

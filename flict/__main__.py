@@ -71,25 +71,23 @@ def parse():
     deveveloper_group = parser.add_argument_group(title='Developer options')
 
     # DEFAULTS
-    commmon_defaults_group.add_argument('-mf', '--matrix-file',
+    commmon_defaults_group.add_argument('--license-matrix-file', '-lmf',
                                         type=str,
-                                        dest='matrix_file',
+                                        dest='license_matrix_file',
                                         help='File with license compatibility matrix, defaults to osadl-matrix database',
                                         default=flict_config.DEFAULT_MATRIX_FILE)
 
-    # DEFAULTS
-    commmon_defaults_group.add_argument('-rf', '--relicense-file',
-                                        type=str,
-                                        dest='relicense_file',
-                                        help='File with relicensing information, defaults to ' + flict_config.DEFAULT_RELICENSE_BASE_FILE,
-                                        default=flict_config.DEFAULT_RELICENSE_FILE)
+    commmon_defaults_group.add_argument('--licenses-denied-file', '-ldf', type=str, dest='licenses_denied_file', help='', default=None)
 
-    # DEFAULTS
-    commmon_defaults_group.add_argument('-tf', '--translations-file',
+    commmon_defaults_group.add_argument('--licenses-preference-file', '-lpf', type=str, dest='licenses_preference_file', help='', default=None)
+
+    commmon_defaults_group.add_argument('--alias-file', '-af',
                                         type=str,
-                                        dest='translations_file',
-                                        help='File with license translations, defaults to' + flict_config.DEFAULT_TRANSLATIONS_BASE_FILE,
-                                        default=flict_config.DEFAULT_TRANSLATIONS_FILE)
+                                        dest='alias_file',
+                                        help=f'Which file with aliases to use. Default to {flict_config.DEFAULT_FLICT_ALIAS_FILE}',
+                                        default=False)
+
+    commmon_defaults_group.add_argument('--license-info-file', '-lif', type=str, dest='licenses_info_file', help='Short for applying -lmf <file> -ldf <file> -lpf <file>', default=None)
 
     # COMMON
     parser.add_argument('-el', '--extended-licenses',
@@ -151,18 +149,14 @@ def parse():
     parser_v = subparsers.add_parser(
         'verify', help='verify license compatibility')
     parser_v.set_defaults(which="verify", func=verify)
-#    parser_v.add_argument('--project-file', '-pf', type=argparse.FileType('r'), help='verify license compatibility for project in project file')
-    parser_v.add_argument('--project-file', '-pf', type=str,
-                          help='verify license compatibility for project in project file')
-    parser_v.add_argument('--license-expression', '-le', type=str, nargs='+',
-                          help='verify license compatibility for license expression')
+    parser_v.add_argument('--outbound-license', '-ol', type=str, dest='out_license', help='Outbound license for the licenses to verify compatibibility', default=None)
+    parser_v.add_argument('--inbound-license', '-il', type=str, nargs='+', dest='in_license_expr', help='Inbound license(s) for the licenses to verify compatibibility', default=[])
+    parser_v.add_argument('--sbom', '-s', type=str, dest='verify_sbom', help='SBoM file to verify')
+    parser_v.add_argument('--sbom-dirs', '-sd', type=str, nargs='+', dest='sbom_dirs', help='Directories where SBoM files are searched for.', default='.')
+    parser_v.add_argument('--flict', '-f', type=str, dest='verify_flict', help='Flict project file to verify')
+
     parser_v.add_argument('--manifest-file', '-mf', type=str,
                           help='verify license compatibility for project in manifest file')
-    parser_v.add_argument('--license-combination-count', '-lcc', action='store_true', dest='license_combination_count',
-                          help='output the number of license combinations in the specified project')
-    parser_v.add_argument('--list-project_licenses', '-lpl', action='store_true',
-                          dest='list_project_licenses',
-                          help='output the licenses in the specified project')
 
     # simplify
     parser_si = subparsers.add_parser(
@@ -175,14 +169,14 @@ def parse():
     parser_li = subparsers.add_parser(
         'list', help='list supported licenses')
     parser_li.set_defaults(which="list", func=list_licenses)
-    parser_li.add_argument('-r', '--relicensing',
-                           dest='list_relicensing',
-                           action='store_true',
-                           help='List relicensing information')
     parser_li.add_argument('-t', '--translations',
                            dest='list_translation',
                            action='store_true',
                            help='List translation information')
+
+    merge_parser = subparsers.add_parser('merge', help="Merge additional licenses with OSADL's matrix. Will output to store in a file, for use with --license-matrix-file")
+    merge_parser.set_defaults(which="merge", func=_merge_licenses)
+    merge_parser.add_argument('--license-file', '-lf', type=str, dest='license_file', help='License file (JSON) to merge', default=None)
 
     # display-compatibility
     parser_d = subparsers.add_parser(
@@ -241,6 +235,11 @@ def flict_exit(ret_code, msg=None):
 
 def simplify(args):
     ret = FlictImpl(args).simplify()
+    flict_print(args, ret)
+
+
+def _merge_licenses(args):
+    ret = FlictImpl(args).merge_license_db()
     flict_print(args, ret)
 
 
