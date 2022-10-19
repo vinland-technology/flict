@@ -120,12 +120,12 @@ class Arbiter:
             'compatibility': compats
         }
 
-    def verify(self, project, licenses=None):
+    def verify(self, project, supplied_licenses=None):
         """Verifies a project's license to a list of outbounds and returns the
         compatibility between the liceses.
              Parameters:
                  project: the project (with its packages and their licenses) to check for compatibility
-                 licenses: the licenses to check the package's license against
+                 supplied_licenses: the licenses to check the package's license against
         """
 
         start_time = timestamp()
@@ -138,8 +138,10 @@ class Arbiter:
         for package in project['packages']:
             license_expression = Project.combined_work_license(package)
 
-            if licenses is None:
+            if supplied_licenses is None:
                 licenses = self.license_compatibility.licenses(license_expression)
+            else:
+                licenses = supplied_licenses
 
             all_licenses.update(licenses)
 
