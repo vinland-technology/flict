@@ -59,6 +59,3 @@ def test_zlib_pref_list():
         verification = zlib.verification()
 
     assert _error.value.args[0] == ReturnCodes.RET_INVALID_LICENSE_PREFERENCE
-    
-if __name__ == '__main__':
-    unittest.main()
