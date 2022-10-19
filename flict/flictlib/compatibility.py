@@ -276,7 +276,16 @@ class LicenseChooser:
             licenses - list of licenses to choose the most preferred from
         """
         index = None
+        # Loop through the supplied list of licenses, typically the
+        # set of all licenses in a project
         for lic in licenses:
+            # If the license is not found in the license preference list,
+            # raise an error
+            if lic not in self.licenses:
+                raise FlictError(ReturnCodes.RET_INVALID_LICENSE_PREFERENCE,
+                                 f'The supplied license preference list is incomplete. The license \"{lic}\" is missing from {self.licenses}.')
+
+            # identify the index and remember the lowest index (most preferred)
             lic_index = self.licenses.index(lic)
             if index is None or lic_index < index:
                 index = lic_index
