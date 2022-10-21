@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2022 Henrik Sandklef
+# SPDX-FileCopyrightText: 2022 Jens Erdmann
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
