@@ -50,8 +50,7 @@ class ProjectReader:
     def _flatten_packages(self, packages):
         package_list = []
 
-        for _k, v in packages.items():
-            _package = v
+        for _package in packages.values():
             tmp_dict = {}
 
             for dep in _package['dependencies']:
@@ -168,10 +167,10 @@ class SPDXJsonProjectReader(ProjectReader):
                 dep_spdx_path = self.spdx_dirs[0] + "/" + dep_spdx
                 packages_proj_name = self._read_spdx(dep_spdx_path, self.spdx_dirs)
                 _packages = packages_proj_name.get('packages')
-                for _pkg in _packages.items():
-                    _pkg_name = _pkg[1]['id']
+                for _pkg in _packages.values():
+                    _pkg_name = _pkg['id']
                     if dep_package_name == _pkg_name:
-                        packages[top_package]['dependencies'].append({_pkg_name: _pkg[1]})
+                        packages[top_package]['dependencies'].append({_pkg_name: _pkg})
 
         return {
             "packages": packages,
