@@ -202,20 +202,11 @@ class SPDXJsonProjectReader(ProjectReader):
     def _flatten_package_tree(self, packages):
         package_dict = {}
 
-        for pkg in packages.items():
-            #print(pkg[]
-            _package = pkg[1]
-            name = _package['name']
-            version = _package['version']
-            package = {
-                'name': name,
-                'version': version,
-                'license': _package['license'],
-                'description': _package['description'],
-            }
-            package_dict.update({name + "--" + version: package})
-            for dep in _package['dependencies']:
-                flat_dep = self._flatten_package_tree(dep)
-                package_dict.update(flat_dep)
+        for _package in packages.values():
+            package_dict.update(
+                {f"{_package['name']}--{_package['version']}": _package}
+            )
+            for dep in _package["dependencies"]:
+                package_dict.update(self._flatten_package_tree(dep))
 
         return package_dict
