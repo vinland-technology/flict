@@ -4,7 +4,6 @@
 
 import json
 import logging
-import os
 
 from flict.flictlib.return_codes import FlictError, ReturnCodes
 
@@ -179,18 +178,16 @@ class SPDXJsonProjectReader(ProjectReader):
 
     def _read_spdx(self, spdx_file, only_packages=None):
 
-        logging.info("_read_spdx: " + spdx_file)
-        with open(spdx_file, 'r') as f:
-            filename, suff = os.path.splitext(spdx_file)
+        try:
+            with open(spdx_file, 'r') as f:
+                self.project = json.load(f)
 
-            if suff.lower() == ".json":
-                manifest_data = json.load(f)
-            else:
-                logging.error("Uknown format in file: " + spdx_file)
-                return None
-            logging.debug(" data read")
+        except json.JSONDecodeError:
+            raise FlictError(
+                ReturnCodes.RET_INVALID_PROJECT,
+                f'File "{spdx_file}" does not contain valid JSON data',
+            )
 
-        self.project = manifest_data
         spdx_version = self.project['spdxVersion'].replace("SPDX-", "")
 
         if spdx_version.startswith("2.2"):
