@@ -39,6 +39,8 @@ As with previous example you can for now skip the meta section. A translation de
 
 ```license``` - a licenses identifier e.g. GPL-2.0-or-later
 
+If you want to use the aliases as defined in a file called `alias.json` you add `--alias-file alias.json` to your command line.
+
 <a name="denied"></a>
 ## Denied licenses
 
@@ -152,5 +154,3 @@ To use this merged license database when for example veryfing a license:
 ```
 flict -lmf merged-matrix.csv verify -il 0BSD -ol ABC
 ```
-
-
