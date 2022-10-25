@@ -37,13 +37,13 @@ flict supports:
 
 * 87 licenses (```flict -of text list```) 
 
-* ~~'or-later' relicensing  (e.g GPL-2.0-or-later -> GPL-2.0-only or GPL-3.0-only)~~
+* common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only), see "License alias defininitions" in [SETTINGS](SETTINGS.md)
 
-* ~~explicit relicensing (LGPL -> GPL)~~
+* adding your own licenses (and compatibilities), see "Extending the license db" in [SETTINGS](SETTINGS.md)
 
-* common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only)
+* specifying licenses that are not allowed, see "Denied licenses" in [SETTINGS](SETTINGS.md)
 
-* ~~policy framework where you can specify which licenses you want to: allow, avoid or deny~~
+* specifying license preference in case of a choice (e.g. "MIT OR FTL"), see "Preferred licenses" in [SETTINGS](SETTINGS.md)
 
 # Examples
 
