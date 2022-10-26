@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 ###################################################################
 #
 # flict - FOSS License Compatibility Tool
@@ -31,8 +29,6 @@ class FormatterFactory:
                 FormatterFactory._instance = DotFormatter()
             elif format.lower() == "markdown":
                 FormatterFactory._instance = PackageMarkdownFlictFormatter()
-            else:
-                pass
-        else:
-            pass
+            # else ignored
+        # else ignored
         return FormatterFactory._instance

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 ###################################################################
 #
 # flict - FOSS License Compatibility Tool
@@ -33,15 +31,6 @@ class FlictFormatter:
 
     def format_verified_license(self, license_expression, outbound_candidate):
         return "default implementation | format_verified_license(): " + str(license_expression)
-
-    def format_relicense_information(self, license_handler):
-        return "default implementation | format_relicense_information(): "
-
-    def format_translation_information(self, license_handler):
-        return "default implementation | format_translation_information(): "
-
-    def format_policy_report(self, policy_report):
-        return "default implementation | format_policy_report(): "
 
     def format_compatibilities(self, compats):
         return

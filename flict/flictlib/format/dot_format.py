@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 ###################################################################
 #
 # flict - FOSS License Compatibility Tool
@@ -23,25 +21,19 @@ class DotFormatter(FlictFormatter):
         result = []
         result.append("digraph depends {\n    node [shape=plaintext]\n")
         for compat in compats['compatibilities']:
-            #print("checked: " + str(checked_set))
             main_license = compat['license']
             for lic in compat['licenses']:
                 inner_license = lic['license']
-                #print("main: " + main_license + " <---> " + inner_license)
                 if main_license == inner_license:
-                    #print("skip same:      " + main_license + " "+ inner_license)
                     continue
                 text_hash = _licenses_hash(main_license, inner_license)
                 # If already handled, continue
                 if text_hash in checked_set:
-                    #print("skip text_hash: " + text_hash)
                     continue
 
                 checked_set.add(text_hash)
                 comp_left = lic['compatible_left']
                 comp_right = lic['compatible_right']
-                # print(json.dumps(compat))
-                # print(json.dumps(lic))
                 compat_dot = _compat_to_dot(
                     main_license, comp_left, inner_license, comp_right)
                 if compat_dot != "":
