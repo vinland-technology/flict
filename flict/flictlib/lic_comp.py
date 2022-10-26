@@ -127,10 +127,10 @@ class LicenseCompatibilty:
         return expr
 
     def _inbounds_outbound_check_license(self, outbound, expr):
-        license = self.license.license_name(expr)
+        license_expr = self.license.license_name(expr)
 
         outbound_aliased = self.license.replace_aliases(self.license.license_name(outbound))
-        license_aliased = self.license.replace_aliases(license)
+        license_aliased = self.license.replace_aliases(license_expr)
 
         compat = self.compatibility.check_compat(outbound_aliased, license_aliased)
 
@@ -138,7 +138,7 @@ class LicenseCompatibilty:
         expr['check'] = 'inbounds_outbound'
         expr['outbound'] = outbound
         expr['outbound_aliased'] = outbound_aliased
-        expr['allowed'] = self.license.license_allowed(license)
+        expr['allowed'] = self.license.license_allowed(license_expr)
 
         expr[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
         return expr
