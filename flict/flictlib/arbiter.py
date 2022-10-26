@@ -87,7 +87,7 @@ class Arbiter:
         logging.debug(f"    --> combined work compatible: {compatible}\n")
         return compatible
 
-    def _top_package_license(self, top_license, all_licenses, package_info, dep_infos):
+    def _top_package_license(self, all_licenses, package_info, dep_infos):
         outbound_licenses = set()
         logging.debug("TOP LEVEL OUTBOUND")
         #
@@ -100,7 +100,6 @@ class Arbiter:
         #
         # Let's loop through all the other licenses in the combined work
         #
-        # TODO: sort all_licenses with repsect to license preferences
         for lic in all_licenses:
             compatible = self._combined_work_compatible(lic, package_info, dep_infos)
             if compatible:
@@ -150,7 +149,7 @@ class Arbiter:
             dep_infos = [self._package_info(dep, licenses) for dep in package.get('dependencies', [])]
 
             # Get a list of the outbound licenses for all packages
-            outbound_licenses = self._top_package_license(package['license'], licenses, package_info, dep_infos)
+            outbound_licenses = self._top_package_license(licenses, package_info, dep_infos)
 
             # Get the alias for all outbound licenses
             outbound_licenses_aliased = [self.license_compatibility.replace_aliases(lic) for lic in outbound_licenses]
