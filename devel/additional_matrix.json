@@ -260,6 +260,10 @@
             "Proprietary": "?",
             "Permissive": "Yes"
         },
+        "Sleepycat":  {
+            "Proprietary": "?",
+            "Permissive": "?"
+        },
         "Python-2.0":  {
             "Proprietary": "?",
             "Permissive": "Yes"
@@ -414,6 +418,7 @@
             "Python-2.0": "Yes",
             "Qhull": "Yes",
             "RSA-MD": "Yes",
+            "Sleepycat": "No",
             "SunPro": "Yes",
             "UPL-1.0": "Yes",
             "Unicode-DFS-2015": "Yes",
@@ -507,6 +512,7 @@
             "Python-2.0": "Yes",
             "Qhull": "Yes",
             "RSA-MD": "Yes",
+            "Sleepycat": "No",
             "SunPro": "Yes",
             "UPL-1.0": "Yes",
             "Unicode-DFS-2015": "Yes",
