@@ -82,7 +82,6 @@ class FlictImpl:
 
         licenses_denied = self._read_json_object(licenses_denied_file, "licenses_denied", [])
         licenses_preferences = self._read_json_object(licenses_preference_file, "license_preferences", [])
-        #parser = LicenseParserFactory.get_parser(licenses_preferences, licenses_denied)
         arbiter = Arbiter(license_db=self._args.license_matrix_file, licenses_preferences=licenses_preferences, denied_licenses=licenses_denied, alias_file=alias_file)
 
         return arbiter
@@ -96,7 +95,6 @@ class FlictImpl:
             return formatted
 
         elif self._args.verify_flict:
-            #print("con flict: " + str(self._args.license_matrix_file))
             project_reader = ProjectReaderFactory.get_projectreader(self._args.verify_flict, None, "flict")
             return self._handle_lico_project(project_reader, self._args.verify_flict, formatter)
 
