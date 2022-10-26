@@ -61,19 +61,19 @@ class TextFormatter(FlictFormatter):
 
     def format_policy_report(self, policy_report):
         outbounds = policy_report.get("policy_outbounds")
-        ret_str = "Status: "
         policy_result = outbounds.get("policy_result")
         if policy_result == 0:
-            ret_str += "OK"
+            status = "OK"
         elif policy_result == 1:
-            ret_str += "OK, with licenses to avoid"
+            status = "OK, with licenses to avoid"
         elif policy_result == 2:
-            ret_str += "Failed identifying outbound license"
-        ret_str += "\n"
-        ret_str += "Allowed (suggested) outbound licenses: " + str(outbounds.get("allowed", "")) + "\n"
-        ret_str += "Avoided (suggested) outbound licenses: " + str(outbounds.get("avoid", "")) + "\n"
-        ret_str += "Denied (suggested) outbound licenses: " + str(outbounds.get("denied", ""))
-        return ret_str
+            status = "Failed identifying outbound license"
+        return f"""
+        Status: {status}
+        Allowed (suggested) outbound licenses: {outbounds.get("allowed", "")}
+        Avoided (suggested) outbound licenses: {outbounds.get("avoid", "")}
+        Denied (suggested) outbound licenses: {outbounds.get("denied", "")}
+        """
 
     def _format_lic(self, lic):
         str_size = f'{0: <{self.col_size}}'
