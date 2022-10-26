@@ -8,7 +8,7 @@ You can tweak flict by providing:
 
 * [_Alias__](#alias) - alias for "non standard" spelled licenes (e.g. 'BSD3 -> BSD-3-Clause')
 
-# Configuration and runtime files 
+# Configuration and runtime files
 
 <a name="alias"></a>
 ## License alias defininitions
@@ -18,7 +18,7 @@ files is intended to translate from "non SPDX" to SPDX. You can
 provide a list of definitions for this tool to decide how these
 "incorrectly spelled" licenses should be interpreted.
 
-By default flict uses the following alias file: [var/alias.json](var/alias.json)
+By default flict uses the following alias file: [var/alias.json](flict/var/alias.json)
 
 Example:
 
@@ -33,7 +33,7 @@ Example:
 }
 ```
 
-As with previous example you can for now skip the meta section. A translation definition is specified using:
+You can for now skip the meta section, which is present in example. A translation definition is specified using:
 
 ```alias``` - the expression we want to translate to a "proper" license, e.gg GPLv2+
 
@@ -51,7 +51,7 @@ Example:
 ```
 {
     "licenses_denied": ["MIT"]
-}                  
+}
 ```
 
 If you store this in a file, `denied-list.json`, you can use it like this:
@@ -70,7 +70,7 @@ In cases where a choice between licenses can be made flict chose the
 most preferred license. By default flict counts how many other
 licenses each license is compatible with. The more licenses a license
 is compatible with the more preferred it will be. If two licenses have
-the same number of compatibilities alpabetical order will be used to
+the same number of compatibilities, alpabetical order will be used to
 chose license.
 
 If you want to provide your own ordered list of license preference, you do this like this:
@@ -83,7 +83,7 @@ Example:
         "curl", "MIT"
     ]
 
-}                  
+}
 ```
 
 If you store this in a file, `license-preferences.json`, you can use it with the `-lpf` option.
@@ -94,7 +94,7 @@ If you store this in a file, `license-preferences.json`, you can use it with the
 If you want to extend or override the license database with new
 licenses you can do this with a custom database.
 
-Let's say you want to add support for a new license, called 'ABC'. You need to add how this new license is compatible with all other in both ways. 
+Let's say you want to add support for a new license, called 'ABC'. You need to add how this new license is compatible with all other in both ways.
 
 Adding information how existing licenses ('0BSD', 'AFL-2.0' and so on), can use 'ABC':
 ```
@@ -135,6 +135,7 @@ These should be placed inside `osadl_additional_licenses` like this:
 *Note: the above is an incomplete example. All licenses supported by
  the OSADL matrix need to be defined in relation to the new license,
  not only '0BSD' and 'AFL-2.0'.*
+ This file is further called `additional_matrix.json`.
 
 To apply the new license db and store the result in `merged-matrix.csv`:
 

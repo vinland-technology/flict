@@ -20,6 +20,7 @@ The following software are needed to use flict:
 - run `git clone https://github.com/vinland-technology/flict`
 - *optional*: checkout the revision you like to install
 - run `cd flict`
+- run `pip3 install -r requirements.txt`
 - run `pip3 install .` _(might require sudo/root/admin rights)_
 
 ## Install development version
@@ -27,13 +28,14 @@ The following software are needed to use flict:
 - run `git clone https://github.com/vinland-technology/flict`
 - *optional*: checkout the revision you like to install
 - run `cd flict`
+- run `pip3 install -r requirements-dev.txt`
 - run `pip3 install -e .[dev]` _(might require sudo/root/admin rights)_
 
 ### Non-root installation
 
 In case you don't have root access on your machine you need add `--user` to all the `pip3` calls - e.g. `pip3 install --user -e .[dev]`.
 
-**NOTE: On __Debian__ system that is the default behavior**
+**NOTE: On __Debian-based__ systems that is the default behavior**
 
 # Docker image
 

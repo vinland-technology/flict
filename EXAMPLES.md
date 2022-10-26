@@ -30,9 +30,12 @@ $ flict display-compatibility BSD-3-Clause MIT GPL-2.0-only
 {"compatibilities": [{"license": "MIT", "licenses": [{"license": "BSD-3-Clause", "compatible_right": "true", "compatible_left": "true"}, {"license": "GPL-2.0-only", "compatible_right": "true", "compatible_left": "false"}]}, {"license": "BSD-3-Clause", "licenses": [{"license": "MIT", "compatible_right": "true", "compatible_left": "true"}, {"license": "GPL-2.0-only", "compatible_right": "true", "compatible_left": "false"}]}, {"license": "GPL-2.0-only", "licenses": [{"license": "MIT", "compatible_right": "false", "compatible_left": "true"}, {"license": "BSD-3-Clause", "compatible_right": "false", "compatible_left": "true"}]}]}
 ```
 
+As a result, you can see a list of compatibilities in form: which license is analysed, and if it is compatible with all others specified.
+Given that, one can see that MIT and GPL-2.0-only are compatible only one-way.
+
 ## Create graph over compatibility
 
-Instead of a text based representation (as above) you can instead create a graphical representation using `dot` format. 
+Instead of a text based representation (as above) you can instead create a graphical representation using `dot` format.
 
 ```shell
 $ flict -of dot display-compatibility BSD-3-Clause MIT GPL-2.0-only > compat.dot

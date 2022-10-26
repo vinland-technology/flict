@@ -27,15 +27,15 @@ flict can:
 
 * suggest candidate outbound licenses
 
-* simplify license expressions 
+* simplify license expressions
 
-* display, in misc format, compatibilies between licenses 
+* display, in misc format, compatibilies between licenses
 
 * ~~check outbound licenses against a policy (policy as supplied by the user)~~ (automatic now)
 
 flict supports:
 
-* 87 licenses (```flict -of text list```) 
+* 87 licenses (```flict -of text list```)
 
 * common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only), see "License alias defininitions" in [SETTINGS](SETTINGS.md)
 
@@ -115,7 +115,7 @@ formats (e.g. html, pdf). Partially supported.
 
 ### Text
 
-Partially supported. 
+Partially supported.
 
 ## User specific configuration
 
@@ -135,7 +135,7 @@ Either create a json file at `~/.flict.cfg` or at a path defined by environment 
 ```json
 {
     "license_matrix-file": "/my/very/own/osadl-matrix.csv",
-    "output-format": "text",
+    "output-format": "text"
 }
 ```
 

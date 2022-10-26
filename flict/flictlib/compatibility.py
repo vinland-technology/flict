@@ -211,7 +211,6 @@ class OsadlCompatibility(Compatibility):
         for line in _csv:
             if len(line) < 3:
                 continue
-            #print(line)
         return _csv
 
     def _create_matrix_csv_data(self, file_name):
