@@ -134,7 +134,7 @@ These should be placed inside `osadl_additional_licenses` like this:
 
 *Note: the above is an incomplete example. All licenses supported by
  the OSADL matrix need to be defined in relation to the new license,
- not only '0BSD' and 'AFL-2.0'.*
+ not only '0BSD' and 'AFL-2.0'.*. If they are NOT defined - 'Unknown' compatibility will be assumed.
  This file is further called `additional_matrix.json`.
 
 To apply the new license db and store the result in `merged-matrix.csv`:
