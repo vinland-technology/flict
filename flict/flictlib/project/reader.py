@@ -17,11 +17,7 @@ class Project:
 
     @staticmethod
     def dependencies_license(package):
-        licenses = []
-        for dep in package.get('dependencies', []):
-            if 'license' not in dep:
-                raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'Dependency does not contain "license": {dep}')
-            licenses.append(f" ( {dep['license']}) ")
+        licenses = [Project.package_license(dep) for dep in package.get('dependencies', [])]
         return " AND ".join(licenses)
 
     @staticmethod
