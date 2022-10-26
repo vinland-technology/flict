@@ -48,12 +48,6 @@ class JsonFormatter(FlictFormatter):
     def format_relicense_information(self, license_handler):
         return json.dumps(license_handler.relicensing_information()['original']['relicense_definitions'])
 
-    def format_translation_information(self, license_handler):
-        return json.dumps(license_handler.translation_information())
-
-    def format_policy_report(self, policy_report):
-        return json.dumps(policy_report)
-
     def format_compatibilities(self, compats):
         return json.dumps(compats)
 
@@ -61,5 +55,4 @@ class JsonFormatter(FlictFormatter):
         return json.dumps(licenses)
 
     def format_verification(self, verification):
-        #print(str(verification))
         return json.dumps(verification)

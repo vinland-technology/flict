@@ -98,8 +98,6 @@ class MarkdownFlictFormatter(FlictFormatter):
         identified_license = None
         for package in verification['packages']:
 
-            #            identified_license = package.get('identified_license', None)
-            #            identified_license_aliased = package.get('identified_license_aliased', identified_license)
             identified_license = package.get('outbound_license', None)
             identified_license_aliased = package.get('outbound_license_aliased', None)
 
