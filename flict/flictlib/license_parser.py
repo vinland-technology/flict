@@ -143,14 +143,10 @@ class PrettyLicenseParser(LicenseParser):
                 rest = self.utils.remove_comma(rest)
             elif self.utils.next_token(rest) == PrettyLicenseSymbol.LICENSE_WITH_SYMBOL.value:
                 lic, rest = self.utils.get_license(rest)
-                operand = {
-                    'type': 'license',
-                    'name': lic
-                }
             else:
                 logging.error("*** PANIC IN DETROIT ***")
                 logging.error(rest)
-                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Internal error: Remaining expression to valid: {rest}")
+                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Internal error: Remaining expression not valid: {rest}")
         return {
             'type': 'operator',
             'name': op,
