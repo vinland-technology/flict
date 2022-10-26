@@ -19,13 +19,15 @@ class Project:
     def dependencies_license(package):
         licenses = []
         for dep in package.get('dependencies', []):
-            #TODO: raise exception with nice message to user if license not present
+            if 'license' not in dep:
+                raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'Dependency does not contain "license": {dep}')
             licenses.append(f" ( {dep['license']}) ")
         return " AND ".join(licenses)
 
     @staticmethod
     def package_license(package):
-        #TODO: raise exception with nice message to user if license not present
+        if 'license' not in package:
+            raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'Package does not contain "license": {package}')
         return package['license']
 
     @staticmethod
@@ -77,7 +79,6 @@ class ProjectReaderFactory:
         if not project_dirs:
             project_dirs = ["."]
         logging.debug(f'get_projectreader({project_file}, {project_dirs}, {project_format})')
-        #suffix = os.path.splitext(project_file)[-1].lower()
         if project_format is None:
             if "spdx" in project_file:
                 return SPDXJsonProjectReader(project_dirs)
