@@ -101,7 +101,7 @@ class Compatibility:
             licenses_set = set(licenses + supported)
             outer_licenses = list(licenses_set)
         else:
-            outer_licenses = list(licenses)
+            outer_licenses = set(licenses)
 
         for lic_a in outer_licenses:
             inner_licenses = []
@@ -110,9 +110,11 @@ class Compatibility:
                 comp_left = self.check_compat(lic_a, lic_b)['compatibility']
                 comp_right = self.check_compat(lic_b, lic_a)['compatibility']
 
-                if comp_left == CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value or comp_right == CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value:
+                if CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value in (comp_left, comp_right):
+                    supported = self.supported_licenses()
+                    lic_bad = ",".join({lic for lic in (lic_a, lic_b) if lic not in supported})
                     raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                     f'One of the license expressions "{lic_a}" and "{lic_b}" is not supported.')
+                                     f'License expression "{lic_bad}" is not supported.')
 
                 inner_licenses.append({
                     'license': lic_b,
@@ -205,7 +207,10 @@ class OsadlCompatibility(Compatibility):
         for key in sorted(raw.keys()):
             _line = [key]
             for key2 in sorted(raw.keys()):
-                _line.append(raw[key][key2])
+                try:
+                    _line.append(raw[key][key2])
+                except KeyError:
+                    _line.append("Unknown")
             _csv.append(_line)
 
         for line in _csv:

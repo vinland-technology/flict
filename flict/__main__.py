@@ -270,6 +270,7 @@ def policy_report(args):
     ret = FlictImpl(args).policy_report()
     flict_print(args, ret)
 
+
 def file_sanity_check(fname):
     on_error = "Provided file {fname} was not found, or cannot be read."
     on_error_code = ReturnCodes.RET_FILE_NOT_FOUND
@@ -277,6 +278,7 @@ def file_sanity_check(fname):
         open(fname).close()
     except (FileNotFoundError, PermissionError):
         flict_exit(on_error_code, on_error.format(fname=fname))
+
 
 def main():
     args = parse()
