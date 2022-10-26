@@ -235,6 +235,7 @@ def simplify(args):
 
 
 def _merge_licenses(args):
+    file_sanity_check(args.license_file)
     ret = FlictImpl(args).merge_license_db()
     flict_print(args, ret)
 
@@ -250,6 +251,10 @@ def verify(args):
 
 
 def display_compatibility(args):
+    on_error = "Expected at least two licenses for checking compatibility"
+    on_error_code = ReturnCodes.RET_MISSING_ARGS
+    if len(args.license_expression) == 1:
+        flict_exit(on_error_code, on_error)
     ret = FlictImpl(args).display_compatibility()
     flict_print(args, ret)
 
@@ -260,19 +265,18 @@ def suggest_outbound_candidate(args):
 
 
 def policy_report(args):
-    on_error = "Provided file {fname} was not found."
-    on_error_code = ReturnCodes.RET_FILE_NOT_FOUND
-    try:
-        open(args.report_file).close()
-    except (FileNotFoundError, PermissionError):
-        flict_exit(on_error_code, on_error.format(fname=args.report_file))
-    try:
-        open(args.policy_file).close()
-    except (FileNotFoundError, PermissionError):
-        flict_exit(on_error_code, on_error.format(fname=args.policy_file))
+    file_sanity_check(args.report_file)
+    file_sanity_check(args.policy_file)
     ret = FlictImpl(args).policy_report()
     flict_print(args, ret)
 
+def file_sanity_check(fname):
+    on_error = "Provided file {fname} was not found, or cannot be read."
+    on_error_code = ReturnCodes.RET_FILE_NOT_FOUND
+    try:
+        open(fname).close()
+    except (FileNotFoundError, PermissionError):
+        flict_exit(on_error_code, on_error.format(fname=fname))
 
 def main():
     args = parse()
