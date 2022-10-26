@@ -183,10 +183,6 @@ def parse():
         'display-compatibility', help='display license compatibility graphically')
     parser_d.set_defaults(which="display-compatibility",
                           func=display_compatibility)
-    parser_d.add_argument('--graph', '-g', type=str,
-                          help='create graph representation')
-    parser_d.add_argument('--table', '-t', type=str,
-                          help='create table representation')
     parser_d.add_argument('license_expression', type=str, nargs='+',
                           help='license expression to display compatibility for')
 
