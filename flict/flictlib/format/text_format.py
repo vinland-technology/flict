@@ -19,13 +19,11 @@ class TextFormatter(FlictFormatter):
         self.col_size = 18
 
     def format_support_licenses(self, supported_licenses):
-        ret_str = ""
-        for item in supported_licenses:
-            ret_str += " " + str(item) + "\n"
-        return ret_str
+        ret = [f" {item}" for item in supported_licenses]
+        return "\n".join(ret)
 
     def format_license_list(self, license_list):
-        return "text implmentation | format_license_list(): " + str(license_list)
+        return f"text implmentation | format_license_list(): {license_list}"
 
     def format_license_combinations(self, project):
         return str(project.projects_combinations())
@@ -37,8 +35,7 @@ class TextFormatter(FlictFormatter):
         return simplified
 
     def format_verified_license(self, license_expression, outbound_candidate):
-        ret_str = "The licenses in the expression \"" + license_expression.strip() + \
-            "\" are"
+        ret_str = f'The licenses in the expression "{license_expression.strip()}" are'
         if len(outbound_candidate) == 0:
             ret_str += " not"
         ret_str += " compatible.\n"
