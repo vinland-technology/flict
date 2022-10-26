@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # SPDX-FileCopyrightText: 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
@@ -33,7 +31,7 @@ class Alias:
                 return alias['license']
         return lic
 
-    def replace_aliases(self, license_expr, license_file=None):
+    def replace_aliases(self, license_expr):
         """Replaces license expression aliases (e.g GPLv2+) with supported
         license identifiers (e.g. GPL-2.0-or-later)
 
