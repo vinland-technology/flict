@@ -34,7 +34,8 @@ class FlictImpl:
         return self._formatter.format_compats(inter_compats)
 
     def simplify(self):
-        return self.arbiter.simplify_license(" ".join(self._args.license_expression))
+        simplified = self.arbiter.simplify_license(" ".join(self._args.license_expression))
+        return self._formatter.format_simplified(simplified)
 
     def suggest_outbound_candidate(self):
         licenses = self.arbiter.licenses(" ".join(self._args.license_expression))
