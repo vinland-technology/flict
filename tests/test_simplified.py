@@ -9,9 +9,9 @@ from flict.impl import FlictImpl
 from tests.args_mock import ArgsMock
 
 def _test_expression(expression, result):
-    args = ArgsMock(license_expression=expression)
+    args = ArgsMock(license_expression=expression, output_format="JSON")
     ret = FlictImpl(args).simplify()
-    assert json.loads(result) == ret
+    assert json.loads(result) == json.loads(ret)
 
 def test_simplify():
     _test_expression(['MIT'], '{"original": "MIT", "simplified": "MIT"}')
