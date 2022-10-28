@@ -26,7 +26,7 @@ class FlictFormatter:
     def format_compats(self, compats):
         return "default implementation | format_compats(): " + str(compats)
 
-    def format_simplified(self, license_expression, simplified):
+    def format_simplified(self, simplified):
         return "default implementation | format_simplified(): " + str(simplified)
 
     def format_verified_license(self, license_expression, outbound_candidate):

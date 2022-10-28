@@ -57,6 +57,12 @@ class MarkdownFlictFormatter(FlictFormatter):
     def format_licenses(self, licenses):
         return "\n".join(licenses)
 
+    def format_simplified(self, simplified):
+        result = []
+        result.append(f"# Original license\n\n{simplified['original']}\n")
+        result.append(f"# Simplified license\n\n{simplified['simplified']}\n")
+        return "\n".join(result)
+
     def packages_header(self):
         return f"{self.headers['packages']} Packages\n"
 

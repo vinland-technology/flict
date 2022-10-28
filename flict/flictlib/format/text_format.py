@@ -34,7 +34,7 @@ class TextFormatter(FlictFormatter):
         return ", ".join(outbound_candidates)
 
     def format_simplified(self, license_expression, simplified):
-        return simplified
+        return simplified['simplified']
 
     def format_verified_license(self, license_expression, outbound_candidate):
         ret_str = "The licenses in the expression \"" + license_expression.strip() + \
