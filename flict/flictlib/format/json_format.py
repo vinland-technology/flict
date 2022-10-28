@@ -34,9 +34,8 @@ class JsonFormatter(FlictFormatter):
     def format_compats(self, compats):
         return json.dumps(compats)
 
-    def format_simplified(self, license_expression, simplified):
-        return json.dumps({'original':  license_expression,
-                           'simplified': simplified})
+    def format_simplified(self, simplified):
+        return json.dumps(simplified)
 
     def format_verified_license(self, license_expression, outbound_candidate):
         compat = len(outbound_candidate) != 0
