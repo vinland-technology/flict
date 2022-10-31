@@ -1,6 +1,10 @@
 name: Push test pipeline
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - "master"
+  pull_request:
 
 jobs:
   gitlint:
@@ -21,9 +25,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
+      max-parallel: 5
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10']
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
 
     steps:
     - uses: actions/checkout@v3
@@ -38,6 +42,9 @@ jobs:
         pip install -r requirements-dev.txt
     - name: Build
       run: python3 setup.py build
+    - name: Lint
+      run: |
+        flake8
     - name: Install
       run: python3 setup.py install
     - name: Test
@@ -49,11 +56,6 @@ jobs:
       if: ${{ always() && github.event.pull_request.head.repo.full_name == github.repository }}
       with:
         report_paths: '**/TEST-*.xml'
-    # Install a specific version of python-debian, as there is a pending upstream bug
-    # with the latest version
-    - name: Install additional tooling
-      run: |
-        pip3 install reuse python-debian==0.1.40
     - name: Reuse check
       run: |
         reuse lint

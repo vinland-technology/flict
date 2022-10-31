@@ -17,29 +17,29 @@ with open('requirements-dev.txt') as f:
     requirements_dev = f.read().splitlines()
 
 setuptools.setup(
-    name = "flict",
-    version = flict_version,
-    author = "Henrik Sanklef",
-    author_email = "hesa@sandklef.com",
-    description = "FOSS License Compatibility Tool",
-    long_description = _long_description,
-    long_description_content_type = "text/markdown",
-    license_files = ('LICENSE',),
-    url = "https://github.com/vinland-technology/flict",
-    packages = ['flict', 'flict.flictlib', 'flict.flictlib.format', 'flict.flictlib.project'],
-    entry_points = {
+    name="flict",
+    version=flict_version,
+    author="Henrik Sanklef",
+    author_email="hesa@sandklef.com",
+    description="FOSS License Compatibility Tool",
+    long_description=_long_description,
+    long_description_content_type="text/markdown",
+    license_files=('LICENSE',),
+    url="https://github.com/vinland-technology/flict",
+    packages=['flict', 'flict.flictlib', 'flict.flictlib.format', 'flict.flictlib.project'],
+    entry_points={
         "console_scripts": [
             "flict = flict.__main__:main",
         ],
     },
-    package_data = {
+    package_data={
         'flict': ['var/*'],
     },
-    install_requires = requirements,
-    extras_require = {
+    install_requires=requirements,
+    extras_require={
         'dev': requirements_dev,
     },
-    classifiers = [
+    classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
         "Intended Audience :: Developers",
@@ -52,8 +52,9 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3",
         "Topic :: Software Development :: Quality Assurance",
     ],
-    python_requires = '>=3.7',
+    python_requires='>=3.7',
 )
