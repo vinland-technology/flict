@@ -19,15 +19,15 @@ class FormatterFactory:
     _instance = None
 
     @staticmethod
-    def formatter(format):
+    def formatter(format_):
         if FormatterFactory._instance is None:
-            if format.lower() == "json":
+            if format_.lower() == "json":
                 FormatterFactory._instance = JsonFormatter()
-            elif format.lower() == "text":
+            elif format_.lower() == "text":
                 FormatterFactory._instance = TextFormatter()
-            elif format.lower() == "dot":
+            elif format_.lower() == "dot":
                 FormatterFactory._instance = DotFormatter()
-            elif format.lower() == "markdown":
+            elif format_.lower() == "markdown":
                 FormatterFactory._instance = PackageMarkdownFlictFormatter()
             # else ignored
         # else ignored

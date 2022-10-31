@@ -50,7 +50,7 @@ class FlictImpl:
             outbounds.sort()
             return self._formatter.format_outbound_license(outbounds)
 
-        except:
+        except BaseException:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                              f'Invalid license expression: {self._args.license_expression}')
 
@@ -102,4 +102,3 @@ class FlictImpl:
         elif self._args.verify_sbom:
             project_reader = ProjectReaderFactory.get_projectreader(self._args.verify_sbom, self._args.sbom_dirs)
             return self._handle_lico_project(project_reader, self._args.verify_sbom, formatter)
-

@@ -19,7 +19,7 @@ class Alias:
         try:
             with open(alias_file or FLICT_ALIAS_FILE) as fp:
                 self.alias_object = json.load(fp)
-        except:
+        except BaseException:
             raise FlictError(ReturnCodes.RET_INVALID_ALIAS_FILE,
                              f'Could not open or parse alias file: {alias_file}')
 

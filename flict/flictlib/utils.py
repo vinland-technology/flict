@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # SPDX-FileCopyrightText: 2022 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
@@ -22,6 +20,5 @@ def meta_information(start_time=""):
         'host': uname.nodename,
         'user': os.environ.get('USER'),
         "start_time": start_time,
-        'stop_time': timestamp()
+        'stop_time': timestamp(),
     }
-

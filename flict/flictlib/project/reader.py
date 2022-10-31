@@ -36,6 +36,7 @@ class Project:
 
 class ProjectReader:
     """Interface for classes that reads project from some kind of format"""
+
     def read_project(self):
         return
 
@@ -61,17 +62,17 @@ class ProjectReader:
                 'version': _package['version'],
                 'license': _package['license'],
                 'description': _package['description'],
-                'dependencies': dep_list
+                'dependencies': dep_list,
             }
 
             package_list.append(package)
-        return(package_list)
+        return (package_list)
 
 
 class ProjectReaderFactory:
 
     @staticmethod
-    def get_projectreader(project_file=None, project_dirs = None, project_format=None):
+    def get_projectreader(project_file=None, project_dirs=None, project_format=None):
         if not project_dirs:
             project_dirs = ["."]
         logging.debug(f'get_projectreader({project_file}, {project_dirs}, {project_format})')
@@ -106,16 +107,17 @@ class FlictProjectReader(ProjectReader):
                             'version': project['version'],
                             'license': project['license'],
                             'description': '',
-                            'dependencies': project['dependencies']
-                        }
-                    ]
+                            'dependencies': project['dependencies'],
+                        },
+                    ],
                 }
         except json.JSONDecodeError:
             raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'File "{project_file}" does not contain valid JSON data')
         except (FileNotFoundError, IsADirectoryError):
             raise FlictError(ReturnCodes.RET_FILE_NOT_FOUND, f'File "{project_file}" could not be found or is a directory')
         except Exception as e:
-            raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'File "{project_file}" could not be parsed, probably not a flict project file: {e}')
+            raise FlictError(ReturnCodes.RET_INVALID_PROJECT,
+                             f'File "{project_file}" could not be parsed, probably not a flict project file: {e}')
 
 
 class SPDXJsonProjectReader(ProjectReader):
@@ -135,7 +137,7 @@ class SPDXJsonProjectReader(ProjectReader):
 
         return {
             "project_name": project_name,
-            "packages": flat_packages
+            "packages": flat_packages,
         }
 
     def _read_spdx_2_2(self, only_packages=None):
@@ -149,7 +151,7 @@ class SPDXJsonProjectReader(ProjectReader):
                 'version': pkg['versionInfo'],
                 'license': pkg['licenseConcluded'],
                 'description': pkg['description'],
-                'dependencies': []
+                'dependencies': [],
             }
 
         if 'relationships' in self.project:
@@ -171,7 +173,7 @@ class SPDXJsonProjectReader(ProjectReader):
 
         return {
             "packages": packages,
-            "project_name": project_name
+            "project_name": project_name,
         }
 
     def _read_spdx(self, spdx_file, only_packages=None):
@@ -198,7 +200,7 @@ class SPDXJsonProjectReader(ProjectReader):
 
         for _package in packages.values():
             package_dict.update(
-                {f"{_package['name']}--{_package['version']}": _package}
+                {f"{_package['name']}--{_package['version']}": _package},
             )
             for dep in _package["dependencies"]:
                 package_dict.update(self._flatten_package_tree(dep))

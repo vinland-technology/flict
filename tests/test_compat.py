@@ -38,7 +38,7 @@ class TestLicenseChooser(unittest.TestCase):
         self.chooser = CompatibilityLicenseChooser(self.arbiter.supported_licenses())
 
     def test_license_list(self):
-        license_list = self.chooser.list()
+        license_list = self.chooser.list_licenses()
         self.assertTrue(len(license_list)>10)
 
     def test_one_license(self):
@@ -62,18 +62,18 @@ class TestCustomLicenseChooser(unittest.TestCase):
         self.chooser = CustomLicenseChooser(['MIT', 'curl', 'BSD-3-Clause', 'X11' ])
 
     def test_license_list(self):
-        license_list = self.chooser.list()
+        license_list = self.chooser.list_licenses()
         self.assertTrue(len(license_list)==4)
 
     def test_one_license(self):
         self.assertEqual(self.chooser.choose(['curl']), 'curl')
 
     def test_two_license(self):
-        license_list = self.chooser.list()
+        license_list = self.chooser.list_licenses()
         self.assertEqual(self.chooser.choose(['curl', 'MIT']), 'MIT')
 
     def test_multiple_license(self):
-        license_list = self.chooser.list()
+        license_list = self.chooser.list_licenses()
         self.assertEqual(self.chooser.choose(['curl', 'MIT', 'BSD-3-Clause']), 'MIT')
 
 

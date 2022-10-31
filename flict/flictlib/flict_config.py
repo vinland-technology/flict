@@ -17,12 +17,12 @@ from osadl_matrix import OSADL_MATRIX
 def read_user_config():
     for path in [
         os.environ.get('FLICT_USERCONFIG'),
-        os.path.join(os.environ.get('HOME'), '.flict.cfg')
+        os.path.join(os.environ.get('HOME'), '.flict.cfg'),
     ]:
         try:
             with open(path) as i:
                 return json.load(i)
-        except Exception: # noqa: S110 - it's okay ignore all errors here
+        except Exception:  # noqa: S110 - it's okay ignore all errors here
             pass
     return {}
 

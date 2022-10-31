@@ -66,10 +66,9 @@ def _compat_to_dot(left, comp_left, right, comp_right):
         if comp_right == "false":
             logger.main_logger.debug("1 dslkjsljdflskdjfljdf")
             res = _print_compare_line(left, right, '[color="black"]')
-            logger.main_logger.debug(left + "    " + right)
-            logger.main_logger.debug("dot:      " + res)
-            logger.main_logger.debug(
-                "markdown: " + _compat_to_markdown(None, comp_left, None, comp_right))
+            logger.main_logger.debug(f'{left}    {right}')
+            logger.main_logger.debug(f'dot:      {res}')
+            logger.main_logger.debug(f'markdown: {_compat_to_markdown(None, comp_left, None, comp_right)}')
             return res
 
         if comp_right == "question" or comp_right == "undefined" or comp_right == "depends":

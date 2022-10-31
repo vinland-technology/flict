@@ -40,13 +40,13 @@ class License():
     def denied_licenses(self):
         return self._denied_licenses
 
-    def license_denied(self, license):
+    def license_denied(self, license_):
         if self._denied_licenses:
-            return license in self._denied_licenses
+            return license_ in self._denied_licenses
         return False
 
-    def license_allowed(self, license):
-        return not self.license_denied(license)
+    def license_allowed(self, license_):
+        return not self.license_denied(license_)
 
     def simplify_license(self, expr):
         try:
@@ -55,7 +55,7 @@ class License():
             simplified = str(parsed['simplified'])
             return {
                 "original": expr,
-                "simplified": simplified
+                "simplified": simplified,
             }
         except Exception as e:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Could not parse or simplify license expression: {expr}. Cause: {str(e)}")

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 ###################################################################
 #
 # flict - FOSS License Compatibility Tool
@@ -13,17 +11,17 @@
 
 compat_interprets = {
     'left': {
-        'true':       {'markdown': '--->'},
-        'false':      {'markdown': '---|'},
-        'undefined':  {'markdown': '---U'},
-        'depends':    {'markdown': '---D'},
-        'question':   {'markdown': '---Q'},
+        'true': {'markdown': '--->'},
+        'false': {'markdown': '---|'},
+        'undefined': {'markdown': '---U'},
+        'depends': {'markdown': '---D'},
+        'question': {'markdown': '---Q'},
     },
     'right': {
-        'true':       {'markdown': '<----'},
-        'false':      {'markdown': '|--'},
-        'undefined':  {'markdown': 'U---'},
-        'depends':    {'markdown': 'D---'},
-        'question':   {'markdown': 'Q---'},
+        'true': {'markdown': '<----'},
+        'false': {'markdown': '|--'},
+        'undefined': {'markdown': 'U---'},
+        'depends': {'markdown': 'D---'},
+        'question': {'markdown': 'Q---'},
     },
 }

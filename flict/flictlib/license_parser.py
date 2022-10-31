@@ -55,7 +55,7 @@ class LicenseParser:
     def is_and(self, expr):
         return self.operator(expr) == LicenseExpression.LICENSE_EXPRESSION_AND.value
 
-    def license(self, expr):
+    def license(self, expr):  # noqa: A003
         return expr['name']
 
     def operands(self, expr):
@@ -72,13 +72,15 @@ class PrettyLicenseParser(LicenseParser):
         logging.debug(f"parse_license(\"{expr}\")")
 
         if not isinstance(expr, list):
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Internal error: Expression to parse must be a list: {expr}")
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             f"Internal error: Expression to parse must be a list: {expr}")
 
         if len(expr) == 0:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Internal error: Expression list cannot be empty: {expr}")
 
         if len(expr[0]) == 0:
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, "Internal error: Expression list's first item cannot be empty")
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             "Internal error: Expression list's first item cannot be empty")
 
         lic_expr = " ".join(expr).replace(")", " ) ").replace("(", " ( ")
         logging.debug(f"expression:         {lic_expr}")
@@ -101,7 +103,7 @@ class PrettyLicenseParser(LicenseParser):
             'original': lic_expr,
             'simplified': simplified,
             'pretty': pretty,
-            'trimmed': trimmed
+            'trimmed': trimmed,
         }
 
     def _parse_license(self, expr):
@@ -127,7 +129,7 @@ class PrettyLicenseParser(LicenseParser):
                 lic, rest = self.utils.get_license(rest)
                 operand = {
                     'type': 'license',
-                    'name': lic
+                    'name': lic,
                 }
 
                 if (is_operator):
@@ -146,11 +148,12 @@ class PrettyLicenseParser(LicenseParser):
             else:
                 logging.error("*** PANIC IN DETROIT ***")
                 logging.error(rest)
-                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Internal error: Remaining expression not valid: {rest}")
+                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                                 f"Internal error: Remaining expression not valid: {rest}")
         return {
             'type': 'operator',
             'name': op,
-            'operands': operands
+            'operands': operands,
         }
 
     def licenses(self, expr):
@@ -174,7 +177,7 @@ class PrettyLicenseParser(LicenseParser):
             for key in keys:
                 key_set.add(key.replace("_WITH_", " WITH "))
             return list(key_set)
-        except:
+        except BaseException:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Could not parse and list license expression: {expr}")
 
 
