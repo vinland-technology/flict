@@ -46,6 +46,7 @@ class Compatibility:
 
     This class need to be implemented in sub classes.
     """
+
     def __init__(self, alias, license_db=None):
         return None
 
@@ -77,7 +78,7 @@ class Compatibility:
             licenses = list(_licenses)
 
             inter_compats = self.check_compatibilities(licenses, self._args.extended_licenses)
-        except:
+        except BaseException:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                              f'Could not parse license expression: {self._args.license_expression}')
 
@@ -119,16 +120,16 @@ class Compatibility:
                 inner_licenses.append({
                     'license': lic_b,
                     'compatible_right': self._compatibility_status_json(comp_right),
-                    'compatible_left': self._compatibility_status_json(comp_left)
+                    'compatible_left': self._compatibility_status_json(comp_left),
                 })
 
             compats.append({
                 'license': lic_a,
-                'licenses': inner_licenses
+                'licenses': inner_licenses,
             })
 
         return {
-            'compatibilities': compats
+            'compatibilities': compats,
         }
 
     def _compatibility_status_json(self, status):
@@ -178,12 +179,13 @@ class OsadlCompatibility(Compatibility):
         elif raw_result == osadl_matrix.OSADLCompatibility.UNDEF:
             result = CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value
         else:
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined. The result was: {raw_result}")
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined. The result was: {raw_result}")
 
         return {
             "inbound": inbound,
             "outbound": outbound,
-            COMPATIBILITY_TAG: result
+            COMPATIBILITY_TAG: result,
         }
 
     def supported_licenses(self):
@@ -201,7 +203,7 @@ class OsadlCompatibility(Compatibility):
         # create a csv
 
         _csv = [
-            ['Compatibility*'] + sorted(raw.keys())
+            ['Compatibility*'] + sorted(raw.keys()),
         ]
 
         for key in sorted(raw.keys()):
@@ -292,7 +294,7 @@ class LicenseChooser:
         else:
             return self.licenses[index]
 
-    def list(self):
+    def list_licenses(self):
         """returns a list of licenses in preference order"""
         return self.licenses
 
@@ -326,14 +328,14 @@ class CompatibilityLicenseChooser(LicenseChooser):
                 compat_cnt += 1
         return {
             "inbound": inbound,
-            "compatible_count": compat_cnt
+            "compatible_count": compat_cnt,
         }
 
     def _count_compats(self, supported_licenses):
         compats = []
         for inbound in supported_licenses:
             compats.append(self._count_compat(inbound, supported_licenses))
-        compats_sorted = sorted(compats, key = lambda element: (element['compatible_count'], element['inbound']))
+        compats_sorted = sorted(compats, key=lambda element: (element['compatible_count'], element['inbound']))
         compats_sorted.reverse()
         return compats_sorted
 

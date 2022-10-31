@@ -114,7 +114,6 @@ class LicenseCompatibilty:
             allowed = compat['allowed']
             allowed_summary = self._update_allowed(op, allowed_summary, allowed)
             operand['allowed'] = allowed
-            #                operand['compatibility_info'] = compat
             operand[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
 
         # store outbound to make for easier reading of result
@@ -202,8 +201,7 @@ class LicenseCompatibilty:
         return self.license_chooser.choose(licenses)
 
 
-# TODO: add to utils or similar
-# easy to use function
+# add to utils or similar easy to use function in future revision
 def inbound_outbound_compatibility(outbound, inbounds, license_db=None):
     return LicenseCompatibilty(license_db).inbounds_outbound_compatibility(outbound, [inbounds])['compatibility']
 

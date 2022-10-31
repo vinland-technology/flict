@@ -22,7 +22,7 @@ MANIFEST_HEADERS = {
     "dependencies": "####",
     "problems": "####",
     "dependency": "#####",
-    "identified_license": "####"
+    "identified_license": "####",
 }
 
 
@@ -33,7 +33,7 @@ PACKAGE_HEADERS = {
     "dependencies": "###",
     "problems": "###",
     "dependency": "####",
-    "identified_license": "###"
+    "identified_license": "###",
 }
 
 
@@ -82,7 +82,6 @@ class MarkdownFlictFormatter(FlictFormatter):
         return f"{self.headers['identified_license']} Identified licenses in the combined work\n"
 
     def output_compat_markdown(self, compats):
-        # print(str(compats))
         result = []
 
         result.append("# License compatibilities\n\n")
@@ -108,7 +107,6 @@ class MarkdownFlictFormatter(FlictFormatter):
             identified_license_aliased = package.get('outbound_license_aliased', None)
 
             identified_licenses = package.get('outbound_licenses', None)
-            #identified_licenses_aliased = package.get('outbound_licenses_aliased', identified_licenses)
 
             output.append(self.package_name_header(package['name']))
             description = package.get('description', "")
@@ -120,8 +118,6 @@ class MarkdownFlictFormatter(FlictFormatter):
                 output.append(f"Declared license: {package['license']}\n")
             else:
                 # Out of the outbound licenses, present the first and suggest the others
-                #identified_license = identified_licenses[0]
-                #identified_license_aliased = identified_licenses_aliased[0]
                 output.append(f"Main license: {identified_license}\n")
 
                 if identified_license != identified_license_aliased:
@@ -162,7 +158,7 @@ class MarkdownFlictFormatter(FlictFormatter):
     def _problem(self, message):
         return [
             self.problem_header(),
-            message
+            message,
         ]
 
 
@@ -200,4 +196,3 @@ def _output_compat_markdown_licenses(main_license, compat):
             main_license, comp_left, inner_license, comp_right)
         result.append(f"{main_license} {compat_text} {inner_license}\n\n")
     return "".join(result)
-

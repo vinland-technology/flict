@@ -14,14 +14,15 @@ from flict.flictlib.return_codes import FlictError, ReturnCodes
 class Arbiter:
     """Arbiter is a class to verify compatibility"""
 
-    def __init__(self, license_db = None, licenses_preferences = None, denied_licenses=None, alias_file=None):
+    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, alias_file=None):
         """Initializes Arbiter objects
              Parameters:
                  license_db: license database to use instead of builtin
                  licenses_preferences: license preferences to use instead of builtin
                  denied_licenses: licenses that cannot be used
         """
-        self.license_compatibility = LicenseCompatibilty(license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses, alias_file=alias_file)
+        self.license_compatibility = LicenseCompatibilty(
+            license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses, alias_file=alias_file)
 
     def supported_licenses(self):
         """Returns the supported licenses"""
@@ -116,7 +117,7 @@ class Arbiter:
             'licenses_to_check': list(licenses),
             'version': package['version'],
             'description': package.get('description', ""),
-            'compatibility': compats
+            'compatibility': compats,
         }
 
     def verify(self, project, supplied_licenses=None):
@@ -169,7 +170,7 @@ class Arbiter:
                 'outbound_licenses': outbound_licenses,
                 'outbound_licenses_aliased': outbound_licenses_aliased,
                 'outbound_license': chosen_license,
-                'outbound_license_aliased': chosen_alias
+                'outbound_license_aliased': chosen_alias,
             })
             package_infos.append(package_info)
 
@@ -177,7 +178,7 @@ class Arbiter:
             "project_name": project_name,
             "packages": package_infos,
             "meta": meta_information(start_time),
-            "all_licenses": list(all_licenses)
+            "all_licenses": list(all_licenses),
         }
 
     def _compat_ok_to_use(self, compat):

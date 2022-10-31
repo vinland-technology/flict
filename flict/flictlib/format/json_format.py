@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 ###################################################################
 #
 # flict - FOSS License Compatibility Tool
@@ -25,7 +23,7 @@ class JsonFormatter(FlictFormatter):
 
     def format_license_combinations(self, project):
         return json.dumps({
-            'license_combinations': project.projects_combinations()
+            'license_combinations': project.projects_combinations(),
         })
 
     def format_outbound_license(self, outbound_candidate):
@@ -41,7 +39,7 @@ class JsonFormatter(FlictFormatter):
         compat = len(outbound_candidate) != 0
         return json.dumps({"license_expression": license_expression,
                            "compatible": compat,
-                           "outbound_candidate": outbound_candidate}
+                           "outbound_candidate": outbound_candidate},
                           )
 
     def format_relicense_information(self, license_handler):

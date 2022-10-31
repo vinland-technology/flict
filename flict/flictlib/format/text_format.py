@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 ###################################################################
 #
 # flict - FOSS License Compatibility Tool
@@ -122,4 +120,3 @@ class TextFormatter(FlictFormatter):
         compatible = compats['compatibility'] == "Yes"
         allowed = compats['allowed']
         return "Yes" if compatible and allowed else "No"
-
