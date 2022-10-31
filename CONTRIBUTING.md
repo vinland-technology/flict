@@ -17,13 +17,3 @@ To execute test flict:
 ```
 $ python3 -m pytest 
 ```
-
-and optionally do:
-
-```
-$ cd tests/
-$ ./all.sh 
-```
-
-
-
