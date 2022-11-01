@@ -1,0 +1,80 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.2",
+  "creationInfo": {
+    "created": "2021-09-18T15:38:51Z",
+    "creators": [
+      "Person: Henrik Sandklef <hesa@sandklef.com>",
+      "Organization: Sandklef GNU Labs"
+    ]
+  },
+  "name": "freetype-2.9",
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "freetype-2.9-9089bc58-a288-418b-828a-b4e306e2e186",
+  "documentDescribes": [
+    "SPDXRef-Package-freetype"
+  ],
+  "externalDocumentRefs": [
+    {
+      "externalDocumentId": "DocumentRef-libpng-1.6.35",
+      "checksum": {
+        "algorithm": "SHA1",
+        "checksumValue": "7b5e6cd5d01824dd117238a42afc7fc55fba4e1b"
+      },
+      "spdxDocument": "libpng-1.6.35.spdx.json"
+    },
+    {
+      "externalDocumentId": "DocumentRef-zlib-1.2.11",
+      "checksum": {
+        "algorithm": "SHA1",
+        "checksumValue": "8311e25014b6bf62cb1f71539f3bb182bac96724"
+      },
+      "spdxDocument": "zlib-1.2.11.spdx.json"
+    }
+  ],
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-freetype-libfreetype",
+      "description": "FreeType is a freely available software library to render fonts.",
+      "downloadLocation": "https://download.savannah.gnu.org/releases/freetype/freetype-2.9.tar.gz",
+      "copyrightText": "Copyright 1990, 1994, 1998 The Open Group\n Copyright 1996-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 1996-2018 by Just van Rossum, David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2000-2001, 2002 by Francesco Zappa Nardelli \n Copyright 2000-2001, 2003 by Francesco Zappa Nardelli \n Copyright 2000, 2001, 2004 by Francesco Zappa Nardelli \n Copyright 2000, 2006 by Francesco Zappa Nardelli \n Copyright 2000-2010, 2012-2014 by Francesco Zappa Nardelli \n Copyright 2000-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2000 Computing Research Labs, New Mexico State University \n Copyright 2001, 2002, 2006 by Francesco Zappa Nardelli \n Copyright 2001-2002, 2011 Francesco Zappa Nardelli \n Copyright 2001, 2002, 2012 Francesco Zappa Nardelli \n Copyright 2001-2004, 2011 Francesco Zappa Nardelli \n Copyright 2001, 2012 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2001-2014 Francesco Zappa Nardelli \n Copyright 2001-2015 Francesco Zappa Nardelli \n Copyright 2001-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2002-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2002-2018 by Roberto Alameda \n Copyright 2003-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2003-2018 by Masatake YAMATO, Redhat K.K., David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2003 by Francesco Zappa Nardelli \n Copyright 2003 by Masatake YAMATO and Redhat K.K. \n Copyright 2003 Huw D M Davies for Codeweavers \n Copyright 2004-2018 by Albert \n Copyright 2004-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2004-2018 by David Turner, Robert Wilhelm, Werner Lemberg and George Williams \n Copyright 2004-2018 by David Turner, Robert Wilhelm, Werner Lemberg, and George Williams \n Copyright 2004-2018 by Masatake YAMATO and Redhat K.K. \n Copyright 2004-2018 by Masatake YAMATO, Redhat K.K, David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2004-2018 by Masatake YAMATO, Red Hat K.K., David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2004-2018 by suzuki toshiya, Masatake YAMATO, Red \n Copyright 2004-2018 by suzuki toshiya, Masatake YAMATO, Red Hat K.K., David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2005-2018 by David Turner \n Copyright 2005-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2005-2018 by suzuki toshiya, Masatake YAMATO and Red Hat K.K. \n Copyright 2005-2018 by suzuki toshiya, Masatake YAMATO, Red Hat K.K., David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2006-2013 Adobe Systems Incorporated \n Copyright 2006-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2007-2013 Adobe Systems Incorporated \n Copyright 2007-2014 Adobe Systems Incorporated \n Copyright 2007-2018 by David Turner \n Copyright 2007-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2007-2018 by Dereg Clegg and Michael Toftdal \n Copyright 2007-2018 by Derek Clegg and Michael Toftdal \n Copyright 2007-2018 by Rahul Bhalerao <rahul.bhalerao@redhat.com> \n Copyright 2007 Dmitry Timoshkov \n Copyright 2008-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2008-2018 by David Turner, Robert Wilhelm, Werner Lemberg, and suzuki toshiya \n Copyright 2009-2013 Adobe Systems Incorporated \n Copyright 2009-2014 Adobe Systems Incorporated \n Copyright 2009-2018 by Oran Agra and Mickey Gabel \n Copyright 2010-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2010-2018 by Joel Klinghed \n Copyright 2011-2013 Adobe Systems Incorporated \n Copyright 2012-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2013-2014 Adobe Systems Incorporated \n Copyright 2013-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2013-2018 by Google, Inc. \n Copyright 2013 Adobe Systems Incorporated \n Copyright 2013 by Google, Inc. Google Author(s) Behdad Esfahbod \n Copyright 2016-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright 2017-2018 by David Turner, Robert Wilhelm, and Werner Lemberg \n Copyright (c) 2000, 2001, 2002, 2003, 2006, 2010 by Francesco Zappa Nardelli \n Copyright (c) 2000, 2001, 2003, 2008 by Francesco Zappa Nardelli \n Copyright (c) 2000-2004, 2006-2011, 2013, 2014 by Francesco Zappa Nardelli \n Copyright (c) 2000 by Francesco Zappa Nardelli \n Copyright (c) 2001, 2002, 2003, 2004 by Francesco Zappa Nardelli \n Copyright (c) 2001, 2002, 2003, 2008 by Francesco Zappa Nardelli \n Copyright (c) 2001, 2002 by Francesco Zappa Nardelli \n Copyright (c) 2001-2002 by Francesco Zappa Nardelli \n Copyright (c) 2001-2008, 2011, 2013, 2014 by Francesco Zappa Nardelli \n Copyright (c) 2001 Alexander Peslyak",
+      "filesAnalyzed": true,
+      "homepage": "https://www.freetype.org/",
+      "licenseConcluded": "FTL OR GPL-2.0-or-later",
+      "licenseDeclared": "FTL OR GPL-2.0-or-later",
+      "name": "libfreetype",
+      "versionInfo": "2.9",
+      "originator": "Person: David Turner, Robert Wilhelm, Werner Lemberg and FreeType contributors"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-freetype-libfreetype-fake",
+      "description": "FreeType Fake is a fake package for flict testing purposes",
+      "downloadLocation": "https://download.savannah.gnu.org/releases/freetype/freetype-2.9.tar.gz",
+      "copyrightText": "not any",
+      "filesAnalyzed": true,
+      "homepage": "https://www.freetype.org/",
+      "licenseConcluded": "FTL OR GPL-2.0-or-later",
+      "licenseDeclared": "FTL OR GPL-2.0-or-later",
+      "name": "libfreetype-fake",
+      "versionInfo": "2.9",
+      "originator": "Only fake for flict testing"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "DocumentRef-libpng-1.6.35:SPDXRef-Package-libpng-libpng",
+      "relatedSpdxElement": "SPDXRef-Package-freetype-libfreetype",
+      "relationshipType": "DYNAMIC_LINK"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-freetype-libfreetype",
+      "relatedSpdxElement": "SPDXRef-Package-freetype-libfreetype-fake",
+      "relationshipType": "DYNAMIC_LINK"
+    },
+    {
+      "spdxElementId": "DocumentRef-zlib-1.2.11:SPDXRef-Package-zlib",
+      "relatedSpdxElement": "SPDXRef-Package-freetype-libfreetype",
+      "relationshipType": "DYNAMIC_LINK"
+    }
+  ]
+}
