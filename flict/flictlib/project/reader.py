@@ -160,7 +160,7 @@ class SPDXJsonProjectReader(ProjectReader):
                 'version': pkg.get('versionInfo', ""),
                 'license': pkg.get('licenseConcluded'),
                 'description': pkg.get('description'),
-                'dependencies': []
+                'dependencies': [],
             }
 
         for dep in self.project.get('relationships', []):
@@ -188,7 +188,7 @@ class SPDXJsonProjectReader(ProjectReader):
                 for package in self.project['packages']:
                     if dep_id == package['SPDXID']:
                         if top_package not in packages:
-                            logging.warn(f"package {top_package} marked as a relationship, but without corresponding package definition.")
+                            logging.warning(f"package {top_package} marked as a relationship, but without corresponding package definition.")
                         else:
                             _pkg = {
                                 'id': dep_id,
@@ -196,7 +196,7 @@ class SPDXJsonProjectReader(ProjectReader):
                                 'version': pkg.get('versionInfo', ""),
                                 'license': pkg.get('licenseConcluded'),
                                 'description': pkg.get('description'),
-                                'dependencies': []
+                                'dependencies': [],
                             }
                             packages[top_package]['dependencies'].append({dep_id: _pkg})
 
@@ -229,8 +229,7 @@ class SPDXJsonProjectReader(ProjectReader):
 
         for _package in packages.values():
             package_dict.update(
-                {f"{_package['name']}--{_package['version']}": _package},
-                {f"{_package['name']}--{_package.get('version', '')}": _package}
+                {f"{_package['name']}--{_package.get('version', '')}": _package},
             )
             for dep in _package.get("dependencies", []):
                 package_dict.update(self._flatten_package_tree(dep))
