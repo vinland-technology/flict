@@ -8,6 +8,8 @@ import logging
 
 from flict.flictlib.return_codes import FlictError, ReturnCodes
 
+DEPENDENCY_TAGS = ["DYNAMIC_LINK", "STATIC_LINK", "DEPENDS_ON", "CONTAINS", "COPY_OF"]
+
 
 class Project:
 
@@ -17,7 +19,11 @@ class Project:
 
     @staticmethod
     def dependencies_license(package):
-        licenses = [Project.package_license(dep) for dep in package.get('dependencies', [])]
+        licenses = []
+        for dep in package.get('dependencies', []):
+            if 'license' not in dep:
+                raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'Dependency does not contain "license": {dep}')
+            licenses.append(f" ( {dep['license']}) ")
         return " AND ".join(licenses)
 
     @staticmethod
@@ -140,6 +146,9 @@ class SPDXJsonProjectReader(ProjectReader):
             "packages": flat_packages,
         }
 
+    def _relationship_is_dependency(self, relationshiptype):
+        return relationshiptype in DEPENDENCY_TAGS
+
     def _read_spdx_2_2(self, only_packages=None):
         project_name = self.project['name']
         packages = {}
@@ -147,16 +156,20 @@ class SPDXJsonProjectReader(ProjectReader):
             elem_id = pkg['SPDXID']
             packages[elem_id] = {
                 'id': elem_id,
-                'name': pkg['name'],
-                'version': pkg['versionInfo'],
-                'license': pkg['licenseConcluded'],
-                'description': pkg['description'],
-                'dependencies': [],
+                'name': pkg.get('name', ""),
+                'version': pkg.get('versionInfo', ""),
+                'license': pkg.get('licenseConcluded'),
+                'description': pkg.get('description'),
+                'dependencies': []
             }
 
-        if 'relationships' in self.project:
-            for dep in self.project['relationships']:
-                top_package = dep['relatedSpdxElement']
+        for dep in self.project.get('relationships', []):
+            top_package = dep['relatedSpdxElement']
+            relationshiptype = dep['relationshipType']
+            if not self._relationship_is_dependency(relationshiptype):
+                logging.debug(f"relationship {dep.get('spdxElementId')} ignored since {relationshiptype} is not defined to be a dependency tag.")
+                continue
+            if ":" in dep['spdxElementId']:
                 dep_package_doc = dep['spdxElementId'].split(":")[0]
                 dep_package_name = dep['spdxElementId'].split(":")[1]
                 dep_spdx = dep_package_doc.replace("DocumentRef-", "") + ".spdx.json"
@@ -170,6 +183,22 @@ class SPDXJsonProjectReader(ProjectReader):
                     _pkg_name = _pkg['id']
                     if dep_package_name == _pkg_name:
                         packages[top_package]['dependencies'].append({_pkg_name: _pkg})
+            else:
+                dep_id = dep['spdxElementId']
+                for package in self.project['packages']:
+                    if dep_id == package['SPDXID']:
+                        if top_package not in packages:
+                            logging.warn(f"package {top_package} marked as a relationship, but without corresponding package definition.")
+                        else:
+                            _pkg = {
+                                'id': dep_id,
+                                'name': pkg.get('name', ""),
+                                'version': pkg.get('versionInfo', ""),
+                                'license': pkg.get('licenseConcluded'),
+                                'description': pkg.get('description'),
+                                'dependencies': []
+                            }
+                            packages[top_package]['dependencies'].append({dep_id: _pkg})
 
         return {
             "packages": packages,
@@ -201,8 +230,9 @@ class SPDXJsonProjectReader(ProjectReader):
         for _package in packages.values():
             package_dict.update(
                 {f"{_package['name']}--{_package['version']}": _package},
+                {f"{_package['name']}--{_package.get('version', '')}": _package}
             )
-            for dep in _package["dependencies"]:
+            for dep in _package.get("dependencies", []):
                 package_dict.update(self._flatten_package_tree(dep))
 
         return package_dict
