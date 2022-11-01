@@ -56,6 +56,21 @@ class TestVerification(unittest.TestCase):
         self.assertEqual(len(compats), 4)
 
 
+    def test_freetype_inner_verification(self):
+        reader = ProjectReaderFactory.get_projectreader(project_format="spdx", project_dirs=["example-data"])
+        freetype = reader.read_project("example-data/freetype-inner-2.9.spdx.json")
+
+        verification = self.arbiter.verify(freetype)
+
+        # generic check
+        self._verify_verification(verification)
+
+        # freetype specific check
+        package = verification['packages'][0]
+        compats = package['compatibility']
+        self.assertEqual(len(compats), 4)
+
+
 if __name__ == '__main__':
     unittest.main()
     
