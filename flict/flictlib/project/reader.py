@@ -8,7 +8,7 @@ import logging
 
 from flict.flictlib.return_codes import FlictError, ReturnCodes
 
-DEPENDENCY_TAGS = ["DYNAMIC_LINK", "STATIC_LINK", "DEPENDS_ON", "CONTAINS", "COPY_OF"]
+DEPENDENCY_TAGS = ['DYNAMIC_LINK', 'STATIC_LINK', 'DEPENDS_ON', 'CONTAINS', 'COPY_OF']
 
 
 class Project:
@@ -156,10 +156,10 @@ class SPDXJsonProjectReader(ProjectReader):
             elem_id = pkg['SPDXID']
             packages[elem_id] = {
                 'id': elem_id,
-                'name': pkg.get('name', ""),
-                'version': pkg.get('versionInfo', ""),
-                'license': pkg.get('licenseConcluded'),
-                'description': pkg.get('description'),
+                'name': pkg['name'],
+                'version': pkg['versionInfo'],
+                'license': pkg['licenseConcluded'],
+                'description': pkg['description'],
                 'dependencies': [],
             }
 
@@ -193,9 +193,9 @@ class SPDXJsonProjectReader(ProjectReader):
                             _pkg = {
                                 'id': dep_id,
                                 'name': pkg.get('name', ""),
-                                'version': pkg.get('versionInfo', ""),
-                                'license': pkg.get('licenseConcluded'),
-                                'description': pkg.get('description'),
+                                'version': pkg['versionInfo'],
+                                'license': pkg['licenseConcluded'],
+                                'description': pkg['description'],
                                 'dependencies': [],
                             }
                             packages[top_package]['dependencies'].append({dep_id: _pkg})
@@ -229,7 +229,7 @@ class SPDXJsonProjectReader(ProjectReader):
 
         for _package in packages.values():
             package_dict.update(
-                {f"{_package['name']}--{_package.get('version', '')}": _package},
+                {f"{_package['name']}--{_package['version']}": _package},
             )
             for dep in _package.get("dependencies", []):
                 package_dict.update(self._flatten_package_tree(dep))
