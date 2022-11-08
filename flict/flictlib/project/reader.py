@@ -19,12 +19,8 @@ class Project:
 
     @staticmethod
     def dependencies_license(package):
-        licenses = []
-        for dep in package.get('dependencies', []):
-            if 'license' not in dep:
-                raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'Dependency does not contain "license": {dep}')
-            licenses.append(f" ( {dep['license']}) ")
-        return " AND ".join(licenses)
+        licenses = [Project.package_license(dep) for dep in package.get('dependencies', [])]
+        return ' AND '.join(licenses)
 
     @staticmethod
     def package_license(package):
@@ -34,8 +30,8 @@ class Project:
 
     @staticmethod
     def combined_work_license(package):
-        if Project.dependencies_license(package).strip() != "":
-            return f" ( {Project.package_license(package)} ) AND ( {Project.dependencies_license(package)} ) "
+        if Project.dependencies_license(package).strip() != '':
+            return f' ( {Project.package_license(package)} ) AND ( {Project.dependencies_license(package)} ) '
         else:
             return Project.package_license(package)
 
@@ -80,16 +76,16 @@ class ProjectReaderFactory:
     @staticmethod
     def get_projectreader(project_file=None, project_dirs=None, project_format=None):
         if not project_dirs:
-            project_dirs = ["."]
+            project_dirs = ['.']
         logging.debug(f'get_projectreader({project_file}, {project_dirs}, {project_format})')
         if project_format is None:
-            if "spdx" in project_file:
+            if 'spdx' in project_file:
                 return SPDXJsonProjectReader(project_dirs)
-            if "flict" in project_file:
+            if 'flict' in project_file:
                 return FlictProjectReader(project_dirs)
-        elif project_format == "flict":
+        elif project_format == 'flict':
             return FlictProjectReader(project_dirs)
-        elif project_format == "spdx":
+        elif project_format == 'spdx':
             return SPDXJsonProjectReader(project_dirs)
 
 
@@ -106,8 +102,8 @@ class FlictProjectReader(ProjectReader):
                 project = project_data['project']
 
                 return {
-                    "project_name": project['name'],
-                    "packages": [
+                    'project_name': project['name'],
+                    'packages': [
                         {
                             'name': project['name'],
                             'version': project['version'],
@@ -142,8 +138,8 @@ class SPDXJsonProjectReader(ProjectReader):
         flat_packages = self._flatten_packages(packages)
 
         return {
-            "project_name": project_name,
-            "packages": flat_packages,
+            'project_name': project_name,
+            'packages': flat_packages,
         }
 
     def _relationship_is_dependency(self, relationshiptype):
@@ -157,7 +153,7 @@ class SPDXJsonProjectReader(ProjectReader):
             packages[elem_id] = {
                 'id': elem_id,
                 'name': pkg['name'],
-                'version': pkg['versionInfo'],
+                'version': pkg.get('versionInfo', ''),
                 'license': pkg['licenseConcluded'],
                 'description': pkg['description'],
                 'dependencies': [],
@@ -169,14 +165,16 @@ class SPDXJsonProjectReader(ProjectReader):
             if not self._relationship_is_dependency(relationshiptype):
                 logging.debug(f"relationship {dep.get('spdxElementId')} ignored since {relationshiptype} is not defined to be a dependency tag.")
                 continue
-            if ":" in dep['spdxElementId']:
-                dep_package_doc = dep['spdxElementId'].split(":")[0]
-                dep_package_name = dep['spdxElementId'].split(":")[1]
-                dep_spdx = dep_package_doc.replace("DocumentRef-", "") + ".spdx.json"
+            
+            # 
+            if 'DocumentRef' in dep['spdxElementId'] and ':' in dep['spdxElementId']:
+                dep_package_doc = dep['spdxElementId'].split(':')[0]
+                dep_package_name = dep['spdxElementId'].split(':')[1]
+                dep_spdx = dep_package_doc.replace('DocumentRef-', '') + '.spdx.json'
                 if self._already_read(dep_spdx):
                     continue
                 self._add_files_read(dep_spdx)
-                dep_spdx_path = self.spdx_dirs[0] + "/" + dep_spdx
+                dep_spdx_path = self.spdx_dirs[0] + '/' + dep_spdx
                 packages_proj_name = self._read_spdx(dep_spdx_path, self.spdx_dirs)
                 _packages = packages_proj_name.get('packages')
                 for _pkg in _packages.values():
@@ -188,12 +186,12 @@ class SPDXJsonProjectReader(ProjectReader):
                 for package in self.project['packages']:
                     if dep_id == package['SPDXID']:
                         if top_package not in packages:
-                            logging.warning(f"package {top_package} marked as a relationship, but without corresponding package definition.")
+                            logging.warning(f'package {top_package} marked as a relationship, but without corresponding package definition.')
                         else:
                             _pkg = {
                                 'id': dep_id,
-                                'name': pkg.get('name', ""),
-                                'version': pkg['versionInfo'],
+                                'name': pkg['name'],
+                                'version': pkg.get('versionInfo', ''),
                                 'license': pkg['licenseConcluded'],
                                 'description': pkg['description'],
                                 'dependencies': [],
@@ -201,8 +199,8 @@ class SPDXJsonProjectReader(ProjectReader):
                             packages[top_package]['dependencies'].append({dep_id: _pkg})
 
         return {
-            "packages": packages,
-            "project_name": project_name,
+            'packages': packages,
+            'project_name': project_name,
         }
 
     def _read_spdx(self, spdx_file, only_packages=None):
@@ -217,12 +215,12 @@ class SPDXJsonProjectReader(ProjectReader):
                 f'File "{spdx_file}" does not contain valid JSON data',
             )
 
-        spdx_version = self.project['spdxVersion'].replace("SPDX-", "")
+        spdx_version = self.project['spdxVersion'].replace('SPDX-', '')
 
-        if spdx_version.startswith("2.2"):
+        if spdx_version.startswith('2.2'):
             return self._read_spdx_2_2(only_packages=None)
         raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
-                         f"SPDX version ({spdx_version}) not supported.")
+                         f'SPDX version ({spdx_version}) not supported.')
 
     def _flatten_package_tree(self, packages):
         package_dict = {}
@@ -231,7 +229,7 @@ class SPDXJsonProjectReader(ProjectReader):
             package_dict.update(
                 {f"{_package['name']}--{_package['version']}": _package},
             )
-            for dep in _package.get("dependencies", []):
+            for dep in _package.get('dependencies', []):
                 package_dict.update(self._flatten_package_tree(dep))
 
         return package_dict
