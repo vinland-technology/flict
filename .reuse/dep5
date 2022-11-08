@@ -9,6 +9,10 @@ License: GPL-3.0-or-later
 
 Files: example-data/*.json
 Copyright: 2022 Henrik Sandklef <hesa@sandklef.com>
+License: GPL-3.0-or-later
+
+Files: example-data/*.spdx.json
+Copyright: 2022 Henrik Sandklef <hesa@sandklef.com>
 License: CC0-1.0
 
 Files: flict/var/osadl-matrix.csv
