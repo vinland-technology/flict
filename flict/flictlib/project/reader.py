@@ -165,8 +165,7 @@ class SPDXJsonProjectReader(ProjectReader):
             if not self._relationship_is_dependency(relationshiptype):
                 logging.debug(f"relationship {dep.get('spdxElementId')} ignored since {relationshiptype} is not defined to be a dependency tag.")
                 continue
-            
-            # 
+
             if 'DocumentRef' in dep['spdxElementId'] and ':' in dep['spdxElementId']:
                 dep_package_doc = dep['spdxElementId'].split(':')[0]
                 dep_package_name = dep['spdxElementId'].split(':')[1]
