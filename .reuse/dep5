@@ -3,7 +3,7 @@ Upstream-Name: flict
 Upstream-Contact: Henrik Sandklef <hesa@sandklef.com>
 Source: https://github.com/vinland-technology/flict/
 
-Files: example-data/*
+Files: example-data/osadl-matrix-mini.csv
 Copyright: 2021 Henrik Sandklef <hesa@sandklef.com>
 License: GPL-3.0-or-later
 
