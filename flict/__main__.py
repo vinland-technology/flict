@@ -10,6 +10,8 @@ from flict.flictlib.flict_config import flict_version
 from flict.flictlib.return_codes import FlictError
 from flict.flictlib.return_codes import ReturnCodes
 from flict.flictlib import flict_config
+from flict.flictlib.flict_config import FLICT_HOMEPAGE
+from flict.flictlib.flict_config import FLICT_BUGS
 from flict.impl import FlictImpl
 
 import sys
@@ -30,17 +32,17 @@ CONFIGURATION
   All config files can be found in
   {flict_config.VAR_DIR}
 
-AUTHOR
-  Henrik Sandklef
+AUTHORS
+   Jens Erdmann, Krzysztof Królczyk, Henrik Sandklef and Konrad Weihmann 
 
 PROJECT SITE
-  https://github.com/vinland-technology/flict
+  {FLICT_HOMEPAGE}
 
 REPORTING BUGS
-  File a ticket at https://github.com/vinland-technology/flict/issues
+  File a ticket at {FLICT_BUGS}
 
 COPYRIGHT
-  Copyright (c) 2021 Henrik Sandklef<hesa@sandklef.com>.
+  Copyright (c) 2022 belongs to the authors
   License GPL-3.0-or-later
 
 ATTRIBUTION
