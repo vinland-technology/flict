@@ -30,6 +30,8 @@ def read_user_config():
 _userconfig = read_user_config()
 
 flict_version = "0.1"
+FLICT_HOMEPAGE = "https://github.com/vinland-technology/flict"
+FLICT_BUGS = "https://github.com/vinland-technology/flict/issues"
 
 SCRIPT_DIR = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../"))
 
