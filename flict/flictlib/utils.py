@@ -24,7 +24,7 @@ def meta_information(start_time=''):
         'user': os.environ.get('USER'),
         'start_time': start_time,
         'stop_time': timestamp(),
-        'flict': flict_information()
+        'flict': flict_information(),
     }
 
 def flict_information():
@@ -32,5 +32,5 @@ def flict_information():
         'tool': 'flict',
         'version': flict_version,
         'homepage': FLICT_HOMEPAGE,
-        'issues': FLICT_BUGS
+        'issues': FLICT_BUGS,
     }
