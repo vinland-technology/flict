@@ -78,7 +78,7 @@ class License():
             operands = []
             for op in parsed_expr['operands']:
                 if op['compatibility'] == "Yes":
-                    parsed_op = self.parsed_to_license(op)
+                    parsed_op = self.verified_to_license(op)
                     operands.append(parsed_op)
             operand_str = f" {name} "
             expr = operand_str.join(operands)
