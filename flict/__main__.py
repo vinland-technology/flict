@@ -33,7 +33,7 @@ CONFIGURATION
   {flict_config.VAR_DIR}
 
 AUTHORS
-   Jens Erdmann, Krzysztof Królczyk, Henrik Sandklef and Konrad Weihmann 
+   Jens Erdmann, Krzysztof Królczyk, Henrik Sandklef and Konrad Weihmann
 
 PROJECT SITE
   {FLICT_HOMEPAGE}
