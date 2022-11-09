@@ -57,22 +57,6 @@ class TextFormatter(FlictFormatter):
                 ret.append(f"{transl} <--- {str(transl_list[transl])}")
         return "\n".join(ret)
 
-    def format_policy_report(self, policy_report):
-        outbounds = policy_report.get("policy_outbounds")
-        policy_result = outbounds.get("policy_result")
-        if policy_result == 0:
-            status = "OK"
-        elif policy_result == 1:
-            status = "OK, with licenses to avoid"
-        elif policy_result == 2:
-            status = "Failed identifying outbound license"
-        return f"""
-        Status: {status}
-        Allowed (suggested) outbound licenses: {outbounds.get("allowed", "")}
-        Avoided (suggested) outbound licenses: {outbounds.get("avoid", "")}
-        Denied (suggested) outbound licenses: {outbounds.get("denied", "")}
-        """
-
     def _format_lic(self, lic):
         str_size = f'{0: <{self.col_size}}'
         return str_size.format(lic)[:self.col_size - 1] + " "
