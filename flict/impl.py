@@ -38,7 +38,10 @@ class FlictImpl:
         return self._formatter.format_simplified(simplified)
 
     def suggest_outbound_candidate(self):
-        licenses = self.arbiter.licenses(" ".join(self._args.license_expression))
+        if self._args.extended_licenses:
+            licenses = self.arbiter.supported_licenses()
+        else:
+            licenses = self.arbiter.licenses(" ".join(self._args.license_expression))
         outbounds = []
         try:
             for outbound in licenses:
