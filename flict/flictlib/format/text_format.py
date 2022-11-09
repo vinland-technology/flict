@@ -29,7 +29,7 @@ class TextFormatter(FlictFormatter):
     def format_outbound_license(self, outbound_candidates):
         return ", ".join(outbound_candidates)
 
-    def format_simplified(self, license_expression, simplified):
+    def format_simplified(self, simplified):
         return simplified['simplified']
 
     def format_verified_license(self, license_expression, outbound_candidate):
