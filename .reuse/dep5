@@ -55,5 +55,6 @@ Files: logos/*
 Copyright: 2021 Jens Reuterberg
 License: GPL-3.0-or-later
 
-
-
+Files: .bumpversion.cfg
+Copyright: 2022 Konrad Weihmann @priv-kweihmann
+License: GPL-3.0-or-later
