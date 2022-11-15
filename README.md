@@ -4,7 +4,7 @@ SPDX-FileCopyrightText: 2022 Henrik Sandklef <hesa@sandklef.com>
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
-![flict graphics](./logos/flict-logo-256-256.png)
+![flict graphics](https://github.com/vinland-technology/flict/raw/main/logos/flict-logo-256-256.png)
 &nbsp;
 
 [![REUSE status][1]][2]
@@ -37,17 +37,17 @@ flict supports:
 
 * 87 licenses (```flict -of text list```)
 
-* common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only), see "License alias defininitions" in [SETTINGS](SETTINGS.md)
+* common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only), see "License alias defininitions" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
-* adding your own licenses (and compatibilities), see "Extending the license db" in [SETTINGS](SETTINGS.md)
+* adding your own licenses (and compatibilities), see "Extending the license db" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
-* specifying licenses that are not allowed, see "Denied licenses" in [SETTINGS](SETTINGS.md)
+* specifying licenses that are not allowed, see "Denied licenses" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
-* specifying license preference in case of a choice (e.g. "MIT OR FTL"), see "Preferred licenses" in [SETTINGS](SETTINGS.md)
+* specifying license preference in case of a choice (e.g. "MIT OR FTL"), see "Preferred licenses" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
 # Examples
 
-Check out our [EXAMPLES](EXAMPLES.md)
+Check out our [EXAMPLES](https://github.com/vinland-technology/flict/blob/main/EXAMPLES.md)
 
 # Extensible and tweakable
 
@@ -59,7 +59,7 @@ most of our users going. Having licenses and compatibilities (and even
 more stuff) defined outside the tool makes it easy to extend the tool
 with new licenses etc without modifying the code.
 
-Read more in [SETTINGS](SETTINGS.md)
+Read more in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
 # Supported licenses
 
@@ -74,7 +74,7 @@ Checklists](https://www.osadl.org/OSADL-Open-Source-License-Checklists.oss-compl
 
 # Installing
 
-Look at our [INSTALLATION](INSTALLATION.md) page.
+Look at our [INSTALLATION](https://github.com/vinland-technology/flict/blob/main/INSTALLATION.md) page.
 
 ## Docker image
 
@@ -145,7 +145,7 @@ File a ticket at [github.com/vinland-technology/flict/issues](https://github.com
 
 # Contribute to the project
 
-See [CONTRIBUTING](CONTRIBUTING.md)
+See [CONTRIBUTING](https://github.com/vinland-technology/flict/blob/main/CONTRIBUTING.md)
 
 # License of flict
 
