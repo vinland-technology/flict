@@ -1,3 +1,3 @@
 license-expression ~= 30.0
-osadl-matrix==2022.11.20.21113
+osadl-matrix==2022.11.24.111138
 wheel ~= 0.38
