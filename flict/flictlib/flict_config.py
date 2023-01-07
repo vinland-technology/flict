@@ -17,7 +17,7 @@ from osadl_matrix import OSADL_MATRIX
 def read_user_config():
     for path in [
         os.environ.get('FLICT_USERCONFIG'),
-        os.path.join(os.environ.get('HOME'), '.flict.cfg'),
+        os.path.join(os.environ.get('HOME', '/does/not/exist'), '.flict.cfg'),
     ]:
         try:
             with open(path) as i:
