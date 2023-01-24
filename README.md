@@ -39,7 +39,7 @@ flict supports:
 
 * common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only), see "License alias defininitions" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
-* adding your own licenses (and compatibilities), see "Extending the license db" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
+* adding your own licenses (and compatibilities), see "Extending the license db" in [MERGE_LICENSES](https://github.com/vinland-technology/flict/blob/main/MERGE_LICENSES.md)
 
 * specifying licenses that are not allowed, see "Denied licenses" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
