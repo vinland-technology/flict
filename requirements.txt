@@ -1,3 +1,3 @@
 license-expression ~= 30.1
-osadl-matrix==2023.3.7.10310
+osadl-matrix==2023.3.8.10358
 wheel ~= 0.38
