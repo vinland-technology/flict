@@ -23,13 +23,13 @@ compatibility verification in your compliance work flow.
 
 flict can:
 
-* verify licenses compatibilty for license expression and a packages and its dependencies
+* verify licenses compatibility for license expression and a packages and its dependencies
 
 * suggest candidate outbound licenses
 
 * simplify license expressions
 
-* display, in misc format, compatibilies between licenses
+* display, in misc format, compatibilities between licenses
 
 * ~~check outbound licenses against a policy (policy as supplied by the user)~~ (automatic now)
 
@@ -37,7 +37,7 @@ flict supports:
 
 * 87 licenses (```flict -of text list```)
 
-* common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only), see "License alias defininitions" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
+* common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only), see "License alias definitions" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
 * adding your own licenses (and compatibilities), see "Extending the license db" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
