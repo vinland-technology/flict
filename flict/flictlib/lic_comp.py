@@ -188,8 +188,8 @@ class LicenseCompatibilty:
     def check_compatibilities(self, licenses, check_all=False):
         return self.compatibility.check_compatibilities(licenses, check_all)
 
-    def extend_license_db(self, file_name):
-        return self.compatibility.extend_license_db(file_name)
+    def extend_license_db(self, file_name, format="JSON"):
+        return self.compatibility.extend_license_db(file_name, format)
 
     def simplify_license(self, expr):
         return self.license.simplify_license(expr)

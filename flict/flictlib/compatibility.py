@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import json
 import logging
 
 from enum import Enum
@@ -208,6 +209,8 @@ class OsadlCompatibility(Compatibility):
 
         for key in sorted(raw.keys()):
             _line = [key]
+            if key.startswith('timeformat') or key.startswith('timestamp'):
+                continue
             for key2 in sorted(raw.keys()):
                 try:
                     _line.append(raw[key][key2])
@@ -221,13 +224,11 @@ class OsadlCompatibility(Compatibility):
         return _csv
 
     def _create_matrix_csv_data(self, file_name):
-        import json
         # read file with additional license data
         with open(file_name) as fp:
             additional_data = json.load(fp)['osadl_additional_licenses']
 
         # read osadl matrix data
-        import osadl_matrix
         with open(osadl_matrix.OSADL_MATRIX_JSON) as fp:
             osadl_data = json.load(fp)
 
@@ -244,7 +245,23 @@ class OsadlCompatibility(Compatibility):
             rows.append(",".join(row))
         return "\n".join(rows)
 
-    def extend_license_db(self, file_name):
+    def _create_matrix_json_data(self, file_name):
+        # read file with additional license data
+        with open(file_name) as fp:
+            additional_data = json.load(fp)['osadl_additional_licenses']
+
+        # read osadl matrix data
+        with open(osadl_matrix.OSADL_MATRIX_JSON) as fp:
+            osadl_data = json.load(fp)
+
+        for key, value in additional_data.items():
+            if not key in osadl_data:
+                osadl_data[key]={}
+            osadl_data[key].update(value)
+    
+        return json.dumps(osadl_data, indent=4)
+
+    def extend_license_db(self, file_name, format="JSON"):
         """Extends the current license db with licese db provided in file_name.
 
         Parameters:
@@ -253,7 +270,10 @@ class OsadlCompatibility(Compatibility):
         See SETTINGS.md for more information about format and
         requirements for a custom database.
         """
-        return self._create_matrix_csv_data(file_name)
+        if format.lower() == "csv":
+            return self._create_matrix_csv_data(file_name)
+
+        return self._create_matrix_json_data(file_name)
 
 
 class LicenseChooser:
