@@ -137,21 +137,23 @@ These should be placed inside `osadl_additional_licenses` like this:
  not only '0BSD' and 'AFL-2.0'.*. If they are NOT defined - 'Unknown' compatibility will be assumed.
  This file is further called `additional_matrix.json`.
 
-To apply the new license db and store the result in `merged-matrix.csv`:
+To apply the new license db and store the result in `merged-matrix.json`:
 
 ```
-flict merge -lf additional_matrix.json > merged-matrix.csv
+flict merge -lf additional_matrix.json > merged-matrix.json
 
 ```
 
 To list the supported licenses, with the added licenses:
 
 ```
-flict -lmf merged-matrix.csv list
+flict -lmf merged-matrix.json list
 ```
 
 To use this merged license database when for example veryfing a license:
 
 ```
-flict -lmf merged-matrix.csv verify -il 0BSD -ol ABC
+flict -lmf merged-matrix.json verify -il 0BSD -ol ABC
 ```
+
+*Note: Previously flict created csv output when merging. If you still want csv output, use `-of csv`*
