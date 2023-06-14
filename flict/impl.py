@@ -3,7 +3,7 @@
 # flict - FOSS License Compatibility Tool
 #
 # SPDX-FileCopyrightText: 2021 Jens Erdmann
-# SPDX-FileCopyrightText: 2022 Henrik Sandklef
+# SPDX-FileCopyrightText: 2023 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -27,7 +27,7 @@ class FlictImpl:
         self._formatter = FormatterFactory.formatter(args.output_format)
 
     def merge_license_db(self):
-        return self.arbiter.extend_license_db(self._args.license_file)
+        return self.arbiter.extend_license_db(self._args.license_file, format=self._args.output_format)
 
     def display_compatibility(self):
         inter_compats = self.arbiter.check_compatibilities(self._args.license_expression)
