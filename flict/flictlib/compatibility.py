@@ -255,13 +255,13 @@ class OsadlCompatibility(Compatibility):
             osadl_data = json.load(fp)
 
         for key, value in additional_data.items():
-            if not key in osadl_data:
-                osadl_data[key]={}
+            if key not in osadl_data:
+                osadl_data[key] = {}
             osadl_data[key].update(value)
-    
+
         return json.dumps(osadl_data, indent=4)
 
-    def extend_license_db(self, file_name, format="JSON"):
+    def extend_license_db(self, file_name, oformat="JSON"):
         """Extends the current license db with licese db provided in file_name.
 
         Parameters:
@@ -270,7 +270,7 @@ class OsadlCompatibility(Compatibility):
         See SETTINGS.md for more information about format and
         requirements for a custom database.
         """
-        if format.lower() == "csv":
+        if oformat.lower() == "csv":
             return self._create_matrix_csv_data(file_name)
 
         return self._create_matrix_json_data(file_name)
