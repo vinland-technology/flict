@@ -11,7 +11,7 @@
 import json
 import os
 
-from osadl_matrix import OSADL_MATRIX
+from osadl_matrix import OSADL_MATRIX_JSON
 
 
 def read_user_config():
@@ -38,5 +38,5 @@ VAR_DIR = os.path.join(SCRIPT_DIR, "var")
 BUILTIN_ALIAS_FILE = os.path.join(VAR_DIR, "alias.json")
 DEFAULT_FLICT_ALIAS_FILE = os.path.join(VAR_DIR, BUILTIN_ALIAS_FILE)
 
-DEFAULT_MATRIX_FILE = _userconfig.get('matrix-file', OSADL_MATRIX)
+DEFAULT_MATRIX_FILE = _userconfig.get('matrix-file', OSADL_MATRIX_JSON)
 DEFAULT_OUTPUT_FORMAT = _userconfig.get('output-format', "JSON")
