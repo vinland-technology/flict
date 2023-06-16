@@ -12,7 +12,7 @@ flake8-commas ~= 2.1
 flake8-comprehensions ~= 3.13
 flake8-debugger ~= 4.1
 flake8-docstrings ~= 1.7
-flake8-eradicate ~= 1.4
+flake8-eradicate ~= 1.5
 flake8-executable ~= 2.1
 flake8-fixme ~= 1.1
 flake8-functions == 0.0.8
