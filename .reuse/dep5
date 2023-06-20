@@ -58,3 +58,20 @@ License: GPL-3.0-or-later
 Files: .bumpversion.cfg
 Copyright: 2022 Konrad Weihmann @priv-kweihmann
 License: GPL-3.0-or-later
+
+Files: tests/complete-lic-ext.json
+Copyright: 2023 Henrik Sandklef <hesa@sandklef.com>
+License: GPL-3.0-or-later
+
+Files: tests/incomplete-lic-ext.json
+Copyright: 2023 Henrik Sandklef <hesa@sandklef.com>
+License: GPL-3.0-or-later
+
+Files: tests/mini-matrix.json
+Copyright: 2023 Henrik Sandklef <hesa@sandklef.com>
+License: GPL-3.0-or-later
+
+Files: tmp-test-data.json
+Copyright: 2023 Henrik Sandklef <hesa@sandklef.com>
+License: GPL-3.0-or-later
+
