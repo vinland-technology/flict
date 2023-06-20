@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022 Henrik Sandklef
+# SPDX-FileCopyrightText: 2023 Henrik Sandklef
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -110,11 +110,13 @@ class Compatibility:
             for lic_b in licenses:
 
                 comp_left = self.check_compat(lic_a, lic_b)['compatibility']
+                #print(f'comp: {self.check_compat(lic_a, lic_b)}')
                 comp_right = self.check_compat(lic_b, lic_a)['compatibility']
 
                 if CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value in (comp_left, comp_right):
                     supported = self.supported_licenses()
                     lic_bad = ",".join({lic for lic in (lic_a, lic_b) if lic not in supported})
+                    #print(f'comp_left: {comp_left}   comp_right: {comp_right}')
                     raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                                      f'License expression "{lic_bad}" is not supported.')
 
@@ -163,6 +165,15 @@ class OsadlCompatibility(Compatibility):
 
         outbound = self.alias.replace_aliases(_outbound)
         inbound = self.alias.replace_aliases(_inbound)
+
+        supported = osadl_matrix.supported_licenses()
+        if not outbound in supported:
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             f'Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined, since \"{outbound}\" is an unknown license')
+        if not inbound in supported:
+            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                             f'Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined, since \"{inbound}\" is an unknown license')
+
         raw_result = osadl_matrix.get_compatibility(outbound, inbound, self.license_db)
 
         logging.info(f"check_compat({outbound}, {inbound} => {raw_result}")
@@ -178,8 +189,6 @@ class OsadlCompatibility(Compatibility):
             result = CompatibilityStatus.LICENSE_COMPATIBILITY_MANUALLY_CHECK.value
             logging.debug(f"compatibility: {outbound}  --> {inbound}: {result}")
         elif raw_result == osadl_matrix.OSADLCompatibility.UNDEF:
-            result = CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value
-        else:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                              f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined. The result was: {raw_result}")
 
@@ -223,7 +232,7 @@ class OsadlCompatibility(Compatibility):
                 continue
         return _csv
 
-    def _create_matrix_csv_data(self, file_name):
+    def _create_matrix_csv_data(self, file_name, default_no=True):
         # read file with additional license data
         with open(file_name) as fp:
             additional_data = json.load(fp)['osadl_additional_licenses']
@@ -245,23 +254,60 @@ class OsadlCompatibility(Compatibility):
             rows.append(",".join(row))
         return "\n".join(rows)
 
-    def _create_matrix_json_data(self, file_name):
+    def _create_matrix_json_data(self, file_name, default_no=False):
+
         # read file with additional license data
         with open(file_name) as fp:
             additional_data = json.load(fp)['osadl_additional_licenses']
 
         # read osadl matrix data
-        with open(osadl_matrix.OSADL_MATRIX_JSON) as fp:
+        with open(self.license_db) as fp:
             osadl_data = json.load(fp)
 
+        # merge each additional entry's value with the existing
         for key, value in additional_data.items():
             if key not in osadl_data:
                 osadl_data[key] = {}
             osadl_data[key].update(value)
 
+        # check/fix completeness
+        report = []
+        all_keys = set(list(osadl_data.keys()) + list(additional_data.keys()))
+        if default_no:
+            fixed_matrix = osadl_data.copy()
+        for outer_key in all_keys:
+            if outer_key.startswith("timeformat") or outer_key.startswith("timestamp"):
+                continue
+            
+            # Make sure all inner keys are present in outer key
+            for inner_key in osadl_data[outer_key]:
+                if inner_key not in all_keys:
+                    report.append((f'\'{inner_key}\' missing in outer keys'))
+
+                # Make sure all outer keys are present in inner key
+                for key in all_keys:
+                    if key.startswith("timeformat") or key.startswith("timestamp"):
+                        continue
+                    if inner_key not in osadl_data:
+                        report.append((f'{inner_key} not present'))
+                    elif key not in osadl_data[inner_key].keys():
+                        if default_no:
+                            #print((f'Set {key} in {inner_key} to No'))
+                            fixed_matrix[inner_key] = fixed_matrix[inner_key].copy()
+                            fixed_matrix[inner_key][key] = "No"
+                        else:
+                            report.append((f'{key} not present in {inner_key}'))
+
+
+        if len(report) != 0:
+            raise FlictError(ReturnCodes.RET_INVALID_MATRIX,
+                             f'Merging {self.license_db} with {file_name} failed with the following errors: {report}')
+            
+        if default_no:
+            osadl_data = fixed_matrix
         return json.dumps(osadl_data, indent=4)
 
-    def extend_license_db(self, file_name, oformat="JSON"):
+    def extend_license_db(self, file_name, oformat="JSON", default_no=True):
         """Extends the current license db with licese db provided in file_name.
 
         Parameters:
@@ -273,7 +319,7 @@ class OsadlCompatibility(Compatibility):
         if oformat.lower() == "csv":
             return self._create_matrix_csv_data(file_name)
 
-        return self._create_matrix_json_data(file_name)
+        return self._create_matrix_json_data(file_name, default_no)
 
 
 class LicenseChooser:
