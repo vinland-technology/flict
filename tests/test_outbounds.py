@@ -67,5 +67,5 @@ def test_outbound_16():
 
 def test_outbound_17():
     _test_expression(['(GPL-2.0-only or MPL-2.0) and (Apache-2.0 or MPL-2.0) and (X11 or BSD-3-Clause) and LGPL-2.1-only'],
-                    ['GPL-2.0-only', 'MPL-2.0', 'Apache-2.0'])
+                    ['GPL-2.0-only', 'LGPL-2.1-only'])
 
