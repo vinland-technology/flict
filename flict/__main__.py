@@ -175,6 +175,7 @@ def parse():
     merge_parser = subparsers.add_parser('merge', help="Merge additional licenses with OSADL's matrix. Will output to store in a file, for use with --license-matrix-file")
     merge_parser.set_defaults(which="merge", func=_merge_licenses)
     merge_parser.add_argument('--license-file', '-lf', type=str, dest='license_file', help='License file (JSON) to merge', default=None)
+    merge_parser.add_argument('--default-no', '-dn', action='store_true', dest='default_no', help='If no compatibility can be found in the additional matrix, "No" compatibility is assumed. Works only for JSON input matrix', default=False)
 
     # display-compatibility
     parser_d = subparsers.add_parser(
