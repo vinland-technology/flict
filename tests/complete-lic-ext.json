@@ -1,0 +1,19 @@
+{
+    "osadl_additional_licenses" : {
+	"BSD-3-Clause": {
+	    "Proprietary": "No"
+	},
+	"Dummy": {
+	    "Proprietary": "No"
+	},
+	"GPL-2.0-or-later": {
+	    "Proprietary": "No"
+	},
+	"Proprietary": {
+	    "BSD-3-Clause": "Same",
+	    "Dummy": "Yes",
+	    "GPL-2.0-or-later": "No",
+	    "Proprietary": "Same"
+	}
+    }
+}
