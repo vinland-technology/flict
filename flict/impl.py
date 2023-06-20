@@ -27,7 +27,7 @@ class FlictImpl:
         self._formatter = FormatterFactory.formatter(args.output_format)
 
     def merge_license_db(self):
-        return self.arbiter.extend_license_db(self._args.license_file, format=self._args.output_format)
+        return self.arbiter.extend_license_db(self._args.license_file, oformat=self._args.output_format, default_no=self._args.default_no)
 
     def display_compatibility(self):
         inter_compats = self.arbiter.check_compatibilities(self._args.license_expression)
@@ -46,16 +46,18 @@ class FlictImpl:
         try:
             for outbound in licenses:
                 compats = self.arbiter.inbounds_outbound_check(outbound, self._args.license_expression)
-                compatible = (compats['compatibility'] == "Yes")
-                if compatible:
+                compat_status = compats['compatibility']
+                if compat_status == "Yes":
                     outbounds.append(outbound)
+                elif compat_status == "No":
+                    pass
 
             outbounds.sort()
             return self._formatter.format_outbound_license(outbounds)
 
-        except BaseException:
+        except Exception as e:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             f'Invalid license expression: {self._args.license_expression}')
+                             f'Invalid license expression: {self._args.license_expression}. Original cause: {e}')
 
     def list_licenses(self):
         licenses = list(self.arbiter.supported_licenses())
