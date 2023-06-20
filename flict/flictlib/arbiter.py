@@ -209,8 +209,8 @@ class Arbiter:
         """Check compatbilitiy between supplied licenses"""
         return self.license_compatibility.check_compatibilities(licenses, check_all)
 
-    def extend_license_db(self, file_name, oformat="JSON"):
-        return self.license_compatibility.extend_license_db(file_name, oformat)
+    def extend_license_db(self, file_name, oformat="JSON", default_no=False):
+        return self.license_compatibility.extend_license_db(file_name, oformat, default_no)
 
     def simplify_license(self, expr):
         return self.license_compatibility.simplify_license(expr)
