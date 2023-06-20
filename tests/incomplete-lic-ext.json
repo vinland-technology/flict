@@ -1,0 +1,10 @@
+{
+    "osadl_additional_licenses" : {
+        "Apache-2.0":  {
+            "Proprietary": "?"
+        },
+        "Proprietary":  {
+            "BSD-3-Clause": "Yes"
+        }
+    }
+}
