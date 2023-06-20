@@ -9,6 +9,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class ArgsMock:
     debug_licenses : bool = False
+    default_no : bool = False
     extended_licenses : bool = False
     license_combination_count : bool = False
     license_expression : str = ''
