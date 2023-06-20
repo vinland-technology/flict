@@ -1,0 +1,17 @@
+{
+    "BSD-3-Clause": {
+	"BSD-3-Clause": "Same",
+	"Dummy": "Yes",
+	"GPL-2.0-or-later": "No"
+    },
+    "Dummy": {
+	"BSD-3-Clause": "No",
+	"Dummy": "Same",
+	"GPL-2.0-or-later": "No"
+    },
+    "GPL-2.0-or-later": {
+	"BSD-3-Clause": "Yes",
+	"Dummy": "Yes",
+	"GPL-2.0-or-later": "Same"
+    }
+}
