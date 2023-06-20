@@ -276,7 +276,7 @@ class OsadlCompatibility(Compatibility):
         for outer_key in all_keys:
             if outer_key.startswith("timeformat") or outer_key.startswith("timestamp"):
                 continue
- 
+
             # Make sure all inner keys are present in outer key
             for inner_key in osadl_data[outer_key]:
                 if inner_key not in all_keys:
@@ -290,7 +290,6 @@ class OsadlCompatibility(Compatibility):
                         report.append((f'{inner_key} not present'))
                     elif key not in osadl_data[inner_key].keys():
                         if default_no:
-                            #print((f'Set {key} in {inner_key} to No'))
                             fixed_matrix[inner_key] = fixed_matrix[inner_key].copy()
                             fixed_matrix[inner_key][key] = "No"
                         else:
