@@ -110,13 +110,11 @@ class Compatibility:
             for lic_b in licenses:
 
                 comp_left = self.check_compat(lic_a, lic_b)['compatibility']
-                #print(f'comp: {self.check_compat(lic_a, lic_b)}')
                 comp_right = self.check_compat(lic_b, lic_a)['compatibility']
 
                 if CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value in (comp_left, comp_right):
                     supported = self.supported_licenses()
                     lic_bad = ",".join({lic for lic in (lic_a, lic_b) if lic not in supported})
-                    #print(f'comp_left: {comp_left}   comp_right: {comp_right}')
                     raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                                      f'License expression "{lic_bad}" is not supported.')
 
@@ -167,10 +165,10 @@ class OsadlCompatibility(Compatibility):
         inbound = self.alias.replace_aliases(_inbound)
 
         supported = osadl_matrix.supported_licenses()
-        if not outbound in supported:
+        if outbound not in supported:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                              f'Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined, since \"{outbound}\" is an unknown license')
-        if not inbound in supported:
+        if inbound not in supported:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                              f'Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined, since \"{inbound}\" is an unknown license')
 
@@ -278,7 +276,7 @@ class OsadlCompatibility(Compatibility):
         for outer_key in all_keys:
             if outer_key.startswith("timeformat") or outer_key.startswith("timestamp"):
                 continue
-            
+ 
             # Make sure all inner keys are present in outer key
             for inner_key in osadl_data[outer_key]:
                 if inner_key not in all_keys:
@@ -298,11 +296,10 @@ class OsadlCompatibility(Compatibility):
                         else:
                             report.append((f'{key} not present in {inner_key}'))
 
-
         if len(report) != 0:
             raise FlictError(ReturnCodes.RET_INVALID_MATRIX,
                              f'Merging {self.license_db} with {file_name} failed with the following errors: {report}')
-            
+
         if default_no:
             osadl_data = fixed_matrix
         return json.dumps(osadl_data, indent=4)

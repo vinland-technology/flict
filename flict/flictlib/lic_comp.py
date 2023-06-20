@@ -105,7 +105,6 @@ class LicenseCompatibilty:
         elif self.license.is_operator(expr):
             raise FlictError(ReturnCodes.RET_INTERNAL_ERROR,
                              f'Internal error. Cannot transform {expr} to a license expression')
-            
 
     def _inbounds_outbound_check_operator(self, outbound, expr):
         compat_summary = None
@@ -131,8 +130,7 @@ class LicenseCompatibilty:
                 compat_summary = self._update_compat(op, compat_summary, compat_tag == CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value)
             elif compat_tag == "Undefined":
                 raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                 f'Undefined license')
-            
+                                 'Undefined license')
 
             # are licenses allowed or denied for this expression
             allowed = compat['allowed']
@@ -180,7 +178,6 @@ class LicenseCompatibilty:
                              f"Could not parse one of the expression: {outbound}, {expr}")
 
     def _update_compat(self, op, current, new):
-#        print(f'_update_compat(self, {op}, {current}, {new})')
         if current is None:
             updated = new
         elif op == LICENSE_COMPATIBILITY_AND:
