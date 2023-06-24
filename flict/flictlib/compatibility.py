@@ -252,6 +252,20 @@ class OsadlCompatibility(Compatibility):
             rows.append(",".join(row))
         return "\n".join(rows)
 
+    def __add_no_to_missing_variables(self, osadl_data):
+        all_keys = osadl_data.keys()
+        fixed_matrix = osadl_data.copy()
+        for outer_key in all_keys:
+            fixed_matrix[outer_key] = osadl_data[outer_key].copy()
+            for inner_key in osadl_data[outer_key].keys():
+                for every_key in all_keys:
+                    if inner_key not in fixed_matrix:
+                        raise FlictError(ReturnCodes.RET_INVALID_MATRIX,
+                                         f'Can\'t add "{every_key}" to "{inner_key}" since "{inner_key}" does not exist in matrix')
+                    if every_key not in fixed_matrix[inner_key]:
+                        fixed_matrix[inner_key][every_key] = "No"
+        return fixed_matrix
+
     def _create_matrix_json_data(self, file_name, default_no=False):
 
         # read file with additional license data
@@ -268,39 +282,25 @@ class OsadlCompatibility(Compatibility):
                 osadl_data[key] = {}
             osadl_data[key].update(value)
 
-        # check/fix completeness
-        report = []
-        all_keys = set(list(osadl_data.keys()) + list(additional_data.keys()))
+        timestamp = osadl_data.get("timestamp", "")
+        timeformat = osadl_data.get("timeformat", "")
+        osadl_data.pop("timeformat", None)
+        osadl_data.pop("timestamp", None)
+
+        # Check if we should add "No" where no values if is provided in additional matrix
         if default_no:
-            fixed_matrix = osadl_data.copy()
-        for outer_key in all_keys:
-            if outer_key.startswith("timeformat") or outer_key.startswith("timestamp"):
-                continue
+            osadl_data = self.__add_no_to_missing_variables(osadl_data)
 
-            # Make sure all inner keys are present in outer key
-            for inner_key in osadl_data[outer_key]:
-                if inner_key not in all_keys:
-                    report.append((f'\'{inner_key}\' missing in outer keys'))
-
-                # Make sure all outer keys are present in inner key
-                for key in all_keys:
-                    if key.startswith("timeformat") or key.startswith("timestamp"):
-                        continue
-                    if inner_key not in osadl_data:
-                        report.append((f'{inner_key} not present'))
-                    elif key not in osadl_data[inner_key].keys():
-                        if default_no:
-                            fixed_matrix[inner_key] = fixed_matrix[inner_key].copy()
-                            fixed_matrix[inner_key][key] = "No"
-                        else:
-                            report.append((f'{key} not present in {inner_key}'))
-
-        if len(report) != 0:
+        # Check matrix completeness
+        violations = [k for k, v in osadl_data.items() if not all(b in v for b in osadl_data.keys())]
+        valid = not any(violations)
+        if not valid:
             raise FlictError(ReturnCodes.RET_INVALID_MATRIX,
-                             f'Merging {self.license_db} with {file_name} failed with the following errors: {report}')
+                             f'Set of keys differs from set of values, see "{violations}". Make sure your additional matrix is complete')
 
-        if default_no:
-            osadl_data = fixed_matrix
+        osadl_data['timeformat'] = timeformat
+        osadl_data['timestamp'] = timestamp
+
         return json.dumps(osadl_data, indent=4)
 
     def extend_license_db(self, file_name, oformat="JSON", default_no=True):
