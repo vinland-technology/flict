@@ -14,17 +14,22 @@ complete_addition_file = "tests/complete-lic-ext.json"
 incomplete_addition_file = "tests/incomplete-lic-ext.json"
 tmp_test_file = "tmp-test-data.json"
 
-def _test_expression(orig_matrix, additional_matrix):
-    args = ArgsMock(license_matrix_file=orig_matrix, license_file=additional_matrix)
+def _test_expression(orig_matrix, additional_matrix, default_no=False):
+    args = ArgsMock(license_matrix_file=orig_matrix, license_file=additional_matrix, default_no=default_no)
     return FlictImpl(args).merge_license_db()
 
 def test_incomplete_additional():
     with pytest.raises(FlictError) as _error:
         _test_expression(matrix_file, incomplete_addition_file)
     
+def test_incomplete_additional_fix():
+    _test_expression(matrix_file, incomplete_addition_file, default_no=True)
+    
 def test_complete_additional():
     text =_test_expression(matrix_file, complete_addition_file)
     db = json.loads(text)
+    db.pop("timestamp", None)
+    db.pop("timeformat", None)
     assert len(db) == 4
     
 @pytest.fixture(scope='session')
