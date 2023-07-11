@@ -10,6 +10,14 @@ on:
         description: 'Automatically increase patch version (true|false)'
         default: 'true'
         required: false
+      release-type:
+        description: 'Type of release (patch|minor|major)'
+        default: 'patch'
+        required: false
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 env:
   VERSION_FILE: flict/flictlib/flict_config.py
@@ -20,6 +28,8 @@ jobs:
   release:
 
     runs-on: ubuntu-latest
+
+    if: github.repository == 'vinland-technology/flict'
 
     steps:
     - name: Checkout
@@ -34,7 +44,13 @@ jobs:
         if [ -z "${{ secrets.TOKEN }}" ]; then
           echo "::error ::secrets.TOKEN needs to be set for this action"
           exit 1
-        fi        
+        fi
+        if [ "${{ github.event_name == 'workflow_dispatch' }}" = "true" ]; then
+          if [ -z "${{ github.event.inputs.release-type }}" ]; then
+            echo "::error ::release-type cannot be empty"
+            exit 1
+          fi
+        fi
 
     - name: Check if relevant for release
       uses: dorny/paths-filter@v2.11.1
@@ -43,9 +59,7 @@ jobs:
         filters: |
           relevant-for-release:
             - 'requirements.txt'
-            - ${{ env.MODULE_CODE }}'
-          manual-bumped-version:
-            - '.bumpversion'
+            - '${{ env.MODULE_CODE }}'
 
     - name: Check if we need to release
       id: release-needed
@@ -53,16 +67,15 @@ jobs:
         do_release=0
         do_bump=0
         [ "${{ steps.code-changes.outputs.relevant-for-release == 'true' }}" = "true" ] && do_release=1
-        [ "${{ steps.code-changes.outputs.manual-bumped-version != 'true' }}" = "true" ] && [ $do_release -eq 1 ] && do_bump=1
         if [ "${{ github.event_name == 'workflow_dispatch' }}" = "true" ]; then
           do_release=1
-          [ "${{ github.inputs.bump-version }}" = "true" ] && do_bump=1
+          [ "${{ github.event.inputs.bump-version }}" = "true" ] && do_bump=1
         fi
 
-        if [ $do_bump -eq 1 ]; then
-          echo DO_BUMP=true >> $GITHUB_OUTPUT
+        if [ "${{ github.event_name == 'workflow_dispatch' }}" = "true" ]; then
+          echo RELEASE_TYPE="${{ github.event.inputs.release-type }}" >> $GITHUB_OUTPUT
         else
-          echo DO_BUMP=false >> $GITHUB_OUTPUT
+          echo RELEASE_TYPE="patch" >> $GITHUB_OUTPUT
         fi
 
         if [ $do_release -eq 1 ] || [ $do_bump -eq 1 ]; then
@@ -70,27 +83,26 @@ jobs:
         else
           echo DO_RELEASE=false >> $GITHUB_OUTPUT
         fi
-    
+
     - name: Install dependencies
       if: steps.release-needed.outputs.DO_RELEASE == 'true'
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
+
     - name: Bump version
       id: version-bump
-      if: steps.release-needed.outputs.DO_BUMP == 'true'
       run: |
         pip install -r requirements-dev.txt
-        bump2version --list patch ${{ env.VERSION_FILE }} >> $GITHUB_OUTPUT
-      
+        bump2version --list ${{ steps.release-needed.outputs.RELEASE_TYPE }} ${{ env.VERSION_FILE }} >> $GITHUB_OUTPUT
+
     - name: Build
       if: steps.release-needed.outputs.DO_RELEASE == 'true'
       run: |
         python3 setup.py build sdist bdist_wheel --universal
 
     - name: Commit new version
-      if: steps.release-needed.outputs.DO_BUMP == 'true'
+      if: steps.release-needed.outputs.DO_RELEASE == 'true'
       uses: actions-x/commit@v6
       with:
         message: 'Release ${{ steps.version-bump.outputs.new_version }}'
@@ -102,7 +114,7 @@ jobs:
         tag: ${{ steps.version-bump.outputs.new_version }}
         generateReleaseNotes: true
         token: ${{ secrets.TOKEN }}
-  
+
     - name: Publish package
       if: steps.release-needed.outputs.DO_RELEASE == 'true' && env.PYPI_PUBLISH == '1'
       uses: pypa/gh-action-pypi-publish@release/v1
