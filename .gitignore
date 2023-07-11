@@ -26,3 +26,8 @@ tmp/*
 
 # python virtual environment related directory
 **venv*
+env
+.env
+
+# test data related
+tmp-test-data.json
