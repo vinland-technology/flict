@@ -201,7 +201,7 @@ class Arbiter:
         """Check an outbound license against an inbound license
              Parameters:
                  outbound: the outbound license (e.g. "GPL-2.0-only")
-                 ibound: inbound license (e.g. "MPL-2.0")
+                 inbound: inbound license (e.g. "MPL-2.0")
         """
         return self.license_compatibility.inbound_outbound_compatibility(outbound, inbound)
 
