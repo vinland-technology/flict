@@ -127,6 +127,8 @@ class PrettyLicenseParser(LicenseParser):
         while (rest != ""):
             if self.utils.is_license(rest):
                 lic, rest = self.utils.get_license(rest)
+                if lic == '':
+                    continue
                 operand = {
                     'type': 'license',
                     'name': lic,
