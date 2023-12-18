@@ -2,6 +2,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+#
+# A bug was identified in a "long" license expression. Trying to make
+# sure that a really long expression messes things up we're building
+# up really long expressions as repetitions of a license expression
+# with a known compatibility
+#
+
 import json
 import pytest
 
@@ -10,6 +17,8 @@ from flict.flictlib.arbiter import Arbiter
 arbiter = Arbiter()
 
 def _test_expression(inbound, outbound, result):
+    # Check if inbound license is compatible with the outbound license
+    # Compare the actual result ("compats") against "result" wich is the expected
     compats = arbiter.inbounds_outbound_check(outbound, [inbound])
     assert result == compats['compatibility']
 

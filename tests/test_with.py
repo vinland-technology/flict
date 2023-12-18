@@ -2,6 +2,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+#
+# A bug was identified in a "long" license expression with a "WITH"
+# statement. These tests checks licenses with WITH to verify things
+# seem to be OK.
+#
 import json
 import pytest
 
@@ -10,8 +15,15 @@ from flict.flictlib.arbiter import Arbiter
 arbiter = Arbiter()
 
 def _test_expression(inbound, outbound, result):
+    # Check if inbound license is compatible with the outbound license
+    # Compare the actual result ("compats") against "result" wich is the expected
     compats = arbiter.inbounds_outbound_check(outbound, [inbound])
     assert result == compats['compatibility']
+
+def test_with_0():
+    _test_expression('GPL-2.0-only WITH Classpath-exception-2.0',
+                     'GPL-2.0-only',
+                     'Yes')
 
 def test_with_1():
     _test_expression('X11 AND (GPL-2.0-only WITH Classpath-exception-2.0 OR MIT)',
