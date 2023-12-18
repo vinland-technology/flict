@@ -45,13 +45,3 @@ def _check_compat(expr):
     candidate = impl.suggest_outbound_candidate()
     return candidate
         
-#@pytest.mark.usefixtures('test_complete_creation')
-#def test_compat():
-#    _check_compat("Dummy and BSD-3-Clause")
-  
-#@pytest.mark.usefixtures('test_complete_creation')
-#def test_compat2():
-#    _check_compat("Dummy and BSD-3-Clause")
-    
-    
-    
