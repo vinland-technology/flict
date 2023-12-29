@@ -119,11 +119,13 @@ class LicenseCompatibilty:
             # get compatibility_tag between the operand and the outbound
             # and calculate and store the summarized compatibility
             compat = self._inbounds_outbound_check(outbound, operand)
+            if compat['problems']:
+                problem_summary += compat['problems']
             compat_tag = compat[COMPATIBILITY_TAG]
             if compat_tag == "Yes" or compat_tag == "No":
                 compat_summary = self._update_compat(op, compat_summary, compat_tag == CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value)
             elif compat_tag == "Unknown":
-                problems.append(f'Unknown license compatibility between outbound \'{outbound["name"]}\' and {self.__internal_expr_to_str(operand)}')
+                problems.append(f'Unknown license compatibility between outbound \'{outbound["name"]}\' and inbound \'{self.__internal_expr_to_str(operand)}\'')
                 compat_summary = self._update_compat(op, compat_summary, compat_tag == CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value)
             elif compat_tag.startswith("Check"):
                 problems.append(f'Manually check license compatibility between {outbound}')
@@ -138,7 +140,8 @@ class LicenseCompatibilty:
             operand['allowed'] = allowed
             operand[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
             operand["problems"] = problems
-            problem_summary.append(problems)
+            if problems:
+                problem_summary += problems
 
         # store outbound to make for easier reading of result
         expr['outbound'] = outbound
@@ -146,7 +149,6 @@ class LicenseCompatibilty:
         expr["allowed"] = allowed_summary
         expr['check'] = 'inbounds_outbound'
         expr["problems"] = problem_summary
-
         return expr
 
     def _inbounds_outbound_check_license(self, outbound, expr):
