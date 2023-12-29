@@ -113,10 +113,15 @@ class Compatibility:
                 comp_right = self.check_compat(lic_b, lic_a)['compatibility']
 
                 if CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value in (comp_left, comp_right):
+
                     supported = self.supported_licenses()
                     lic_bad = ",".join({lic for lic in (lic_a, lic_b) if lic not in supported})
-                    raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                     f'License expression "{lic_bad}" is not supported.')
+                    if lic_bad != "":
+                        raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                                         f'License expression "{lic_bad}" is not supported.')
+                    else:
+                        raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                                         f'Licenses "{lic_a}" and "{lic_b}" do not have known compatibility both ways.')
 
                 inner_licenses.append({
                     'license': lic_b,
@@ -165,30 +170,37 @@ class OsadlCompatibility(Compatibility):
         inbound = self.alias.replace_aliases(_inbound)
 
         supported = osadl_matrix.supported_licenses()
+        # if the outbound license is not supported, we cannot continue.
         if outbound not in supported:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                              f'Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined, since \"{outbound}\" is an unknown license')
+
+        # if inbound is not supported, we continue since there might
+        # be a dual license where we may end up in a situation where
+        # one license is compatible and one is unknown. Instead of
+        # raising an error we can notify the user in the resulting
+        # data (inbound is an unknown license)
         if inbound not in supported:
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             f'Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined, since \"{inbound}\" is an unknown license')
-
-        raw_result = osadl_matrix.get_compatibility(outbound, inbound, self.license_db)
-
-        logging.info(f"check_compat({outbound}, {inbound} => {raw_result}")
-
-        if raw_result == osadl_matrix.OSADLCompatibility.YES:
-            result = CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value
-        elif raw_result == osadl_matrix.OSADLCompatibility.NO:
-            result = CompatibilityStatus.LICENSE_COMPATIBILITY_INCOMPATIBLE.value
-        elif raw_result == osadl_matrix.OSADLCompatibility.UNKNOWN:
             result = CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value
-            logging.debug(f"compatibility: {outbound}  --> {inbound}: {result}")
-        elif raw_result == osadl_matrix.OSADLCompatibility.CHECKDEP:
-            result = CompatibilityStatus.LICENSE_COMPATIBILITY_MANUALLY_CHECK.value
-            logging.debug(f"compatibility: {outbound}  --> {inbound}: {result}")
-        elif raw_result == osadl_matrix.OSADLCompatibility.UNDEF:
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined. The result was: {raw_result}")
+            logging.debug(f'Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined, since \"{inbound}\" is an unknown licenses')
+        else:
+            raw_result = osadl_matrix.get_compatibility(outbound, inbound, self.license_db)
+
+            logging.info(f"check_compat({outbound}, {inbound} => {raw_result}")
+
+            if raw_result == osadl_matrix.OSADLCompatibility.YES:
+                result = CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value
+            elif raw_result == osadl_matrix.OSADLCompatibility.NO:
+                result = CompatibilityStatus.LICENSE_COMPATIBILITY_INCOMPATIBLE.value
+            elif raw_result == osadl_matrix.OSADLCompatibility.UNKNOWN:
+                result = CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value
+                logging.debug(f"compatibility: {outbound}  --> {inbound}: {result}")
+            elif raw_result == osadl_matrix.OSADLCompatibility.CHECKDEP:
+                result = CompatibilityStatus.LICENSE_COMPATIBILITY_MANUALLY_CHECK.value
+                logging.debug(f"compatibility: {outbound}  --> {inbound}: {result}")
+            elif raw_result == osadl_matrix.OSADLCompatibility.UNDEF:
+                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                                 f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined. The result was: {raw_result}")
 
         return {
             "inbound": inbound,
