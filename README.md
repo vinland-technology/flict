@@ -35,7 +35,7 @@ flict can:
 
 flict supports:
 
-* 87 licenses (```flict -of text list```)
+* 104 licenses (```flict -of text list```)
 
 * common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only), see "License alias definitions" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 
