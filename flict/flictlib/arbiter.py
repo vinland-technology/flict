@@ -155,22 +155,33 @@ class Arbiter:
             # Get the alias for all outbound licenses
             outbound_licenses_aliased = [self.license_compatibility.replace_aliases(lic) for lic in outbound_licenses]
 
+            allowed_outbound_licenses = []
+            allowed_outbound_licenses_aliased = []
+
+            for idx in range(0, len(outbound_licenses_aliased)):
+                # if the license[idx] is allowed (not denied)
+                if self.license_compatibility.license.license_allowed(outbound_licenses_aliased[idx]):
+                    allowed_outbound_licenses.append(outbound_licenses[idx])
+                    allowed_outbound_licenses_aliased.append(outbound_licenses_aliased[idx])
+
             # Identify single outbound (chosen) license (from the aliased outbound licenses)
-            chosen_alias = self.license_compatibility.choose_license(outbound_licenses_aliased)
+            chosen_alias = self.license_compatibility.choose_license(allowed_outbound_licenses_aliased)
             if chosen_alias is None:
                 chosen_license = None
             else:
                 # Find the index of the aliased license
                 # and use that to identify the original (not aliased) license
-                index = outbound_licenses_aliased.index(chosen_alias)
-                chosen_license = outbound_licenses[index]
+                index = allowed_outbound_licenses_aliased.index(chosen_alias)
+                chosen_license = allowed_outbound_licenses[index]
 
             package_info.update({
                 'dependencies': dep_infos,
                 'outbound_licenses': outbound_licenses,
                 'outbound_licenses_aliased': outbound_licenses_aliased,
-                'outbound_license': chosen_license,
-                'outbound_license_aliased': chosen_alias,
+                'allowed_outbound_licenses': allowed_outbound_licenses,
+                'allowed_outbound_licenses_aliased': allowed_outbound_licenses_aliased,
+                'allowed_outbound_license': chosen_license,
+                'allowed_outbound_license_aliased': chosen_alias,
             })
             package_infos.append(package_info)
 
