@@ -7,9 +7,9 @@ import json
 import logging
 
 from flict.flictlib.return_codes import FlictError, ReturnCodes
+from flict.flictlib.license import compatible_license
 
 DEPENDENCY_TAGS = ['DYNAMIC_LINK', 'STATIC_LINK', 'DEPENDS_ON', 'CONTAINS', 'COPY_OF']
-
 
 class Project:
 
@@ -19,8 +19,8 @@ class Project:
 
     @staticmethod
     def dependencies_license(package):
-        licenses = [Project.package_license(dep) for dep in package.get('dependencies', [])]
-        return ' AND '.join(licenses)
+        licenses = [f' ( {Project.package_license(dep)} ) ' for dep in package.get('dependencies', [])]
+        return ' AND  '.join(licenses)
 
     @staticmethod
     def package_license(package):
@@ -48,71 +48,95 @@ class ProjectReader:
     def _already_read(self, project_file):
         return project_file in self.files_read
 
+    def prepare_project(self, project):
+        for package in project['packages']:
+            self.__update_dep_license(package)
+        return project
+
+    def __update_dep_license(self, package):
+        package['original_license'] = package.get('license')
+        compat = compatible_license(package.get('license'), update_dual=self.update_dual)
+        fixed_license = compat['compat_license']
+        package['license'] = fixed_license
+
+        for dep in package['dependencies']:
+            self.__update_dep_license(dep)
+
     def _flatten_packages(self, packages):
         package_list = []
 
-        for _package in packages.values():
+        for _package in packages:
             tmp_dict = {}
-
-            for dep in _package['dependencies']:
+            for dep in _package.get('dependencies', []):
                 tmp_dict.update(self._flatten_package_tree(dep))
-
             dep_list = tmp_dict.values()
+
+            for dep in dep_list:
+                dep['dependencies'] = []
 
             package = {
                 'name': _package['name'],
                 'version': _package['version'],
                 'license': _package['license'],
                 'description': _package['description'],
-                'dependencies': dep_list,
+                'dependencies': list(dep_list),
             }
 
             package_list.append(package)
-        return (package_list)
+
+        return package_list
 
 
 class ProjectReaderFactory:
 
     @staticmethod
-    def get_projectreader(project_file=None, project_dirs=None, project_format=None):
+    def get_projectreader(project_file=None, project_dirs=None, project_format=None, update_dual=True):
         if not project_dirs:
             project_dirs = ['.']
-        logging.debug(f'get_projectreader({project_file}, {project_dirs}, {project_format})')
+        logging.debug(f'get_projectreader({project_file}, {project_dirs}, {project_format}, {update_dual})')
         if project_format is None:
             if 'spdx' in project_file:
-                return SPDXJsonProjectReader(project_dirs)
+                return SPDXJsonProjectReader(project_dirs, update_dual)
             if 'flict' in project_file:
-                return FlictProjectReader(project_dirs)
+                return FlictProjectReader(project_dirs, update_dual)
         elif project_format == 'flict':
-            return FlictProjectReader(project_dirs)
+            return FlictProjectReader(project_dirs, update_dual)
         elif project_format == 'spdx':
-            return SPDXJsonProjectReader(project_dirs)
+            return SPDXJsonProjectReader(project_dirs, update_dual)
 
 
 class FlictProjectReader(ProjectReader):
     """Class for reading flict project files"""
 
-    def __init__(self, project_dirs):
+    def __init__(self, project_dirs, update_dual=True):
+        self.update_dual = update_dual
         pass
+
+    def __read_project_data(self, _project_data):
+        project = _project_data['project']
+        project_data = {
+            'project_name': project['name'],
+            'packages': [
+                {
+                    'name': project['name'],
+                    'version': project['version'],
+                    'license': project['license'],
+                    'description': '',
+                    'dependencies': project['dependencies'],
+                },
+            ],
+        }
+        fixed_project_data = self.prepare_project(project_data)
+        return fixed_project_data
+
+    def read_project_data(self, project_data):
+        return self.__read_project_data(project_data)
 
     def read_project(self, project_file):
         try:
             with open(project_file, 'r') as f:
                 project_data = json.load(f)
-                project = project_data['project']
-
-                return {
-                    'project_name': project['name'],
-                    'packages': [
-                        {
-                            'name': project['name'],
-                            'version': project['version'],
-                            'license': project['license'],
-                            'description': '',
-                            'dependencies': project['dependencies'],
-                        },
-                    ],
-                }
+                return self.__read_project_data(project_data)
         except json.JSONDecodeError:
             raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'File "{project_file}" does not contain valid JSON data')
         except (FileNotFoundError, IsADirectoryError):
@@ -127,9 +151,10 @@ class SPDXJsonProjectReader(ProjectReader):
     If more SPDX versions need to be supported, we may need to subclass this in version specific classes....
     """
 
-    def __init__(self, project_dirs):
+    def __init__(self, project_dirs, update_dual=True):
         self.spdx_dirs = project_dirs
         self.files_read = []
+        self.update_dual = update_dual
 
     def read_project(self, project_file):
         packages_project_name = self._read_spdx(project_file)
@@ -137,10 +162,11 @@ class SPDXJsonProjectReader(ProjectReader):
         project_name = packages_project_name['project_name']
         flat_packages = self._flatten_packages(packages)
 
-        return {
+        fixed_project_data = self.prepare_project({
             'project_name': project_name,
             'packages': flat_packages,
-        }
+        })
+        return fixed_project_data
 
     def _relationship_is_dependency(self, relationshiptype):
         return relationshiptype in DEPENDENCY_TAGS
@@ -176,7 +202,7 @@ class SPDXJsonProjectReader(ProjectReader):
                 dep_spdx_path = self.spdx_dirs[0] + '/' + dep_spdx
                 packages_proj_name = self._read_spdx(dep_spdx_path, self.spdx_dirs)
                 _packages = packages_proj_name.get('packages')
-                for _pkg in _packages.values():
+                for _pkg in _packages:
                     _pkg_name = _pkg['id']
                     if dep_package_name == _pkg_name:
                         packages[top_package]['dependencies'].append({_pkg_name: _pkg})
@@ -197,10 +223,13 @@ class SPDXJsonProjectReader(ProjectReader):
                             }
                             packages[top_package]['dependencies'].append({dep_id: _pkg})
 
-        return {
-            'packages': packages,
+        packages_list = list(packages.values())
+
+        ret = {
+            'packages': packages_list,
             'project_name': project_name,
         }
+        return ret
 
     def _read_spdx(self, spdx_file, only_packages=None):
 
