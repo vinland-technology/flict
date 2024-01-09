@@ -6,8 +6,8 @@ def create_dummy_project(inbound, outbound):
     _version = 0xdeadc0de
     return {
         'meta': {
-            'software':'flict',
-            'version': _version
+            'software': 'flict',
+            'version': _version,
         },
         'project': {
             'name': 'dummy_package',
@@ -19,10 +19,8 @@ def create_dummy_project(inbound, outbound):
                     'name': 'dummy_package',
                     'version': _version,
                     'license': ' '.join(inbound),
-                    'dependencies': []
-                }
-            ]
-        }
+                    'dependencies': [],
+                },
+            ],
+        },
     }
-
-    
