@@ -4,6 +4,7 @@
 
 from argparse import RawTextHelpFormatter
 import argparse
+import traceback
 
 from flict.flictlib import logger
 from flict.flictlib.flict_config import flict_version
@@ -79,12 +80,6 @@ def parse():
 
     commmon_defaults_group.add_argument('--licenses-preference-file', '-lpf', type=str, dest='licenses_preference_file', help='', default=None)
 
-    commmon_defaults_group.add_argument('--alias-file', '-af',
-                                        type=str,
-                                        dest='alias_file',
-                                        help=f'Which file with aliases to use. Default to {flict_config.DEFAULT_FLICT_ALIAS_FILE}',
-                                        default=False)
-
     commmon_defaults_group.add_argument('--license-info-file', '-lif', type=str, dest='licenses_info_file', help='Short for applying -lmf <file> -ldf <file> -lpf <file>', default=None)
 
     # COMMON
@@ -147,7 +142,7 @@ def parse():
     parser_v = subparsers.add_parser(
         'verify', help='verify license compatibility')
     parser_v.set_defaults(which="verify", func=verify)
-    parser_v.add_argument('--outbound-license', '-ol', type=str, dest='out_license', help='Outbound license for the licenses to verify compatibibility', default=None)
+    parser_v.add_argument('--outbound-license', '-ol', type=str, nargs="+", dest='out_license', help='Outbound license for the licenses to verify compatibibility', default=None)
     parser_v.add_argument('--inbound-license', '-il', type=str, nargs='+', dest='in_license_expr', help='Inbound license(s) for the licenses to verify compatibibility', default=[])
     parser_v.add_argument('--sbom', '-s', type=str, dest='verify_sbom', help='SBoM file to verify')
     parser_v.add_argument('--sbom-dirs', '-sd', type=str, nargs='+', dest='sbom_dirs', help='Directories where SBoM files are searched for.', default='.')
@@ -288,6 +283,8 @@ def main():
         try:
             args.func(args)
         except FlictError as e:
+            if args.verbose:
+                print(traceback.format_exc(), file=sys.stderr)
             flict_exit(e.error_code(), e.error_message())
 
     else:
