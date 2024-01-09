@@ -10,7 +10,6 @@ from flict.flictlib.compatibility import LICENSE_COMPATIBILITY_AND
 from flict.flictlib.compatibility import LICENSE_COMPATIBILITY_OR
 from flict.flictlib.compatibility import CompatibilityLicenseChooser
 from flict.flictlib.compatibility import CustomLicenseChooser
-from flict.flictlib.alias import Alias
 from flict.flictlib.license import License
 from flict.flictlib.return_codes import FlictError, ReturnCodes
 
@@ -19,12 +18,10 @@ COMPATIBILITY_TAG = "compatibility"
 
 class LicenseCompatibilty:
 
-    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, alias_file=None):
-        self.alias = Alias(alias_file)
+    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None):
+        self.license = License(denied_licenses)
 
-        self.license = License(denied_licenses, self.alias)
-
-        self.compatibility = CompatibilityFactory.get_compatibility(self.alias, license_db)
+        self.compatibility = CompatibilityFactory.get_compatibility(license_db)
 
         if not licenses_preferences or licenses_preferences == []:
             self.license_chooser = CompatibilityLicenseChooser(self.compatibility.supported_licenses())
@@ -32,7 +29,7 @@ class LicenseCompatibilty:
             self.license_chooser = CustomLicenseChooser(licenses_preferences)
 
     def inbound_outbound_compatibility(self, outbound, inbound):
-        return self.compatibility.check_compat(self.alias.replace_aliases(outbound), self.alias.replace_aliases(inbound))
+        return self.compatibility.check_compat(outbound, inbound)
 
     def inbounds_outbound_compatibility(self, outbound, expr):
         """
@@ -55,26 +52,22 @@ class LicenseCompatibilty:
                     {
                         "type": "license",
                         "name": "LGPL-2.1-only",
-                        "license_aliased": "LGPL-2.1-only",
                         "check": "inbounds_outbound",
                         "outbound": {
                             "type": "license",
                             "name": "X11"
                         },
-                        "outbound_aliased": "X11",
                         "allowed": true,
                         "compatibility": "No"  <--- compatiblity status for outbound X11 and inbound LGPL-2.1-only
                     },
                     {
                         "type": "license",
                         "name": "MIT",
-                        "license_aliased": "MIT",
                         "check": "inbounds_outbound",
                         "outbound": {
                             "type": "license",
                             "name": "X11"
                         },
-                        "outbound_aliased": "X11",
                         "allowed": true,
                         "compatibility": "Yes"  <--- compatiblity status for outbound X11 and inbound MIT
                         "problems": [] <----- list of causes such as "Check dependency, Unknown"
@@ -151,21 +144,16 @@ class LicenseCompatibilty:
         expr["problems"] = problem_summary
         return expr
 
-    def _inbounds_outbound_check_license(self, outbound, expr):
-        license_expr = self.license.license_name(expr)
+    def _inbounds_outbound_check_license(self, _outbound, expr):
+        inbound = self.license.license_name(expr)
+        outbound = self.license.license_name(_outbound)
 
-        outbound_aliased = self.license.replace_aliases(self.license.license_name(outbound))
-        license_aliased = self.license.replace_aliases(license_expr)
+        compat = self.compatibility.check_compat(outbound, inbound)
 
-        compat = self.compatibility.check_compat(outbound_aliased, license_aliased)
-
-        expr['license_aliased'] = license_aliased
         expr['check'] = 'inbounds_outbound'
-        expr['outbound'] = outbound
-        expr['outbound_aliased'] = outbound_aliased
-        expr['allowed'] = self.license.license_allowed(license_expr)
+        expr['outbound'] = _outbound
         expr['problems'] = []
-
+        expr['allowed'] = self.license.license_allowed(inbound)
         expr[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
         return expr
 
@@ -207,9 +195,6 @@ class LicenseCompatibilty:
 
     def supported_licenses(self):
         return self.compatibility.supported_licenses()
-
-    def replace_aliases(self, expr):
-        return self.alias.replace_aliases(expr)
 
     def check_compatibilities(self, licenses, check_all=False):
         return self.compatibility.check_compatibilities(licenses, check_all)
