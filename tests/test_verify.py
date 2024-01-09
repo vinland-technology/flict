@@ -53,7 +53,8 @@ class TestVerification(unittest.TestCase):
         # freetype specific check
         package = verification['packages'][0]
         compats = package['compatibility']
-        self.assertEqual(len(compats), 4)
+        # freetype has four, but one is "GPL-2.0-or-later" which becomes "GPL-2.0-only OR GPL-3.0-only", so 5
+        self.assertEqual(len(compats), 5)
 
 
     def test_freetype_inner_verification(self):
@@ -68,7 +69,8 @@ class TestVerification(unittest.TestCase):
         # freetype specific check
         package = verification['packages'][0]
         compats = package['compatibility']
-        self.assertEqual(len(compats), 4)
+        # freetype has four, but one is "GPL-2.0-or-later" which becomes "GPL-2.0-only OR GPL-3.0-only", so 5
+        self.assertEqual(len(compats), 5)
 
 
     def test_zlib_no_proper_deps(self):
