@@ -9,20 +9,24 @@ from flict.flictlib.project.reader import Project
 from flict.flictlib.utils import meta_information
 from flict.flictlib.utils import timestamp
 from flict.flictlib.return_codes import FlictError, ReturnCodes
+from flict.flictlib.license import compatible_license_short
+from flict.flictlib.project.reader import FlictProjectReader
+from flict.flictlib.project.writer import create_dummy_project
 
 
 class Arbiter:
     """Arbiter is a class to verify compatibility"""
 
-    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, alias_file=None):
+    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, update_dual=True):
         """Initializes Arbiter objects
              Parameters:
                  license_db: license database to use instead of builtin
                  licenses_preferences: license preferences to use instead of builtin
                  denied_licenses: licenses that cannot be used
         """
+        self.update_dual = update_dual
         self.license_compatibility = LicenseCompatibilty(
-            license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses, alias_file=alias_file)
+            license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses)
 
     def supported_licenses(self):
         """Returns the supported licenses"""
@@ -41,7 +45,23 @@ class Arbiter:
         inbound_license = package['license']
         logging.debug(f"   * Inbound license:  {inbound_license}")
 
-        return [self.inbounds_outbound_check(outbound_license, [inbound_license]) for outbound_license in licenses]
+        checks = []
+        problems = []
+        for outbound_license in licenses:
+            check = self.inbounds_outbound_check(outbound_license, [inbound_license])
+            if 'problems' in check and check['problems']:
+                problems += check['problems']
+            checks.append(check)
+
+        return checks, problems
+
+    def verify_outbound_inbound(self, outbound, inbound):
+        dummy_project_data = create_dummy_project(inbound, outbound)
+        reader = FlictProjectReader([])
+        dummy_project = reader.read_project_data(dummy_project_data)
+        compat_outbound = compatible_license_short(' '.join(outbound), self.update_dual)
+        verification = self.verify(dummy_project, [compat_outbound])
+        return verification
 
     def _package_info_compatibility(self, package_info, outbound):
         for compat in package_info['compatibility']:
@@ -66,6 +86,7 @@ class Arbiter:
 
     def _combined_work_compatible_dependencies(self, outbound_license, dep_infos):
         compatible = True
+
         for dep_info in dep_infos:
             # Get the corresponding compatiblity for outbound_license for dep_info
             compatible_license = self._package_info_compatibility(dep_info, outbound_license)
@@ -109,15 +130,17 @@ class Arbiter:
         return list(outbound_licenses)
 
     def _package_info(self, package, licenses):
-        compats = self.verify_package(package, licenses)
-
+        compats, problems = self.verify_package(package, licenses)
         return {
             'name': package['name'],
-            'license': package['license'],
+            'license': package.get('license'),
+            'original_license': package.get('original_license'),
+            'license_details': package.get('license_details', ""),
             'licenses_to_check': list(licenses),
             'version': package['version'],
             'description': package.get('description', ""),
             'compatibility': compats,
+            'problems': list(set(problems)),
         }
 
     def verify(self, project, supplied_licenses=None):
@@ -127,7 +150,6 @@ class Arbiter:
                  project: the project (with its packages and their licenses) to check for compatibility
                  supplied_licenses: the licenses to check the package's license against
         """
-
         start_time = timestamp()
 
         project_name = project['project_name']
@@ -141,7 +163,7 @@ class Arbiter:
             if supplied_licenses is None:
                 licenses = self.license_compatibility.licenses(license_expression)
             else:
-                licenses = supplied_licenses
+                licenses = self.license_compatibility.licenses(' '.join(supplied_licenses))
 
             all_licenses.update(licenses)
 
@@ -152,36 +174,16 @@ class Arbiter:
             # Get a list of the outbound licenses for all packages
             outbound_licenses = self._top_package_license(licenses, package_info, dep_infos)
 
-            # Get the alias for all outbound licenses
-            outbound_licenses_aliased = [self.license_compatibility.replace_aliases(lic) for lic in outbound_licenses]
-
-            allowed_outbound_licenses = []
-            allowed_outbound_licenses_aliased = []
-
-            for idx in range(0, len(outbound_licenses_aliased)):
-                # if the license[idx] is allowed (not denied)
-                if self.license_compatibility.license.license_allowed(outbound_licenses_aliased[idx]):
-                    allowed_outbound_licenses.append(outbound_licenses[idx])
-                    allowed_outbound_licenses_aliased.append(outbound_licenses_aliased[idx])
+            allowed_outbound_licenses = [ol for ol in outbound_licenses if self.license_compatibility.license.license_allowed(ol)]
 
             # Identify single outbound (chosen) license (from the aliased outbound licenses)
-            chosen_alias = self.license_compatibility.choose_license(allowed_outbound_licenses_aliased)
-            if chosen_alias is None:
-                chosen_license = None
-            else:
-                # Find the index of the aliased license
-                # and use that to identify the original (not aliased) license
-                index = allowed_outbound_licenses_aliased.index(chosen_alias)
-                chosen_license = allowed_outbound_licenses[index]
+            chosen_license = self.license_compatibility.choose_license(allowed_outbound_licenses)
 
             package_info.update({
                 'dependencies': dep_infos,
                 'outbound_licenses': outbound_licenses,
-                'outbound_licenses_aliased': outbound_licenses_aliased,
                 'allowed_outbound_licenses': allowed_outbound_licenses,
-                'allowed_outbound_licenses_aliased': allowed_outbound_licenses_aliased,
-                'allowed_outbound_license': chosen_license,
-                'allowed_outbound_license_aliased': chosen_alias,
+                'outbound_license': chosen_license,
             })
             package_infos.append(package_info)
 
