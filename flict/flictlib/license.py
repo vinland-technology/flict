@@ -2,9 +2,21 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from flict.flictlib.alias import Alias
 from flict.flictlib.license_parser import LicenseParserFactory
 from flict.flictlib.return_codes import FlictError, ReturnCodes
+
+from flame.license_db import FossLicenses # noqa: I900
+
+fl = None
+
+def compatible_license(license_expr, update_dual=True):
+    global fl
+    if not fl:
+        fl = FossLicenses()
+    return fl.expression_compatibility_as(license_expr, update_dual=update_dual)
+
+def compatible_license_short(license_expr, update_dual=True):
+    return compatible_license(license_expr, update_dual)['compat_license']
 
 
 class License():
@@ -15,7 +27,6 @@ class License():
     """
 
     def __init__(self, denied_licenses, alias=None):
-        self.alias = alias or Alias()
         self._denied_licenses = denied_licenses
         self.parser = LicenseParserFactory.get_parser()
 
@@ -34,9 +45,6 @@ class License():
     def licenses(self, expr):
         return self.parser.licenses(expr)
 
-    def replace_aliases(self, expr):
-        return self.alias.replace_aliases(expr)
-
     def denied_licenses(self):
         return self._denied_licenses
 
@@ -50,7 +58,7 @@ class License():
 
     def simplify_license(self, expr):
         try:
-            aliased = self.alias.replace_aliases(expr)
+            aliased = compatible_license_short(expr)
             parsed = self.parser.parse_license([aliased])
             simplified = str(parsed['simplified'])
             return {
