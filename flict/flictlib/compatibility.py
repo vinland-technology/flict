@@ -9,8 +9,6 @@ from enum import Enum
 import osadl_matrix
 
 from flict.flictlib.return_codes import FlictError, ReturnCodes
-from flict.flictlib.alias import Alias
-
 
 class CompatibilityStatus(Enum):
     LICENSE_COMPATIBILITY_COMPATIBLE = "Yes"
@@ -30,16 +28,15 @@ class CompatibilityFactory:
     """
 
     @staticmethod
-    def get_compatibility(alias=None, license_db=None):
+    def get_compatibility(license_db=None):
         """Returns a Compatibility object.
 
             Parameters:
-                alias: alias object
                 licensedb: licensedb to use if not using default
 
         Currently only OsadlCompatibility is available.
         """
-        return OsadlCompatibility(alias or Alias(), license_db)
+        return OsadlCompatibility(license_db)
 
 
 class Compatibility:
@@ -48,7 +45,7 @@ class Compatibility:
     This class need to be implemented in sub classes.
     """
 
-    def __init__(self, alias, license_db=None):
+    def __init__(self, license_db=None):
         return None
 
     def check_compat(self, outbound, inbound):
@@ -160,14 +157,14 @@ class OsadlCompatibility(Compatibility):
     This class implements Compatibility
     """
 
-    def __init__(self, alias, license_db=None):
+    def __init__(self, license_db=None):
         self.license_db = license_db
-        self.alias = alias
 
-    def check_compat(self, _outbound, _inbound):
+    def check_compat(self, outbound, inbound):
 
-        outbound = self.alias.replace_aliases(_outbound)
-        inbound = self.alias.replace_aliases(_inbound)
+        raw_result = osadl_matrix.get_compatibility(outbound, inbound, self.license_db)
+
+        logging.info(f"check_compat({outbound}, {inbound} => {raw_result}")
 
         supported = osadl_matrix.supported_licenses()
         # if the outbound license is not supported, we cannot continue.
