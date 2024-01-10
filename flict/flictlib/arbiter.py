@@ -11,7 +11,6 @@ from flict.flictlib.utils import timestamp
 from flict.flictlib.return_codes import FlictError, ReturnCodes
 from flict.flictlib.license import compatible_license_short
 from flict.flictlib.project.reader import FlictProjectReader
-from flict.flictlib.project.writer import create_dummy_project
 
 
 class Arbiter:
@@ -49,19 +48,49 @@ class Arbiter:
         problems = []
         for outbound_license in licenses:
             check = self.inbounds_outbound_check(outbound_license, [inbound_license])
-            if 'problems' in check and check['problems']:
-                problems += check['problems']
+            problems += check.get('problems', [])
             checks.append(check)
 
         return checks, problems
 
     def verify_outbound_inbound(self, outbound, inbound):
-        dummy_project_data = create_dummy_project(inbound, outbound)
+        # Use that flict can calculate license compatibility for a
+        # project by creating an dummy project - with outer project
+        # (outbound license) and one simple dependency (inbound
+        # license).
+        dummy_project_data = {
+            'project': {
+                'name': '',
+                'version': '',
+                'license': ' '.join(outbound),
+                'dependencies': [
+                    {
+                        'name': '',
+                        'version': '',
+                        'license': ' '.join(inbound),
+                        'dependencies': [],
+                    },
+                ],
+            },
+        }
         reader = FlictProjectReader([])
         dummy_project = reader.read_project_data(dummy_project_data)
         compat_outbound = compatible_license_short(' '.join(outbound), self.update_dual)
         verification = self.verify(dummy_project, [compat_outbound])
-        return verification
+        package = verification['packages'][0]
+        dependency = package['dependencies'][0]
+        return {
+            'original_outbound': package['original_license'],
+            'outbound': package['license'],
+            'inbound': dependency['license'],
+            'original_inbound': dependency['original_license'],
+            'result': {
+                'outbound_licenses': package['outbound_licenses'],
+                'allowed_outbound_licenses': package['allowed_outbound_licenses'],
+                'outbound_license': package['outbound_license'],
+                'problems': package['problems'],
+            },
+        }
 
     def _package_info_compatibility(self, package_info, outbound):
         for compat in package_info['compatibility']:
