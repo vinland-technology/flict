@@ -49,7 +49,7 @@ class ProjectReader:
         return project_file in self.files_read
 
     def prepare_project(self, project):
-        for package in project['packages']:
+        for package in project.get('packages', []):
             self.__update_dep_license(package)
         return project
 
@@ -110,7 +110,6 @@ class FlictProjectReader(ProjectReader):
 
     def __init__(self, project_dirs, update_dual=True):
         self.update_dual = update_dual
-        pass
 
     def __read_project_data(self, _project_data):
         project = _project_data['project']
