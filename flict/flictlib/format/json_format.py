@@ -9,7 +9,6 @@
 ###################################################################
 
 from flict.flictlib.format.format import FlictFormatter
-from flict.flictlib.format.common import extract_compatibilities
 
 import json
 
@@ -46,8 +45,8 @@ class JsonFormatter(FlictFormatter):
     def format_relicense_information(self, license_handler):
         return json.dumps(license_handler.relicensing_information()['original']['relicense_definitions'])
 
-    def format_compatibilities(self, verification):
-        return json.dumps(extract_compatibilities(verification))
+    def format_compatibilities(self, compatibilities):
+        return json.dumps(compatibilities)
 
     def format_licenses(self, licenses):
         return json.dumps(licenses)
