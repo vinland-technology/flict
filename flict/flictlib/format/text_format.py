@@ -117,6 +117,5 @@ class TextFormatter(FlictFormatter):
         return "\n".join(ret)
 
     def format_compatibilities(self, compats):
-        compatible = compats['compatibility'] == "Yes"
-        allowed = compats['allowed']
-        return "Yes" if compatible and allowed else "No"
+        compatible = len(compats['result']['allowed_outbound_licenses']) > 0
+        return "Yes" if compatible else "No"
