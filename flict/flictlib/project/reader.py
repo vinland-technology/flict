@@ -20,7 +20,7 @@ class Project:
     @staticmethod
     def dependencies_license(package):
         licenses = [f' ( {Project.package_license(dep)} ) ' for dep in package.get('dependencies', [])]
-        return ' AND  '.join(licenses)
+        return ' AND '.join(licenses)
 
     @staticmethod
     def package_license(package):
