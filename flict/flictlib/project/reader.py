@@ -111,8 +111,8 @@ class FlictProjectReader(ProjectReader):
     def __init__(self, project_dirs, update_dual=True):
         self.update_dual = update_dual
 
-    def __read_project_data(self, _project_data):
-        project = _project_data['project']
+    def read_project_data(self, project_data):
+        project = project_data['project']
         project_data = {
             'project_name': project['name'],
             'packages': [
@@ -128,14 +128,11 @@ class FlictProjectReader(ProjectReader):
         fixed_project_data = self.prepare_project(project_data)
         return fixed_project_data
 
-    def read_project_data(self, project_data):
-        return self.__read_project_data(project_data)
-
     def read_project(self, project_file):
         try:
             with open(project_file, 'r') as f:
                 project_data = json.load(f)
-                return self.__read_project_data(project_data)
+                return self.read_project_data(project_data)
         except json.JSONDecodeError:
             raise FlictError(ReturnCodes.RET_INVALID_PROJECT, f'File "{project_file}" does not contain valid JSON data')
         except (FileNotFoundError, IsADirectoryError):
