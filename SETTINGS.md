@@ -6,40 +6,18 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 You can tweak flict by providing:
 
-* [_Alias__](#alias) - alias for "non standard" spelled licenes (e.g. 'BSD3 -> BSD-3-Clause')
+* <a name="#name">Denied licenses</a>
+
+* <a name="#preference">Preferred licenses</a>
+
+* <a name="#extending">Extending the license db</a>
+
+In earlier versions of flict you could provide your own aliases. Now
+flict relies on [foss-licenses](https://github.com/hesa/foss-licenses)
+(available in [pypi.org](https://pypi.org) as
+[foss-flame](https://pypi.org/project/foss-flame/)).
 
 # Configuration and runtime files
-
-<a name="alias"></a>
-## License alias defininitions
-
-Sometimes licenses are not expressed in an SPDX compliant way. This
-files is intended to translate from "non SPDX" to SPDX. You can
-provide a list of definitions for this tool to decide how these
-"incorrectly spelled" licenses should be interpreted.
-
-By default flict uses the following alias file: [var/alias.json](flict/var/alias.json)
-
-Example:
-
-```
-{
-    "aliases": [
-        {
-            "alias": "GPLv2+",
-            "license": "GPL-2.0-or-later",
-            "comment": "As found in ...."
-        }
-}
-```
-
-You can for now skip the meta section, which is present in example. A translation definition is specified using:
-
-```alias``` - the expression we want to translate to a "proper" license, e.gg GPLv2+
-
-```license``` - a licenses identifier e.g. GPL-2.0-or-later
-
-If you want to use the aliases as defined in a file called `alias.json` you add `--alias-file alias.json` to your command line.
 
 <a name="denied"></a>
 ## Denied licenses
