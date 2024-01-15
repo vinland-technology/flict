@@ -53,13 +53,13 @@ class MarkdownFlictFormatter(FlictFormatter):
 
     def format_compatibilities(self, compats):
         result = []
-        result.append(f'# Licenses')
+        result.append('# Licenses')
         result.append(f'* Original inbound license: {compats["original_inbound"]}')
         result.append(f'* Normalized inbound license: {compats["inbound"]}')
         result.append(f'* Original outbound license: {compats["original_outbound"]}')
         result.append(f'* Normalized outbound license: {compats["outbound"]}')
-        result.append(f'')
-        result.append(f'# Results')
+        result.append('')
+        result.append('# Results')
         result.append(f'* Possibles outbound licenses: {", ".join(compats["result"]["outbound_licenses"])}')
         result.append(f'* Allowed outbound licenses: {", ".join(compats["result"]["allowed_outbound_licenses"])}')
         result.append(f'* Suggested outbound license: {compats["result"]["outbound_license"]}')
