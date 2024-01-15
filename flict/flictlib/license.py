@@ -10,8 +10,6 @@ from flame.license_db import FossLicenses # noqa: I900
 def compatible_license(license_expr, update_dual=True):
     if not hasattr(compatible_license, "fl"):
         compatible_license.fl = FossLicenses()
-        print("fl: create")
-    print("fl: use")
     return compatible_license.fl.expression_compatibility_as(license_expr, update_dual=update_dual)
 
 def compatible_license_short(license_expr, update_dual=True):
