@@ -112,8 +112,7 @@ class LicenseCompatibilty:
             # get compatibility_tag between the operand and the outbound
             # and calculate and store the summarized compatibility
             compat = self._inbounds_outbound_check(outbound, operand)
-            if compat['problems']:
-                problem_summary += compat['problems']
+            problem_summary += compat['problems']
             compat_tag = compat[COMPATIBILITY_TAG]
             if compat_tag == "Yes" or compat_tag == "No":
                 compat_summary = self._update_compat(op, compat_summary, compat_tag == CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value)
@@ -124,15 +123,15 @@ class LicenseCompatibilty:
                 problems.append(f'Manually check license compatibility between {outbound}')
                 compat_summary = self._update_compat(op, compat_summary, compat_tag == CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value)
             elif compat_tag == "Undefined":
-                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                 'Undefined license')
+                problems.append(f'Undefined license compatibility between outbound \'{outbound["name"]}\' and inbound \'{self.__internal_expr_to_str(operand)}\'')
+                compat_summary = self._update_compat(op, compat_summary, compat_tag == CompatibilityStatus.LICENSE_COMPATIBILITY_COMPATIBLE.value)
 
             # are licenses allowed or denied for this expression
             allowed = compat['allowed']
             allowed_summary = self._update_allowed(op, allowed_summary, allowed)
             operand['allowed'] = allowed
             operand[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
-            operand["problems"] = problems
+            operand["problems"] += problems
             if problems:
                 problem_summary += problems
 
@@ -141,18 +140,25 @@ class LicenseCompatibilty:
         expr[COMPATIBILITY_TAG] = compat_summary
         expr["allowed"] = allowed_summary
         expr['check'] = 'inbounds_outbound'
-        expr["problems"] = problem_summary
+        expr['problems'] = expr.get('problems', []) + problem_summary
         return expr
 
     def _inbounds_outbound_check_license(self, _outbound, expr):
         inbound = self.license.license_name(expr)
         outbound = self.license.license_name(_outbound)
-
+        problems = []
         compat = self.compatibility.check_compat(outbound, inbound)
+        compat_tag = compat[COMPATIBILITY_TAG]
+        if compat_tag == "Unknown":
+            problems.append(f'Unknown license compatibility between outbound \'{outbound}\' and inbound \'{inbound}\'')
+        elif compat_tag.startswith("Check"):
+            problems.append(f'Manually check license compatibility between {outbound}')
+        elif compat_tag == "Undefined":
+            problems.append(f'Undefined license compatibility between outbound \'{outbound}\' and inbound \'{inbound}\'')
 
         expr['check'] = 'inbounds_outbound'
         expr['outbound'] = _outbound
-        expr['problems'] = []
+        expr['problems'] = expr.get('problems', []) + problems
         expr['allowed'] = self.license.license_allowed(inbound)
         expr[COMPATIBILITY_TAG] = compat[COMPATIBILITY_TAG]
         return expr
