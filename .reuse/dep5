@@ -31,6 +31,10 @@ Files: flict/var/scancode-licenses.json
 Copyright: 2021 nexb, 2021 Henrik Sandklef <hesa@sandklef.com>
 License: CC-BY-4.0
 
+Files: flict/var/schemas/v1/flict-compatibility-report.json
+Copyright: 2024 Henrik Sandklef <hesa@sandklef.com>
+License: CC-BY-4.0
+
 Files: CONTRIBUTORS
 Copyright: 2021 Henrik Sandklef <hesa@sandklef.com>
 License: GPL-3.0-or-later
