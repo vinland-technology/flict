@@ -85,10 +85,10 @@ class Arbiter:
             'inbound': dependency['license'],
             'original_inbound': dependency['original_license'],
             'result': {
-                'outbound_licenses': package['outbound_licenses'],
-                'allowed_outbound_licenses': package['allowed_outbound_licenses'],
-                'outbound_license': package['outbound_license'],
-                'problems': package['problems'],
+                'outbound_licenses': package.get('outbound_licenses', []),
+                'allowed_outbound_licenses': package.get('allowed_outbound_licenses', []),
+                'outbound_license': package.get('outbound_license') or '',
+                'problems': package.get('problems', []) + dependency['problems'],
             },
         }
 
@@ -199,6 +199,7 @@ class Arbiter:
             package_info = self._package_info(package, licenses)
 
             dep_infos = [self._package_info(dep, licenses) for dep in package.get('dependencies', [])]
+            dep_problems = [dep_info['problems'] for dep_info in dep_infos]
 
             # Get a list of the outbound licenses for all packages
             outbound_licenses = self._top_package_license(licenses, package_info, dep_infos)
@@ -210,6 +211,7 @@ class Arbiter:
 
             package_info.update({
                 'dependencies': dep_infos,
+                'dependency_problems': dep_problems,
                 'outbound_licenses': outbound_licenses,
                 'allowed_outbound_licenses': allowed_outbound_licenses,
                 'outbound_license': chosen_license,
