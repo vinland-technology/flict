@@ -1,0 +1,55 @@
+{
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "$id" : "http://spdx.org/rdf/terms",
+  "title" : "SPDX 2.2",
+  "type" : "object",
+  "properties" : {
+    "outbound" : {
+      "type" : "string",
+      "description" : ""
+    },
+    "original_outbound" : {
+      "type" : "string",
+      "description" : ""
+    },
+    "inbound" : {
+      "type" : "string",
+      "description" : ""
+    },
+    "original_inbound" : {
+      "type" : "string",
+      "description" : ""
+    },
+    "result" : {
+        "type" : "object",
+        "properties" : {
+            "outbound_licenses" : {
+                "type" : "array",
+                "items" : {
+                    "type" : "string",
+                    "description" : ""
+                }
+            },
+            "allowed_outbound_licenses" : {
+                "type" : "array",
+                "items" : {
+                    "type" : "string",
+                    "description" : ""
+                }
+            },
+            "outbound_license" : {
+                "type" : "string",
+                "description" : ""
+            },
+            "problems" : {
+                "type" : "array",
+                "items" : {
+                    "type" : "string",
+                    "description" : ""
+                }
+            }
+        }
+    }
+  },
+    "required" : [ "result"]
+}
