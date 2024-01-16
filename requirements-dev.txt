@@ -36,3 +36,4 @@ pytest-sugar ~= 0.9
 pytest-tldr ~= 0.2
 twine ~= 4.0
 reuse ~= 2.1
+jsonschema
