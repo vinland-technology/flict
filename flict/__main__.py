@@ -83,6 +83,13 @@ def parse():
     commmon_defaults_group.add_argument('--license-info-file', '-lif', type=str, dest='licenses_info_file', help='Short for applying -lmf <file> -ldf <file> -lpf <file>', default=None)
 
     # COMMON
+    parser.add_argument('-ip', '--ignore-problems',
+                        action='store_true',
+                        dest='ignore_problems',
+                        help='Do not exit with an error code if undefined or unknown licenses are identified.',
+                        default=False)
+
+    # COMMON
     parser.add_argument('-el', '--extended-licenses',
                         action='store_true',
                         dest='extended_licenses',
@@ -240,8 +247,9 @@ def list_licenses(args):
 
 
 def verify(args):
-    ret = FlictImpl(args).verify()
-    flict_print(args, ret)
+    data, code = FlictImpl(args).verify()
+    flict_print(args, data)
+    return code
 
 
 def display_compatibility(args):
@@ -276,12 +284,19 @@ def file_sanity_check(fname):
 
 def main():
     args = parse()
+    return_code = ReturnCodes.RET_SUCCESS
 
     logger.setup(args.debug_license, args.verbose)
 
     if 'which' in args:
         try:
-            args.func(args)
+            fun_ret = args.func(args)
+            # Returning None counts as success.  Some functions might
+            # return 1 to signal incompatibility, the below is to
+            # catch that
+            if fun_ret:
+                return_code = fun_ret
+
         except FlictError as e:
             if args.verbose:
                 print(traceback.format_exc(), file=sys.stderr)
@@ -290,7 +305,7 @@ def main():
     else:
         flict_exit(ReturnCodes.RET_MISSING_ARGS, "Missing command.")
 
-    flict_exit(ReturnCodes.RET_SUCCESS)
+    flict_exit(return_code)
 
 
 if __name__ == '__main__':
