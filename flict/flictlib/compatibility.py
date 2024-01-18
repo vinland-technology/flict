@@ -46,7 +46,7 @@ class Compatibility:
     """
 
     def __init__(self, license_db=None):
-        return None
+        pass
 
     def check_compat(self, outbound, inbound):
         return None
@@ -76,7 +76,7 @@ class Compatibility:
             licenses = list(_licenses)
 
             inter_compats = self.check_compatibilities(licenses, self._args.extended_licenses)
-        except BaseException:
+        except Exception:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
                              f'Could not parse license expression: {self._args.license_expression}')
 
