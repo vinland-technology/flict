@@ -14,7 +14,7 @@ from flict.flictlib.arbiter import Arbiter
 #
 
 arbiter = Arbiter()
-with open('flict/var/schemas/v1/flict-compatibility-report.json') as fp:
+with open('flict/var/schemas/v1/flict-compatibility-report-schema.json') as fp:
     schema = json.load(fp)
 
 def _get_problems(inbound, outbound):
