@@ -4,15 +4,23 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import json
+from jsonschema import validate
 import unittest
 from flict.flictlib.arbiter import Arbiter
 from flict.flictlib.project.reader import ProjectReaderFactory
+
 
 class TestVerification(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super(TestVerification, self).__init__(*args, **kwargs)
         self.arbiter = Arbiter()
+        with open('flict/var/schemas/v1/flict-verification-report-schema.json') as fp:
+            self.schema = json.load(fp)
+
+    def __validate(self, verification):
+        validate(verification, self.schema)
 
     def _verify_verification(self, verification):
         self.assertIsNotNone(verification['project_name'])
@@ -26,6 +34,9 @@ class TestVerification(unittest.TestCase):
         zlib = reader.read_project("example-data/zlib-1.2.11.spdx.json")
 
         verification = self.arbiter.verify(zlib)
+
+        # validate against JSON schema
+        self.__validate(verification)
 
         # generic check
         self._verify_verification(verification)
@@ -47,6 +58,9 @@ class TestVerification(unittest.TestCase):
 
         verification = self.arbiter.verify(freetype)
 
+        # validate against JSON schema
+        self.__validate(verification)
+
         # generic check
         self._verify_verification(verification)
 
@@ -62,6 +76,9 @@ class TestVerification(unittest.TestCase):
         freetype = reader.read_project("example-data/freetype-inner-2.9.spdx.json")
 
         verification = self.arbiter.verify(freetype)
+
+        # validate against JSON schema
+        self.__validate(verification)
 
         # generic check
         self._verify_verification(verification)
@@ -83,6 +100,9 @@ class TestVerification(unittest.TestCase):
         verification = self.arbiter.verify(zlib)
         self._verify_verification(verification)
 
+        # validate against JSON schema
+        self.__validate(verification)
+
         # both packages should contain 0 deps
         # - zlib has a relationship that is not "valid"
         # - zlib-doc has no relationships
@@ -96,6 +116,9 @@ class TestVerification(unittest.TestCase):
         zlib = reader.read_project("tests/zlib-with-deps-1.2.11.spdx.json")
 
         verification = self.arbiter.verify(zlib)
+
+        # validate against JSON schema
+        self.__validate(verification)
 
         # - zlib has relationships:
         #      one "valid" and one invalid => 1 dep
