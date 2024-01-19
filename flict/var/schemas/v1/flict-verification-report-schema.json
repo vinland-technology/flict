@@ -1,0 +1,148 @@
+{
+    "$schema" : "http://json-schema.org/draft-07/schema#",
+    "$id" : "http://spdx.org/rdf/terms",
+    "title" : "Flict Varification Report v1",
+    "definitions": {
+        "package": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "asdddddddddddddddddddddddddddddddddddddd"
+                },
+                "license": {
+                    "type": "string",
+                    "description": ""
+                },
+                "original_license": {
+                    "type": "string",
+                    "description": ""
+                },
+                "license_details": {
+                    "type": "string",
+                    "description": ""
+                },
+                "dependencies": {
+                    "type": "array",
+                    "description": "",
+                    "items": {
+                        "$ref": "#/definitions/package"
+                    }
+                },
+                "compatibility": {
+                    "type": "array",
+                    "description": "",
+                    "items": {
+                        "type": "object",
+                        "description": "",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "check": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "outbound": {
+                                "type": "object",
+                                "description": "",
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "description": ""
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": ""
+                                    }
+                                },
+                                "required": [ "type", "name" ]
+                            },
+                            "problems": {
+                                "type": "array",
+                                "description": "",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "allowed": {
+                                "type": "boolean",
+                                "description": ""
+                            },
+                            "compatibility": {
+                                "type": "string",
+                                "description": ""
+                            }
+                        },
+                        "required": [ "type", "name" , "check", "outbound" , "problems" , "compatibility"  ]
+                    }
+                }
+            },
+            "required" : [ "name" ]
+        }
+    },
+    "type" : "object",
+    "properties" : {
+        "project_name" : {
+            "type" : "string",
+            "description" : ""
+        },
+        "meta": {
+            "type" : "object",
+            "properties" : {
+                "os" : {
+                    "type" : "string",
+                    "description" : ""
+                },
+                "osRelease" : {
+                    "type" : "string",
+                    "description" : ""
+                },
+                "osVersion" : {
+                    "type" : "string",
+                    "description" : ""
+                },
+                "machine" : {
+                    "type" : "string",
+                    "description" : ""
+                },
+                "host" : {
+                    "type" : "string",
+                    "description" : ""
+                },
+                "user" : {
+                    "type" : "string",
+                    "description" : ""
+                },
+                "start_time" : {
+                    "type" : "string",
+                    "description" : ""
+                },
+                "stop_time" : {
+                    "type" : "string",
+                    "description" : ""
+                }
+            },
+            "required" : [ "os", "osRelease", "osVersion", "machine", "host", "user", "start_time", "stop_time"]
+        },
+        "all_licenses": {
+            "type": "array",
+            "items" : {
+                "type" : "string",
+                "description" : ""
+            }
+        },
+        "packages": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/package"
+            }
+        }
+    },
+    "required" : [ "project_name", "meta", "all_licenses" , "packages" ]
+}
