@@ -21,7 +21,7 @@ def _get_problems(inbound, outbound):
     result = arbiter.verify_outbound_inbound([outbound], [inbound])
     validate(result, schema)
 
-def test_verify_simplae():
+def test_verify_simple():
     _get_problems('MIT', 'GPL-2.0-only')
 
 def test_verify_uknonwn():
