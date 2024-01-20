@@ -179,7 +179,7 @@ class PrettyLicenseParser(LicenseParser):
             for key in keys:
                 key_set.add(key.replace("_WITH_", " WITH "))
             return list(key_set)
-        except BaseException:
+        except Exception:
             raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION, f"Could not parse and list license expression: {expr}")
 
 
