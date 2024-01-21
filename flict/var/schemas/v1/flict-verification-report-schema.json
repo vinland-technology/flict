@@ -1,7 +1,7 @@
 {
     "$schema" : "http://json-schema.org/draft-07/schema#",
-    "$id" : "http://spdx.org/rdf/terms",
-    "title" : "Flict Varification Report v1",
+    "$id" : "flict-verification",
+    "title" : "Flict Verification Report Schema v1",
     "definitions": {
         "package": {
             "type": "object",
