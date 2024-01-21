@@ -1,140 +1,264 @@
 {
     "$schema" : "http://json-schema.org/draft-07/schema#",
-    "$id" : "flict-verification",
+    "$id" : "flict-verification-schema",
     "title" : "Flict Verification Report Schema v1",
     "definitions": {
+        "compatibility": {
+            "type": "object",
+            "description": "A verification of an outbound licenses against each inbound licenses",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Either 'license' or 'operator'."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the license or operator."
+                },
+                "check": {
+                    "type": "string",
+                    "description": "Obsolete field. Subject for removal."
+                },
+                "outbound": {
+                    "type": "object",
+                    "description": "An object describing the outbound license.",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "description": "Type of the outbound license/operator."
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the outbound license/operator."
+                        }
+                    },
+                    "required": [ "type", "name" ]
+                },
+                "operands": {
+                    "type": "array",
+                    "description": "If the type is an operator, then the operator has a list of compatiblity objects",
+                    "items": {
+                        "$ref": "#/definitions/compatibility"
+                    }
+                },
+                "problems" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string",
+                        "description" : "Description of the problem."
+                    },
+                    "description" : "List of problems identified during verification."
+                },
+                "allowed": {
+                    "type": "boolean",
+                    "description": "Is the license allowed as per the list of denied licenses."
+                },
+                "compatibility": {
+                    "type": "string",
+                    "description": "Whether the licenses are compatible. Allowed values: Yes, No, Unknown, Check.",
+                    "enum": [ "Yes", "No" , "Unknown", "Check" ]
+                }
+            },
+            "additionalProperties": false,
+            "required": [ "type", "name" , "check", "outbound" , "problems" , "compatibility" ]
+        },
         "package": {
             "type": "object",
+            "description": "A package with required information.",
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "asdddddddddddddddddddddddddddddddddddddd"
+                    "description": "Name of the project to verify"
                 },
                 "license": {
                     "type": "string",
-                    "description": ""
+                    "description": "The project's license after normalization."
                 },
                 "original_license": {
                     "type": "string",
-                    "description": ""
+                    "description": "The project's license after normalization (without normalization)."
                 },
                 "license_details": {
                     "type": "string",
-                    "description": ""
+                    "description": "Details about the normalization performed."
                 },
                 "dependencies": {
                     "type": "array",
-                    "description": "",
+                    "description": "List of the project dependencies, themselves being packages",
                     "items": {
-                        "$ref": "#/definitions/package"
+                        "$ref": "#/definitions/dependency"
                     }
                 },
                 "compatibility": {
                     "type": "array",
-                    "description": "",
+                    "description": "A list of verifications of each outbound license against each inbound license.",
                     "items": {
-                        "type": "object",
-                        "description": "",
-                        "properties": {
-                            "type": {
-                                "type": "string",
-                                "description": ""
-                            },
-                            "name": {
-                                "type": "string",
-                                "description": ""
-                            },
-                            "check": {
-                                "type": "string",
-                                "description": ""
-                            },
-                            "outbound": {
-                                "type": "object",
-                                "description": "",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": ""
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "description": ""
-                                    }
-                                },
-                                "required": [ "type", "name" ]
-                            },
-                            "problems": {
-                                "type": "array",
-                                "description": "",
-                                "items": {
-                                    "type": "string"
-                                }
-                            },
-                            "allowed": {
-                                "type": "boolean",
-                                "description": ""
-                            },
-                            "compatibility": {
-                                "type": "string",
-                                "description": ""
-                            }
-                        },
-                        "required": [ "type", "name" , "check", "outbound" , "problems" , "compatibility"  ]
+                        "$ref": "#/definitions/compatibility"
                     }
-                }
+                },
+                "outbound_licenses" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string",
+                        "description" : "License (not an expression), e.g. MIT."
+                    },
+                    "description" : "List of the outbound licenses compatible with the inbound licenses."
+                },
+                "outbound_license" : {
+                    "type" : "string",
+                    "description" : "The preferred outbound licenses compatible with the inbound licenses."
+                },
+                "licenses_to_check" : {
+                    "type" : "array",
+                    "description": "List of the licenses to check to identify the outbound licenses.",
+                    "items": {
+                        "type" : "string",
+                        "description" : "License (not an expression), e.g. MIT."
+                    }
+                },
+                "allowed_outbound_licenses" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string",
+                        "description" : "License (not an expression), e.g. MIT."
+                    },
+                    "description" : "List of the outbound licenses compatible with the inbound licenses and allowed by the list of denied licenses."
+                },
+                "description" : {
+                    "type" : "string",
+                    "description" : "Description of the package."
+                },
+                "version" : {
+                    "type" : "string",
+                    "description" : "The version of the package."
+                },
+                "problems" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string",
+                        "description" : "Description of the problem."
+                    },
+                    "description" : "List of problems identified during verification."
+                }                
             },
-            "required" : [ "name" ]
+            "additionalPropereties": false,
+            "required" : [ "name", "license", "original_license", "license_details", "compatibility", "outbound_licenses", "outbound_license", "licenses_to_check",  "allowed_outbound_licenses", "description", "version", "problems", "dependencies"]
+        },
+        "dependency": {
+            "type": "object",
+            "description": "A package with required information.",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the project to verify"
+                },
+                "license": {
+                    "type": "string",
+                    "description": "The project's license after normalization."
+                },
+                "original_license": {
+                    "type": "string",
+                    "description": "The project's license after normalization (without normalization)."
+                },
+                "license_details": {
+                    "type": "string",
+                    "description": "Details about the normalization performed."
+                },
+                "dependencies": {
+                    "type": "array",
+                    "description": "List of the project dependencies, themselves being packages",
+                    "items": {
+                        "$ref": "#/definitions/dependency"
+                    }
+                },
+                "compatibility": {
+                    "type": "array",
+                    "description": "A list of verifications of each outbound license against each inbound license.",
+                    "items": {
+                        "$ref": "#/definitions/compatibility"
+                    }
+                },
+                "licenses_to_check" : {
+                    "type" : "array",
+                    "description": "List of the licenses to check to identify the outbound licenses.",
+                    "items": {
+                        "type" : "string",
+                        "description" : "License (not an expression), e.g. MIT."
+                    }
+                },
+                "description" : {
+                    "type" : "string",
+                    "description" : "Description of the package."
+                },
+                "version" : {
+                    "type" : "string",
+                    "description" : "The version of the package."
+                },
+                "problems" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string",
+                        "description" : "Description of the problem."
+                    },
+                    "description" : "List of problems identified during verification."
+                }                
+            },
+            "additionalPropereties": false,
+            "required" : [ "name", "license", "original_license", "license_details", "compatibility", "description", "version", "problems"]
         }
     },
     "type" : "object",
     "properties" : {
         "project_name" : {
             "type" : "string",
-            "description" : ""
+            "description" : "Name of the project to verify license compatibility for."
         },
         "meta": {
             "type" : "object",
+            "description" : "Information about the verification itself",
             "properties" : {
                 "os" : {
                     "type" : "string",
-                    "description" : ""
+                    "description" : "Operating system."
                 },
                 "osRelease" : {
                     "type" : "string",
-                    "description" : ""
+                    "description" : "Operating system release."
                 },
                 "osVersion" : {
                     "type" : "string",
-                    "description" : ""
+                    "description" : "Operating system version."
                 },
                 "machine" : {
                     "type" : "string",
-                    "description" : ""
+                    "description" : "Identifier of the hardware."
                 },
                 "host" : {
                     "type" : "string",
-                    "description" : ""
+                    "description" : "Name of the machine on the network."
                 },
                 "user" : {
                     "type" : "string",
-                    "description" : ""
+                    "description" : "Name of the user executing the verification."
                 },
                 "start_time" : {
                     "type" : "string",
-                    "description" : ""
+                    "description" : "Time when the verification started."
                 },
                 "stop_time" : {
                     "type" : "string",
-                    "description" : ""
+                    "description" : "Time when the verification finished."
                 }
             },
+            "additionalProperties": false,
             "required" : [ "os", "osRelease", "osVersion", "machine", "host", "user", "start_time", "stop_time"]
         },
         "all_licenses": {
             "type": "array",
+            "description" : "List of licenses in the combined work.",
             "items" : {
                 "type" : "string",
-                "description" : ""
+                "description" : "License"
             }
         },
         "packages": {
@@ -144,5 +268,6 @@
             }
         }
     },
+    "additionalProperties": false,
     "required" : [ "project_name", "meta", "all_licenses" , "packages" ]
 }

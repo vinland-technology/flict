@@ -1,54 +1,62 @@
 {
-  "$schema" : "http://json-schema.org/draft-07/schema#",
-  "title" : "Flict-Compatibility-Report",
-  "type" : "object",
-  "properties" : {
-    "outbound" : {
-      "type" : "string",
-      "description" : ""
-    },
-    "original_outbound" : {
-      "type" : "string",
-      "description" : ""
-    },
-    "inbound" : {
-      "type" : "string",
-      "description" : ""
-    },
-    "original_inbound" : {
-      "type" : "string",
-      "description" : ""
-    },
-    "result" : {
-        "type" : "object",
-        "properties" : {
-            "outbound_licenses" : {
-                "type" : "array",
-                "items" : {
+    "$schema" : "http://json-schema.org/draft-07/schema#",
+    "$id" : "flict-compatibility-schema",
+    "title" : "Flict Compatibility Report Schema v1",
+    "type" : "object",
+    "properties" : {
+        "outbound" : {
+            "type" : "string",
+            "description" : "The outbound license after normalization."
+        },
+        "original_outbound" : {
+            "type" : "string",
+            "description" : "The outbound license as supplied (without normalization)."
+        },
+        "inbound" : {
+            "type" : "string",
+            "description" : "The inbound license after normalization."
+        },
+        "original_inbound" : {
+            "type" : "string",
+            "description" : "The inbound license as supplied (without normalization)."
+        },
+        "result" : {
+            "type" : "object",
+            "description": "The results from the compatibility verification.",
+            "properties" : {
+                "outbound_licenses" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string",
+                        "description" : "License (not an expression), e.g. MIT."
+                    },
+                    "description" : "List of the outbound licenses checked against the inbound licenses."
+                },
+                "allowed_outbound_licenses" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string",
+                        "description" : "License (not an expression), e.g. MIT."
+                    },
+                    "description" : "List of the outbound licenses checked against the inbound licenses and that are allowed by the list of denied licenses."
+                },
+                "outbound_license" : {
                     "type" : "string",
-                    "description" : ""
+                    "description" : "The preferred outbound license."
+                },
+                "problems" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string",
+                        "description" : "Description of the problem."
+                    },
+                    "description" : "List of problems identified during verification."
                 }
             },
-            "allowed_outbound_licenses" : {
-                "type" : "array",
-                "items" : {
-                    "type" : "string",
-                    "description" : ""
-                }
-            },
-            "outbound_license" : {
-                "type" : "string",
-                "description" : ""
-            },
-            "problems" : {
-                "type" : "array",
-                "items" : {
-                    "type" : "string",
-                    "description" : ""
-                }
-            }
+            "additionalProperties": false,
+            "required" : [ "outbound_licenses", "allowed_outbound_licenses", "outbound_license", "problems"]
         }
-    }
-  },
-    "required" : [ "result"]
+    },
+    "additionalProperties": false,
+    "required" : [ "outbound",  "original_outbound", "inbound", "original_inbound", "result"]
 }
