@@ -2,7 +2,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-check: reuse schemas pytest 
+check: reuse schemas pytest flake8
+
+flake8:
+	flake8
 
 schemas:
 	FILES=`find flict/var/schemas/ -name "*.json"`
