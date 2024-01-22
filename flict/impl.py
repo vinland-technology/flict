@@ -67,8 +67,7 @@ class FlictImpl:
     def _handle_lico_project(self, reader, project_file, formatter):
         project = reader.read_project(project_file)
         verification = self.arbiter.verify(project)
-        verification_report = formatter.format_verification(verification)
-        return verification_report
+        return verification
 
     def _read_json_object(self, file_name, object_key, ret):
         if not file_name:
@@ -91,18 +90,52 @@ class FlictImpl:
 
         return arbiter
 
+    def _compatibility_report_to_return_code(self, compatibility_report):
+        """ Given a compatibility report, this functions returns the return code
+        """
+        if len(compatibility_report['result']['allowed_outbound_licenses']) > 0:
+            return 0
+        return 1
+
+    def _verification_report_to_return_code(self, verification_report):
+        """ Given a verification report, this functions returns the return code
+        """
+        compatible = True
+        for package in verification_report['packages']:
+            compatible = compatible and (len(package['allowed_outbound_licenses']) > 0)
+        return 0 if compatible else 1
+
     def verify(self):
         formatter = FormatterFactory.formatter(self._args.output_format)
+        strict_check = not self._args.ignore_problems
 
-        if self._args.out_license and self._args.in_license_expr:
-            compats = self.arbiter.verify_outbound_inbound(self._args.out_license, self._args.in_license_expr)
-            formatted = formatter.format_compatibilities(compats)
-            return formatted
+        if self._args.verify_flict or self._args.verify_sbom:
+            if self._args.verify_flict:
+                project_reader = ProjectReaderFactory.get_projectreader(self._args.verify_flict, None, "flict")
+                verifications = self._handle_lico_project(project_reader, self._args.verify_flict, formatter)
+            elif self._args.verify_sbom:
+                project_reader = ProjectReaderFactory.get_projectreader(self._args.verify_sbom, self._args.sbom_dirs)
+                verifications = self._handle_lico_project(project_reader, self._args.verify_sbom, formatter)
 
-        elif self._args.verify_flict:
-            project_reader = ProjectReaderFactory.get_projectreader(self._args.verify_flict, None, "flict")
-            return self._handle_lico_project(project_reader, self._args.verify_flict, formatter)
+            package_problems = [problem for package in verifications['packages'] for problem in package['problems']]
+            deps_problems = [problem for package in verifications['packages'] for problem in package['dependency_problems']]
+            problems = package_problems + deps_problems
+            if strict_check and problems:
+                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                                 f'Unknown or undefined licenses identified: {", ".join(problems)}')
 
-        elif self._args.verify_sbom:
-            project_reader = ProjectReaderFactory.get_projectreader(self._args.verify_sbom, self._args.sbom_dirs)
-            return self._handle_lico_project(project_reader, self._args.verify_sbom, formatter)
+            code = self._verification_report_to_return_code(verifications)
+            verification_report = formatter.format_verification(verifications)
+            return verification_report, code
+
+        elif self._args.out_license and self._args.in_license_expr:
+            compatibility_report = self.arbiter.verify_outbound_inbound(self._args.out_license, self._args.in_license_expr)
+            problems = compatibility_report['result']['problems']
+            if strict_check and problems:
+                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
+                                 f'Unknown or undefined licenses identified: {", ".join(problems)}')
+            return_code = self. _compatibility_report_to_return_code(compatibility_report)
+            formatted = formatter.format_compatibilities(compatibility_report)
+            return formatted, return_code
+        else:
+            raise FlictError(ReturnCodes.RET_MISSING_ARGS, 'Bad verify syntax')

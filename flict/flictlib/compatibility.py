@@ -169,8 +169,8 @@ class OsadlCompatibility(Compatibility):
         supported = osadl_matrix.supported_licenses()
         # if the outbound license is not supported, we cannot continue.
         if outbound not in supported:
-            raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                             f'Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined, since \"{outbound}\" is an unknown license')
+            result = CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value
+            logging.debug(f'Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined, since \"{outbound}\" is an unknown licenses')
 
         # if inbound is not supported, we continue since there might
         # be a dual license where we may end up in a situation where
@@ -196,8 +196,8 @@ class OsadlCompatibility(Compatibility):
                 result = CompatibilityStatus.LICENSE_COMPATIBILITY_MANUALLY_CHECK.value
                 logging.debug(f"compatibility: {outbound}  --> {inbound}: {result}")
             elif raw_result == osadl_matrix.OSADLCompatibility.UNDEF:
-                raise FlictError(ReturnCodes.RET_INVALID_EXPRESSSION,
-                                 f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined. The result was: {raw_result}")
+                result = CompatibilityStatus.LICENSE_COMPATIBILITY_UNDEFINED.value
+                logging.debug(f"Compatibility between \"{outbound}\" and \"{inbound}\" could not be determined. The result was: {raw_result}")
 
         return {
             "inbound": inbound,

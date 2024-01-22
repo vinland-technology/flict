@@ -37,7 +37,7 @@ flict supports:
 
 * 104 licenses (```flict -of text list```)
 
-* common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only), see "License alias definitions" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
+* common non SPDX ways to write licenses (e.g GPLv2 -> GPL-2.0-only) via [foss-licenses](https://github.com/hesa/foss-licenses)
 
 * adding your own licenses (and compatibilities), see "Extending the license db" in [SETTINGS](https://github.com/vinland-technology/flict/blob/main/SETTINGS.md)
 

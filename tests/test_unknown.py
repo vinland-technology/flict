@@ -28,8 +28,8 @@ def test_compat_unknown_inbound():
 
 def test_compat_unknown_outbound():
     compatbility = CompatibilityFactory.get_compatibility()
-    with pytest.raises(FlictError) as _error:
-        compat = compatbility.check_compat("NONESUCHNLICENSE", "MIT")
+    compat = compatbility.check_compat("NONESUCHNLICENSE", "MIT")
+    assert CompatibilityStatus.LICENSE_COMPATIBILITY_UNDEFINED.value == compat['compatibility']
 
 #
 # Test license expressions against outbound
@@ -85,11 +85,11 @@ def test_verify_i_o_check_mix_inbound3and():
 def test_verify_i_o_check_unknown_outbound():
     arbiter = Arbiter()
     # an unknown outbound is illegal and will raise a FlictError
-    with pytest.raises(FlictError) as _error:
-        compats = arbiter.inbounds_outbound_check("NONESUCHNLICENSE", ["MIT"])
+    compats = arbiter.inbounds_outbound_check("NONESUCHNLICENSE", ["MIT"])
+    assert CompatibilityStatus.LICENSE_COMPATIBILITY_UNDEFINED.value == compats['compatibility']
 
 def test_verify_i_o_check_unknown_all():
     arbiter = Arbiter()
     # an unknown outbound is illegal and will raise a FlictError
-    with pytest.raises(FlictError) as _error:
-        compats = arbiter.inbounds_outbound_check("NONESUCHNLICENSE", ["NOLICENSE"])
+    compats = arbiter.inbounds_outbound_check("NONESUCHNLICENSE", ["NOLICENSE"])
+    assert CompatibilityStatus.LICENSE_COMPATIBILITY_UNKNOWN.value == compats['compatibility']
