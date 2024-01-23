@@ -25,7 +25,7 @@ class Arbiter:
         """
         self.update_dual = update_dual
         self.license_compatibility = LicenseCompatibilty(
-            license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses)
+            license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses, update_dual=update_dual)
 
     def supported_licenses(self):
         """Returns the supported licenses"""
@@ -267,3 +267,7 @@ class Arbiter:
 
     def licenses(self, expr):
         return self.license_compatibility.licenses(expr)
+
+    def license_compatibility_as(self, expr):
+        return compatible_license_short(expr)
+    
