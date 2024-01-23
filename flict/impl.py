@@ -30,7 +30,10 @@ class FlictImpl:
         return self.arbiter.extend_license_db(self._args.license_file, oformat=self._args.output_format, default_no=self._args.default_no)
 
     def display_compatibility(self):
-        inter_compats = self.arbiter.check_compatibilities(self._args.license_expression)
+        compat_list = []
+        for lic in self._args.license_expression:
+            compat_list.append(self.arbiter.license_compatibility_as(lic))
+        inter_compats = self.arbiter.check_compatibilities(compat_list)
         return self._formatter.format_compats(inter_compats)
 
     def simplify(self):
@@ -86,7 +89,10 @@ class FlictImpl:
 
         licenses_denied = self._read_json_object(licenses_denied_file, "licenses_denied", [])
         licenses_preferences = self._read_json_object(licenses_preference_file, "license_preferences", [])
-        arbiter = Arbiter(license_db=self._args.license_matrix_file, licenses_preferences=licenses_preferences, denied_licenses=licenses_denied)
+        arbiter = Arbiter(license_db=self._args.license_matrix_file,
+                          licenses_preferences=licenses_preferences,
+                          denied_licenses=licenses_denied,
+                          update_dual=not self._args.no_relicense)
 
         return arbiter
 
