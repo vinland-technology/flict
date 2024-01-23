@@ -23,9 +23,10 @@ class License():
     GPL-2.0-or-later or (GPL-3.0-only WITH GCC-exception-3.1 AND curl
     """
 
-    def __init__(self, denied_licenses, alias=None):
+    def __init__(self, denied_licenses, update_dual=True):
         self._denied_licenses = denied_licenses
         self.parser = LicenseParserFactory.get_parser()
+        self.update_dual = update_dual
 
     def get_license(self, expr):
         return self.parser.parse_license(expr)['license']
@@ -55,7 +56,7 @@ class License():
 
     def simplify_license(self, expr):
         try:
-            aliased = compatible_license_short(expr)
+            aliased = compatible_license_short(expr, self.update_dual)
             parsed = self.parser.parse_license([aliased])
             simplified = str(parsed['simplified'])
             return {
