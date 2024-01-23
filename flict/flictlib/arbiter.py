@@ -270,4 +270,3 @@ class Arbiter:
 
     def license_compatibility_as(self, expr):
         return compatible_license_short(expr)
-    
