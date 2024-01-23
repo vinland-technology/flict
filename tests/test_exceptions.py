@@ -9,6 +9,8 @@ from flict.flictlib.return_codes import FlictError, ReturnCodes
 from flict.impl import FlictImpl
 from tests.args_mock import ArgsMock
 
+import license_expression
+
 TEST_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def test_exceptions():
@@ -24,11 +26,9 @@ def test_exceptions():
 
     assert _error.value.args[0] == ReturnCodes.RET_INVALID_EXPRESSSION
 
-    with pytest.raises(FlictError) as _error:
+    with pytest.raises(license_expression.ExpressionParseError) as _error:
         args = ArgsMock(license_expression=['MIT ...'])
         FlictImpl(args).display_compatibility()
-
-    assert _error.value.args[0] == ReturnCodes.RET_INVALID_EXPRESSSION
 
     with pytest.raises(FlictError) as _error:
         prj = os.path.join(TEST_DIR, 'example-data')
