@@ -30,6 +30,7 @@ class ArgsMock:
     suggest_outbound_candidate = False
     out_license = None
     in_license = None
+    no_relicense = False
     ignore_problems = False
     verbose : str = False
     version : str = False
