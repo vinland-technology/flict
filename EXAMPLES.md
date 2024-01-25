@@ -48,12 +48,12 @@ $ flict verify -il HPND or X11 and BSD3 -ol GPL-2.0-only AND BSD-3-Clause
 ERROR:flict:Unknown or undefined licenses identified: Unknown license compatibility between outbound 'GPL-2.0-only' and inbound 'HPND'
 ```
 
-Flict exit with an error if any problems were identified.
+Flict exits with an error if any problems were identified.
 
 
 # Force verify an outbound license expression against an inbound license expression
 
-To verify, and continue even if problems were found, that the above license expressions we can use the `--ignore-problems` option.
+To verify, and continue even if problems were found, use the `--ignore-problems` option.
 
 ```shell
 $ flict --ignore-problems verify -il HPND or X11 and BSD3 -ol GPL-2.0-only AND BSD-3-Clause
