@@ -11,16 +11,19 @@
         "dependencies": [
             {
                 "name": "Sweden",
+                "version": "1234",
                 "license": "GPL-2.0-only or Apache-2.0",
                 "dependencies": [
                     {
                         "name": "Gothenburg",
+                        "version": "5678",
                         "license": "BSD-3-Clause",
                         "dependencies": [
                         ]
                     },
                     {
                         "name": "Stockholm",
+                        "version": "91011",
                         "license": "MIT",
                         "dependencies": []
                     }
@@ -29,16 +32,19 @@
             },
             {
                 "name": "Germany",
+                "version": "1112",
                 "license": "GPL-2.0-or-later or MIT and BSD-3-Clause or Apache-2.0",
                 "dependencies": [
                     {
                         "name": "Dusseldorf",
+                        "version": "1213",
                         "license": "GPL-2.0-or-later",
                         "dependencies": [
                         ]
                     },
                     {
                         "name": "Berlin",
+                        "version": "1415",
                         "license": "MIT or MPL-1.1",
                         "dependencies": []
                     }

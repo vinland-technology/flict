@@ -5,7 +5,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 
-# Display Simplify license expression
+# Simplify license expression
 
 To simplify the expression `MIT and BSD-3-Clause and MIT`, type:
 
@@ -19,6 +19,45 @@ and if you want the result in `text` format:
 ```shell
 $ flict -of text simplify MIT and BSD-3-Clause and MIT
 BSD-3-Clause AND MIT
+```
+
+# Normalize a license expression
+
+To normalize the expression `BSD3 and x11-keith-packard and GPL-2.0-or-later`, type:
+
+```shell
+$ flict -of text simplify BSD3 and x11-keith-packard and GPL-2.0-or-later
+BSD-3-Clause AND HPND AND (GPL-2.0-only OR GPL-3.0-only)
+```
+Replacements:
+
+* `BSD3` is an alias for `BSD-3-Clause`
+
+* `x11-keith-packard`has the same compatibility as `HPND`
+
+* `GPL-2.0-or-later` is replaced by `(GPL-2.0-only OR GPL-3.0-only)` since it can be seen as a dual license
+
+*Note: if you do not want the dual license to be expanded, use the option `--no-relicense`*
+
+# Verify an outbound license expression against an inbound license expression
+
+To verify that the outbound license expression, `GPL-2.0-only AND BSD-3-Clause` is compatible with the inbound license expression `HPND or X11 and BSD3`
+
+```shell
+$ flict verify -il HPND or X11 and BSD3 -ol GPL-2.0-only AND BSD-3-Clause
+ERROR:flict:Unknown or undefined licenses identified: Unknown license compatibility between outbound 'GPL-2.0-only' and inbound 'HPND'
+```
+
+Flict exits with an error if any problems were identified.
+
+
+# Force verify an outbound license expression against an inbound license expression
+
+To verify, and continue even if problems were found, use the `--ignore-problems` option.
+
+```shell
+$ flict --ignore-problems verify -il HPND or X11 and BSD3 -ol GPL-2.0-only AND BSD-3-Clause
+{"original_outbound": "GPL-2.0-only AND BSD-3-Clause", "outbound": "GPL-2.0-only AND BSD-3-Clause", "inbound": "HPND OR (X11 AND BSD-3-Clause)", "original_inbound": "HPND or X11 and BSD3", "result": {"outbound_licenses": ["GPL-2.0-only"], "allowed_outbound_licenses": ["GPL-2.0-only"], "outbound_license": "GPL-2.0-only", "problems": ["Unknown license compatibility between outbound 'GPL-2.0-only' and inbound 'HPND'"]}}
 ```
 
 # Check compatibility between licenses
@@ -94,14 +133,10 @@ This creates a report in JSON
 To get the suggested outbound licenses from the report (using `jq`), type:
 
 ```shell
-$ jq '.licensing.outbound_candidates' europe-report.json
+$ jq '.packages[].allowed_outbound_licenses' europe-report.json 
 [
-  "Apache-2.0",
-  "BSD-3-Clause",
   "GPL-2.0-only",
-  "GPL-3.0-only",
-  "MIT",
-  "MPL-1.1"
+  "GPL-3.0-only"
 ]
 ```
 

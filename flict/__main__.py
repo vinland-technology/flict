@@ -147,10 +147,10 @@ def parse():
 
     # verify
     parser_v = subparsers.add_parser(
-        'verify', help='verify license compatibility')
+        'verify', help='Verify license compatibility between for a package or an outbound license expression against inbound license expression.')
     parser_v.set_defaults(which="verify", func=verify)
-    parser_v.add_argument('--outbound-license', '-ol', type=str, nargs="+", dest='out_license', help='Outbound license for the licenses to verify compatibibility', default=None)
-    parser_v.add_argument('--inbound-license', '-il', type=str, nargs='+', dest='in_license_expr', help='Inbound license(s) for the licenses to verify compatibibility', default=[])
+    parser_v.add_argument('--outbound-license', '-ol', type=str, nargs="+", dest='out_license', help='Outbound license expressions', default=None)
+    parser_v.add_argument('--inbound-license', '-il', type=str, nargs='+', dest='in_license_expr', help='Inbound license expression', default=[])
     parser_v.add_argument('--sbom', '-s', type=str, dest='verify_sbom', help='SBoM file to verify')
     parser_v.add_argument('--sbom-dirs', '-sd', type=str, nargs='+', dest='sbom_dirs', help='Directories where SBoM files are searched for.', default='.')
     parser_v.add_argument('--flict', '-f', type=str, dest='verify_flict', help='Flict project file to verify')
@@ -160,14 +160,14 @@ def parse():
 
     # simplify
     parser_si = subparsers.add_parser(
-        'simplify', help='expand and simplify license expression')
+        'simplify', help='Expand and simplify a license expression')
     parser_si.set_defaults(which="simplify", func=simplify)
     parser_si.add_argument('license_expression', type=str, nargs='+',
-                           help='license expression to simplify')
+                           help='License expression to simplify')
 
     # list
     parser_li = subparsers.add_parser(
-        'list', help='list supported licenses')
+        'list', help='List supported licenses')
     parser_li.set_defaults(which="list", func=list_licenses)
     parser_li.add_argument('-t', '--translations',
                            dest='list_translation',
@@ -181,19 +181,19 @@ def parse():
 
     # display-compatibility
     parser_d = subparsers.add_parser(
-        'display-compatibility', help='display license compatibility graphically')
+        'display-compatibility', help='Display license compatibility graphically')
     parser_d.set_defaults(which="display-compatibility",
                           func=display_compatibility)
     parser_d.add_argument('license_expression', type=str, nargs='+',
-                          help='license expression to display compatibility for')
+                          help='Licenses, separated by space, to display compatibility for')
 
     # outbound-candidates
     parser_s = subparsers.add_parser(
-        'outbound-candidate', help='suggest outbound license candidates')
+        'outbound-candidate', help='Suggest outbound license candidates')
     parser_s.set_defaults(which="outbound-candidate",
                           func=suggest_outbound_candidate)
     parser_s.add_argument('license_expression', type=str, nargs='+',
-                          help='license expression to suggest candidate outbound license for')
+                          help='License expression to suggest candidate outbound license for')
 
     # policy-report
     parser_p = subparsers.add_parser(
