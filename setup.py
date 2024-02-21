@@ -25,7 +25,9 @@ setuptools.setup(
     long_description=_long_description,
     long_description_content_type="text/markdown",
     license_files=('LICENSE',),
+    license='GPL-3.0-or-later',
     url="https://github.com/vinland-technology/flict",
+    bugtrack_url="https://github.com/vinland-technology/flict/issues",
     packages=['flict', 'flict.flictlib', 'flict.flictlib.format', 'flict.flictlib.project'],
     entry_points={
         "console_scripts": [
