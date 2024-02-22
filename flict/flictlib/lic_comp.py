@@ -18,8 +18,8 @@ COMPATIBILITY_TAG = "compatibility"
 
 class LicenseCompatibilty:
 
-    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, update_dual=True):
-        self.license = License(denied_licenses, update_dual)
+    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, allowed_licenses=None, update_dual=True):
+        self.license = License(denied_licenses, allowed_licenses, update_dual)
 
         self.compatibility = CompatibilityFactory.get_compatibility(license_db)
 

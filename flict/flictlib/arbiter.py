@@ -16,16 +16,17 @@ from flict.flictlib.project.reader import FlictProjectReader
 class Arbiter:
     """Arbiter is a class to verify compatibility"""
 
-    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, update_dual=True):
+    def __init__(self, license_db=None, licenses_preferences=None, denied_licenses=None, allowed_licenses=None, update_dual=True):
         """Initializes Arbiter objects
              Parameters:
                  license_db: license database to use instead of builtin
                  licenses_preferences: license preferences to use instead of builtin
                  denied_licenses: licenses that cannot be used
+                 allowed_licenses: licenses that are the only ones to be used
         """
         self.update_dual = update_dual
         self.license_compatibility = LicenseCompatibilty(
-            license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses, update_dual=update_dual)
+            license_db=license_db, licenses_preferences=licenses_preferences, denied_licenses=denied_licenses, allowed_licenses=allowed_licenses, update_dual=update_dual)
 
     def supported_licenses(self):
         """Returns the supported licenses"""

@@ -23,8 +23,14 @@ class License():
     GPL-2.0-or-later or (GPL-3.0-only WITH GCC-exception-3.1 AND curl
     """
 
-    def __init__(self, denied_licenses, update_dual=True):
+    def __init__(self, denied_licenses, allowed_licenses, update_dual=True):
         self._denied_licenses = denied_licenses
+        self._allowed_licenses = allowed_licenses
+        # Either denied or allower or none: OK
+        # Both: not OK, raise exception
+        if self._denied_licenses and self._allowed_licenses:
+            raise FlictError(ReturnCodes.RET_CONFLICT_LICENSE_LIST, f'You can only supply either of denied or allowed licenses, not both.')
+
         self.parser = LicenseParserFactory.get_parser()
         self.update_dual = update_dual
 
@@ -46,9 +52,14 @@ class License():
     def denied_licenses(self):
         return self._denied_licenses
 
+    def allowed_licenses(self):
+        return self._allowed_licenses
+
     def license_denied(self, license_):
         if self._denied_licenses:
             return license_ in self._denied_licenses
+        if self._allowed_licenses:
+            return not license_ in self._allowed_licenses
         return False
 
     def license_allowed(self, license_):
