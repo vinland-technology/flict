@@ -78,6 +78,8 @@ def parse():
 
     commmon_defaults_group.add_argument('--licenses-denied-file', '-ldf', type=str, dest='licenses_denied_file', help='', default=None)
 
+    commmon_defaults_group.add_argument('--licenses-allowed-file', '-laf', type=str, dest='licenses_allowed_file', help='', default=None)
+
     commmon_defaults_group.add_argument('--licenses-preference-file', '-lpf', type=str, dest='licenses_preference_file', help='', default=None)
 
     commmon_defaults_group.add_argument('--license-info-file', '-lif', type=str, dest='licenses_info_file', help='Short for applying -lmf <file> -ldf <file> -lpf <file>', default=None)
