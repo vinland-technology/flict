@@ -25,6 +25,7 @@ class ArgsMock:
     verify_sbom = None
     alias_file = None
     licenses_denied_file = None
+    licenses_allowed_file = None
     licenses_preference_file = None
     licenses_info_file = None
     suggest_outbound_candidate = False
