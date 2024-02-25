@@ -32,6 +32,10 @@ class Arbiter:
         """Returns the supported licenses"""
         return self.license_compatibility.supported_licenses()
 
+    def license_allowed(self, lic):
+        """Return whether or not a license is allowed"""
+        return self.license_compatibility.license.license_allowed(lic)
+
     def _verify_package(self, package, licenses):
         """Verifies a package's license to a list of outbounds and returns the
         compatibility between the liceses.
