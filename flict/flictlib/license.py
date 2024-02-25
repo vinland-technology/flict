@@ -29,7 +29,7 @@ class License():
         # Either denied or allower or none: OK
         # Both: not OK, raise exception
         if self._denied_licenses and self._allowed_licenses:
-            raise FlictError(ReturnCodes.RET_CONFLICT_LICENSE_LIST, f'You can only supply either of denied or allowed licenses, not both.')
+            raise FlictError(ReturnCodes.RET_CONFLICT_LICENSE_LIST, 'You can only supply either of denied or allowed licenses, not both.')
 
         self.parser = LicenseParserFactory.get_parser()
         self.update_dual = update_dual
@@ -59,7 +59,7 @@ class License():
         if self._denied_licenses:
             return license_ in self._denied_licenses
         if self._allowed_licenses:
-            return not license_ in self._allowed_licenses
+            return license_ not in self._allowed_licenses
         return False
 
     def license_allowed(self, license_):
