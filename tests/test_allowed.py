@@ -10,12 +10,33 @@
 import json
 import pytest
 
+from flict.flictlib.license import License
 from flict.flictlib.arbiter import Arbiter
 from flict.flictlib.return_codes import FlictError, ReturnCodes
 from flict.flictlib.project.reader import ProjectReaderFactory
 
 reader = ProjectReaderFactory.get_projectreader(project_format="spdx", project_dirs=["example-data"], update_dual=False)
 freetype = reader.read_project("example-data/freetype-2.9.spdx.json")
+
+def test_license_clean():
+    lic = License(None, None)
+    assert lic.license_allowed('MIT')
+
+def test_license_allowed():
+    lic = License(None, ['MIT'])
+    assert lic.license_allowed('MIT')
+
+def test_license_allowed_false():
+    lic = License(None, ['MIT'])
+    assert not lic.license_allowed('X11')
+
+def test_license_denined():
+    lic = License(['MIT'], None)
+    assert lic.license_denied('MIT')
+
+def test_license_denied_false():
+    lic = License(['MIT'], None)
+    assert not lic.license_denied('X11')
 
 def test_freetype_verification():
     # normal verification
