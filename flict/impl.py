@@ -41,19 +41,23 @@ class FlictImpl:
         return self._formatter.format_simplified(simplified)
 
     def suggest_outbound_candidate(self):
+        license_expression = self._args.license_expression
+
         if self._args.extended_licenses:
             licenses = self.arbiter.supported_licenses()
         else:
-            licenses = self.arbiter.licenses(" ".join(self._args.license_expression))
+            license_expression = self.arbiter.simplify_license(" ".join(self._args.license_expression))['simplified']
+            licenses = self.arbiter.licenses(license_expression)
+
+        allowed_licenses = [x for x in licenses if self.arbiter.license_allowed(x)]
+
         outbounds = []
         try:
-            for outbound in licenses:
-                compats = self.arbiter.inbounds_outbound_check(outbound, self._args.license_expression)
-                compat_status = compats['compatibility']
-                if compat_status == "Yes":
+            for outbound in allowed_licenses:
+                compats = self.arbiter.inbounds_outbound_check(outbound, [license_expression])
+                compat = compats['compatibility'] == 'Yes'
+                if compat:
                     outbounds.append(outbound)
-                elif compat_status == "No":
-                    pass
 
             outbounds.sort()
             return self._formatter.format_outbound_license(outbounds)
@@ -81,6 +85,7 @@ class FlictImpl:
 
     def _get_arbiter(self):
         licenses_denied_file = self._args.licenses_denied_file
+        licenses_allowed_file = self._args.licenses_allowed_file
         licenses_preference_file = self._args.licenses_preference_file
 
         if self._args.licenses_info_file:
@@ -88,10 +93,12 @@ class FlictImpl:
             licenses_preference_file = self._args.licenses_info_file
 
         licenses_denied = self._read_json_object(licenses_denied_file, "licenses_denied", [])
+        licenses_allowed = self._read_json_object(licenses_allowed_file, "licenses_allowed", [])
         licenses_preferences = self._read_json_object(licenses_preference_file, "license_preferences", [])
         arbiter = Arbiter(license_db=self._args.license_matrix_file,
                           licenses_preferences=licenses_preferences,
                           denied_licenses=licenses_denied,
+                          allowed_licenses=licenses_allowed,
                           update_dual=not self._args.no_relicense)
 
         return arbiter

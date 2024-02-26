@@ -30,6 +30,7 @@ class ReturnCodes(Enum):
     RET_FILE_NOT_FOUND = (12, "File not found")
     RET_INVALID_LICENSE_PREFERENCE = (13, "Invalid license preferences")
     RET_INVALID_MATRIX = (14, "Invalid matrix or matrix extension")
+    RET_CONFLICT_LICENSE_LIST = (15, "Conflicting allowed/denied license lists")
 
     @classmethod
     def get_help(cls, indent="  "):
