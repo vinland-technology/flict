@@ -1,4 +1,4 @@
 license-expression ~= 30.2
 osadl-matrix==2024.2.13.10236
-wheel ~= 0.42
+wheel ~= 0.43
 foss-flame ~= 0.19
