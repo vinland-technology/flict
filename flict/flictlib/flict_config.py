@@ -29,7 +29,7 @@ def read_user_config():
 
 _userconfig = read_user_config()
 
-flict_version = "1.2.11"
+flict_version = "1.2.12"
 
 SCRIPT_DIR = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../"))
 
