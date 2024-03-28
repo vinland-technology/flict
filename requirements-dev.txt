@@ -37,3 +37,4 @@ pytest-tldr ~= 0.2
 twine ~= 5.0
 jsonschema ~= 4.21
 reuse ~= 3.0
+wheel ~= 0.43
