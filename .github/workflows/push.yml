@@ -37,16 +37,16 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip
+        python3 -m pip install --upgrade pip build
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
     - name: Build
-      run: python3 setup.py build sdist bdist_wheel --universal
+      run: python3 -m build --sdist --wheel --no-isolation
     - name: Lint
       run: |
         flake8
     - name: Install
-      run: python3 setup.py install
+      run: python3 -m pip install --user dist/*.whl
     - name: Test
       run: |
         JUNIT_REPORT=1 python3 -m pytest
