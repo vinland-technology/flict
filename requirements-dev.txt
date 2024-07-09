@@ -35,6 +35,6 @@ pytest-socket ~= 0.7
 pytest-sugar ~= 1.0
 pytest-tldr ~= 0.2
 twine ~= 5.1
-jsonschema ~= 4.22
+jsonschema ~= 4.23
 reuse ~= 4.0
 wheel ~= 0.43
