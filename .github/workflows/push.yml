@@ -18,7 +18,7 @@ jobs:
             github-token: ${{ secrets.GITHUB_TOKEN }}
             commit-message-body-max-length: 72
             commit-message-body-min-length: 1
-            commit-message-subject-max-length: 50
+            commit-message-subject-max-length: 60
             commit-message-subject-min-length: 10
             re-commit-message-subject: ".+: .+"
             re-pull-request-title: ".*"
