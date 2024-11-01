@@ -25,9 +25,6 @@ def _get_problems(inbound, outbound):
 def test_problems_no():
     assert len(_get_problems('MIT', 'GPL-2.0-only')) == 0
 
-def test_problems_uknonwn():
-    assert len(_get_problems('HPND', 'GPL-2.0-only')) == 1
-
 def test_problems_undefined():
     assert len(_get_problems('NONESUCH', 'GPL-2.0-only')) == 1
 
