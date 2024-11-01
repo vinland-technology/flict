@@ -51,10 +51,12 @@ class FlictImpl:
 
         allowed_licenses = [x for x in licenses if self.arbiter.license_allowed(x)]
 
+        lic_expr_list = [license_expression] if isinstance(license_expression, str) else license_expression
+
         outbounds = []
         try:
             for outbound in allowed_licenses:
-                compats = self.arbiter.inbounds_outbound_check(outbound, [license_expression])
+                compats = self.arbiter.inbounds_outbound_check(outbound, lic_expr_list)
                 compat = compats['compatibility'] == 'Yes'
                 if compat:
                     outbounds.append(outbound)
