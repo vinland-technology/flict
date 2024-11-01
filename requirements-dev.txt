@@ -33,6 +33,7 @@ pytest-random-order ~= 1.1
 pytest-socket ~= 0.7
 pytest-sugar ~= 1.0
 pytest-tldr ~= 0.2
+pytest-xdist ~= 3.6
 twine ~= 5.1
 jsonschema ~= 4.23
 reuse ~= 4.0
