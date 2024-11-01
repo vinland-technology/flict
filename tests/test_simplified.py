@@ -22,7 +22,7 @@ def test_simplify():
     _test_expression(['MIT and MIT or BSD3'], '{"original": "MIT and MIT or BSD3", "simplified": "BSD-3-Clause OR MIT"}')
     _test_expression(['GPL-2.0-only'], '{"original": "GPL-2.0-only", "simplified": "GPL-2.0-only"}')
     _test_expression(['GPL-2.0-or-later'], '{"original": "GPL-2.0-or-later", "simplified": "GPL-2.0-only OR GPL-3.0-only"}')
-    _test_expression(['GPL-2.0-or-later and MIT'], '{"original": "GPL-2.0-or-later and MIT", "simplified": "MIT AND (GPL-2.0-only OR GPL-3.0-only)"}')
+    _test_expression(['GPL-2.0-or-later and MIT'], '{"original": "GPL-2.0-or-later and MIT", "simplified": "(GPL-2.0-only AND MIT) OR (GPL-3.0-only AND MIT)"}')
     _test_expression(['MIT and GPL-2.0-only WITH Classpath-exception-2.0 and MIT'], '{"original": "MIT and GPL-2.0-only WITH Classpath-exception-2.0 and MIT", "simplified": "GPL-2.0-only WITH Classpath-exception-2.0 AND MIT"}')
 
 
