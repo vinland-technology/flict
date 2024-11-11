@@ -37,4 +37,4 @@ pytest-xdist ~= 3.6
 twine ~= 5.1
 jsonschema ~= 4.23
 reuse ~= 4.0
-wheel ~= 0.44
+wheel ~= 0.45
